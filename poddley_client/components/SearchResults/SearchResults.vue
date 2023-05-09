@@ -1,0 +1,14 @@
+<template>
+    <ul class="row d-flex p-0 m-0 tw-justify-center tw-gap-y-5">
+        <li class="col-12" v-for="searchEntry in props.searchEntries" v-if="props.searchEntries">
+            <SearchEntry :searchEntry="searchEntry" />
+        </li>
+    </ul>
+</template>
+
+<script lang="ts" setup>
+import { Hit } from "@/types/SearchResponse";
+const props = defineProps<{
+    searchEntries: Hit[];
+}>();
+</script>

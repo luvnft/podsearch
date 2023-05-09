@@ -1,0 +1,43 @@
+/* footer {
+  font-family: "Pacifico";
+  letter-spacing: -1px;
+  font-weight: 0 !important;
+}
+
+body {
+  font-family: "Merge";
+  font-size: 40px;
+}
+
+a:active,
+span:active {
+  transform: translateY(0px);
+}
+
+footer,
+body {
+  background-color: #fefeff;
+} */
+
+nav h1 {
+  font-family: "Pacifico";
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span {
+  font-family: Lato;
+}
+
+main *,
+body *,
+nav * {
+  font-family: "Esteban"; /*Inter*/
+  letter-spacing: -1px;
+  line-height: 100% !important;
+}
