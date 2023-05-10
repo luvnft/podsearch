@@ -1,24 +1,3 @@
-/* footer {
-  font-family: "Pacifico";
-  letter-spacing: -1px;
-  font-weight: 0 !important;
-}
-
-body {
-  font-family: "Merge";
-  font-size: 40px;
-}
-
-a:active,
-span:active {
-  transform: translateY(0px);
-}
-
-footer,
-body {
-  background-color: #fefeff;
-} */
-
 nav h1 {
   font-family: "Pacifico";
 }
@@ -31,7 +10,7 @@ h4,
 h5,
 h6,
 span {
-  font-family: Lato;
+  font-family: "Inger";
 }
 
 main *,

@@ -11,13 +11,6 @@ module.exports = {
   important: true,
   theme: {
     extend: {
-      fontFamily: {
-        Pacifico: ["Pacifico"],
-        Inter: ["Inter"],
-        Merge: ["Merge"],
-        RobotoSlab: ["RobotoSlab"],
-        Sacramento: ["Sacramento"],
-      },
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-3deg)" },
