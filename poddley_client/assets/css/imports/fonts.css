@@ -1,11 +1,7 @@
 @font-face {
   font-family: "Inter";
   src: url("../../fonts/Inter.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Merge";
-  src: url("../../fonts/Merge.otf") format("opentype");
+  font-display: swap;
 }
 
 @font-face {
@@ -15,46 +11,7 @@
 }
 
 @font-face {
-  font-family: "RobotoSlab";
-  src: url("../../fonts/RobotoSlab.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Sacramento";
-  src: url("../../fonts/Sacramento.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "SourceSerifPro";
-  src: url("../../fonts/SourceSerifPro.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Caudex";
-  src: url("../../fonts/Caudex.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lora";
-  src: url("../../fonts/Lora.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lato";
-  src: url("../../fonts/Lato.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Montserrat";
-  src: url("../../fonts/Montserrat.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "NotoSerif";
-  src: url("../../fonts/NotoSerif.ttf") format("truetype");
-}
-
-@font-face {
   font-family: "Esteban";
   src: url("../../fonts/Esteban.ttf") format("truetype");
+  font-display: swap;
 }
