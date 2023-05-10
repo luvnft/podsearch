@@ -1,7 +1,17 @@
 <template>
   <div class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400">
     <div style="position: relative">
-      <audio :key="props.timeLocation" controls id="custom-audio" :class="{ loading: isLoading }" class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none" ref="audioPlayerRef" preload="none" :title="props.episodeTitle" poster="https://upload.wikimedia.org/wikipedia/en/f/fd/Coldplay_-_Parachutes.png" @loadedmetadata="onLoadedMetadata" @waiting="onWaiting" @playing="onPlaying" @ended="onEnded" @error="onError">
+      <audio
+        :key="props.timeLocation"
+        controls
+        id="custom-audio"
+        :class="{ loading: isLoading }"
+        class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
+        ref="audioPlayerRef"
+        preload="none"
+        :title="props.episodeTitle"
+        poster="https://upload.wikimedia.org/wikipedia/en/f/fd/Coldplay_-_Parachutes.png"
+      >
         <source :src="props.audioLink" type="audio/mpeg" controls />
       </audio>
 
@@ -19,61 +29,13 @@ const props = defineProps<{
   episodeTitle: string;
 }>();
 
-function isiPhone() {
-  return /iPhone|iPod|iPad/.test(navigator.userAgent);
-}
-
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
 
-const onLoadedMetadata = () => {
-  if (audioPlayerSpinnerRef.value) {
-    audioPlayerSpinnerRef.value.style.display = "none";
-    isLoading.value = false;
-  }
-};
-
-const onWaiting = () => {
-  if (audioPlayerSpinnerRef.value) {
-    setTimeout(() => {
-      if (audioPlayerRef.value && audioPlayerRef.value.readyState < 4) {
-        if (audioPlayerSpinnerRef.value) {
-          audioPlayerSpinnerRef.value.style.display = "block";
-          isLoading.value = true;
-        }
-      }
-    }, 2000);
-  }
-};
-
-const onPlaying = () => {
-  if (audioPlayerSpinnerRef.value) {
-    audioPlayerSpinnerRef.value.style.display = "none";
-    isLoading.value = false;
-  }
-};
-
-const onEnded = () => {
-  if (audioPlayerSpinnerRef.value) {
-    audioPlayerSpinnerRef.value.style.display = "none";
-  }
-};
-
-const onError = () => {
-  if (audioPlayerSpinnerRef.value) {
-    audioPlayerSpinnerRef.value.style.display = "none";
-  }
-  console.error("Error loading audio");
-};
-
 onMounted(() => {
-  if (audioPlayerRef.value && isiPhone() === false) {
+  if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
-    // Check if the metadata is already loaded
-    if (audioPlayerRef.value.readyState >= 1) {
-      onLoadedMetadata();
-    }
   }
 });
 </script>
