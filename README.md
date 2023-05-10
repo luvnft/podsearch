@@ -57,4 +57,4 @@
 - [ ] Use Spotify audioplayer for the spotify podcasts
 - [ ] Create spotify recorder
 - [ ] Create a lobsters blogging platform
-- [x] Reindex everything prior to 16. april.
+- [ ] Reindex everything prior to 16. april.
