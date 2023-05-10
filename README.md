@@ -53,8 +53,7 @@
 - [ ] Make the types shared between backend and client
 - [ ] Add second-hand jaccard highlighting 
 - [ ] Set up CI/CD pipiline for backend
-- [ ] Downscale the pictures retrieved and store them on local
-- [ ] Download all audio files
+- [x] Downscale the pictures retrieved and store them on local
 - [ ] Use Spotify audioplayer for the spotify podcasts
 - [ ] Create spotify recorder
 - [ ] Create a lobsters blogging platform
