@@ -37,17 +37,17 @@
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [ ] Add YouTube functionality (ofc. Podcast2Youtube)
 - [ ] Joe Rogan Recorder
-- [ ] Download all Podcast audio-files to own server to support long-term support
-- [ ] Add loading spinner only for firefox/chrome-based audioPlayers
+- [ ] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
+- [x] Add loading spinner only for firefox/chrome-based audioPlayers
 - [ ] Add info-section like for meilisearch during/and before searching
 - [x] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
 - [ ] Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.
-- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [x] Switch from Whisper OpenAI to https://github.com/guillaumekln/faster-whisper 4x increase in speed 🤩🤩🤩 and that is with the fucking Large-v2 model omg fuck
 - [x] Switch to this alignment model: jonatasgrosman/wav2vec2-large-xlsr-53-english
 - [x] Stick to MeiliSearch, but use the new MatchingStrategy functionality and see if you can adapt the phrase searching to accomodate your needs
 - [x] Use meilisearch as a rough-searching and then use n-gram(3) with jaccard-string-similarity to do the fine-tuned search
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
+- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Install RTX on mini-pc
 - [x] Fix 3x instance return on API
 - [ ] Make the types shared between backend and client
