@@ -1,7 +1,7 @@
 <template>
   <div class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400">
     <div style="position: relative">
-      <audio :key="props.timeLocation" controls id="custom-audio" :class="{ loading: isLoading }" class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none" ref="audioPlayerRef" preload="metadata" :title="props.episodeTitle" poster="https://upload.wikimedia.org/wikipedia/en/f/fd/Coldplay_-_Parachutes.png" @loadedmetadata="onLoadedMetadata" @waiting="onWaiting" @playing="onPlaying" @ended="onEnded" @error="onError">
+      <audio :key="props.timeLocation" controls id="custom-audio" :class="{ loading: isLoading }" class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none" ref="audioPlayerRef" preload="none" :title="props.episodeTitle" poster="https://upload.wikimedia.org/wikipedia/en/f/fd/Coldplay_-_Parachutes.png" @loadedmetadata="onLoadedMetadata" @waiting="onWaiting" @playing="onPlaying" @ended="onEnded" @error="onError">
         <source :src="props.audioLink" type="audio/mpeg" controls />
       </audio>
 
