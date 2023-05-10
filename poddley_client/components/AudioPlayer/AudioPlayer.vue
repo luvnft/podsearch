@@ -1,19 +1,18 @@
 <template>
   <div class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400">
     <div style="position: relative">
-      <audio
+      <audio 
         :key="props.timeLocation"
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
         class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
         ref="audioPlayerRef"
-        preload="none"
+        preload="metadata"
         :title="props.episodeTitle"
-        poster="https://upload.wikimedia.org/wikipedia/en/f/fd/Coldplay_-_Parachutes.png"
-      >
-        <source :src="props.audioLink" type="audio/mpeg" controls />
-      </audio>
+        :src="props.audioLink"
+        type="audio/mpeg" 
+      />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
         <IconsSpinnerIcon />
@@ -75,4 +74,5 @@ onMounted(() => {
 .loading::-webkit-media-controls-play-button {
   visibility: hidden;
 }
+
 </style>
