@@ -26,7 +26,7 @@
           <hr />
           <div>
             <p class="tw-mb-1 tw-font-bold">Segment:</p>
-            <p v-html="props.searchEntry._formatted.text" />
+            <p class="segment" v-html="props.searchEntry._formatted.text" />
           </div>
           <hr />
           <p>
@@ -54,5 +54,17 @@ const props = defineProps<{
 <style scoped>
 :deep(.highlight) {
   background: rgb(255, 255, 134) !important;
+}
+
+.segment {
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  padding-left: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
+  -moz-box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
+  box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
 }
 </style>

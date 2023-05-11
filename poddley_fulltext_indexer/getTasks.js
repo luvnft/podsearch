@@ -8,17 +8,17 @@ async function main() {
   console.log("Running getTasks");
   const client = new MeiliSearch({ host: process.env.MEILISEARCH_IP });
 
-  await client.deleteIndex("segments");
-  await client.deleteIndex("transcriptions");
+  // await client.deleteIndex("segments");
+  // await client.deleteIndex("transcriptions");
 
   const segmentsIndex = await client.index("segments");
   const transcriptionsIndex = await client.index("transcriptions");
   // segmentsIndex.deleteAllDocuments();
   // transcriptionsIndex.deleteAllDocuments();
 
-  await client.tasks.deleteTasks({
-    statuses: ["failed", "succeeded", "canceled", "enqueued"],
-  });
+  // await client.tasks.deleteTasks({
+  //   statuses: ["failed", "succeeded", "canceled", "enqueued"],
+  // });
 
   transcriptionsIndex.updateTypoTolerance({
     minWordSizeForTypos: {
