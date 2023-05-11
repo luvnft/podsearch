@@ -26,7 +26,7 @@
           <hr />
           <div>
             <p class="tw-mb-1 tw-font-bold">Segment:</p>
-            <p class="segment" v-html="props.searchEntry._formatted.text" />
+            <p class="segment" v-html="'›››' + props.searchEntry._formatted.text" />
           </div>
           <hr />
           <p>
@@ -57,12 +57,12 @@ const props = defineProps<{
 }
 
 .segment {
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-right: 7px;
+  padding-top: 7px;
+  padding-bottom: 7px;
   background-color: white;
-  padding-left: 5px;
-  border-radius: 5px;
+  padding-left: 7px;
+  border-radius: 4px;
   -webkit-box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
   -moz-box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
   box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
