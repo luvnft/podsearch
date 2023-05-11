@@ -59,3 +59,5 @@
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [ ] Create a lobsters blogging platform
 - [ ] Reindex everything prior to 16. april.
+- [ ] I want the segments to move with the audio.
+- [ ] I want there to be a section which shows the most searched podcasts.
