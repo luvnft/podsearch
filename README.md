@@ -51,7 +51,7 @@
 - [ ] Install RTX on mini-pc
 - [x] Fix 3x instance return on API
 - [ ] Make the types shared between backend and client
-- [ ] Add second-hand jaccard highlighting 
+- [x] Add second-hand jaccard highlighting 
 - [ ] Set up CI/CD pipiline for backend
 - [x] Downscale the pictures retrieved and store them on local
 - [ ] Use Spotify audioplayer for the spotify podcasts
