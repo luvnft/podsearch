@@ -16,7 +16,8 @@ export const useSearchStore = defineStore("searchStore", () => {
     // Toggle loading and set searchString to default value if passed in undefined
     toggleLoading(true);
     if (!searchInput) searchString.value = '';
-
+    else searchString.value = searchInput;
+    
     // Search
     const data: SearchResponse = await transcriptionsService.search(searchString.value);
     if (data) searchResults.value = data.hits;

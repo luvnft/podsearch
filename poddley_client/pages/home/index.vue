@@ -9,12 +9,18 @@
 //Imports
 import { useSearchStore } from "@/store/searchStore";
 
+//Router
+const route = useRoute();
+const router = useRouter();
+
 //Grabbing initial data for page load
 const searchStore = useSearchStore();
 
 //Initialization function
 async function initialLoad() {
-  await searchStore.search();
+  const searchUrl: string = route.query.search as string;
+  console.log(searchUrl)
+  await searchStore.search(searchUrl);
 }
 
 //Running
