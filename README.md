@@ -33,11 +33,12 @@
 - [ ] Switch to use the puppeteer script as time ensues
 ### Do does
 - [ ] Add segments moving based on played audio.
+- [ ] Add word by word highlighting dueing audio playin
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [ ] Add YouTube functionality (ofc. Podcast2Youtube)
-- [ ] Joe Rogan Recorder
-- [ ] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
+- [x] ~~Joe Rogan Recorder~~(illegal)
+- [x] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
 - [ ] Add info-section like for meilisearch during/and before searching
 - [x] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
@@ -52,9 +53,9 @@
 - [x] Fix 3x instance return on API
 - [ ] Make the types shared between backend and client
 - [x] Add second-hand jaccard highlighting 
-- [ ] Set up CI/CD pipiline for backend
+- [ ] Set up CI/CD pipeline for backend
 - [x] Downscale the pictures retrieved and store them on local
-- [ ] Use Spotify audioplayer for the spotify podcasts
-- [ ] Create spotify recorder
+- [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
+- [x] ~~Create spotify recorder~~ (it's illegal)
 - [ ] Create a lobsters blogging platform
 - [ ] Reindex everything prior to 16. april.
