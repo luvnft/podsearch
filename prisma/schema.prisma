@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex", "filteredRelationCount"]
+  provider        = "prisma-client-py"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Episode {
-  id                             String         @id
+  id                             String         @id @default(uuid())
   episodeAuthor                  String         @db.VarChar(500)
   episodeTitle                   String         @db.VarChar(500)
   episodeImage                   String         @db.VarChar(500)
@@ -31,8 +31,10 @@ model Episode {
   createdOnPazam                 DateTime       @default(now())
   isTranscribed                  Boolean        @default(false)
   beingTranscribed               Boolean        @default(false)
+  causedError                    Boolean        @default(false)
+  updatedAt                      DateTime?      @default(now())
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
-  Segment_hasSegments            Segment[]      @relation("Episode_belongsToEpisodeGuid")
+  Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")
 
   @@index([podcastGuid], map: "Episode_podcastGuid_fkey")
@@ -40,7 +42,7 @@ model Episode {
 }
 
 model Podcast {
-  id                              String          @id
+  id                              String          @id @default(uuid())
   url                             String          @db.VarChar(500)
   title                           String          @db.VarChar(500)
   link                            String          @db.VarChar(500)
@@ -86,7 +88,7 @@ model Podcast {
 }
 
 model Segment {
-  id                                  String        @id
+  id                                  String        @id @default(uuid())
   start                               Float
   end                                 Float
   language                            String        @db.VarChar(500)
@@ -96,7 +98,8 @@ model Segment {
   text                                String        @db.VarChar(500)
   createdOnPazam                      DateTime      @default(now())
   indexed                             Boolean       @default(false)
-  Episode_belongsToEpisodeGuid        Episode       @relation("Episode_belongsToEpisodeGuid", fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
+  segmentWordEntries                  Json?
+  Episode                             Episode       @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   Podcast_belongsToPodcastGuid        Podcast       @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
   Transcription_belongsToTranscriptId Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
 
@@ -107,12 +110,13 @@ model Segment {
 }
 
 model Transcription {
-  id                           String    @id
+  id                           String    @id @default(uuid())
   language                     String    @db.VarChar(500)
   belongsToPodcastGuid         String    @db.VarChar(500)
   belongsToEpisodeGuid         String    @unique @db.VarChar(500)
   transcription                String    @db.MediumText
   createdOnPazam               DateTime  @default(now())
+  indexed                      Boolean   @default(false)
   Segment_hasSegments          Segment[] @relation("Transcription_belongsToTranscriptId")
   Episode_belongsToEpisodeGuid Episode   @relation("Episode_belongsToEpisodeGuid", fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   Podcast_belongsToPodcastGuid Podcast   @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)

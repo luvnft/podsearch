@@ -22,6 +22,8 @@ CREATE TABLE `Episode` (
     `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `isTranscribed` BOOLEAN NOT NULL DEFAULT false,
     `beingTranscribed` BOOLEAN NOT NULL DEFAULT false,
+    `causedError` BOOLEAN NOT NULL DEFAULT false,
+    `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Episode_episodeGuid_key`(`episodeGuid`),
     INDEX `Episode_podcastGuid_fkey`(`podcastGuid`),
@@ -87,6 +89,7 @@ CREATE TABLE `Segment` (
     `text` VARCHAR(500) NOT NULL,
     `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `indexed` BOOLEAN NOT NULL DEFAULT false,
+    `segmentWordEntries` JSON NULL,
 
     INDEX `Segment_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
     INDEX `Segment_belongsToTranscriptId_fkey`(`belongsToTranscriptId`),
@@ -103,6 +106,7 @@ CREATE TABLE `Transcription` (
     `belongsToEpisodeGuid` VARCHAR(500) NOT NULL,
     `transcription` MEDIUMTEXT NOT NULL,
     `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `indexed` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `Transcription_belongsToEpisodeGuid_key`(`belongsToEpisodeGuid`),
     INDEX `Transcription_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
