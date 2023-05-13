@@ -30,19 +30,17 @@
 - [ ] Native app?
 - [ ] Set up workstation with multiple GPUs for better transcribing.
 - [ ] Switch to iGPU, an RTX4090 for improved transcription, use the medium.en model
-- [ ] Switch to use the puppeteer script as time ensues
+- [ ] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 ### Do does
 - [ ] Add segments moving based on played audio.
 - [ ] Add word by word highlighting dueing audio playin
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
-- [ ] Add YouTube functionality (ofc. Podcast2Youtube)
 - [x] ~~Joe Rogan Recorder~~(illegal)
 - [x] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
-- [ ] Add info-section like for meilisearch during/and before searching
 - [x] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
-- [ ] Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.
+- [x] Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.
 - [x] Switch from Whisper OpenAI to https://github.com/guillaumekln/faster-whisper 4x increase in speed 🤩🤩🤩 and that is with the fucking Large-v2 model omg fuck
 - [x] Switch to this alignment model: jonatasgrosman/wav2vec2-large-xlsr-53-english
 - [x] Stick to MeiliSearch, but use the new MatchingStrategy functionality and see if you can adapt the phrase searching to accomodate your needs
@@ -58,6 +56,4 @@
 - [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [ ] Create a lobsters blogging platform
-- [ ] Reindex everything prior to 16. april.
-- [ ] I want the segments to move with the audio.
-- [ ] I want there to be a section which shows the most searched podcasts.
+- [ ] Adjust python transcription script for optimistic concurrency + I want there to be a section which shows the most searched podcasts.Reindex everything prior to 16. april.Add info-section like for meilisearch during/and before searchingAdd YouTube functionality (ofc. Podcast2Youtube)
