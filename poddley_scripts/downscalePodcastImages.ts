@@ -9,10 +9,18 @@ dotenv.config({ path: "./.env" });
 
 const prisma = new PrismaClient();
 const apiUrl = "http://api.poddley.com/images/";
-const imagesPath = "images.poddley.com/";
+const imagesPath = "https://images.poddley.com/";
 
 async function downScale() {
-  const podcasts: Podcast[] = await prisma.podcast.findMany();
+  const podcasts: Podcast[] = await prisma.podcast.findMany({
+    where: {
+      imageUrl: {
+        not: {
+          contains: "images.poddley.com",
+        },
+      },
+    },
+  });
 
   for (let i = 0; i < podcasts.length; i++) {
     const podcast: Podcast = podcasts[i];

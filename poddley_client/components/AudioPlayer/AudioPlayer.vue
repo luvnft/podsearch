@@ -1,22 +1,17 @@
 <template>
   <div class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400">
     <div style="position: relative">
-      <audio 
+      <audio
         :key="props.timeLocation"
         controls
         id="custom-audio"
-        :class="{ loading: isLoading }"
         class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
         ref="audioPlayerRef"
         preload="metadata"
         :title="props.episodeTitle"
         :src="props.audioLink"
-        type="audio/mpeg" 
+        type="audio/mpeg"
       />
-
-      <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
-        <IconsSpinnerIcon />
-      </div>
     </div>
   </div>
 </template>
@@ -29,8 +24,6 @@ const props = defineProps<{
 }>();
 
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
-const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
-const isLoading: Ref<Boolean> = ref(false);
 
 onMounted(() => {
   if (audioPlayerRef.value) {
@@ -60,19 +53,4 @@ onMounted(() => {
 #custom-audio::-webkit-media-controls-current-time-display {
   color: #000;
 }
-
-.spinner {
-  position: absolute;
-  top: 30%;
-  left: 20px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.loading::-webkit-media-controls-play-button {
-  visibility: hidden;
-}
-
 </style>
