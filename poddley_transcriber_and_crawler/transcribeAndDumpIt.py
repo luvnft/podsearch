@@ -125,5 +125,5 @@ async def transcribeAndDumpIt(episodes, model):
             print("Error with saving transcriptionData:", e)
     
     print("------Inserting json files--------")
-
-    return True
+    
+    await insertJsonFilesToDb.insertJsonFilesToDb()

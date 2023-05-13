@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider        = "prisma-client-py"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -30,9 +30,8 @@ model Episode {
   episodeDuration                Int
   createdOnPazam                 DateTime       @default(now())
   isTranscribed                  Boolean        @default(false)
-  beingTranscribed               Boolean        @default(false)
   causedError                    Boolean        @default(false)
-  updatedAt                      DateTime?       @default(now()) @updatedAt
+  beingTranscribed               Boolean        @default(false)
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")

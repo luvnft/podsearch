@@ -1,39 +1,7 @@
 {
   "dependencies": {
-    "@prisma/client": "^4.8.0",
-    "@types/better-sqlite3": "^7.6.4",
-    "@types/feedparser": "^2.2.5",
-    "@types/language-tags": "^1.0.1",
-    "@types/sqlite3": "^3.1.8",
-    "@types/uuid": "^9.0.1",
-    "axios": "^1.4.0",
-    "better-sqlite3": "^8.3.0",
-    "feed": "^4.2.2",
-    "feedparser": "^2.2.10",
-    "fs": "^0.0.1-security",
-    "language-tags": "^1.0.8",
     "pm2": "^5.2.2",
-    "prisma": "^4.14.0",
-    "progress": "^2.0.3",
     "puppeteer": "^19.5.2",
-    "puppeteer-cluster": "^0.23.0",
-    "rss-parser": "^3.13.0",
-    "sqlite": "^4.2.0",
-    "sqlite3": "^5.1.6",
-    "tar": "^6.1.14",
-    "ts-node": "^10.9.1"
-  },
-  "name": "poddley_transcriber_and_crawler",
-  "version": "1.0.0",
-  "main": "getMostPopularPodcasts.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@types/progress": "^2.0.5",
-    "@types/tar": "^6.1.5"
+    "puppeteer-cluster": "^0.23.0"
   }
 }
