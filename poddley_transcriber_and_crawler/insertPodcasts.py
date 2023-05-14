@@ -32,7 +32,7 @@ async def insertPodcasts(objectsToInsert):
             newImageName = titleSplittedJoined + "-podcastImage"
             object["imageUrl"] = imagesPath + newImageName + ".webp"
             await prisma.podcast.create(data=object)
-            subprocess.run(["node", "script.js"], check=True)
+            subprocess.run(["node", "downscalePodcastImages.js"], check=True)
 
         except Exception as e:
             print("ERROR: ", e)
