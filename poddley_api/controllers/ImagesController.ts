@@ -13,7 +13,7 @@ class ImagesController {
       const filename: string = req.params.filename;
       const filepath: string = this.imagesService.getFilePath(filename);
       res.sendFile(filepath, (err: any) => {
-        if (err) {
+        if (err) { 
           res.status(404).send("Image not found");
         }
       });
@@ -25,9 +25,9 @@ class ImagesController {
   public uploadImage = async (req: Request, res: Response): Promise<void> => {
     const response = await this.imagesService.uploadImage(req, res);
     if (response) {
-      res.status(200).json("Image uploaded");
+      res.status(200).json(response);
     } else {
-      res.status(404).send("Image uploading failed");
+      res.status(404).send(response);
     }
   };
 }
