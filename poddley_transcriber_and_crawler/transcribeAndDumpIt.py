@@ -76,6 +76,21 @@ async def transcribeAndDumpIt(episode, model):
         segments, _ = model.transcribe(filename, beam_size=5, language="en")
         segments = list(segments)  # The transcription will actually run here.
         segments = [segment._asdict() for segment in segments]
+
+        # Define a minimum duration (in seconds)
+        min_duration = 0.1
+
+        # Filter out too short segments
+        filtered_segments = [s for s in segments if s['end'] - s['start'] > min_duration]
+
+        # If no segments left after filtering, skip this episode
+        if not filtered_segments:
+            print(f"No segments longer than {min_duration}s in episode {episode.episodeTitle}, skipping.")
+            return
+
+        # Replace the original segments list with the filtered one
+        segments = filtered_segments
+
         model_a, metadata = whisperx.load_align_model(language_code="en", device="cuda", model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english")
         result_aligned = whisperx.align(segments, model_a, metadata, filename, "cuda")
         df = pd.DataFrame(result_aligned["segments"])
