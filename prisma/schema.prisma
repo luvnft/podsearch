@@ -33,6 +33,7 @@ model Episode {
   beingTranscribed               Boolean        @default(false)
   causedError                    Boolean        @default(false)
   updatedAt                      DateTime?      @default(now())
+  reAlignedWithBigModel          Boolean        @default(false)
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")
