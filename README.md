@@ -56,4 +56,8 @@
 - [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [ ] Create a lobsters blogging platform
-- [ ] Adjust python transcription script for optimistic concurrency + I want there to be a section which shows the most searched podcasts.Reindex everything prior to 16. april.Add info-section like for meilisearch during/and before searchingAdd YouTube functionality (ofc. Podcast2Youtube)
+- [x] Adjust python transcription script for optimistic concurrency 
+- [ ] I want there to be a section which shows the most searched podcasts.
+- [x] Reindex everything prior to 16. april.
+- [ ] Add info-section like for meilisearch during/and before searching
+- [ ] Add YouTube functionality (ofc. Podcast2Youtube)
