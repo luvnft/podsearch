@@ -3,7 +3,7 @@ import asyncio
 import os
 import json
 
-async def insertJsonFilesToDb():
+async def insertJsonFilesToDb(episode):
     prisma = Prisma()
     await prisma.connect()
     print("Now processing jsons")
@@ -35,6 +35,24 @@ async def insertJsonFilesToDb():
         # Insert the transcription to the db
         transcriptionId = None
         transcriptionData = None
+
+        episodeAgain = await prisma.episode.find_unique(
+            where = {
+                "episodeGuid": episode["episodeGuid"]
+            }
+        )
+        if episodeAgain.updatedAt != episode["updatedAt"]:
+            # Set the beingTranscribed back to false
+            await prisma.episode.update(
+                where = {
+                    "id": episode.id
+                },
+                data = {
+                    "beingTranscribed": False,
+                    "isTranscribed": True,
+                }
+            )
+
         try:
             transcriptionData = await prisma.transcription.create(
                 data={

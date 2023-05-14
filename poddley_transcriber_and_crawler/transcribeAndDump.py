@@ -44,19 +44,8 @@ async def main():
 
             # Transcribe and Insert
             print("Transcribing it from dumpIT", episode.episodeTitle)
-            await transcribeAndDumpIt.transcribeAndDumpIt([episode], model)
+            await transcribeAndDumpIt.transcribeAndDumpIt(episode, model)
             print("Done with episode and updating", episode.id)
-            
-            # Set the beingTranscribed back to false
-            await prisma.episode.update(
-                where = {
-                    "id": episode.id
-                },
-                data = {
-                    "beingTranscribed": False,
-                    "isTranscribed": True
-                }
-            )
             print("Done with one, next!")
             
         except Exception as e:
