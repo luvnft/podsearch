@@ -72,16 +72,8 @@ async function readFileAsStreamAndInsertIntoDb(filepath, indexName) {
 
 async function main() {
   console.log("Starting...");
-  const segmentCount = await prismaConnection.segment.count({
-    where: {
-      indexed: false,
-    },
-  });
-  const transcriptionCount = await prismaConnection.transcription.count({
-    where: {
-      indexed: false,
-    },
-  });
+  const segmentCount = await prismaConnection.segment.count()
+  const transcriptionCount = await prismaConnection.transcription.count()
 
   console.log("Segmentcount: ", segmentCount);
   console.log("TranscriptionCount: ", transcriptionCount);
@@ -90,17 +82,14 @@ async function main() {
   let segmentTake = 50000;
 
   //We loop through all the segments
-  for (let i = 0; i < 100000; i = i + segmentTake) {
+  for (let i = 0; i < segmentCount; i = i + segmentTake) {
     let segments = await prismaConnection.segment.findMany({
       take: segmentTake,
       skip: i,
       include: {
-        Episode_belongsToEpisodeGuid: true,
+        Episode: true,
         Podcast_belongsToPodcastGuid: true,
       },
-      where: {
-        indexed: false
-      }
     });
     segments = segments.map((e) => flattenObjectOuter(e));
     const segmentsJsonified = segments.map((segment) => JSON.stringify(segment) + "\n");
