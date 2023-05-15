@@ -63,8 +63,7 @@ const props = defineProps<{
   background-color: white;
   padding-left: 7px;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
-  -moz-box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
-  box-shadow: inset 0px 1px 5px 0px rgba(150, 150, 150, 1);
+  box-shadow: inset 0px 0px 1px #393939;
+  border: 1px solid #6e6e6e;
 }
 </style>

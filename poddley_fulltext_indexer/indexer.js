@@ -57,7 +57,7 @@ async function readFileAsStreamAndInsertIntoDb(filepath, indexName) {
           console.log("Done inserting from 'data'-section last time");
           console.log("Sleeping for 10 seconds to avoid crashing server last time");
           await updateIndex(ids, indexName);
-          preparedJsons = []
+          preparedJsons = [];
           ids = [];
         }
         await sleep(2000);
@@ -72,8 +72,8 @@ async function readFileAsStreamAndInsertIntoDb(filepath, indexName) {
 
 async function main() {
   console.log("Starting...");
-  const segmentCount = await prismaConnection.segment.count()
-  const transcriptionCount = await prismaConnection.transcription.count()
+  const segmentCount = await prismaConnection.segment.count();
+  const transcriptionCount = await prismaConnection.transcription.count();
 
   console.log("Segmentcount: ", segmentCount);
   console.log("TranscriptionCount: ", transcriptionCount);
@@ -117,8 +117,8 @@ async function main() {
         Podcast_belongsToPodcastGuid: true,
       },
       where: {
-        indexed: false
-      }
+        indexed: false,
+      },
     });
 
     transcriptions = transcriptions.map((e) => flattenObjectOuter(e));
@@ -139,20 +139,18 @@ async function main() {
 
   console.log("Adding segments...");
   // await readFileAsStreamAndInsertIntoDb("./segments_ndjson.ndjson", "segments");
-  if (fs.existsSync("./transcriptions_ndjson.ndjson")){
+  if (fs.existsSync("./transcriptions_ndjson.ndjson")) {
     await readFileAsStreamAndInsertIntoDb("./transcriptions_ndjson.ndjson", "transcriptions");
     console.log("Done reading stream and inserting!");
     await fs.unlinkSync("./transcriptions_ndjson.ndjson");
-  }
-  else{
+  } else {
     console.log("Not present transcriptions");
   }
-  if (fs.existsSync("./segments_ndjson.ndjson")){
+  if (fs.existsSync("./segments_ndjson.ndjson")) {
     await readFileAsStreamAndInsertIntoDb("./segments_ndjson.ndjson", "segments");
     console.log("Done reading stream and inserting segments!");
     await fs.unlinkSync("./segments_ndjson.ndjson");
-  }
-  else{
+  } else {
     console.log("Not present segments");
   }
 }
