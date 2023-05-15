@@ -2,7 +2,7 @@
   <audio
     :key="props.timeLocation"
     controls
-    id="custom-audio"
+    :id="!isApple ? 'custom-audio' : ''"
     class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400"
     ref="audioPlayerRef"
     preload="metadata"
@@ -20,6 +20,7 @@ const props = defineProps<{
 }>();
 
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
+const { isApple } = useDevice();
 
 onMounted(() => {
   if (audioPlayerRef.value) {
@@ -31,7 +32,7 @@ onMounted(() => {
 <style scoped>
 #custom-audio {
   background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
   border-radius: 0;
 }
 
@@ -50,19 +51,4 @@ onMounted(() => {
   color: #000;
 }
 
-#custom-audio::-webkit-media-controls-timeline::-webkit-media-slider-thumb {
-  -webkit-appearance: none;
-  background-color: #000; /* Change this color to your preference */
-  border-radius: 50%;
-  height: 12px; /* Adjust size as needed */
-  width: 12px; /* Adjust size as needed */
-  margin-top: -4px; /* Adjust margin as needed */
-}
-
-#custom-audio::-webkit-media-controls-timeline::-moz-range-thumb {
-  background-color: #000; /* Change this color to your preference */
-  border-radius: 50%;
-  height: 12px; /* Adjust size as needed */
-  width: 12px; /* Adjust size as needed */
-}
 </style>

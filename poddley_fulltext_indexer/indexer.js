@@ -78,78 +78,78 @@ async function main() {
   console.log("Segmentcount: ", segmentCount);
   console.log("TranscriptionCount: ", transcriptionCount);
 
-  //Segments json creation
-  let segmentTake = 50000;
+  // //Segments json creation
+  // let segmentTake = 50000;
 
-  //We loop through all the segments
-  for (let i = 0; i < segmentCount; i = i + segmentTake) {
-    let segments = await prismaConnection.segment.findMany({
-      take: segmentTake,
-      skip: i,
-      include: {
-        Episode: true,
-        Podcast_belongsToPodcastGuid: true,
-      },
-    });
-    segments = segments.map((e) => flattenObjectOuter(e));
-    const segmentsJsonified = segments.map((segment) => JSON.stringify(segment) + "\n");
-    console.log(
-      "Adding segments to ndjson, number is: ",
-      segmentsJsonified.length,
-      " currentTotal: ",
-      i
-    );
+  // //We loop through all the segments
+  // for (let i = 0; i < segmentCount; i = i + segmentTake) {
+  //   let segments = await prismaConnection.segment.findMany({
+  //     take: segmentTake,
+  //     skip: i,
+  //     include: {
+  //       Episode: true,
+  //       Podcast_belongsToPodcastGuid: true,
+  //     },
+  //   });
+  //   segments = segments.map((e) => flattenObjectOuter(e));
+  //   const segmentsJsonified = segments.map((segment) => JSON.stringify(segment) + "\n");
+  //   console.log(
+  //     "Adding segments to ndjson, number is: ",
+  //     segmentsJsonified.length,
+  //     " currentTotal: ",
+  //     i
+  //   );
 
-    //We save the entire array in a .ndjson file
-    fs.appendFileSync(`./segments_ndjson.ndjson`, segmentsJsonified.join(""));
-  }
+  //   //We save the entire array in a .ndjson file
+  //   fs.appendFileSync(`./segments_ndjson.ndjson`, segmentsJsonified.join(""));
+  // }
 
-  //Transcription json creation
-  let transcriptionTake = 50;
+  // //Transcription json creation
+  // let transcriptionTake = 50;
 
-  //We loop through all the segments
-  for (let i = 0; i < transcriptionCount; i = i + transcriptionTake) {
-    let transcriptions = await prismaConnection.transcription.findMany({
-      take: transcriptionTake,
-      skip: i,
-      include: {
-        Episode_belongsToEpisodeGuid: true,
-        Podcast_belongsToPodcastGuid: true,
-      },
-      where: {
-        indexed: false,
-      },
-    });
+  // //We loop through all the segments
+  // for (let i = 0; i < transcriptionCount; i = i + transcriptionTake) {
+  //   let transcriptions = await prismaConnection.transcription.findMany({
+  //     take: transcriptionTake,
+  //     skip: i,
+  //     include: {
+  //       Episode_belongsToEpisodeGuid: true,
+  //       Podcast_belongsToPodcastGuid: true,
+  //     },
+  //     where: {
+  //       indexed: false,
+  //     },
+  //   });
 
-    transcriptions = transcriptions.map((e) => flattenObjectOuter(e));
-    const transcriptionsJsonified = transcriptions.map(
-      (transcription) => JSON.stringify(transcription) + "\n"
-    );
+  //   transcriptions = transcriptions.map((e) => flattenObjectOuter(e));
+  //   const transcriptionsJsonified = transcriptions.map(
+  //     (transcription) => JSON.stringify(transcription) + "\n"
+  //   );
 
-    console.log(
-      "Adding transcriptions to ndjson, number is:",
-      transcriptionsJsonified.length,
-      "currentTotal :",
-      i
-    );
+  //   console.log(
+  //     "Adding transcriptions to ndjson, number is:",
+  //     transcriptionsJsonified.length,
+  //     "currentTotal :",
+  //     i
+  //   );
 
-    // We save the entire array in a .ndjson file
-    fs.appendFileSync(`./transcriptions_ndjson.ndjson`, transcriptionsJsonified.join(""));
-  }
+  //   // We save the entire array in a .ndjson file
+  //   fs.appendFileSync(`./transcriptions_ndjson.ndjson`, transcriptionsJsonified.join(""));
+  // }
 
   console.log("Adding segments...");
   // await readFileAsStreamAndInsertIntoDb("./segments_ndjson.ndjson", "segments");
   if (fs.existsSync("./transcriptions_ndjson.ndjson")) {
     await readFileAsStreamAndInsertIntoDb("./transcriptions_ndjson.ndjson", "transcriptions");
     console.log("Done reading stream and inserting!");
-    await fs.unlinkSync("./transcriptions_ndjson.ndjson");
+    // await fs.unlinkSync("./transcriptions_ndjson.ndjson");
   } else {
     console.log("Not present transcriptions");
   }
   if (fs.existsSync("./segments_ndjson.ndjson")) {
     await readFileAsStreamAndInsertIntoDb("./segments_ndjson.ndjson", "segments");
     console.log("Done reading stream and inserting segments!");
-    await fs.unlinkSync("./segments_ndjson.ndjson");
+    // await fs.unlinkSync("./segments_ndjson.ndjson");
   } else {
     console.log("Not present segments");
   }

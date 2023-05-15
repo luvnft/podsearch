@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' })
+require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device"],
   routeRules: {
     "/": {
       redirect: "/home",
@@ -32,7 +32,13 @@ export default defineNuxtConfig({
         lang: "en",
       },
       title: "Poddley - Search podcasts like text",
-      meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { hid: "description", name: "description", content: "Nuxt.js project" }, { name: "msapplication-TileColor", content: "#da532c" }, { name: "theme-color", content: "#ffffff" }],
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { hid: "description", name: "description", content: "Nuxt.js project" },
+        { name: "msapplication-TileColor", content: "#da532c" },
+        { name: "theme-color", content: "#ffffff" },
+      ],
       link: [
         { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
         { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },

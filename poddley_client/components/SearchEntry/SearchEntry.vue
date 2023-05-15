@@ -29,8 +29,6 @@
             <div class="segment tw-shadow tw-drop-shadow-sm">
               <div class="loader">
                 <span></span>
-                <span></span>
-                <span></span>
               </div>
               <span v-html="props.searchEntry._formatted.text" />
             </div>
