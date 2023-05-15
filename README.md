@@ -32,8 +32,6 @@
 - [ ] Switch to iGPU, an RTX4090 for improved transcription, use the medium.en model
 - [ ] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 ### Do does
-- [ ] Add segments moving based on played audio.
-- [ ] Add word by word highlighting dueing audio playin
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] ~~Joe Rogan Recorder~~(illegal)
@@ -62,7 +60,7 @@
 - [ ] Start transcriberingen med mini pcen
 - [ ] Add trening searched podcast to the right of the info component
 - [ ] Oppdater githuben sånn at den ser ordentlig ut
-- [ ] Indexer alt inn i meilisearch igjen.
+- [x] Indexer alt inn i meilisearch igjen.
 - [ ] Lag en info-component med treding info
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [ ] Add word, by, word, highlighting during playback
