@@ -12,3 +12,5 @@ __pycache__
 tempCodeRunnerFile.js
 segments.ndjson
 audio.mp3
+data.json
+json.json

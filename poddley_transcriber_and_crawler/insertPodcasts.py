@@ -7,7 +7,7 @@ import subprocess
 async def insertPodcasts(objectsToInsert):
     prisma = Prisma()
     await prisma.connect()
-    imagesPath = "https://images.poddley.com/";
+    imagesPath = "https://images.poddley.com/"
     
     # print("Inserting podcasts and stuff, deleting already existent onces")
     # await prisma.podcast.delete_many()
@@ -36,5 +36,4 @@ async def insertPodcasts(objectsToInsert):
 
         except Exception as e:
             print("ERROR: ", e)
-    await ()
     print("Done")

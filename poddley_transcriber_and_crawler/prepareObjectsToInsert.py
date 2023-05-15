@@ -9,18 +9,13 @@ def prepareObjectsToInsert():
 
     # Loop through the podcasts.json file and add the podcasts to the database with the correct information, these are the podcasts that we got from podcharts.com
     j = json.load(open("./podcasts.json", encoding="utf8"))
-    
-    # Delete index if it exists so we can create a new one
-    sqliteCursor.execute("DROP INDEX IF EXISTS titleIndex")
-    
-    # Create index to make LIKE searching on title faster
-    sqliteCursor.execute("CREATE INDEX titleIndex ON podcasts (title COLLATE NOCASE)")
+    sqliteCursor.execute("CREATE INDEX IF NOT EXISTS titleIndex ON podcasts (title)")
 
     # Array to store all objects to insert
     objectsToInsert = []
     for title, value in j.items():
         print("====>Title: ", title)
-        sqliteCursor.execute("SELECT * FROM podcasts WHERE title LIKE ? LIMIT 1", (title,))
+        sqliteCursor.execute("SELECT * FROM podcasts WHERE title = ? LIMIT 1", (title,))
         podcast = sqliteCursor.fetchone()
         if podcast is None: 
             continue
