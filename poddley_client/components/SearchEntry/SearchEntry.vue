@@ -26,7 +26,14 @@
           <hr />
           <div>
             <p class="tw-mb-1 tw-font-bold">Segment:</p>
-            <p class="segment" v-html="'›››' + props.searchEntry._formatted.text" />
+            <div class="segment tw-shadow tw-drop-shadow-sm">
+              <div class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <span v-html="props.searchEntry._formatted.text" />
+            </div>
           </div>
           <hr />
           <p>
@@ -56,6 +63,42 @@ const props = defineProps<{
   background: rgb(255, 255, 134) !important;
 }
 
+.loader {
+  display: inline-flex;
+}
+
+.loader span {
+  opacity: 0;
+  animation: blink 1s infinite;
+}
+
+.loader span:after {
+  content: "›";
+}
+
+.loader span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loader span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.loader span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes blink {
+  50%,
+  100% {
+    opacity: 1;
+  }
+  0%,
+  49% {
+    opacity: 0;
+  }
+}
+
 .segment {
   padding-right: 7px;
   padding-top: 7px;
@@ -63,7 +106,5 @@ const props = defineProps<{
   background-color: white;
   padding-left: 7px;
   border-radius: 4px;
-  box-shadow: inset 0px 0px 1px #393939;
-  border: 1px solid #6e6e6e;
 }
 </style>
