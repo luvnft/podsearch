@@ -113,7 +113,8 @@ async def insertJsonFilesToDb(episode):
                     "episodeGuid": belongsToEpisodeGuid
                 },
                 data={
-                    "isTranscribed": True
+                    "isTranscribed": True,
+                    "beingTranscribed": False,
                 }
             )
         except Exception as e:
