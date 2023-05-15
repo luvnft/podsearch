@@ -22,6 +22,20 @@
 - Python script using ts-stable (a timestamp improved version of OpenAI's Whisper model)
 - Uses Puppeteer to get the top 10 podcasts from certain countries
 - Uses feedparser and podcastsindex.com's SQlite database for getting rss-feeds for further parsing
+- Express backend images endpoint using sharp to resize, image files stored in /uploads/ folder on backend provided by express
+- nginx does the reverse proxy forwarding
+  - images.poddley.com => .../api/images/ endpoints
+  - api.poddley.com => .../api/ endpoints (transcriptions/search-functionality)
+  - meilisearch.poddley.com => meilisearch GUI instance
+  
+### Other
+- HTTPS everywhere done with let's encrypt
+
+### Lighthouse score
+![image](https://github.com/lukamo1996/poddley/assets/52632596/a94245b7-c539-44f9-98b7-9995fa81e138)
+
+### Cron jobs
+- Indexing from db to meilisearch-index
 
 ## Features planned adding:
 ### Do maybes
