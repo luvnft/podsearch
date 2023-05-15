@@ -76,7 +76,7 @@
 - [x] Indexer alt inn i meilisearch igjen.
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [x] Fix segment-area design
-- [ ] Add embedded YouTube to episode-area
+- [ ] Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Add info-section like for meilisearch during/and before searching + trending
 - [ ] Start transcriberingen med mini pcen
