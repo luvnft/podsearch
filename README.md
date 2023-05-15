@@ -54,14 +54,11 @@
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [ ] Create a lobsters blogging platform
 - [x] Adjust python transcription script for optimistic concurrency 
-- [ ] I want there to be a section which shows the most searched podcasts.
 - [x] Reindex everything prior to 16. april.
-- [ ] Add info-section like for meilisearch during/and before searching
+- [ ] Add info-section like for meilisearch during/and before searching + trending
 - [ ] Start transcriberingen med mini pcen
-- [ ] Add trening searched podcast to the right of the info component
-- [ ] Oppdater githuben sånn at den ser ordentlig ut
+- [ ] Legg til nginx infoen, arkitekturen osv.
 - [x] Indexer alt inn i meilisearch igjen.
-- [ ] Lag en info-component med treding info
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [ ] Add word, by, word, highlighting during playback
 - [x] Fix segment-area design
