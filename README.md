@@ -32,8 +32,6 @@
 - [ ] Switch to iGPU, an RTX4090 for improved transcription, use the medium.en model
 - [ ] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 ### Do does
-- [ ] Add segments moving based on played audio.
-- [ ] Add word by word highlighting dueing audio playin
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] ~~Joe Rogan Recorder~~(illegal)
@@ -47,7 +45,6 @@
 - [x] Use meilisearch as a rough-searching and then use n-gram(3) with jaccard-string-similarity to do the fine-tuned search
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
-- [ ] Install RTX on mini-pc
 - [x] Fix 3x instance return on API
 - [ ] Make the types shared between backend and client
 - [x] Add second-hand jaccard highlighting 
@@ -57,18 +54,12 @@
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [ ] Create a lobsters blogging platform
 - [x] Adjust python transcription script for optimistic concurrency 
-- [ ] I want there to be a section which shows the most searched podcasts.
 - [x] Reindex everything prior to 16. april.
-- [ ] Add info-section like for meilisearch during/and before searching
-- [ ] Add YouTube functionality (ofc. Podcast2Youtube)
+- [ ] Add info-section like for meilisearch during/and before searching + trending
 - [ ] Start transcriberingen med mini pcen
-- [ ] Add trening searched podcast to the right of the info component
-- [ ] Gjør om mini-PC-en til en transcriber den også
-- [ ] Start mini-PCen sånn at den jobber
-- [ ] Oppdater githuben sånn at den ser ordentlig ut
-- [ ] Indexer alt inn i meilisearch igjen.
-- [ ] Lag en info-component med treding info
-- [ ] Sjekk om gratis vercel er bedre enn gratis netlify
+- [ ] Legg til nginx infoen, arkitekturen osv.
+- [x] Indexer alt inn i meilisearch igjen.
+- [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Fix segment-area design
+- [x] Fix segment-area design
 - [ ] Add embedded YouTube to episode-area
