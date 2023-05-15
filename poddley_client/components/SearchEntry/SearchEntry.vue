@@ -37,9 +37,10 @@
           </div>
           <hr />
           <p>
-            <b>Location:</b>
-            {{ convertSecondsToTime(props.searchEntry.start) }}
+            <b>Time-location:</b>&nbsp;
+            <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
           </p>
+          <hr />
         </div>
         <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
