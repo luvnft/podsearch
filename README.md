@@ -61,3 +61,14 @@
 - [x] Reindex everything prior to 16. april.
 - [ ] Add info-section like for meilisearch during/and before searching
 - [ ] Add YouTube functionality (ofc. Podcast2Youtube)
+- [ ] Start transcriberingen med mini pcen
+- [ ] Add trening searched podcast to the right of the info component
+- [ ] Gjør om mini-PC-en til en transcriber den også
+- [ ] Start mini-PCen sånn at den jobber
+- [ ] Oppdater githuben sånn at den ser ordentlig ut
+- [ ] Indexer alt inn i meilisearch igjen.
+- [ ] Lag en info-component med treding info
+- [ ] Sjekk om gratis vercel er bedre enn gratis netlify
+- [ ] Add word, by, word, highlighting during playback
+- [ ] Fix segment-area design
+- [ ] Add embedded YouTube to episode-area
