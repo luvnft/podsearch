@@ -47,7 +47,6 @@
 - [x] Use meilisearch as a rough-searching and then use n-gram(3) with jaccard-string-similarity to do the fine-tuned search
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
-- [ ] Install RTX on mini-pc
 - [x] Fix 3x instance return on API
 - [ ] Make the types shared between backend and client
 - [x] Add second-hand jaccard highlighting 
@@ -60,15 +59,12 @@
 - [ ] I want there to be a section which shows the most searched podcasts.
 - [x] Reindex everything prior to 16. april.
 - [ ] Add info-section like for meilisearch during/and before searching
-- [ ] Add YouTube functionality (ofc. Podcast2Youtube)
 - [ ] Start transcriberingen med mini pcen
 - [ ] Add trening searched podcast to the right of the info component
-- [ ] Gjør om mini-PC-en til en transcriber den også
-- [ ] Start mini-PCen sånn at den jobber
 - [ ] Oppdater githuben sånn at den ser ordentlig ut
 - [ ] Indexer alt inn i meilisearch igjen.
 - [ ] Lag en info-component med treding info
-- [ ] Sjekk om gratis vercel er bedre enn gratis netlify
+- [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Fix segment-area design
+- [x] Fix segment-area design
 - [ ] Add embedded YouTube to episode-area
