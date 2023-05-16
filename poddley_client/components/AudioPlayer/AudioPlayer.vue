@@ -2,7 +2,7 @@
   <audio
     :key="props.timeLocation"
     controls
-    :id="!isApple ? 'custom-audio' : ''"
+    id="custom-audio"
     class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400"
     ref="audioPlayerRef"
     preload="metadata"
@@ -31,7 +31,6 @@ onMounted(() => {
 
 <style scoped>
 #custom-audio {
-  background-color: #fff;
   background-color: #fff;
   border-radius: 0;
 }

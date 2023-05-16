@@ -35,13 +35,24 @@
           </div>
           <hr />
           <p>
-            <b>Time-location:</b>&nbsp;
+            <b>Time-location:</b>
+            &nbsp;
             <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
           </p>
           <hr />
         </div>
         <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
+        </div>
+        <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
+          <iframe
+            class="tw-h-40 tw-w-full tw-rounded-md"
+            :src="`https://www.youtube.com/embed/GkZz2I6sK08?start=${parseInt(props.searchEntry.start.toString())}`"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
     </div>
