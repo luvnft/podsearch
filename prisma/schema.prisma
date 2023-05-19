@@ -32,6 +32,7 @@ model Episode {
   causedError                    Boolean        @default(false)
   updatedAt                      DateTime?      @default(now())
   reAlignedWithBigModel          Boolean        @default(false)
+  youtubeVideoLink               String?
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")
@@ -77,6 +78,7 @@ model Podcast {
   priority                        Int
   updateFrequency                 Int
   createdOn                       DateTime
+  youtubeChannel                  String?
   Episode_hasEpisodes             Episode[]       @relation("Podcast_belongsToPodcast")
   Segment_hasSegments             Segment[]       @relation("Podcast_belongsToPodcastGuid")
   Transcription_hasTranscriptions Transcription[] @relation("Podcast_belongsToPodcastGuid")

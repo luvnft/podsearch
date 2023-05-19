@@ -1,18 +1,30 @@
 {
   "dependencies": {
+    "@gonetone/get-youtube-id-by-url": "^1.0.0",
     "@prisma/client": "^4.13.0",
     "axios": "^1.4.0",
     "base-64": "^1.0.0",
     "dotenv": "^16.0.3",
     "form-data": "^4.0.0",
+    "googleapis": "^118.0.0",
+    "https-proxy-agent": "^6.2.0",
     "node-fetch": "^3.3.1",
     "prisma": "^4.13.0",
     "sharp": "^0.32.1",
-    "uuid": "^9.0.0"
+    "string-similarity": "^4.0.4",
+    "typescript": "^5.0.4",
+    "usetube": "^2.2.7",
+    "uuid": "^9.0.0",
+    "youtube-channel-videos": "^1.0.0",
+    "youtube-search-without-api-key": "^1.1.0",
+    "yt-channel-info": "^3.2.1",
+    "ytube": "^1.5.5"
   },
   "type": "module",
   "devDependencies": {
     "@types/base-64": "^1.0.0",
-    "@types/node": "^20.1.1"
+    "@types/node": "^20.1.1",
+    "@types/string-similarity": "^4.0.0",
+    "@types/usetube": "^2.1.0"
   }
 }
