@@ -26,6 +26,7 @@ export interface Hit {
     episodeGuid: string;
     url: string;
     link: string;
+    youtubeVideoLink?: string;
     _formatted: Formatted;
 }
 

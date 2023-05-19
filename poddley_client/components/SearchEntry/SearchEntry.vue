@@ -47,7 +47,7 @@
         <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
           <iframe
             class="tw-h-40 tw-w-full tw-rounded-md"
-            :src="`https://www.youtube.com/embed/GkZz2I6sK08?start=${parseInt(props.searchEntry.start.toString())}`"
+            :src="`https://www.youtube.com/embed/${props.searchEntry.youtubeVideoLink}?start=${parseInt(props.searchEntry.start.toString())}`"
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

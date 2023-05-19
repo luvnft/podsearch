@@ -216,8 +216,8 @@ def file_offset(**ka):
   print(sync_text%(file,offset))
   return file,offset
 
-def sync_two_files(in1, in2):
-  fs,s1,s2 = read_normalized(in1, in2)
+def sync_two_files(podcastAudio, videoAudio):
+  fs,s1,s2 = read_normalized(podcastAudio, videoAudio)
   ls1,ls2,padsize,xmax,ca = corrabs(s1,s2)
   
   sync_text = """
@@ -227,12 +227,8 @@ def sync_two_files(in1, in2):
 """
 
   if xmax > padsize // 2:
-    file, offset = in2, (padsize-xmax)/fs
+    file, offset = videoAudio, (padsize-xmax)/fs
   else:
-    file, offset = in1, xmax/fs
+    file, offset = podcastAudio, xmax/fs
 
   return file, offset
-
-file, offset = sync_two_files('audio1.wav', 'audio2.wav')
-print("File: ", file)
-print("Offset: ", offset)

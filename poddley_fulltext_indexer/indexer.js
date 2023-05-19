@@ -84,6 +84,11 @@ async function main() {
       }
     });
     console.log("Before mapping: ", segments.length);
+    
+    //Find youtube videos associated with the now to be indexed episodes and update the episodes
+    //Find the deviation for those episodes which are now supposed to be indexed
+    await subprocess.run("ts-node", "../poddley_scripts/deviationCalculator.ts");
+
     segments = segments.map((e) => flattenObjectOuter(e));
 
     var ids = segments.map((e) => e.id);

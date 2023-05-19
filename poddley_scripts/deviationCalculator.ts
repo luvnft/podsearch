@@ -3,8 +3,46 @@ import { PrismaClient, Podcast, Episode } from "@prisma/client";
 import stringSimilarity from "string-similarity";
 import usetube from "usetube";
 import { YouTubeResults } from "usetube";
+import fs from "fs";
+import fetch, { Response } from "node-fetch";
+import { downloadYouTubeAudio } from "./downloadYT";
+import { promisify } from "util";
+const execPromisified = promisify(exec);
 
 dotenv.config({ path: "../.env" });
+
+async function downloadAudioFile(url: string, filename: string) {
+  const response: Response = await fetch(url);
+  const writeStream = fs.createWriteStream(filename);
+
+  response?.body?.pipe(writeStream);
+
+  return new Promise((resolve, reject) => {
+    writeStream.on("finish", resolve);
+    writeStream.on("error", reject);
+  });
+}
+
+
+async function runPythonScript(scriptPath: any, args: any) {
+  const command = `python ${scriptPath} ${args.join(' ')}`;
+
+  try {
+    const { stdout, stderr } = await execPromisified(command);
+
+    if (stderr) {
+      console.error(`Python script execution failed: ${stderr}`);
+      throw new Error(stderr);
+    }
+
+    return stdout;
+  } catch (error) {
+    console.error(`Error executing Python script: ${error.message}`);
+    throw error;
+  }
+}
+In this upd
+
 
 //Grab all podcasts
 const prisma = new PrismaClient();
@@ -19,6 +57,7 @@ for await (const podcast of podcasts) {
     where: {
       podcastGuid: podcast.podcastGuid,
       youtubeVideoLink: null,
+      isTranscribed: true,
     },
   });
 
@@ -49,8 +88,32 @@ for await (const podcast of podcasts) {
             youtubeVideoLink: videoLink,
           },
         });
+      } else {
+        await prisma.episode.update({
+          where: {
+            episodeGuid: episode.episodeGuid,
+          },
+          data: {
+            youtubeVideoLink: "",
+          },
+        });
       }
-      console.log("Index is: ", index);
+      console.log("Index is: ", index, "now calculating deviations.");
+
+      if (episode.youtubeVideoLink && !episode.deviationTime) {
+        //Delete previous audioFiles
+        if (fs.existsSync("./podcastAudio.mp3")) {
+          fs.unlinkSync("./podcastAudio.mp3");
+        }
+        if (fs.existsSync("./videoAudio.mp3")) {
+          fs.unlinkSync("./videoAudio.mp3");
+        }
+        //Download podcastAudio and videoAudio
+        await downloadAudioFile(episode.episodeEnclosure, "podcastAudio.mp3");
+        await downloadYouTubeAudio(episode.youtubeVideoLink, "videoAudio.mp3");
+
+
+      }
     } catch (e) {
       console.log("Error occurred, ignoring: ", e.message);
     }
