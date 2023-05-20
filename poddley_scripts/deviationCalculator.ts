@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from "dotenv";
 import { PrismaClient, Podcast, Episode } from "@prisma/client";
 import stringSimilarity from "string-similarity";
 import usetube from "usetube";
@@ -7,6 +7,7 @@ import fs from "fs";
 import fetch, { Response } from "node-fetch";
 import { downloadYouTubeAudio } from "./downloadYT";
 import { promisify } from "util";
+import { exec } from "child_process";
 const execPromisified = promisify(exec);
 
 dotenv.config({ path: "../.env" });
@@ -24,8 +25,8 @@ async function downloadAudioFile(url: string, filename: string) {
 }
 
 
-async function runPythonScript(scriptPath: any, args: any) {
-  const command = `python ${scriptPath} ${args.join(' ')}`;
+async function runPythonScript(scriptPath: any) {
+  const command = `python ${scriptPath}`;
 
   try {
     const { stdout, stderr } = await execPromisified(command);
@@ -41,8 +42,6 @@ async function runPythonScript(scriptPath: any, args: any) {
     throw error;
   }
 }
-In this upd
-
 
 //Grab all podcasts
 const prisma = new PrismaClient();
@@ -112,6 +111,8 @@ for await (const podcast of podcasts) {
         await downloadAudioFile(episode.episodeEnclosure, "podcastAudio.mp3");
         await downloadYouTubeAudio(episode.youtubeVideoLink, "videoAudio.mp3");
 
+        //Calculate deviation
+        await runPythonScript("./findDeviationInt.py")
 
       }
     } catch (e) {

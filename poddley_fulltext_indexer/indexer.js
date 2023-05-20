@@ -5,6 +5,7 @@ import flattenObjectOuter from "./flattenObject.js";
 import * as dotenv from "dotenv";
 import JSONStream from "JSONStream";
 import ndjson from "ndjson";
+import { deviationCalculator } from "../poddley_scripts/dist/deviationCalculator.js"
 dotenv.config();
 
 async function sleep(ms) {
@@ -17,6 +18,11 @@ async function main() {
   const segmentsIndex = client.index("segments");
 
   console.log("Starting...");
+  //Find youtube videos associated with the now to be indexed episodes and update the episodes
+  //Find the deviation for those episodes which are now supposed to be indexed
+  await deviationCalculator();
+  
+  console.log("Done with the deviationStuff");
   const segmentCount = await prismaConnection.segment.count({
     where: {
       indexed: false,
@@ -80,14 +86,10 @@ async function main() {
         Podcast_belongsToPodcastGuid: true,
       },
       where: {
-        indexed: false
-      }
+        indexed: false,
+      },
     });
     console.log("Before mapping: ", segments.length);
-    
-    //Find youtube videos associated with the now to be indexed episodes and update the episodes
-    //Find the deviation for those episodes which are now supposed to be indexed
-    await subprocess.run("ts-node", "../poddley_scripts/deviationCalculator.ts");
 
     segments = segments.map((e) => flattenObjectOuter(e));
 

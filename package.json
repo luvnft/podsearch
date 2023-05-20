@@ -8,5 +8,19 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@types/node": "^20.2.1",
+    "dotenv": "^16.0.3",
+    "string-similarity": "^4.0.4",
+    "usetube": "^2.2.7"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.4",
+    "@types/string-similarity": "^4.0.0",
+    "@types/usetube": "^2.1.0"
+  }
 }

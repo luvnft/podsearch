@@ -52,9 +52,9 @@ ffmpegwav = 'ffmpeg -i "{}" -t %s -c:a pcm_s16le -map 0:a "{}" -loglevel quiet'
 ffmpegnormalize = ('ffmpeg -y -nostdin -i "{}" -filter_complex ' +
 "'[0:0]loudnorm=i=-23.0:lra=7.0:tp=-2.0:offset=4.45:linear=true:print_format=json[norm0]' " +
 "-map_metadata 0 -map_metadata:s:a:0 0:s:a:0 -map_chapters 0 -c:v copy -map '[norm0]' " +
-'-c:a:0 pcm_s16le -c:s copy "{}"')
-ffmpegdenoise = 'ffmpeg -i "{}" -af'+" 'afftdn=nf=-25' "+'"{}"'
-ffmpeglow = 'ffmpeg -i "{}" -af'+" 'lowpass=f=%s' "+'"{}"'
+'-c:a:0 pcm_s16le -c:s copy "{}" -loglevel quiet')
+ffmpegdenoise = 'ffmpeg -i "{}" -af'+" 'afftdn=nf=-25' "+'"{}" -loglevel quiet'
+ffmpeglow = 'ffmpeg -i "{}" -af'+" 'lowpass=f=%s' "+'"{}" -loglevel quiet'
 o = lambda x: '%s%s'%(x,'.wav')
 
 def in_out(command,infile,outfile):
@@ -216,7 +216,7 @@ def file_offset(**ka):
   print(sync_text%(file,offset))
   return file,offset
 
-def sync_two_files(podcastAudio, videoAudio):
+def sync_two_files(podcastAudio = "./podcastAudio.mp3", videoAudio = "./videoAudio.mp3"):
   fs,s1,s2 = read_normalized(podcastAudio, videoAudio)
   ls1,ls2,padsize,xmax,ca = corrabs(s1,s2)
   
@@ -230,5 +230,10 @@ def sync_two_files(podcastAudio, videoAudio):
     file, offset = videoAudio, (padsize-xmax)/fs
   else:
     file, offset = podcastAudio, xmax/fs
-
   return file, offset
+
+if __name__ == "__main__":
+  podcastAudio = sys.argv[1]
+  videoAudio = sys.argv[2]
+  file, offset = sync_two_files(podcastAudio, videoAudio)
+  print(file, offset)

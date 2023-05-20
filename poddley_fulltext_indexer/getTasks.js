@@ -13,12 +13,12 @@ async function main() {
 
   const segmentsIndex = await client.index("segments");
   const transcriptionsIndex = await client.index("transcriptions");
-  // segmentsIndex.deleteAllDocuments();
-  // transcriptionsIndex.deleteAllDocuments();
+  segmentsIndex.deleteAllDocuments();
+  transcriptionsIndex.deleteAllDocuments();
 
-  // await client.tasks.deleteTasks({
-  //   statuses: ["failed", "succeeded", "canceled", "enqueued"],
-  // });
+  await client.tasks.deleteTasks({
+    statuses: ["failed", "succeeded", "canceled", "enqueued"],
+  });
 
   transcriptionsIndex.updateTypoTolerance({
     minWordSizeForTypos: {
