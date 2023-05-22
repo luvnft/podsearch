@@ -5,7 +5,6 @@ import usetube from "usetube";
 import { YouTubeResults } from "usetube";
 import fs from "fs";
 import fetch, { Response } from "node-fetch";
-import { downloadYouTubeAudio } from "./downloadYT";
 import { promisify } from "util";
 import { exec } from "child_process";
 const execPromisified = promisify(exec);
