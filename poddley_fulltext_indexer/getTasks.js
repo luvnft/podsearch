@@ -65,6 +65,7 @@ async function main() {
       "episodeGuid",
       "podcastGuid",
       "belongsToTranscriptId",
+      "youtubeVideoLink",
     ],
   });
 

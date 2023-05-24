@@ -44,10 +44,20 @@
         <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
-        <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
+        <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2" v-if="props.searchEntry.youtubeVideoLink">
+          {{ props.searchEntry.start }}
+          <br />
+          {{ props.searchEntry.deviationTime }}
+          <br />
+          {{ parseInt(props.searchEntry.start.toString()) - parseInt((props.searchEntry.deviationTime || 0).toString() || "0") }}
+          <br />
+          <br />
+          {{ convertSecondsToTime(parseInt(props.searchEntry.start.toString()) - parseInt((props.searchEntry.deviationTime || 0).toString() || "0")) }}
           <iframe
             class="tw-h-40 tw-w-full tw-rounded-md"
-            :src="`https://www.youtube.com/embed/${props.searchEntry.youtubeVideoLink}?start=${parseInt(props.searchEntry.start.toString())}`"
+            :src="`${props.searchEntry.youtubeVideoLink.replace(/watch\?v=/gi, 'embed/')}?start=${
+              Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))
+            }`"
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
