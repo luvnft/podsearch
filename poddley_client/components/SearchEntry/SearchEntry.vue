@@ -2,7 +2,18 @@
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-max-h-48 tw-rounded-xl">
-        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-max-h-48 tw-rounded-xl tw-object-contain" />
+        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-max-h-48 tw-rounded-xl tw-object-contain" v-if="!props.searchEntry.youtubeVideoLink" />
+        <iframe
+          v-if="props.searchEntry.youtubeVideoLink"
+          class="tw-h-50 tw-w-full tw-rounded-md"
+          :src="`${props.searchEntry.youtubeVideoLink.replace(/watch\?v=/gi, 'embed/')}?start=${
+            Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))
+          }`"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
     <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-xxl-8 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
@@ -44,26 +55,8 @@
         <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
-        <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2" v-if="props.searchEntry.youtubeVideoLink">
-          {{ props.searchEntry.start }}
-          <br />
-          {{ props.searchEntry.deviationTime }}
-          <br />
-          {{ parseInt(props.searchEntry.start.toString()) - parseInt((props.searchEntry.deviationTime || 0).toString() || "0") }}
-          <br />
-          <br />
-          {{ convertSecondsToTime(parseInt(props.searchEntry.start.toString()) - parseInt((props.searchEntry.deviationTime || 0).toString() || "0")) }}
-          <iframe
-            class="tw-h-40 tw-w-full tw-rounded-md"
-            :src="`${props.searchEntry.youtubeVideoLink.replace(/watch\?v=/gi, 'embed/')}?start=${
-              Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))
-            }`"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
-        </div>
+        <!-- <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2" v-if="props.searchEntry.youtubeVideoLink">
+        </div> -->
       </div>
     </div>
   </div>
