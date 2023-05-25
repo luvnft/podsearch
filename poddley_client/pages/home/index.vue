@@ -18,8 +18,7 @@ const searchStore = useSearchStore();
 
 //Initialization function
 async function initialLoad() {
-  const searchUrl: string = route.query.search as string;
-  console.log(searchUrl)
+  const searchUrl: string = route.query.search ? (route.query.search as string) : "JavaScript";
   await searchStore.search(searchUrl);
 }
 
