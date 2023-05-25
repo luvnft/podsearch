@@ -1,6 +1,8 @@
 <template>
   <div class="tw-flex tw-flex-col tw-justify-center">
-    <p v-if="searchStore.loadingSearchResults" class="tw-pb-2">Loading...</p>
+    <p v-if="searchStore.loadingSearchResults" class="tw-pb-2">
+    <LoadingIcon />
+    </p>
     <SearchResults :searchEntries="searchStore.searchResults" />
   </div>
 </template>
