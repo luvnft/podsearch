@@ -11,7 +11,7 @@ import youtube from "@yimura/scraper";
 import path from "path";
 
 const execPromisified = promisify(exec);
-dotenv.config({ path: "../../.env" });
+dotenv.config({ path: "./.env" });
 
 const prisma = new PrismaClient();
 
@@ -126,26 +126,24 @@ async function findYoutubeLinkForEpisode(episode) {
 function deleteAudioFiles() {
   const directory = "./"; // Replace with the actual directory path
 
-  fs.readdirSync(directory, (err, files) => {
-    if (err) {
-      console.error(`Error reading directory: ${err}`);
-      return;
-    }
+  try {
+    const files = fs.readdirSync(directory);
 
     files.forEach((file) => {
       if (file.endsWith(".mp3")) {
         const filePath = path.join(directory, file);
 
-        fs.unlinkSync(filePath, (err) => {
-          if (err) {
-            console.error(`Error deleting file: ${filePath} - ${err}`);
-          } else {
-            console.log(`Deleted file: ${filePath}`);
-          }
-        });
+        try {
+          fs.unlinkSync(filePath);
+          console.log(`Deleted file: ${filePath}`);
+        } catch (err) {
+          console.error(`Error deleting file: ${filePath} - ${err}`);
+        }
       }
     });
-  });
+  } catch (err) {
+    console.error(`Error reading directory: ${err}`);
+  }
 }
 
 async function calculateDeviationForEpisode(foundVideoLink, episode) {
@@ -176,6 +174,8 @@ async function calculateDeviationForEpisode(foundVideoLink, episode) {
 
 async function main() {
   while (true) {
+    deleteAudioFiles();
+
     try {
       //Get a random episode
       const episode = await prisma.episode.findFirst({
@@ -223,8 +223,9 @@ async function main() {
     } catch (e) {
       console.log("Some error occureed, not giving a fuck");
     }
-
-    deleteAudioFiles();
+    finally{
+      deleteAudioFiles();
+    }
   }
 }
 
