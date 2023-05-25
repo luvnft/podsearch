@@ -18,7 +18,8 @@
       type="button"
       class="10 tw-group tw-flex tw-w-12 tw-items-center tw-justify-center tw-rounded-r-md tw-border-l tw-border-gray-300 tw-bg-gray-50 tw-p-2 tw-text-gray-700 tw-shadow-sm hover:tw-bg-gray-100 active:tw-shadow-none"
     >
-      <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" />
+      <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="!searchStore.loadingSearchResults" />
+      <LoadingIcon v-if="searchStore.loadingSearchResults" />
     </button>
   </div>
 </template>
