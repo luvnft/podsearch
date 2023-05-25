@@ -6,7 +6,7 @@
         <iframe
           v-if="props.searchEntry.youtubeVideoLink"
           class="tw-h-50 tw-w-full tw-rounded-md"
-          :srcdoc="`${props.searchEntry.youtubeVideoLink.replace(/watch\?v=/gi, 'embed/')}?start=${
+          :src="`${props.searchEntry.youtubeVideoLink.replace(/watch\?v=/gi, 'embed/')}?start=${
             Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))
           }`"
           title="YouTube video player"
