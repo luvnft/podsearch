@@ -95,3 +95,5 @@
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Create a lobsters blogging platform
+- [ ] Do this: https://chat.openai.com/c/d5012293-80bd-4c54-acd2-621a6f071620
+- [ ] Make MeiliSearch production probably.
