@@ -1,6 +1,5 @@
 <template>
-  <div class="tw-flex tw-flex-col tw-justify-center">
-    <p v-if="searchStore.loadingSearchResults" class="tw-pb-2">Loading...</p>
+  <div class="tw-flex tw-flex-col tw-justify-center tw-min-h-screen tw-min-w-full tw-items-center">
     <SearchResults :searchEntries="searchStore.searchResults" />
   </div>
 </template>
@@ -11,15 +10,13 @@ import { useSearchStore } from "@/store/searchStore";
 
 //Router
 const route = useRoute();
-const router = useRouter();
 
 //Grabbing initial data for page load
 const searchStore = useSearchStore();
 
 //Initialization function
 async function initialLoad() {
-  const searchUrl: string = route.query.search as string;
-  console.log(searchUrl)
+  const searchUrl: string | null = route.query.search ? (route.query.search as string) : null;
   await searchStore.search(searchUrl);
 }
 

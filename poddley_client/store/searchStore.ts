@@ -12,7 +12,7 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchString: Ref<string> = ref<string>("");
 
   //General search functionality
-  async function search(searchInput?: string) {
+  async function search(searchInput?: string | null) {
     // Toggle loading and set searchString to default value if passed in undefined
     toggleLoading(true);
     if (!searchInput) searchString.value = '';
