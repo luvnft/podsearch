@@ -15,6 +15,40 @@
 - Written in TypeScript
 - Prisma ORM, taking use of Optimistic Concurrency with the Prisma Python Client + MySQL as database
 
+### General NGINX reverse proxy setup
+
+``
+
+server {
+    listen 80;
+    server_name api.poddley.com;
+
+    location / {
+        proxy_pass http://localhost:7700/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:3000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+    
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/api.poddley.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/api.poddley.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+``
 ### Full-text searching
 - Automatic indexing of meilisearch indexes based on new data in MySQL database is done using a cron-job that pushes into the meilisearch indexes.
 - Runs as an eGPU on a local computer running an RTX 1650 or something I think on my laptop
