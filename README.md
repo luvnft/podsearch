@@ -45,6 +45,9 @@
 
 ### Cron jobs
 - Indexing from db to meilisearch-index
+- DeviationCalculator:
+  - Positive means the youtube video needs reduction in the time
+  - Negative means the youtube video needs the addition of time
 
 ## Features planned adding:
 ### Do maybes
