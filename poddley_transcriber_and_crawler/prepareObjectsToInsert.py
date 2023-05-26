@@ -15,7 +15,7 @@ def prepareObjectsToInsert():
     objectsToInsert = []
     for title, value in j.items():
         print("====>Title: ", title)
-        sqliteCursor.execute("SELECT * FROM podcasts WHERE title = ? LIMIT 1", (title,))
+        sqliteCursor.execute("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title = ? LIMIT 1", (title,))
         podcast = sqliteCursor.fetchone()
         if podcast is None: 
             continue

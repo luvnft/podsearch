@@ -8,7 +8,11 @@ def validateObjectsBeforeInsert(objectsToInsert):
     for object in objectsToInsert:
         objectCopy = object.copy()
         del objectCopy["id"]
-        
+        del object["lastUpdate"]
+        del object["oldestItemPubdate"]
+        del object["newestItemPubdate"]
+        print(object)
+                
         for key in objectCopy.keys():
             if key in ["oldestItemPubdate", "explicit", "dead", "itunesId", "episodeCount", "lastHttpStatus", "lastUpdate", "popularityScore", "newestEnclosureDuration", "priority", "createdOn", "updateFrequency"]:
                 if objectCopy[key] == None: objectCopy[key] = 0

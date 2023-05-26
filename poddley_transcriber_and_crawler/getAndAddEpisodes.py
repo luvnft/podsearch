@@ -223,7 +223,12 @@ async def prepareConnectionsEtc():
     guids = []
 
     # Return the urls and guids
-    podcasts = await prisma.podcast.find_many()
+    podcast = await prisma.podcast.find_unique(
+        where = {
+            "podcastGuid": "7eeae9d1-141e-5133-9e8f-6c1da695e40c"
+        }
+    )
+    podcasts = [podcast]
     
     print("Length of podcasts is " + safe_cast.safe_str(len(podcasts)))
 
@@ -296,14 +301,13 @@ async def addEpisodesToDatabase(episodes):
             
         except Exception as e:
             continue
-
+    
     try:
         await prisma.episode.create_many(data=requests, skip_duplicates=True)
     except Exception as e:
         print(e)
         print("Error: " + safe_cast.safe_str(e))
     
-    # await prisma.episode.create_many(data=requests, skip_duplicates=True)
     print("Done inserting len episodes is " + safe_cast.safe_str(len(requests)) + "\n")
     
     # Print out the info

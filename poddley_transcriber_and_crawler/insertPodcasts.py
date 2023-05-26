@@ -1,8 +1,11 @@
 from prisma import Prisma
+from prisma.models import Podcast, Episode
 import asyncio 
 import pandas as pd
 import re 
 import subprocess
+import json
+import time
 
 async def insertPodcasts(objectsToInsert):
     prisma = Prisma()

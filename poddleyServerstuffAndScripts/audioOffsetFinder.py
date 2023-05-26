@@ -38,7 +38,7 @@ def mfcc(audio, win_length=256, nfft=512, fs=16000, hop_length=128, numcep=13):
     ]
 
 
-def find_offset_between_files(file1, file2, fs=8000, trim=60 * 15, hop_length=128, win_length=256, nfft=512, max_frames=2000):
+def find_offset_between_files(file1, file2, fs=1000, trim=60 * 15, hop_length=128, win_length=256, nfft=512, max_frames=2000):
     """Find the offset time offset between two audio files.
 
     This function takes in two file paths, and (assuming they are media files with a valid audio track)
@@ -88,7 +88,7 @@ def find_offset_between_files(file1, file2, fs=8000, trim=60 * 15, hop_length=12
     return offset_dict
 
 
-def find_offset_between_buffers(buffer1, buffer2, fs, hop_length=128, win_length=256, nfft=512, max_frames=2000):
+def find_offset_between_buffers(buffer1, buffer2, fs, hop_length=128, win_length=256, nfft=512, max_frames=20000):
     """Find the offset time offset between two audio files.
 
     This function takes in two numpy arrays (assumed to be PCM audio) and compares them using cross-correlation of
