@@ -76,10 +76,16 @@
 - [x] Indexer alt inn i meilisearch igjen.
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [x] Fix segment-area design
-- [ ] Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?
+- [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Add info-section like for meilisearch during/and before searching + trending
 - [ ] Start transcriberingen med mini pcen
 - [ ] Legg til nginx infoen, arkitekturen osv.
 - [ ] Set up CI/CD pipeline for backend
 - [ ] Make the types shared between backend and client
+- [ ] segments have to move
+- [ ] We need 3 tabs that show at the top like the buttons:
+  - New episodes
+  - Trending episodes
+  - Info
+- [ ] Add info component
+- [ ] Add top 3 most searched podcasts
