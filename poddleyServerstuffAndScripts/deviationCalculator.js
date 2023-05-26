@@ -96,11 +96,15 @@ async function getYoutubeLink(episode) {
     data = await yt.search(title);
     if (data && data.videos && data.videos.length > 0) {
       const video = data.videos[0];
-      const calculatedStringSimilarity = stringSimilarity.compareTwoStrings(title, video.title);
+      const calculatedStringSimilarity = await runPythonScript("getSimilarityScore.py", [title, video.title]);
+      console.log("SIMIMIMIMI: ", calculatedStringSimilarity)
       if (calculatedStringSimilarity > 0.7) {
-        console.log(video);
+        console.log(video, "and sim: ", calculatedStringSimilarity);
         return video.link;
-      } else return "";
+      } else{
+        console.log("Similarity score negative: ", calculatedStringSimilarity)
+        return "";
+      } 
     }
     return "";
   }
