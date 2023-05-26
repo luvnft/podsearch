@@ -91,4 +91,7 @@
   - Trending episodes
   - Info
 - [ ] Add info component
-- [ ]  ~~Add top 3 most searched podcasts ~~(part of tabs)
+- [ ]  ~~Add top 3 most searched podcasts~~ (part of tabs)
+- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
+- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
+- [ ] Create a lobsters blogging platform
