@@ -1,5 +1,6 @@
 <template>
   <div class="tw-flex tw-flex-col tw-justify-center tw-min-h-screen tw-min-w-full tw-items-center">
+    <NavigationBar />
     <SearchResults :searchEntries="searchStore.searchResults" />
   </div>
 </template>
