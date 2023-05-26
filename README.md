@@ -91,7 +91,8 @@ server {
 - [ ] Set up workstation with multiple GPUs for better transcribing.
 - [ ] Switch to iGPU, an RTX4090 for improved transcription, use the medium.en model
 - [ ] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-### Do does
+- [ ] - [ ] Start transcriberingen med mini pcen
+### Do musts
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] ~~Joe Rogan Recorder~~(illegal)
@@ -115,8 +116,7 @@ server {
 - [x] Fix segment-area design
 - [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Start transcriberingen med mini pcen
-- [ ] Legg til nginx infoen, arkitekturen osv.
+- [x] Legg til nginx infoen, arkitekturen osv.
 - [ ] Set up CI/CD pipeline for backend
 - [ ] Make the types shared between backend and client
 - [ ] Segments have to move
@@ -124,8 +124,8 @@ server {
   - New episodes
   - Trending episodes
   - Info
-- [ ] Add info component
-- [ ]  ~~Add top 3 most searched podcasts~~ (part of tabs)
+- [x]  ~~Add info component~~ (part of three tabs task) 
+- [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Create a lobsters blogging platform
