@@ -1,21 +1,28 @@
 import meilisearchConnection from "../other/meilisearchConnection";
-import { SearchResponse, Hit } from "../types/SearchResponse";
+import { SearchResponse, SearchResponseHit } from "../types/SearchResponse";
+import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
+import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
 import { Index } from "meilisearch";
 import _, { merge } from "lodash";
+import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 
 class TranscriptionsService {
   public segmentsIndex: Index;
   public transcriptionsIndex: Index;
+  public podcastsIndex: Index;
+  public episodesIndex: Index;
   public searchString: string = "";
 
   public constructor() {
     this.segmentsIndex = meilisearchConnection.index("segments");
     this.transcriptionsIndex = meilisearchConnection.index("transcriptions");
+    this.podcastsIndex = meilisearchConnection.index("podcasts");
+    this.episodesIndex = meilisearchConnection.index("episodes");
   }
 
-  public removeDuplicateHits(hits: Hit[]) {
+  public removeDuplicateHits(hits: SegmentHit[]) {
     // Remove duplicates
-    const uniqueHits: Hit[] = [];
+    const uniqueHits: SegmentHit[] = [];
     const seenSet: Set<string> = new Set();
     for (let hit of hits) {
       if (seenSet.has(hit.id)) continue;
@@ -35,16 +42,16 @@ class TranscriptionsService {
     this.searchString = searchString;
 
     // Search results
-    const searchResults: SearchResponse[] = [];
+    const initialSearchResponse: SegmentResponse[] = [];
 
     // Run 1: Just normal search
-    const firstResponse: SearchResponse = await this.searchSegments(searchString);
-    searchResults.push(firstResponse);
+    const firstResponse: SegmentResponse = await this.searchSegments(searchString);
+    initialSearchResponse.push(firstResponse);
 
     // Run 2: Remove first word
     const searchStringWithoutFirstWord: string = searchString.replace(/^\S+\s*/g, "");
-    const secondResponse: SearchResponse = await this.searchSegments(searchStringWithoutFirstWord);
-    searchResults.push(secondResponse);
+    const secondResponse: SegmentResponse = await this.searchSegments(searchStringWithoutFirstWord);
+    initialSearchResponse.push(secondResponse);
 
     // // Run 3: Remove last word
     // const searchStringWithoutLastWord: string = searchStringWithoutFirstWord.replace(/\s*\S+$/g, "");
@@ -52,21 +59,16 @@ class TranscriptionsService {
     // searchResults.push(thirdResponse);
 
     // Merged results
-    let mergedResults: SearchResponse = {} as SearchResponse;
+    let mergedResults: SegmentResponse = {} as SegmentResponse;
 
-    // Setting query and stuff
-    mergedResults.limit = firstResponse.limit;
-    mergedResults.query = firstResponse.query;
-    mergedResults.offset = firstResponse.offset;
-    mergedResults.estimatedTotalHits = firstResponse.estimatedTotalHits;
-    mergedResults.processingTimeMs = firstResponse.processingTimeMs + secondResponse.processingTimeMs;
+    // Merging hits
     mergedResults.hits = firstResponse.hits.concat(secondResponse.hits);
 
     // Assign similarity score to all hits
     this.addSimilarityScoreToHits(mergedResults.hits);
 
     // Sort the hits before returning
-    mergedResults.hits.sort((a: Hit, b: Hit) => b.similarity - a.similarity);
+    mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
 
     // Slice the results to top 10
     mergedResults.hits = mergedResults.hits.slice(0, 5);
@@ -74,21 +76,111 @@ class TranscriptionsService {
     // Setting new unique hits
     mergedResults.hits = this.removeDuplicateHits(mergedResults.hits);
 
+    // Adding podcasts and episodes to the corresponding segments
+    const podcastIds: string[] = mergedResults.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid);
+    const episodeIds: string[] = mergedResults.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid);
+
+    //Get the podcasts and episodes
+    const podcasts: PodcastResponse = await this.searchPodcastsWithIds(podcastIds);
+    const episodes: EpisodeResponse = await this.searchEpisodesWithIds(episodeIds);
+    const podcastsObject: { [key: string]: PodcastHit } = {};
+    const episodesObject: { [key: string]: EpisodeHit } = {};
+    podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
+    episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
+
+    //Modify segments with more properties
+    const finalResponse: SearchResponse = {
+      hits: [],
+      query: "",
+      processingTimeMs: 0,
+      limit: undefined,
+      offset: undefined,
+      estimatedTotalHits: undefined,
+    };
+
+    for (let i = 0; i < mergedResults.hits.length; i++) {
+      const segment = mergedResults.hits[i];
+      let searchResponseHit: SearchResponseHit;
+      try {
+        searchResponseHit = {
+          id: segment.id,
+          podcastTitle: podcastsObject[segment.belongsToPodcastGuid].title,
+          episodeTitle: episodesObject[segment.belongsToEpisodeGuid].episodeTitle,
+          podcastSummary: podcastsObject[segment.belongsToPodcastGuid].description,
+          episodeSummary: episodesObject[segment.belongsToEpisodeGuid].episodeSummary,
+          description: podcastsObject[segment.belongsToPodcastGuid].description,
+          text: segment.text,
+          podcastAuthor: podcastsObject[segment.belongsToPodcastGuid].itunesAuthor,
+          belongsToTranscriptId: segment.belongsToTranscriptId,
+          start: segment.start,
+          end: segment.end,
+          episodeLinkToEpisode: episodesObject[segment.belongsToEpisodeGuid].episodeLinkToEpisode,
+          episodeEnclosure: episodesObject[segment.belongsToEpisodeGuid].episodeEnclosure,
+          podcastLanguage: podcastsObject[segment.belongsToPodcastGuid].language,
+          podcastGuid: podcastsObject[segment.belongsToPodcastGuid].podcastGuid,
+          imageUrl: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
+          podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
+          episodeGuid: episodesObject[segment.belongsToEpisodeGuid].episodeGuid,
+          url: podcastsObject[segment.belongsToPodcastGuid].url,
+          link: podcastsObject[segment.belongsToPodcastGuid].link,
+          youtubeVideoLink: episodesObject[segment.belongsToEpisodeGuid].youtubeVideoLink || "",
+          deviationTime: episodesObject[segment.belongsToEpisodeGuid].deviationTime || 0,
+          similarity: segment.similarity,
+          _formatted: segment._formatted,
+        };
+        finalResponse.hits.push(searchResponseHit);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     // Ending time calculation
     const elapsedTime = new Date().getTime() - startTime;
     console.log("Elapsed time: ", elapsedTime / 1000);
 
-    // Return the processed results
-    return mergedResults;
+    // Final touchup
+    finalResponse.estimatedTotalHits = mergedResults.estimatedTotalHits;
+    finalResponse.limit = mergedResults.limit;
+    finalResponse.offset = mergedResults.offset;
+    finalResponse.processingTimeMs = elapsedTime;
+    finalResponse.query = mergedResults.query;
+
+    //Returning
+    console.log(finalResponse.hits);
+    return finalResponse;
   }
 
-  private addSimilarityScoreToHits(hits: Hit[]) {
-    hits.forEach((hit: Hit) => {
+  private async searchPodcastsWithIds(podcastIds: string[]): Promise<PodcastResponse> {
+    // Search the index
+    podcastIds = podcastIds.map((e) => `'${e}'`);
+    const filter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
+    const resData: PodcastResponse = await this.podcastsIndex.search(null, {
+      limit: podcastIds.length || 5,
+      filter: filter,
+    });
+    // Return data
+    return resData;
+  }
+
+  private async searchEpisodesWithIds(episodesIds: string[]): Promise<EpisodeResponse> {
+    // Search the index
+    episodesIds = episodesIds.map((e) => `'${e}'`);
+    const filter: string = `episodeGuid=${episodesIds.join(" OR episodeGuid=")}`;
+    const resData: EpisodeResponse = await this.episodesIndex.search(null, {
+      limit: episodesIds.length || 5,
+      filter: filter,
+    });
+    // Return data
+    return resData;
+  }
+
+  private addSimilarityScoreToHits(hits: SegmentHit[]) {
+    hits.forEach((hit: SegmentHit) => {
       hit.similarity = this.calculateSimilarity(hit);
     });
   }
 
-  private calculateSimilarity(hit: Hit) {
+  private calculateSimilarity(hit: SegmentHit) {
     const n = 3; // Adjust the value of n for the desired n-gram length
     const originalNgrams = this.createNgrams(this.searchString, n);
     const textNgrams = this.createNgrams(hit.text, n);
@@ -109,11 +201,11 @@ class TranscriptionsService {
         bestMatchEndIndex = i + windowSize;
       }
     }
- 
+
     // For the future if I want jaccard highlighting too
-    if (maxSimilarity > 0) {
-      // hit._formatted.text = hit._formatted.text.slice(0, bestMatchStartIndex) + "<code>" + hit._formatted.text.slice(bestMatchStartIndex, bestMatchEndIndex) + "</code>" + hit._formatted.text.slice(bestMatchEndIndex);
-    }
+    // if (maxSimilarity > 0) {
+    // hit._formatted.text = hit._formatted.text.slice(0, bestMatchStartIndex) + "<code>" + hit._formatted.text.slice(bestMatchStartIndex, bestMatchEndIndex) + "</code>" + hit._formatted.text.slice(bestMatchEndIndex);
+    // }
 
     return maxSimilarity;
   }
@@ -132,9 +224,9 @@ class TranscriptionsService {
     return intersection / union;
   }
 
-  private async searchSegments(searchString: string): Promise<SearchResponse> {
+  private async searchSegments(searchString: string): Promise<SegmentResponse> {
     // Search the index
-    const resData: SearchResponse = await this.segmentsIndex.search(searchString, {
+    const resData: SegmentResponse = await this.segmentsIndex.search(searchString, {
       limit: 50,
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
