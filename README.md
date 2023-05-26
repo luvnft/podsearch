@@ -82,10 +82,10 @@
 - [ ] Legg til nginx infoen, arkitekturen osv.
 - [ ] Set up CI/CD pipeline for backend
 - [ ] Make the types shared between backend and client
-- [ ] segments have to move
+- [ ] Segments have to move
 - [ ] We need 3 tabs that show at the top like the buttons:
   - New episodes
   - Trending episodes
   - Info
 - [ ] Add info component
-- [ ] Add top 3 most searched podcasts
+- [ ]  ~~Add top 3 most searched podcasts ~~(part of tabs)
