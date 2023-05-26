@@ -45,6 +45,9 @@
 
 ### Cron jobs
 - Indexing from db to meilisearch-index
+- DeviationCalculator:
+  - Positive means the youtube video needs reduction in the time
+  - Negative means the youtube video needs the addition of time
 
 ## Features planned adding:
 ### Do maybes
@@ -76,10 +79,21 @@
 - [x] Indexer alt inn i meilisearch igjen.
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [x] Fix segment-area design
-- [ ] Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?
+- [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Add info-section like for meilisearch during/and before searching + trending
 - [ ] Start transcriberingen med mini pcen
 - [ ] Legg til nginx infoen, arkitekturen osv.
 - [ ] Set up CI/CD pipeline for backend
 - [ ] Make the types shared between backend and client
+- [ ] Segments have to move
+- [ ] We need 3 tabs that show at the top like the buttons:
+  - New episodes
+  - Trending episodes
+  - Info
+- [ ] Add info component
+- [ ]  ~~Add top 3 most searched podcasts~~ (part of tabs)
+- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
+- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
+- [ ] Create a lobsters blogging platform
+- [ ] Do this: https://chat.openai.com/c/d5012293-80bd-4c54-acd2-621a6f071620
+- [ ] Make MeiliSearch production probably.

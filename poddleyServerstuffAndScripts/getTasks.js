@@ -6,19 +6,24 @@ dotenv.config();
 
 async function main() {
   console.log("Running getTasks");
-  const client = new MeiliSearch({ host: process.env.MEILISEARCH_IP });
+  const client = new MeiliSearch({ host: "localhost:7700" });
 
   // await client.deleteIndex("segments");
   // await client.deleteIndex("transcriptions");
 
-  const segmentsIndex = await client.index("segments");
   const transcriptionsIndex = await client.index("transcriptions");
-  segmentsIndex.deleteAllDocuments();
-  transcriptionsIndex.deleteAllDocuments();
+  const segmentsIndex = await client.index("segments");
+  const episodesIndex = await client.index("episodes");
+  const podcastsIndex = await client.index("podcasts");
 
-  await client.tasks.deleteTasks({
-    statuses: ["failed", "succeeded", "canceled", "enqueued"],
-  });
+  // segmentsIndex.deleteAllDocuments();
+  // transcriptionsIndex.deleteAllDocuments();
+  // episodesIndex.deleteAllDocuments();
+  // podcastsIndex.deleteAllDocuments();
+
+  // await client.tasks.deleteTasks({
+  //   statuses: ["failed", "succeeded", "canceled", "enqueued"],
+  // });
 
   transcriptionsIndex.updateTypoTolerance({
     minWordSizeForTypos: {
@@ -34,7 +39,9 @@ async function main() {
     },
   });
 
-  segmentsIndex.updateFilterableAttributes(["belongsToTranscriptId"]);
+  segmentsIndex.updateFilterableAttributes([""]);
+  podcastsIndex.updateFilterableAttributes(["podcastGuid"]);
+  episodesIndex.updateFilterableAttributes(["episodeGuid"]);
 
   //Update ranking rules for seg and tra
   segmentsIndex.updateSettings({
@@ -45,52 +52,19 @@ async function main() {
   });
   segmentsIndex.updateSettings({
     searchableAttributes: ["text"],
-    displayedAttributes: [
-      "id",
-      "text",
-      "podcastTitle",
-      "episodeTitle",
-      "podcastSummary",
-      "episodeSummary",
-      "description",
-      "url",
-      "link",
-      "start",
-      "end",
-      "podcastAuthor",
-      "imageUrl",
-      "episodeLinkToEpisode",
-      "episodeEnclosure",
-      "podcastLanguage",
-      "episodeGuid",
-      "podcastGuid",
-      "belongsToTranscriptId",
-      "youtubeVideoLink",
-    ],
+    displayedAttributes: ["*"],
   });
-
   transcriptionsIndex.updateSettings({
     searchableAttributes: ["transcription"],
-    displayedAttributes: [
-      "id",
-      "transcription",
-      "podcastTitle",
-      "episodeTitle",
-      "podcastSummary",
-      "episodeSummary",
-      "description",
-      "url",
-      "link",
-      "start",
-      "end",
-      "podcastAuthor",
-      "imageUrl",
-      "episodeLinkToEpisode",
-      "episodeEnclosure",
-      "podcastLanguage",
-      "episodeGuid",
-      "podcastGuid",
-    ],
+    displayedAttributes: ["*"],
+  });
+  podcastsIndex.updateSettings({
+    searchableAttributes: ["*"],
+    displayedAttributes: ["*"],
+  });
+  episodesIndex.updateSettings({
+    searchableAttributes: ["*"],
+    displayedAttributes: ["*"],
   });
 }
 

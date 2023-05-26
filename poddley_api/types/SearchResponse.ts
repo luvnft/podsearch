@@ -1,5 +1,5 @@
 export interface SearchResponse {
-  hits: Hit[];
+  hits: SearchResponseHit[];
   query: string;
   processingTimeMs: number;
   limit?: number | undefined;
@@ -7,7 +7,7 @@ export interface SearchResponse {
   estimatedTotalHits?: number;
 }
 
-export interface Hit {
+export interface SearchResponseHit {
   id: string;
   podcastTitle: string;
   episodeTitle: string;
@@ -28,26 +28,12 @@ export interface Hit {
   url: string;
   link: string;
   similarity: number;
-  _formatted: Formatted;
+  youtubeVideoLink: string;
+  deviationTime: number;
+  imageUrl: string;
+  _formatted: any;
 }
 
 export interface Formatted {
-  podcastTitle: string;
-  episodeTitle: string;
-  podcastSummary: string;
-  episodeSummary: string;
-  description: string;
   text: string;
-  podcastAuthor: string;
-  belongsToTranscriptId: string;
-  start: string;
-  end: string;
-  episodeLinkToEpisode: string;
-  episodeEnclosure: string;
-  podcastLanguage: string;
-  podcastGuid: string;
-  podcastImage: string;
-  episodeGuid: string;
-  url: string;
-  link: string;
 }
