@@ -1,8 +1,12 @@
 <template>
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
-      <div class="tw-max-h-48 tw-rounded-xl tw-w-80">
-        <LiteYouTubeEmbed id="dQw4w9WgXcQ" title="Rick Astley - Never Gonna Give You Up (Official Music Video)" />
+      <div class="tw-max-h-48 tw-w-80 tw-rounded-xl">
+        <LiteYouTubeEmbed
+          v-if="props.searchEntry.youtubeVideoLink"
+          :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
+          title="Rick Astley - Never Gonna Give You Up (Official Music Video)"
+        />
       </div>
     </div>
     <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-xxl-8 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
