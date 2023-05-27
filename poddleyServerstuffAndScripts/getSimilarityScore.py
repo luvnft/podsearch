@@ -2,7 +2,7 @@ import sys
 import spacy
 
 # Load the large English NLP model
-nlp = spacy.load('en_core_web_lg')
+nlp = spacy.load('spacy/en_core_web_sm')
 
 # The texts to compare
 text1 = sys.argv[1]

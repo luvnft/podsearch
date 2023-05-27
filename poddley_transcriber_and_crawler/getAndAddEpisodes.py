@@ -223,12 +223,7 @@ async def prepareConnectionsEtc():
     guids = []
 
     # Return the urls and guids
-    podcast = await prisma.podcast.find_unique(
-        where = {
-            "podcastGuid": "7eeae9d1-141e-5133-9e8f-6c1da695e40c"
-        }
-    )
-    podcasts = [podcast]
+    podcasts = await prisma.podcast.find_many()
     
     print("Length of podcasts is " + safe_cast.safe_str(len(podcasts)))
 
@@ -347,8 +342,7 @@ async def runEpisodeGrabber():
     endTime = time.time()
 
     # Print out the time it took to run the program
-    print("Time it took to run the program: " +
-          safe_cast.safe_str(endTime - startTime) + " seconds")
+    print("Time it took to run the program: " + safe_cast.safe_str(endTime - startTime) + " seconds")
     global prisma
     
 # Run the program

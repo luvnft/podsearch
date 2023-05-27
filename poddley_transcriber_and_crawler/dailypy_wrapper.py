@@ -4,7 +4,7 @@ import subprocess as sp
 
 # Path and name to the script you are trying to start
 file_path = "daily.py" 
-restart_timer = 10
+restart_timer = 360
 
 def start_script():
     try:
