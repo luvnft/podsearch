@@ -13,8 +13,6 @@ import path from "path";
 const execPromisified = promisify(exec);
 dotenv.config({ path: "./.env" });
 
-const prisma = new PrismaClient();
-
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -177,6 +175,8 @@ async function calculateDeviationForEpisode(foundVideoLink, episode) {
 }
 
 async function main() {
+  const prisma = new PrismaClient();
+
   const deviationsNeededToMake = await prisma.episode.count({
     where: {
       isRead: false,
@@ -242,6 +242,9 @@ async function main() {
       });
     } catch (e) {
       console.log("Some error occureed, not giving a fuck", e);
+    }
+    finally{
+      await prisma.$disconnect();
     }
   }
 }

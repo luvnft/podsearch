@@ -1,8 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config("./");
 console.log(process.env.MEILISEARCH_IP); // remove this after you've confirmed it is working
-
-import prismaConnection from "./prismaConnection.js";
+import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import { MeiliSearch } from "meilisearch";
 import flattenObjectOuter from "./flattenObject.js";
@@ -14,6 +13,7 @@ async function sleep(ms) {
 }
 
 async function main() {
+  const prismaConnection = new PrismaClient();
   const client = await new MeiliSearch({ host: "localhost:7700" });
   const transcriptionsIndex = client.index("transcriptions");
   const segmentsIndex = client.index("segments");
@@ -164,6 +164,7 @@ async function main() {
     segments = [];
     await sleep(5000);
   }
+  await prismaConnection.$disconnect();
 }
 
 main();
