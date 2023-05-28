@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-purgecss"],
   routeRules: {
     "/": {
       redirect: "/home",
