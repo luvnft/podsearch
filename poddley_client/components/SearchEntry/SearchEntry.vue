@@ -1,8 +1,8 @@
 <template>
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
-      <div class="tw-max-h-48 tw-w-80 tw-rounded-xl">
-        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-max-h-48 tw-rounded-xl tw-object-contain" v-if="!props.searchEntry.youtubeVideoLink" />
+      <div class="tw-min-w-full tw-rounded-xl">
+        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-mx-auto tw-max-h-48 tw-rounded-xl tw-object-contain" v-if="!props.searchEntry.youtubeVideoLink" />
         <LiteYouTubeEmbed
           v-if="props.searchEntry.youtubeVideoLink"
           :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -48,10 +48,11 @@
           <hr />
         </div>
         <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
-          <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
+          <!-- <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" /> -->
+          <div class="audio-lazy" :data-src="props.searchEntry.episodeEnclosure">
+            <!-- You can add a placeholder here if you like -->
+          </div>
         </div>
-        <!-- <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2" v-if="props.searchEntry.youtubeVideoLink">
-        </div> -->
       </div>
     </div>
   </div>
@@ -65,6 +66,35 @@ import LiteYouTubeEmbed from "vue-lite-youtube-embed";
 const props = defineProps<{
   searchEntry: Hit;
 }>();
+
+// Select all elements that you want to lazy load
+onMounted(() => {
+  const audios = document.querySelectorAll(".audio-lazy");
+
+  // A simple function that loads the audio
+  const loadAudio = (audio: any) => {
+    const audioElement = document.createElement("audio");
+    audioElement.controls = true;
+    audioElement.src = audio.dataset.src;
+    audio.innerHTML = "";
+    audio.appendChild(audioElement);
+  };
+
+  // Use IntersectionObserver to decide when to load the audio
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        loadAudio(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+
+  // Observe each of the audios
+  audios.forEach((audio) => {
+    observer.observe(audio);
+  });
+});
 </script>
 
 <style scoped>
