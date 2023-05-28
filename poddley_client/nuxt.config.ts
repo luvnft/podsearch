@@ -8,14 +8,18 @@ export default defineNuxtConfig({
     "~/assets/css/global/global.css",
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.min.css",
+    "vuetify/lib/styles/main.sass",
   ],
+  build: {
+    transpile: ["vuetify"],
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-purgecss"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-purgecss", "@vueuse/nuxt"],
   routeRules: {
     "/": {
       redirect: "/home",
