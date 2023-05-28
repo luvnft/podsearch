@@ -3,17 +3,12 @@
     <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-max-h-48 tw-rounded-xl">
         <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-max-h-48 tw-rounded-xl tw-object-contain" v-if="!props.searchEntry.youtubeVideoLink" />
-        <iframe
+        <LiteYouTubeEmbed
           v-if="props.searchEntry.youtubeVideoLink"
-          class="tw-h-50 tw-w-full tw-rounded-md"
-          :src="`${props.searchEntry.youtubeVideoLink.replace(/watch\?v=/gi, 'embed/')}?start=${
-            Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))
-          }`"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
+          :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
+          :title="props.searchEntry.episodeTitle"
+          :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
+        />
       </div>
     </div>
     <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-xxl-8 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
