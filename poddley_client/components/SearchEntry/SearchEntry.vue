@@ -1,8 +1,8 @@
 <template>
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
-    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
-      <div class="tw-max-h-48 tw-rounded-xl">
-        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-max-h-48 tw-rounded-xl tw-object-contain" v-if="!props.searchEntry.youtubeVideoLink" />
+    <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
+      <div class="tw-w-80 tw-rounded-xl">
+        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-rounded-xl tw-mx-auto tw-max-h-40" v-if="!props.searchEntry.youtubeVideoLink" height="100px"/>
         <LiteYouTubeEmbed
           v-if="props.searchEntry.youtubeVideoLink"
           :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -11,7 +11,7 @@
         />
       </div>
     </div>
-    <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-xxl-8 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
+    <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
       <div class="row row-cols-3 row-cols-sm-3 tw-pw-2 w-100 gx-1 gx-sm-3 mb-3 tw-flex tw-flex-row tw-items-center tw-justify-center">
         <div class="col m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
@@ -60,6 +60,7 @@
 <script lang="ts" setup>
 import { Hit } from "~~/types/SearchResponse";
 import { convertSecondsToTime } from "~~/utils/tools/tools";
+import LiteYouTubeEmbed from 'vue-lite-youtube-embed'
 
 const props = defineProps<{
   searchEntry: Hit;
