@@ -10,7 +10,7 @@
             :title="props.searchEntry.episodeTitle"
             :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
             webp
-            poster="maxresdefault"
+            poster="hqdefault"
             wrapperClass="yt-lite tw-rounded-lg"
           />
         </div>
@@ -124,7 +124,7 @@ const props = defineProps<{
 }
 
 .image-aspect-ratio {
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   width: 100%;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
