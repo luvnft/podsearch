@@ -2,14 +2,15 @@
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
-        <img :src="props.searchEntry.imageUrl" alt="Podcast image" class="tw-mx-auto tw-max-h-40 tw-rounded-xl" v-if="!props.searchEntry.youtubeVideoLink" />
+        <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
+
         <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
           <LiteYouTubeEmbed
             :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :title="props.searchEntry.episodeTitle"
             :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
             webp
-            poster="maxresdefault"
+            poster="hqdefault"
             wrapperClass="yt-lite tw-rounded-lg"
           />
         </div>
@@ -120,5 +121,14 @@ const props = defineProps<{
   background-color: white;
   padding-left: 7px;
   border-radius: 4px;
+}
+
+.image-aspect-ratio {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  position: relative;
+  box-shadow: 0 0 1px #5e5e5e, 0 0 1px #383838, 0 0 2px #141414;
 }
 </style>
