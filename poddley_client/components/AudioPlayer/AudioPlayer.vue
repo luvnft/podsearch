@@ -3,7 +3,7 @@
     :key="props.timeLocation"
     controls
     id="custom-audio"
-    :class="`tw-w-full tw-rounded-lg ${isApple ? '' : 'tw-shadow-sm tw-shadow-gray-400'}`"
+    class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400"
     ref="audioPlayerRef"
     :preload="isVisible ? 'metadata' : 'none'"
     :title="props.episodeTitle"
@@ -21,7 +21,7 @@ const props = defineProps<{
   episodeTitle: string;
 }>();
 const { isApple } = useDevice();
-console.log(isApple);
+console.log(isApple)
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const isVisible = useElementVisibility(audioPlayerRef);
 
