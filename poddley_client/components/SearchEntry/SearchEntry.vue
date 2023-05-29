@@ -1,14 +1,18 @@
 <template>
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
-      <div class="tw-w-80 tw-rounded-xl">
-        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-mx-auto tw-max-h-40 tw-rounded-xl" v-if="!props.searchEntry.youtubeVideoLink" height="100px" />
-        <LiteYouTubeEmbed
-          v-if="props.searchEntry.youtubeVideoLink"
-          :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-          :title="props.searchEntry.episodeTitle"
-          :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
-        />
+      <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
+        <img :src="props.searchEntry.imageUrl" alt="Podcast image" class="tw-mx-auto tw-max-h-40 tw-rounded-xl" v-if="!props.searchEntry.youtubeVideoLink" />
+        <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
+          <LiteYouTubeEmbed
+            :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
+            :title="props.searchEntry.episodeTitle"
+            :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
+            webp
+            poster="maxresdefault"
+            wrapperClass="yt-lite tw-rounded-lg"
+          />
+        </div>
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
