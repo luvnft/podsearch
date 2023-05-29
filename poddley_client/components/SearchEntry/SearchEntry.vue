@@ -2,7 +2,7 @@
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-w-80 tw-rounded-xl">
-        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-rounded-xl tw-mx-auto tw-max-h-40" v-if="!props.searchEntry.youtubeVideoLink" height="100px"/>
+        <img :src="props.searchEntry.imageUrl" alt="tailwind logo" class="tw-mx-auto tw-max-h-40 tw-rounded-xl" v-if="!props.searchEntry.youtubeVideoLink" height="100px" />
         <LiteYouTubeEmbed
           v-if="props.searchEntry.youtubeVideoLink"
           :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -47,7 +47,7 @@
           </p>
           <hr />
         </div>
-        <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2">
+        <div class="col-12 mt-0 tw-w-full tw-pb-2 tw-pt-1">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
         <!-- <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2" v-if="props.searchEntry.youtubeVideoLink">
@@ -60,7 +60,8 @@
 <script lang="ts" setup>
 import { Hit } from "~~/types/SearchResponse";
 import { convertSecondsToTime } from "~~/utils/tools/tools";
-import LiteYouTubeEmbed from 'vue-lite-youtube-embed'
+import LiteYouTubeEmbed from "vue-lite-youtube-embed";
+import "vue-lite-youtube-embed/style.css";
 
 const props = defineProps<{
   searchEntry: Hit;
