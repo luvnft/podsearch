@@ -124,7 +124,7 @@ const props = defineProps<{
 }
 
 .image-aspect-ratio {
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   width: 100%;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
