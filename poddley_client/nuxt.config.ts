@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.min.css",
     "vuetify/lib/styles/main.sass",
+    "vue-lite-youtube-embed/style.css",
   ],
   build: {
     transpile: ["vuetify"],
@@ -19,7 +20,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-purgecss", "@vueuse/nuxt"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt"],
   routeRules: {
     "/": {
       redirect: "/home",
