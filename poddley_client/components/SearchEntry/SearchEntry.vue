@@ -10,7 +10,7 @@
             :title="props.searchEntry.episodeTitle"
             :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
             webp
-            poster="sddefault"
+            poster="mqdefault"
             wrapperClass="yt-lite tw-rounded-lg"
           />
         </div>
