@@ -21,7 +21,6 @@ const props = defineProps<{
   episodeTitle: string;
 }>();
 const { isApple } = useDevice();
-console.log(isApple)
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const isVisible = useElementVisibility(audioPlayerRef);
 

@@ -55,8 +55,6 @@
         <div class="col-12 mt-0 tw-w-full tw-pb-2 tw-pt-1">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
-        <!-- <div class="col-12 mt-0 tw-w-full tw-pt-1 tw-pb-2" v-if="props.searchEntry.youtubeVideoLink">
-        </div> -->
       </div>
     </div>
   </div>
