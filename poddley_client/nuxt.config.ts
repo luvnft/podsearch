@@ -11,7 +11,9 @@ export default defineNuxtConfig({
     "vue-lite-youtube-embed/style.css",
   ],
   nitro: {
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      gzip: true,
+    },
   },
   postcss: {
     plugins: {
