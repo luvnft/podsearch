@@ -8,12 +8,8 @@ export default defineNuxtConfig({
     "~/assets/css/global/global.css",
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.min.css",
-    "vuetify/lib/styles/main.sass",
     "vue-lite-youtube-embed/style.css",
   ],
-  build: {
-    transpile: ["vuetify"],
-  },
   postcss: {
     plugins: {
       tailwindcss: {},
