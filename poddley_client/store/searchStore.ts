@@ -15,14 +15,22 @@ export const useSearchStore = defineStore("searchStore", () => {
   async function search(searchInput?: string | null) {
     // Toggle loading and set searchString to default value if passed in undefined
     toggleLoading(true);
-    if (!searchInput) searchString.value = '';
+    if (!searchInput) searchString.value = "";
     else searchString.value = searchInput;
-    
+
     // Search
     const data: SearchResponse = await transcriptionsService.search(searchString.value);
     if (data) searchResults.value = data.hits;
 
     // Toggle off loading and return data
+    toggleLoading(false);
+    return data;
+  }
+
+  async function getTrendingQuotes() {
+    toggleLoading(true);
+    const data: SearchResponse = await transcriptionsService.getTrendingQuotes();
+    if (data) searchResults.value = data.hits;
     toggleLoading(false);
     return data;
   }
@@ -39,5 +47,6 @@ export const useSearchStore = defineStore("searchStore", () => {
     toggleLoading,
     loadingSearchResults,
     searchString,
+    getTrendingQuotes,
   };
 });

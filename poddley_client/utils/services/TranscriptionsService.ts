@@ -16,4 +16,13 @@ export default class TranscriptionService extends ApiService {
     const data: SearchResponse = res.data.value as SearchResponse;
     return data;
   }
+
+  public async getTrendingQuotes(): Promise<SearchResponse> {
+    const res = await useFetch("/trendingQuotes", {
+      method: "GET",
+      baseURL: this.BASE_URL,
+    });
+    const data: SearchResponse = res.data.value as SearchResponse;
+    return data;
+  }
 }

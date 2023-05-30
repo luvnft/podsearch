@@ -1,13 +1,23 @@
 <template>
-  <div class="tw-flex tw-h-20 tw-w-full tw-gap-2 tw-pb-4 tw-text-gray-400">
-    <ButtonsNewButton class="tw-w-1/3">
+  <div class="tw-flex tw-h-20 tw-w-full tw-gap-2 tw-pb-4 tw-text-xl tw-font-semibold tw-text-gray-500">
+    <ButtonsNewButton class="tw-borde tw-w-1/2 tw-border-solid tw-border-gray-400">
       <span class="group-active:tw-text-gray-600">New episodes</span>
     </ButtonsNewButton>
-    <ButtonsTrendingButton class="tw-w-1/3">
-      <span class="group-active:tw-text-gray-600">Trending episodes</span>
+    <ButtonsTrendingButton class="tw-w-1/2 tw-border tw-border-solid tw-border-gray-400" @click="searchStore.getTrendingQuotes">
+      <span class="group-active:tw-text-gray-600">Trending quotes</span>
     </ButtonsTrendingButton>
-    <ButtonsStatsButton class="tw-w-1/3">
-      <span class="group-active:tw-text-gray-600">Stats & Info</span>
-    </ButtonsStatsButton>
   </div>
 </template>
+
+<script setup lang="ts">
+//Imports
+import { useSearchStore } from "@/store/searchStore";
+
+//Grabbing initial data for page load
+const searchStore = useSearchStore();
+
+//Initialization function
+async function loadTrendingQuotes() {
+  await searchStore.getTrendingQuotes();
+}
+</script>

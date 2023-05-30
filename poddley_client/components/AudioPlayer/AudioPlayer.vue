@@ -24,10 +24,12 @@ const { isApple } = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const isVisible = useElementVisibility(audioPlayerRef);
 
-watch(isVisible, function (state) {
-  if (audioPlayerRef.value) {
+let unwatch = watch(isVisible, function (state) {
+  if (audioPlayerRef.value && state === true) {
     audioPlayerRef.value.currentTime = props.timeLocation;
   }
+  // stop watching after the first time
+  unwatch();
 });
 </script>
 
