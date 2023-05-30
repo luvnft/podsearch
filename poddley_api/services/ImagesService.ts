@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 class ImagesService {
   public storage: StorageEngine;
   public upload: Multer;
-  public static uploadsPath: string = path.join(__dirname, "..", "..", "..", "uploads/");
+  public static uploadsPath: string = path.join(__dirname, "..", "..", "..", "..", "uploads/");
 
   public constructor() {
     this.storage = this.initStorage();
