@@ -15,9 +15,4 @@ import { useSearchStore } from "@/store/searchStore";
 
 //Grabbing initial data for page load
 const searchStore = useSearchStore();
-
-//Initialization function
-async function loadTrendingQuotes() {
-  await searchStore.getTrendingQuotes();
-}
 </script>
