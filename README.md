@@ -75,7 +75,7 @@ server {
 - HTTPS everywhere done with let's encrypt
 
 ### Lighthouse score
-![image](https://github.com/lukamo1996/poddley/assets/52632596/a94245b7-c539-44f9-98b7-9995fa81e138)
+![100](https://github.com/lukamo1996/poddley/assets/52632596/73235617-c7d0-4222-8b03-2a5fdbb604c6)
 
 ### Cron jobs
 - Indexing from db to meilisearch-index
