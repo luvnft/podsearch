@@ -18,6 +18,15 @@ class TranscriptionsController {
       res.status(400).send({ message: JSON.stringify(error) });
     }
   };
+
+  public getTop10Segments = async (req: Request, res: Response) => {
+    try {
+      const data: SearchResponse = await this.transcriptionService.getTop10Segments();
+      res.status(200).send(data);
+    } catch (error: any) {
+      res.status(400).send({ message: JSON.stringify(error) });
+    }
+  };
 }
 
 export default TranscriptionsController;

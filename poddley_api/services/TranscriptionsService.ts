@@ -1,23 +1,30 @@
 import meilisearchConnection from "../other/meilisearchConnection";
+import prismaConnection from "../other/prismaConnection";
 import { SearchResponse, SearchResponseHit } from "../types/SearchResponse";
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
-import { Index } from "meilisearch";
 import _, { merge } from "lodash";
+import { Index, MeiliSearch, MultiSearchParams, MultiSearchQuery } from "meilisearch";
 import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
+import { PrismaClient } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
 
 class TranscriptionsService {
-  public segmentsIndex: Index;
   public transcriptionsIndex: Index;
+  public prismaConnection: PrismaClient = {} as PrismaClient;
+  public meilisearchConnection: MeiliSearch;
+  public searchString: string = "";
+  public segmentsIndex: Index;
   public podcastsIndex: Index;
   public episodesIndex: Index;
-  public searchString: string = "";
 
   public constructor() {
-    this.segmentsIndex = meilisearchConnection.index("segments");
     this.transcriptionsIndex = meilisearchConnection.index("transcriptions");
+    this.segmentsIndex = meilisearchConnection.index("segments");
     this.podcastsIndex = meilisearchConnection.index("podcasts");
     this.episodesIndex = meilisearchConnection.index("episodes");
+    this.prismaConnection = prismaConnection;
+    this.meilisearchConnection = meilisearchConnection;
   }
 
   public removeDuplicateHits(hits: SegmentHit[]) {
@@ -32,6 +39,111 @@ class TranscriptionsService {
       }
     }
     return uniqueHits;
+  }
+
+  private async logSearchQuery(searchString: string) {
+    if (!searchString.trim()) return;
+    try {
+      //Add searchquery to db
+      await this.prismaConnection.searchLog.create({
+        data: {
+          id: uuidv4(),
+          searchQuery: searchString,
+        },
+      });
+    } catch (e) {
+      console.log("Error in logger: ", e);
+    }
+  }
+
+  public async getTop10Segments() {
+    const top10Queries: any[] = await this.prismaConnection.$queryRaw`
+      SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count 
+      FROM SearchLog
+      WHERE timestamp >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+1 DAY
+      GROUP BY searchQueryLower
+      ORDER BY count DESC
+      LIMIT 10;
+    `;
+    const queries: MultiSearchQuery[] = [];
+    for (let i = 0; i < top10Queries.length; i++) {
+      const query: any = top10Queries[i];
+      queries.push({
+        indexUid: "segments",
+        q: query.searchQueryLower,
+        limit: 1,
+        attributesToHighlight: ["text"],
+        highlightPreTag: '<span class="highlight">',
+        highlightPostTag: "</span>",
+        matchingStrategy: "last",
+      });
+    }
+
+    const d = await this.meilisearchConnection.multiSearch({
+      queries: queries,
+    });
+
+    //Yes..
+    const allHits: any = d.results.map((e: any) => e.hits).flat();
+
+    // Adding podcasts and episodes to the corresponding segments
+    const podcastIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid);
+    const episodeIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid);
+
+    //Get the podcasts and episodes
+    const podcasts: PodcastResponse = await this.searchPodcastsWithIds(podcastIds);
+    const episodes: EpisodeResponse = await this.searchEpisodesWithIds(episodeIds);
+    const podcastsObject: { [key: string]: PodcastHit } = {};
+    const episodesObject: { [key: string]: EpisodeHit } = {};
+    podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
+    episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
+    
+    const finalResponse: SearchResponse = {
+      hits: [],
+      query: "",
+      processingTimeMs: 0,
+      limit: undefined,
+      offset: undefined,
+      estimatedTotalHits: undefined,
+    };
+
+    for (let i = 0; i < allHits.length; i++) {
+      const segment = allHits[i];
+      let searchResponseHit: SearchResponseHit;
+      try {
+        searchResponseHit = {
+          id: segment.id,
+          podcastTitle: podcastsObject[segment.belongsToPodcastGuid].title,
+          episodeTitle: episodesObject[segment.belongsToEpisodeGuid].episodeTitle,
+          podcastSummary: podcastsObject[segment.belongsToPodcastGuid].description,
+          episodeSummary: episodesObject[segment.belongsToEpisodeGuid].episodeSummary,
+          description: podcastsObject[segment.belongsToPodcastGuid].description,
+          text: segment.text,
+          podcastAuthor: podcastsObject[segment.belongsToPodcastGuid].itunesAuthor,
+          belongsToTranscriptId: segment.belongsToTranscriptId,
+          start: segment.start,
+          end: segment.end,
+          episodeLinkToEpisode: episodesObject[segment.belongsToEpisodeGuid].episodeLinkToEpisode,
+          episodeEnclosure: episodesObject[segment.belongsToEpisodeGuid].episodeEnclosure,
+          podcastLanguage: podcastsObject[segment.belongsToPodcastGuid].language,
+          podcastGuid: podcastsObject[segment.belongsToPodcastGuid].podcastGuid,
+          imageUrl: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
+          podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
+          episodeGuid: episodesObject[segment.belongsToEpisodeGuid].episodeGuid,
+          url: podcastsObject[segment.belongsToPodcastGuid].url,
+          link: podcastsObject[segment.belongsToPodcastGuid].link,
+          youtubeVideoLink: episodesObject[segment.belongsToEpisodeGuid].youtubeVideoLink || "",
+          deviationTime: episodesObject[segment.belongsToEpisodeGuid].deviationTime || 0,
+          similarity: segment.similarity,
+          _formatted: segment._formatted,
+        };
+        finalResponse.hits.push(searchResponseHit);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    return finalResponse;
   }
 
   public async search(searchString: string): Promise<SearchResponse> {
@@ -146,7 +258,7 @@ class TranscriptionsService {
     finalResponse.query = mergedResults.query;
 
     //Returning
-    console.log(finalResponse.hits);
+    await this.logSearchQuery(searchString);
     return finalResponse;
   }
 
