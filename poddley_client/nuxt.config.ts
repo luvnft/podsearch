@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     "~/assets/css/imports/bootstrap.min.css",
     "vue-lite-youtube-embed/style.css",
   ],
+  nitro: {
+    compressPublicAssets: true,
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
