@@ -131,4 +131,8 @@ server {
 - [ ] Create a lobsters blogging platform
 - [ ] Do this: https://chat.openai.com/c/d5012293-80bd-4c54-acd2-621a6f071620
 - [ ] Make MeiliSearch production probably.
-- [ ] Add faceting.
+- [ ] Add faceting for episode and podcast
+- [ ] Legg til segment id route og episode og podcast
+- [ ] Add bg to selected jutton and route to the buttons
+- [ ] Starte opp transcriberen og deviationCalculstoren igjen
+- [ ] Fikse loading spinner bug
