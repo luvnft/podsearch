@@ -88,10 +88,10 @@ server {
 - [ ] Microphone-recording to text search (like Shazam)
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
 - [ ] Native app?
-- [ ] Set up workstation with multiple GPUs for better transcribing.
-- [ ] Switch to iGPU, an RTX4090 for improved transcription, use the medium.en model
 - [ ] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-- [ ] - [ ] Start transcriberingen med mini pcen
+- [ ] Add faceting for episode and podcast (route for episode og podcast)
+- [ ] Set up CI/CD pipeline for backend
+
 ### Do musts
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
@@ -125,9 +125,7 @@ server {
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [ ] Make MeiliSearch production probably.
-- [ ] Add faceting for episode and podcast
-- [ ] Legg til segment id route og episode og podcast
-- [ ] Set up CI/CD pipeline for backend
+- [ ] Legg til segment id 
 - [ ] Make the types shared between backend and client
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
