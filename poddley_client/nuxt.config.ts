@@ -16,6 +16,7 @@ export default defineNuxtConfig({
       gzip: false
     },
   },
+  pages: true,
   postcss: {
     plugins: {
       tailwindcss: {},

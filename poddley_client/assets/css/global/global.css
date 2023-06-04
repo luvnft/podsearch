@@ -20,3 +20,7 @@ nav * {
   letter-spacing: -1px;
   line-height: 100% !important;
 }
+
+.nuxt-loading-indicator{
+  opacity: 1 !important;
+}

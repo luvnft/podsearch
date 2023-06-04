@@ -19,8 +19,8 @@
       type="button"
       class="10 tw-group tw-flex tw-w-12 tw-items-center tw-justify-center tw-rounded-r-md tw-border-l tw-border-gray-300 tw-border-solid tw-bg-gray-50 tw-p-2 tw-text-gray-700 tw-shadow-sm hover:tw-bg-gray-100 active:tw-shadow-none"
     >
-      <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="!searchStore.loadingSearchResults" />
-      <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="searchStore.loadingSearchResults" />
+      <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="!loading" />
+      <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="loading" />
     </button>
   </div>
 </template>
@@ -29,13 +29,20 @@
 import { debounce } from "~~/utils/tools/tools";
 import { useSearchStore } from "@/store/searchStore";
 
+//Vars
+let loading: Ref<boolean> = ref(false);
+
 const searchStore = useSearchStore();
 const route = useRoute();
 const router = useRouter();
 
-function triggerSearch() {
+//TriggerSearch
+async function triggerSearch() {
+  loading.value = true;
   updateUrl();
-  searchStore.search(searchStore.searchString);
+  await searchStore.search(searchStore.searchString);
+  loading.value = false;
+
 }
 
 const updateUrl = () => {

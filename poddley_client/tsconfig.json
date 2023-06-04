@@ -16,6 +16,5 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist/types",
-    "types": ["/types/**"]
   }
 }
