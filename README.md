@@ -51,7 +51,7 @@ server {
 ``
 ### Full-text searching
 - Automatic indexing of meilisearch indexes based on new data in MySQL database is done using a cron-job that pushes into the meilisearch indexes.
-- Runs 24/7 on [this machine](![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a)... used to run on a local computer running an RTX 1650, also tried running an RTX3060 using ADT-Link from the m.2 nvme port on an laptop as a eGPU. That was deeply unsuccessful due to frequent crashes. Both latter solutions were unsatisfactory so splurged for a workstation.
+- Runs 24/7 on this machine=>(![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a)... used to run on a local computer running an RTX 1650, also tried running an RTX3060 using ADT-Link from the m.2 nvme port on an laptop as a eGPU. That was deeply unsuccessful due to frequent crashes. Both latter solutions were unsatisfactory so splurged for a workstation.
 - Due to limitations on meilisearch and non-existant phrase-searching in combination with typo-tolerance, custom solution was made.
   - Normal key-word based searching with ranking rules:
     - rankingRules: [
