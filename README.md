@@ -115,24 +115,20 @@ server {
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [x] Fix segment-area design
 - [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
-- [ ] Add word, by, word, highlighting during playback
 - [x] Legg til nginx infoen, arkitekturen osv.
-- [ ] Set up CI/CD pipeline for backend
-- [ ] Make the types shared between backend and client
-- [ ] Segments have to move
-- [ ] We need 3 tabs that show at the top like the buttons:
+- [x] Add bg to selected jutton and route to the buttons
+- [x] Fikse loading spinner bug
+- [x] We need 3 tabs that show at the top like the buttons:
   - New episodes
   - Trending episodes
   - Info
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
-- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
-- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
-- [ ] Create a lobsters blogging platform
-- [ ] Do this: https://chat.openai.com/c/d5012293-80bd-4c54-acd2-621a6f071620
 - [ ] Make MeiliSearch production probably.
 - [ ] Add faceting for episode and podcast
 - [ ] Legg til segment id route og episode og podcast
-- [ ] Add bg to selected jutton and route to the buttons
-- [ ] Starte opp transcriberen og deviationCalculstoren igjen
-- [ ] Fikse loading spinner bug
+- [ ] Set up CI/CD pipeline for backend
+- [ ] Make the types shared between backend and client
+- [ ] Segments have to move
+- [ ] Add word, by, word, highlighting during playback
+
