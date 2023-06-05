@@ -93,7 +93,7 @@ server {
 - [ ] Microphone-recording to text search (like Shazam)
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
 - [ ] Native app?
-- [ ] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
+- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 - [ ] Add faceting for episode and podcast (route for episode og podcast)
 - [ ] Set up CI/CD pipeline for backend
 
@@ -135,4 +135,5 @@ server {
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Add loading spinner to the audio player as in v-if
-
+- [x] Remove bold tab bar
+- [ ] Offer publig API through external service
