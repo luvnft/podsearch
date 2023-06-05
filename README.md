@@ -2,8 +2,8 @@
 ## Demo
 Coming...
 ## Showcase
-![showcase](![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
-)
+![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
+
 ## Frontend:
 - Nuxt 3 for client-stuff
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
