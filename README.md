@@ -134,4 +134,5 @@ server {
 - [ ] Make the types shared between backend and client
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
+- [ ] Add loading spinner to the audio player as in v-if
 
