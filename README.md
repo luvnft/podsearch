@@ -129,14 +129,16 @@ server {
   - ~~Info~~
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
+- [x] Remove bold tab bar
 - [ ] Make MeiliSearch production probably.
 - [ ] Legg til segment id 
 - [ ] Make the types shared between backend and client
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Add loading spinner to the audio player as in v-if
-- [x] Remove bold tab bar
 - [ ] Offer publig API through external service
 - [ ] Legg til loading for audio while loading
 - [ ] Legg til Remote Desktop til stasjon'r
 - [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
+- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
+- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
