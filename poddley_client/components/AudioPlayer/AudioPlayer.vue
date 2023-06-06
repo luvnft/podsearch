@@ -11,7 +11,7 @@
     type="audio/mpeg"
     @canplaythrough="handleCanPlayThrough"
   />
-  <div class="tw-flex tw-justify-center tw-gap-2" v-if="!isPlayable">
+  <div class="tw-flex tw-justify-center tw-gap-2 tw-items-center" v-if="!isPlayable">
     <span>Loading... </span>
     <IconsSpinnerIcon />
   </div>
