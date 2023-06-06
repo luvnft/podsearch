@@ -90,10 +90,10 @@ server {
 
 ## Features planned adding:
 ### Do maybes
+- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 - [ ] Microphone-recording to text search (like Shazam)
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
 - [ ] Native app?
-- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 - [ ] Add faceting for episode and podcast (route for episode og podcast)
 - [ ] Set up CI/CD pipeline for backend
 
@@ -126,7 +126,7 @@ server {
 - [x] We need 3 tabs that show at the top like the buttons:
   - New episodes
   - Trending episodes
-  - Info
+  - ~~Info~~
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [ ] Make MeiliSearch production probably.
@@ -137,3 +137,6 @@ server {
 - [ ] Add loading spinner to the audio player as in v-if
 - [x] Remove bold tab bar
 - [ ] Offer publig API through external service
+- [ ] Legg til loading for audio while loading
+- [ ] Legg til Remote Desktop til stasjon'r
+- [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
