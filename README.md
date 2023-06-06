@@ -135,9 +135,9 @@ server {
 - [ ] Make the types shared between backend and client
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Add loading spinner to the audio player as in v-if
+- [x] Add loading spinner to the audio player as in v-if
 - [ ] Offer publig API through external service
-- [ ] Legg til loading for audio while loading
+- [x] Legg til loading for audio while loading
 - [ ] Legg til Remote Desktop til stasjon'r
 - [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
