@@ -52,7 +52,7 @@
           </p>
           <hr />
         </div>
-        <div class="col-12 mt-0 tw-w-full">
+        <div class="col-12 mt-0 tw-w-full tw-pb-2 tw-pt-1 tw-flex tw-items-center tw-justify-center">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
       </div>
