@@ -3,13 +3,18 @@
     :key="props.timeLocation"
     controls
     id="custom-audio"
-    class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400"
+    :class="`tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400 ${isPlayable ? '' : 'hideAudioPlayer'}`"
     ref="audioPlayerRef"
     :preload="isVisible ? 'metadata' : 'none'"
     :title="props.episodeTitle"
     :src="props.audioLink"
     type="audio/mpeg"
+    @canplaythrough="handleCanPlayThrough"
   />
+  <div class="tw-flex tw-justify-center tw-gap-2" v-if="!isPlayable">
+    <span>Loading... </span>
+    <IconsSpinnerIcon />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -23,6 +28,7 @@ const props = defineProps<{
 const { isApple } = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const isVisible = useElementVisibility(audioPlayerRef);
+const isPlayable: Ref<Boolean> = ref(false);
 
 let unwatch = watch(isVisible, function (state) {
   if (audioPlayerRef.value && state === true) {
@@ -31,6 +37,10 @@ let unwatch = watch(isVisible, function (state) {
   // stop watching after the first time
   unwatch();
 });
+
+function handleCanPlayThrough() {
+  isPlayable.value = true;
+}
 </script>
 
 <style scoped>
@@ -52,5 +62,11 @@ let unwatch = watch(isVisible, function (state) {
 #custom-audio::-webkit-media-controls-timeline,
 #custom-audio::-webkit-media-controls-current-time-display {
   color: #000;
+}
+
+.hideAudioPlayer {
+  visibility: hidden;
+  width: 0;
+  height: 0;
 }
 </style>
