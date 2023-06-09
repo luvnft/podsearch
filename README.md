@@ -144,3 +144,7 @@ server {
 - [ ] Detach logic of searching from navbar
 - [ ] Set max 5 res
 - [ ] Add info component
+- [ ] Fix unique segment issue by modifying triplet
+- [ ] Lag troof blog
+- [ ] Lag lobsters blog
+- [ ] Lag egen lobsters type
