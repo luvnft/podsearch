@@ -125,7 +125,7 @@ server {
 - [x] Add loading spinner to the audio player as in v-if
 - [x] Legg til loading for audio while loading
 - [x] Legg til segment id 
--  [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
+- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 - [ ] Microphone-recording to text search (like Shazam)
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
 - [ ] Native app?
@@ -140,3 +140,7 @@ server {
 - [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
+- [ ] Fix navbar
+- [ ] Detach logic of searching from navbar
+- [ ] Set max 5 res
+- [ ] Add info component
