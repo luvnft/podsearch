@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
-      <div class="row row-cols-3 row-cols-sm-3 tw-pw-2 w-100 gx-1 gx-sm-3 mb-3 tw-flex tw-flex-row tw-items-center tw-justify-center">
+      <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 w-100 gx-1 gx-sm-3 mb-3 tw-flex tw-flex-row tw-items-center tw-justify-center">
         <div class="col m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
         </div>
@@ -26,6 +26,9 @@
         </div>
         <div class="col m-0">
           <ButtonsRssButton :link="props.searchEntry.url" />
+        </div>
+        <div class="col m-0">
+          <ButtonsCopyLinkButton segmentId="ok" />
         </div>
       </div>
       <div class="row d-flex flex-grow-1 w-100">
@@ -52,7 +55,7 @@
           </p>
           <hr />
         </div>
-        <div class="col-12 mt-0 tw-w-full tw-pb-2 tw-pt-2 tw-flex tw-items-center tw-justify-center tw-flex-col">
+        <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-2 tw-pt-1">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
       </div>
