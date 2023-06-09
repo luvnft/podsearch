@@ -28,6 +28,7 @@ export interface Hit {
   link: string;
   youtubeVideoLink?: string;
   deviationTime?: number;
+  id: string;
   _formatted: Formatted;
 }
 

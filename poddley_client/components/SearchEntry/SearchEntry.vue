@@ -28,7 +28,7 @@
           <ButtonsRssButton :link="props.searchEntry.url" />
         </div>
         <div class="col m-0">
-          <ButtonsCopyLinkButton segmentId="ok" />
+          <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
         </div>
       </div>
       <div class="row d-flex flex-grow-1 w-100">

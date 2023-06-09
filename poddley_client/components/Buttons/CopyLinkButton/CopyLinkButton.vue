@@ -1,6 +1,7 @@
 <template>
   <div class="tw-m-0 tw-flex tw-flex-row tw-items-center tw-gap-1 tw-text-gray-600 tw-no-underline">
     <button
+      @click="handleCopyClick"
       type="button"
       class="d-flex items-center font-medium tw-group tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-text-gray-400 tw-no-underline tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm"
     >
@@ -14,4 +15,9 @@
 const props = defineProps<{
   segmentId: string;
 }>();
+
+async function handleCopyClick() {
+  console.log("Calling you fat")
+  navigator.clipboard.writeText(props.segmentId);
+}
 </script>
