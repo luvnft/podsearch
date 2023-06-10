@@ -136,15 +136,15 @@ server {
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Offer public API through external service
-- [ ] Legg til Remote Desktop til stasjon'r
+- [ ] Legg til Remote Desktop til stasjonær
 - [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Fix navbar
 - [ ] Detach logic of searching from navbar
-- [ ] Set max 5 res
 - [ ] Add info component
-- [ ] Fix unique segment issue by modifying triplet
+- [x] Fix unique segment issue by modifying triplet
+- [ ] Refactor the returning logic backend
 - [ ] Lag troof blog
 - [ ] Lag lobsters blog
 - [ ] Lag egen lobsters type
