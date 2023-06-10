@@ -89,15 +89,7 @@ server {
   - Negative means the youtube video needs the addition of time
 
 ## Features planned adding:
-### Do maybes
-- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-- [ ] Microphone-recording to text search (like Shazam)
-- [ ] Login/Sign-up functionality to enable users to save podcasts.
-- [ ] Native app?
-- [ ] Add faceting for episode and podcast (route for episode og podcast)
-- [ ] Set up CI/CD pipeline for backend
-
-### Do musts
+### Do-es
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] ~~Joe Rogan Recorder~~(illegal)
@@ -130,15 +122,29 @@ server {
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [x] Remove bold tab bar
+- [x] Add loading spinner to the audio player as in v-if
+- [x] Legg til loading for audio while loading
+- [x] Legg til segment id 
+- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
+- [ ] Microphone-recording to text search (like Shazam)
+- [ ] Login/Sign-up functionality to enable users to save podcasts.
+- [ ] Native app?
+- [ ] Add faceting for episode and podcast (route for episode og podcast)
+- [ ] Set up CI/CD pipeline for backend
 - [ ] Make MeiliSearch production probably.
-- [ ] Legg til segment id 
 - [ ] Make the types shared between backend and client
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
-- [x] Add loading spinner to the audio player as in v-if
-- [ ] Offer publig API through external service
-- [x] Legg til loading for audio while loading
-- [ ] Legg til Remote Desktop til stasjon'r
+- [ ] Offer public API through external service
+- [ ] Legg til Remote Desktop til stasjonær
 - [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
+- [ ] Fix navbar
+- [ ] Detach logic of searching from navbar
+- [ ] Add info component
+- [x] Fix unique segment issue by modifying triplet
+- [ ] Refactor the returning logic backend
+- [ ] Lag troof blog
+- [ ] Lag lobsters blog
+- [ ] Lag egen lobsters type
