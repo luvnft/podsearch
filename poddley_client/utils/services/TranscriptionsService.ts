@@ -5,22 +5,31 @@ export default class TranscriptionService extends ApiService {
     super();
   }
 
-  public async search(searchString: string): Promise<SearchResponse> {
-    const res = await useFetch("/transcriptions", {
+  public async getNew(): Promise<SearchResponse> {
+    const res = await useFetch("/transcriptions/new", {
       method: "GET",
-      query: {
-        searchString: searchString,
-      },
       baseURL: this.BASE_URL,
     });
     const data: SearchResponse = res.data.value as SearchResponse;
     return data;
   }
 
-  public async getTrendingQuotes(): Promise<SearchResponse> {
-    const res = await useFetch("/trendingQuotes", {
+  public async getTrending(): Promise<SearchResponse> {
+    const res = await useFetch("/transcriptions/trending", {
       method: "GET",
       baseURL: this.BASE_URL,
+    });
+    const data: SearchResponse = res.data.value as SearchResponse;
+    return data;
+  }
+
+  public async getSegment(segmentId: string): Promise<SearchResponse> {
+    const res = await useFetch("/transcriptions/segment", {
+      method: "GET",
+      baseURL: this.BASE_URL,
+      query: {
+        segmentId: segmentId,
+      },
     });
     const data: SearchResponse = res.data.value as SearchResponse;
     return data;

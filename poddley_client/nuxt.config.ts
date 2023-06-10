@@ -24,11 +24,6 @@ export default defineNuxtConfig({
     },
   },
   modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt"],
-  routeRules: {
-    "/": {
-      redirect: "/home",
-    },
-  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,

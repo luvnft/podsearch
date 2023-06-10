@@ -7,7 +7,7 @@
     >
       <IconsCopyLinkIcon class="tw-h-6 tw-w-6 group-hover:tw-fill-gray-500 group-hover:tw-text-gray-600" aria-hidden="true" />
       <span v-if="!textVisible" class="tw-text-gray-500 group-hover:tw-text-gray-600 group-active:tw-text-gray-600">copy</span>
-      <span v-if="textVisible" class="text">copied</span>
+      <span v-if="textVisible">copied</span>
     </button>
   </div>
 </template>
@@ -20,7 +20,7 @@ const props = defineProps<{
 const textVisible: Ref<Boolean> = ref(false);
 
 async function handleCopyClick() {
-  navigator.clipboard.writeText(useRuntimeConfig().public.HOMEPAGE + "/home?search=" + props.segmentId);
+  navigator.clipboard.writeText(useRuntimeConfig().public.HOMEPAGE + "/home?id=" + props.segmentId);
   showText();
 }
 
@@ -31,17 +31,3 @@ function showText() {
   }, 2000);
 }
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-.text {
-  opacity: 1;
-}
-</style>

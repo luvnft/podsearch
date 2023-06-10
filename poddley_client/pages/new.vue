@@ -4,7 +4,6 @@
 </template>
 
 <script lang="ts" setup>
-//Imports
 import { SearchResponse } from '~/types/SearchResponse';
 import TranscriptionService from '~/utils/services/TranscriptionsService';
 
@@ -15,7 +14,7 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 //Initialization function
 async function initialLoad() {
   loading.value = true;
-  searchResults.value = await transcriptionService.getTrending();
+  searchResults.value = await transcriptionService.getNew();
   loading.value = false;
 }
 
