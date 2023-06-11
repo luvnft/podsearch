@@ -19,9 +19,28 @@ class TranscriptionsController {
     }
   };
 
-  public getTop10Segments = async (req: Request, res: Response) => {
+  public getTrending = async (req: Request, res: Response) => {
     try {
-      const data: SearchResponse = await this.transcriptionService.getTop10Segments();
+      const data: SearchResponse = await this.transcriptionService.getTrending();
+      res.status(200).send(data);
+    } catch (error: any) {
+      res.status(400).send({ message: JSON.stringify(error) });
+    }
+  };
+
+  public getSegment = async (req: Request, res: Response) => {
+    try {
+      const segmentId: string = (req.query.segmentId as string) || "";
+      const data: SearchResponse = await this.transcriptionService.getSegment(segmentId);
+      res.status(200).send(data);
+    } catch (error: any) {
+      res.status(400).send({ message: JSON.stringify(error) });
+    }
+  };
+
+  public getNew = async (req: Request, res: Response) => {
+    try {
+      const data: SearchResponse = await this.transcriptionService.getNew();
       res.status(200).send(data);
     } catch (error: any) {
       res.status(400).send({ message: JSON.stringify(error) });

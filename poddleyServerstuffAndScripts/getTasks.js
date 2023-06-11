@@ -39,14 +39,7 @@ async function main() {
   //   },
   // });
 
-  // segmentsIndex.updateTypoTolerance({
-  //   minWordSizeForTypos: {
-  //     oneTypo: 4,
-  //     twoTypos: 10,
-  //   },
-  // });
-
-  segmentsIndex.updateFilterableAttributes(["id"]);
+  segmentsIndex.updateFilterableAttributes(["belongsToEpisodeGuid", "id"]);
   // podcastsIndex.updateFilterableAttributes(["podcastGuid"]);
   // episodesIndex.updateFilterableAttributes(["episodeGuid"]);
 

@@ -20,8 +20,8 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //Use the routes
-app.use(transcriptionsRouter);
-app.use(imagesRouter);
+app.use("/transcriptions", transcriptionsRouter);
+app.use("/images", imagesRouter);
 
 //Listen on port
 app.listen(port, () => {
