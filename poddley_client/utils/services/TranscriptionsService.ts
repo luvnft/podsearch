@@ -23,7 +23,7 @@ export default class TranscriptionService extends ApiService {
     return data;
   }
 
-  public async getSegment(segmentId: string): Promise<SearchResponse> {
+  public async getSegment(segmentId: string | null): Promise<SearchResponse> {
     const res = await useFetch("/transcriptions/segment", {
       method: "GET",
       baseURL: this.BASE_URL,

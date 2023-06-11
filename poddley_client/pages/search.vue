@@ -4,6 +4,7 @@
   </template>
   
   <script lang="ts" setup>
+  //Imports
   import { SearchResponse } from '~/types/SearchResponse';
   import TranscriptionService from '~/utils/services/TranscriptionsService';
   
@@ -14,7 +15,7 @@
   //Initialization function
   async function initialLoad() {
     loading.value = true;
-    // searchResults.value = await transcriptionService.getNew();
+    searchResults.value = await transcriptionService.getNew();
     loading.value = false;
   }
   

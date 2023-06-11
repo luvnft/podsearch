@@ -2,15 +2,18 @@ import { MeiliSearch } from "meilisearch";
 
 // Load the environment variables from the .env file
 async function main() {
+  dotenv.config();
   console.log("Running getTasks");
-  const client = new MeiliSearch({ host: "localhost:7700" });
+  console.log(process.env)
+  const client = new MeiliSearch({ host: `${process.env.MEILISEARCH_IP}` });
 
   await client.deleteIndex("segments");
   // await client.deleteIndex("transcriptions");
 
   // const transcriptionsIndex = await client.index("transcriptions");
+  // const transcriptionsIndex = await client.index("transcriptions");
   const segmentsIndex = await client.index("segments");
-  const episodesIndex = await client.index("episodes");
+  // const episodesIndex = await client.index("episodes");
   // const podcastsIndex = await client.index("podcasts");
 
   // segmentsIndex.deleteAllDocuments();
@@ -29,41 +32,39 @@ async function main() {
   //   },
   // });
 
-  segmentsIndex.updateTypoTolerance({
-    minWordSizeForTypos: {
-      oneTypo: 4,
-      twoTypos: 10,
-    },
-  });
+  // transcriptionsIndex.updateTypoTolerance({
+  //   minWordSizeForTypos: {
+  //     oneTypo: 4,
+  //     twoTypos: 10,
+  //   },
+  // });
 
   segmentsIndex.updateFilterableAttributes(["belongsToEpisodeGuid", "id"]);
   // podcastsIndex.updateFilterableAttributes(["podcastGuid"]);
   // episodesIndex.updateFilterableAttributes(["episodeGuid"]);
 
-  // //Update ranking rules for seg and tra
+  //Update ranking rules for seg and tra
   segmentsIndex.updateSettings({
-    rankingRules: ["exactness", "proximity", "typo", "words"],
+    rankingRules: ["proximity", "typo", "words"],
   });
-  // transcriptionsIndex.updateSettings({
-  //   rankingRules: ["proximity", "typo", "words"],
-  // });
-  // transcriptionsIndex.updateSettings({
-  //   searchableAttributes: ["transcription"],
-  //   displayedAttributes: ["*"],
-  // });
-  // podcastsIndex.updateSettings({
-  //   searchableAttributes: ["*"],
-  //   displayedAttributes: ["*"],
-  // });
+  transcriptionsIndex.updateSettings({
+    rankingRules: ["proximity", "typo", "words"],
+  });
   segmentsIndex.updateSettings({
     searchableAttributes: ["text"],
     displayedAttributes: ["*"],
-    sortableAttributes: ["start"]
+  });
+  transcriptionsIndex.updateSettings({
+    searchableAttributes: ["transcription"],
+    displayedAttributes: ["*"],
+  });
+  podcastsIndex.updateSettings({
+    searchableAttributes: ["*"],
+    displayedAttributes: ["*"],
   });
   episodesIndex.updateSettings({
     searchableAttributes: ["*"],
     displayedAttributes: ["*"],
-    sortableAttributes: ["addedDate"],
   });
 }
 
