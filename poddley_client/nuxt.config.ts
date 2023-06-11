@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: {
       brotli: true,
-      gzip: false
+      gzip: false,
     },
   },
   pages: true,
@@ -23,7 +23,30 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt"],
+  modules: [
+    "@pinia/nuxt",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/device",
+    "@vueuse/nuxt",
+    "nuxt-delay-hydration",
+    [
+      "nuxt-purgecss",
+      {
+        // Whitelist specific classes or patterns
+        whitelist: ["tw-*"],
+
+        // Whitelist specific selectors or patterns
+        whitelistPatterns: [/^tw-/],
+
+        // Whitelist specific files
+        whitelistPatternsChildren: [/^tw-/],
+      },
+    ],
+  ],
+  delayHydration: {
+    // enables nuxt-delay-hydration in dev mode for testing
+    debug: process.env.NODE_ENV === "development",
+  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
