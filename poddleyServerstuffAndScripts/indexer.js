@@ -1,19 +1,16 @@
 import * as dotenv from "dotenv";
 dotenv.config("./");
 console.log(process.env.MEILISEARCH_IP); // remove this after you've confirmed it is working
-import { PrismaClient } from "@prisma/client";
+
+import prismaConnection from "./prismaConnection.js";
 import fs from "fs";
 import { MeiliSearch } from "meilisearch";
-import flattenObjectOuter from "./flattenObject.js";
-import JSONStream from "JSONStream";
-import ndjson from "ndjson";
 
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function main() {
-  const prismaConnection = new PrismaClient();
   const client = await new MeiliSearch({ host: "localhost:7700" });
   const transcriptionsIndex = client.index("transcriptions");
   const segmentsIndex = client.index("segments");
@@ -21,16 +18,16 @@ async function main() {
   const episodesIndex = client.index("episodes");
 
   console.log("Starting...");
-  // await prismaConnection.segment.updateMany({
-  //   data: {
-  //     indexed: false,
-  //   },
-  // });
-  // await prismaConnection.transcription.updateMany({
-  //   data: {
-  //     indexed: false,
-  //   },
-  // });
+  await prismaConnection.segment.updateMany({
+    data: {
+      indexed: false,
+    },
+  });
+  await prismaConnection.transcription.updateMany({
+    data: {
+      indexed: false,
+    },
+  });
   await prismaConnection.podcast.updateMany({
     data: {
       indexed: false,
@@ -50,8 +47,8 @@ async function main() {
   console.log("Getting episodes stuff and podcasts");
   const podcasts = await prismaConnection.podcast.findMany();
   const episodes = await prismaConnection.episode.findMany();
-  console.log("Adding podcastas and episodes");
 
+  console.log("Adding podcasts");
   await podcastsIndex.addDocumentsInBatches(podcasts, 1000, {
     primaryKey: "id",
   });
@@ -59,7 +56,7 @@ async function main() {
     primaryKey: "id",
   });
   const podcastIds = podcasts.map((e) => e.id);
-  const episodesIds = episodes.map((e) => e.id);
+  // const episodesIds = episodes.map((e) => e.id);
 
   await prismaConnection.podcast.updateMany({
     where: {
@@ -71,16 +68,16 @@ async function main() {
       indexed: true,
     },
   });
-  await prismaConnection.episode.updateMany({
-    where: {
-      id: {
-        in: episodesIds,
-      },
-    },
-    data: {
-      indexed: true,
-    },
-  });
+  // await prismaConnection.episode.updateMany({
+  //   where: {
+  //     id: {
+  //       in: episodesIds,
+  //     },
+  //   },
+  //   data: {
+  //     indexed: true,
+  //   },
+  // });
 
   const segmentCount = await prismaConnection.segment.count({
     where: {
@@ -148,7 +145,7 @@ async function main() {
     console.log("Adding Segments: ", segments.length, "I is: ", i);
 
     var ids = segments.map((e) => e.id);
-    await segmentsIndex.addDocumentsInBatches(segments, 40000, {
+    await segmentsIndex.addDocumentsInBatches(segments, segmentTake, {
       primaryKey: "id",
     });
     await prismaConnection.segment.updateMany({
@@ -164,7 +161,6 @@ async function main() {
     segments = [];
     await sleep(5000);
   }
-  await prismaConnection.$disconnect();
 }
 
 main();
