@@ -30,6 +30,11 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3001" : "poddley.com",
     },
   },
+  routeRules: {
+    "/": {
+      redirect: "/home",
+    },
+  },
   app: {
     head: {
       htmlAttrs: {
