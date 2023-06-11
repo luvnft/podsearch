@@ -40,6 +40,17 @@ export default defineNuxtConfig({
 
         // Whitelist specific files
         whitelistPatternsChildren: [/^tw-/],
+
+        // Specify the paths to all of the template files in your project
+        paths: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue", "plugins/**/*.js", "nuxt.config.js"],
+
+        // Specify the default extractor for extracting class names from the templates
+        extractors: () => [
+          {
+            extractor: (content: any) => content.match(/[A-Za-z0-9-_:/]+/g) || [],
+            extensions: ["html", "vue", "js"],
+          },
+        ],
       },
     ],
   ],
