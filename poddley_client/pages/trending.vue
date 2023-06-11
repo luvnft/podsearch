@@ -1,12 +1,12 @@
 <template>
   <NavigationBar :loading="loading" />
-  <SearchResults :searchEntries="searchResults.hits" />
+  <SearchResults :searchEntries="searchResults.hits" v-if="searchResults" />
 </template>
 
 <script lang="ts" setup>
 //Imports
-import { SearchResponse } from '~/types/SearchResponse';
-import TranscriptionService from '~/utils/services/TranscriptionsService';
+import { SearchResponse } from "~/types/SearchResponse";
+import TranscriptionService from "~/utils/services/TranscriptionsService";
 
 let loading: Ref<boolean> = ref(false);
 let searchResults: Ref<SearchResponse> = ref({} as SearchResponse);

@@ -5,8 +5,6 @@
         <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
       </div>
       <input
-        v-on:input="debouncedTriggerSearch()"
-        v-model="searchStore.searchString"
         type="text"
         name="search"
         id="search"
@@ -15,7 +13,6 @@
       />
     </div>
     <button
-      @click="triggerSearch()"
       type="button"
       class="10 tw-group tw-flex tw-w-12 tw-items-center tw-justify-center tw-rounded-r-md tw-border-l tw-border-gray-300 tw-border-solid tw-bg-gray-50 tw-p-2 tw-text-gray-700 tw-shadow-sm hover:tw-bg-gray-100 active:tw-shadow-none"
     >
@@ -27,27 +24,25 @@
 
 <script lang="ts" setup>
 import { debounce } from "~~/utils/tools/tools";
-import { useSearchStore } from "@/store/searchStore";
 
 //Vars
 let loading: Ref<boolean> = ref(false);
 
-const searchStore = useSearchStore();
 const route = useRoute();
 const router = useRouter();
 
-//TriggerSearch
-async function triggerSearch() {
-  loading.value = true;
-  updateUrl();
-  await searchStore.search(searchStore.searchString);
-  loading.value = false;
+// //TriggerSearch
+// async function triggerSearch() {
+//   loading.value = true;
+//   updateUrl();
+//   await searchStore.search(searchStore.searchString);
+//   loading.value = false;
 
-}
+// }
 
-const updateUrl = () => {
-  router.push({ query: { ...route.query, search: searchStore.searchString } });
-};
+// const updateUrl = () => {
+//   router.push({ query: { ...route.query, search: searchStore.searchString } });
+// };
 
-const debouncedTriggerSearch = debounce(triggerSearch, 200);
+// const debouncedTriggerSearch = debounce(triggerSearch, 200);
 </script>
