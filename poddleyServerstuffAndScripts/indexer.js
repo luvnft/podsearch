@@ -39,10 +39,10 @@ async function main() {
     },
   });
 
-  // segmentsIndex.deleteAllDocuments();
-  // transcriptionsIndex.deleteAllDocuments();
-  // episodesIndex.deleteAllDocuments();
-  // podcastsIndex.deleteAllDocuments();
+  segmentsIndex.deleteAllDocuments();
+  transcriptionsIndex.deleteAllDocuments();
+  episodesIndex.deleteAllDocuments();
+  podcastsIndex.deleteAllDocuments();
 
   console.log("Getting episodes stuff and podcasts");
   const podcasts = await prismaConnection.podcast.findMany();
@@ -68,16 +68,16 @@ async function main() {
       indexed: true,
     },
   });
-  // await prismaConnection.episode.updateMany({
-  //   where: {
-  //     id: {
-  //       in: episodesIds,
-  //     },
-  //   },
-  //   data: {
-  //     indexed: true,
-  //   },
-  // });
+  await prismaConnection.episode.updateMany({
+    where: {
+      id: {
+        in: episodesIds,
+      },
+    },
+    data: {
+      indexed: true,
+    },
+  });
 
   const segmentCount = await prismaConnection.segment.count({
     where: {
