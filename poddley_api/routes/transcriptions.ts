@@ -8,8 +8,9 @@ const transcriptionsController: TranscriptionsController = new TranscriptionsCon
 const transcriptionsRouter: express.Router = express.Router();
 
 //Get Routes
-transcriptionsRouter.get("/transcriptions", transcriptionsController.search);
-transcriptionsRouter.get("/trendingQuotes", transcriptionsController.getTop10Segments);
+transcriptionsRouter.get("/new", transcriptionsController.getNew);
+transcriptionsRouter.get("/trending", transcriptionsController.getTrending);
+transcriptionsRouter.get("/segment", transcriptionsController.getSegment);
 
 //Export it
 export default transcriptionsRouter;

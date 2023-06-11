@@ -22,10 +22,10 @@ const imagesController: ImagesController = new ImagesController();
 const imagesRouter: express.Router = express.Router();
 
 //Get Routes
-imagesRouter.get("/images/:filename", imagesController.getImage);
+imagesRouter.get("/:filename", imagesController.getImage);
 
 //Post Routes
-imagesRouter.post("/images", basicAuthorization, imagesController.uploadImage);
+imagesRouter.post("/", basicAuthorization, imagesController.uploadImage);
 
 //Export it
 export default imagesRouter;

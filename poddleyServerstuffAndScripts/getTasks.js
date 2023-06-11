@@ -36,7 +36,7 @@ async function main() {
     },
   });
 
-  segmentsIndex.updateFilterableAttributes(["belongsToEpisodeGuid"]);
+  segmentsIndex.updateFilterableAttributes(["belongsToEpisodeGuid", "id"]);
   // podcastsIndex.updateFilterableAttributes(["podcastGuid"]);
   // episodesIndex.updateFilterableAttributes(["episodeGuid"]);
 
