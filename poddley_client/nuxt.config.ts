@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/": {
-      redirect: "/home",
+      redirect: "/new",
     },
   },
   app: {
