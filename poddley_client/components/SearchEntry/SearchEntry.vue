@@ -12,6 +12,7 @@
             webp
             poster="maxresdefault"
             wrapperClass="yt-lite tw-rounded-lg"
+            name="youtubePlayButton"
           />
         </div>
       </div>
