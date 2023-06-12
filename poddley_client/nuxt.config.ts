@@ -32,14 +32,9 @@ export default defineNuxtConfig({
     [
       "nuxt-purgecss",
       {
-        // Whitelist specific classes or patterns
-        whitelist: ["tw-*"],
-
-        // Whitelist specific selectors or patterns
-        whitelistPatterns: [/^tw-/],
-
-        // Whitelist specific files
-        whitelistPatternsChildren: [/^tw-/],
+        whitelist: ["tw"],
+        whitelistPatterns: [/tw-.*/],
+        paths: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue", "plugins/**/*.js", "node_modules/tailwindcss/lib/plugins/**/*.js", "assets/css/bootstrap.min.css"],
       },
     ],
   ],
