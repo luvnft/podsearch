@@ -8,7 +8,7 @@
         <div class="col d-flex align-items-center tw-justify-center tw-gap-1.5 md:tw-justify-start">
           <SearchBoxSection />
           <ButtonsContactButton />
-          <a href="https://www.buymeacoffee.com/poddley">
+          <a href="https://www.buymeacoffee.com/poddley" title="donateLink">
             <ButtonsDonateButton />
           </a>
         </div>

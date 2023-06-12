@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     "~/assets/css/global/global.css",
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.min.css",
-    "vue-lite-youtube-embed/style.css",
   ],
   nitro: {
     compressPublicAssets: {
@@ -29,19 +28,6 @@ export default defineNuxtConfig({
     "@nuxtjs/device",
     "@vueuse/nuxt",
     "nuxt-delay-hydration",
-    [
-      "nuxt-purgecss",
-      {
-        // Whitelist specific classes or patterns
-        whitelist: ["tw-*"],
-
-        // Whitelist specific selectors or patterns
-        whitelistPatterns: [/^tw-/],
-
-        // Whitelist specific files
-        whitelistPatternsChildren: [/^tw-/],
-      },
-    ],
   ],
   delayHydration: {
     // enables nuxt-delay-hydration in dev mode for testing
