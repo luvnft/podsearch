@@ -18,67 +18,19 @@ async function main() {
   const episodesIndex = client.index("episodes");
 
   console.log("Starting...");
-  await prismaConnection.segment.updateMany({
-    data: {
-      indexed: false,
-    },
-  });
-  await prismaConnection.transcription.updateMany({
-    data: {
-      indexed: false,
-    },
-  });
-  await prismaConnection.podcast.updateMany({
-    data: {
-      indexed: false,
-    },
-  });
-  await prismaConnection.episode.updateMany({
-    data: {
-      indexed: false,
-    },
-  });
-
-  segmentsIndex.deleteAllDocuments();
-  transcriptionsIndex.deleteAllDocuments();
-  episodesIndex.deleteAllDocuments();
-  podcastsIndex.deleteAllDocuments();
-
-  console.log("Getting episodes stuff and podcasts");
+  console.log("Getting episodes and podcasts");
   const podcasts = await prismaConnection.podcast.findMany();
   const episodes = await prismaConnection.episode.findMany();
 
-  console.log("Adding podcasts");
+  //Always updating these as they have important values which may change
+  console.log("Adding podcasts, the number to add is:", podcasts.length);
   await podcastsIndex.addDocumentsInBatches(podcasts, 1000, {
     primaryKey: "id",
   });
+  console.log("Adding episodes, the number to add is:", episodes.length);
   await episodesIndex.addDocumentsInBatches(episodes, 1000, {
     primaryKey: "id",
   });
-  const podcastIds = podcasts.map((e) => e.id);
-  // const episodesIds = episodes.map((e) => e.id);
-
-  await prismaConnection.podcast.updateMany({
-    where: {
-      id: {
-        in: podcastIds,
-      },
-    },
-    data: {
-      indexed: true,
-    },
-  });
-  await prismaConnection.episode.updateMany({
-    where: {
-      id: {
-        in: episodesIds,
-      },
-    },
-    data: {
-      indexed: true,
-    },
-  });
-
   const segmentCount = await prismaConnection.segment.count({
     where: {
       indexed: false,
@@ -90,11 +42,11 @@ async function main() {
     },
   });
 
-  console.log("Segmentcount: ", segmentCount);
-  console.log("TranscriptionCount: ", transcriptionCount);
+  console.log("Segments with indexed value === false: ", segmentCount);
+  console.log("Transcriptions with indexed value === false: ", transcriptionCount);
 
-  //Transcription json creation
-  let transcriptionTake = 500;
+  console.log("Adding transcriptions...")
+  let transcriptionTake = 50;
 
   //We loop through all the transcriptions
   for (let i = 0; i < transcriptionCount; i = i + transcriptionTake) {
@@ -112,7 +64,7 @@ async function main() {
     console.log("Adding transcriptions: ", transcriptions.length, "I is: ", i);
 
     var ids = transcriptions.map((e) => e.id);
-    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 500, {
+    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 50, {
       primaryKey: "id",
     });
     await prismaConnection.transcription.updateMany({
@@ -129,6 +81,7 @@ async function main() {
     await sleep(5000);
   }
 
+  console.log("Adding segments...")
   let segmentTake = 10000;
 
   //We loop through all the segments
@@ -139,14 +92,14 @@ async function main() {
       where: {
         indexed: false,
       },
-    });
+    });   
 
     if (!segments || segments.length === 0) break;
-    console.log("Adding Segments: ", segments.length, "I is: ", i);
-
+    console.log("Adding Segments: ", segments.length, "I is: ", i); 
+ 
     var ids = segments.map((e) => e.id);
     await segmentsIndex.addDocumentsInBatches(segments, segmentTake, {
-      primaryKey: "id",
+      primaryKey: "id", 
     });
     await prismaConnection.segment.updateMany({
       where: {

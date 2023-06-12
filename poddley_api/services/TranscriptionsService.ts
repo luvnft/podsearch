@@ -106,8 +106,7 @@ class TranscriptionsService {
     const episodeIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid);
 
     //Get the podcasts and episodes
-    const podcasts: PodcastResponse = await this.searchPodcastsWithIds(podcastIds);
-    const episodes: EpisodeResponse = await this.searchEpisodesWithIds(episodeIds);
+    const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
     const podcastsObject: { [key: string]: PodcastHit } = {};
     const episodesObject: { [key: string]: EpisodeHit } = {};
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
@@ -353,7 +352,7 @@ class TranscriptionsService {
     const startTime = new Date().getTime();
     //Getting
     const tenNewestEpisodes: any = await this.episodesIndex.search(null, {
-      limit: 10,
+      limit: 5,
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
@@ -368,14 +367,15 @@ class TranscriptionsService {
       queries.push({
         indexUid: "segments",
         limit: 1,
-        q: null,
         filter: filter,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
         highlightPostTag: "</span>",
-        // sort: ["start:asc"], //This sadly doesnt work as file descriptor limit is 1024`2 in digitalocean ...
+        sort: ["start:asc"],
       });
     }
+
+    console.log("Queries: ", queries.length);
 
     //We perform the query and then we get SearchResultHits
     const d = await this.meilisearchConnection.multiSearch({
@@ -384,11 +384,9 @@ class TranscriptionsService {
 
     //Flatten and get all hits
     const allHits: any = d.results.map((e: any) => e.hits).flat();
-    console.log("AllHits: ", allHits.length);
 
     //Get the podcasts and episodes
-    const podcasts: PodcastResponse = await this.searchPodcastsWithIds(podcastIds);
-    const episodes: EpisodeResponse = await this.searchEpisodesWithIds(episodeIds);
+    const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
     const podcastsObject: { [key: string]: PodcastHit } = {};
     const episodesObject: { [key: string]: EpisodeHit } = {};
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
@@ -468,8 +466,7 @@ class TranscriptionsService {
     const episodeIds: string[] = segmentResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid);
 
     //Get the podcasts and episodes
-    const podcasts: PodcastResponse = await this.searchPodcastsWithIds(podcastIds);
-    const episodes: EpisodeResponse = await this.searchEpisodesWithIds(episodeIds);
+    const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
     const podcastsObject: { [key: string]: PodcastHit } = {};
     const episodesObject: { [key: string]: EpisodeHit } = {};
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
@@ -483,7 +480,7 @@ class TranscriptionsService {
       limit: undefined,
       offset: undefined,
       estimatedTotalHits: undefined,
-    }; 
+    };
 
     const segment = segmentResponse.hits[0];
     const searchResponseHit: SearchResponseHit = {
@@ -492,10 +489,10 @@ class TranscriptionsService {
       episodeTitle: episodesObject[segment.belongsToEpisodeGuid].episodeTitle,
       podcastSummary: podcastsObject[segment.belongsToPodcastGuid].description,
       episodeSummary: episodesObject[segment.belongsToEpisodeGuid].episodeSummary,
-      description: podcastsObject[segment.belongsToPodcastGuid].description, 
+      description: podcastsObject[segment.belongsToPodcastGuid].description,
       text: segment.text,
       podcastAuthor: podcastsObject[segment.belongsToPodcastGuid].itunesAuthor,
-      belongsToTranscriptId: segment.belongsToTranscriptId, 
+      belongsToTranscriptId: segment.belongsToTranscriptId,
       start: segment.start,
       end: segment.end,
       episodeLinkToEpisode: episodesObject[segment.belongsToEpisodeGuid].episodeLinkToEpisode,
