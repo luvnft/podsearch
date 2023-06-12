@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     "~/assets/css/global/global.css",
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.min.css",
-    "vue-lite-youtube-embed/style.css",
+    "~/assets/css/imports/yt-lite.css",
+
   ],
   nitro: {
     compressPublicAssets: {

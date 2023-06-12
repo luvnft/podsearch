@@ -9,7 +9,6 @@ module.exports = {
   plugins: [],
   prefix: "tw-",
   important: true,
-  jit:true,
   theme: {
     extend: {
       keyframes: {
