@@ -68,6 +68,7 @@
 import { Hit } from "~~/types/SearchResponse";
 import { convertSecondsToTime } from "~~/utils/tools/tools";
 import LiteYouTubeEmbed from "vue-lite-youtube-embed";
+import "vue-lite-youtube-embed/style.css";
 
 const props = defineProps<{
   searchEntry: Hit;
@@ -132,5 +133,4 @@ const props = defineProps<{
   position: relative;
   box-shadow: 0 0 1px #5e5e5e, 0 0 1px #383838, 0 0 2px #141414;
 }
-
 </style>

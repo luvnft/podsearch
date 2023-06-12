@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     "~/assets/css/global/global.css",
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.min.css",
-    "~/assets/css/imports/yt-lite.css"
   ],
   nitro: {
     compressPublicAssets: {
@@ -29,12 +28,7 @@ export default defineNuxtConfig({
     "@nuxtjs/device",
     "@vueuse/nuxt",
     "nuxt-delay-hydration",
-    'nuxt-purgecss',
   ],
-  purgecss: {
-    enabled: true, // Always enable purgecss
-    safelist: ["tw-"],
-  },
   delayHydration: {
     // enables nuxt-delay-hydration in dev mode for testing
     debug: process.env.NODE_ENV === "development",
