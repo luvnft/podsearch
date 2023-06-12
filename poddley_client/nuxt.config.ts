@@ -28,8 +28,13 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/device",
     "@vueuse/nuxt",
-    "nuxt-delay-hydration"
+    "nuxt-delay-hydration",
+    'nuxt-purgecss',
   ],
+  purgecss: {
+    enabled: true, // Always enable purgecss
+    safelist: ["tw-"],
+  },
   delayHydration: {
     // enables nuxt-delay-hydration in dev mode for testing
     debug: process.env.NODE_ENV === "development",
