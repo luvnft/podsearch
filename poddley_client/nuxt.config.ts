@@ -32,9 +32,9 @@ export default defineNuxtConfig({
     [
       "nuxt-purgecss",
       {
-        whitelist: ["tw"],
+        whitelist: ["tw-"],
         whitelistPatterns: [/tw-.*/],
-        paths: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue", "plugins/**/*.js", "node_modules/tailwindcss/lib/plugins/**/*.js", "assets/css/bootstrap.min.css"],
+        paths: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue", "plugins/**/*.js", "node_modules/tailwindcss/lib/plugins/**/*.js", "/assets/css/imports/bootstrap.min"],
       },
     ],
   ],
