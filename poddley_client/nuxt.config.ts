@@ -28,15 +28,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/device",
     "@vueuse/nuxt",
-    "nuxt-delay-hydration",
-    [
-      "nuxt-purgecss",
-      {
-        whitelist: ["tw-"],
-        whitelistPatterns: [/tw-.*/],
-        paths: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue", "plugins/**/*.js", "node_modules/tailwindcss/lib/plugins/**/*.js", "/assets/css/imports/bootstrap.min"],
-      },
-    ],
+    "nuxt-delay-hydration"
   ],
   delayHydration: {
     // enables nuxt-delay-hydration in dev mode for testing
