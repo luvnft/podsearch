@@ -14,7 +14,7 @@ class TranscriptionsService {
   public prismaConnection: PrismaClient = {} as PrismaClient;
   public meilisearchConnection: MeiliSearch;
   public searchString: string = "";
-  public segmentsIndex: Index;
+  public segmentsIndex: Index; 
   public podcastsIndex: Index;
   public episodesIndex: Index;
 
@@ -26,7 +26,7 @@ class TranscriptionsService {
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
   }
-
+ 
   //Returns unique hits for a SegmentHit array
   public removeDuplicateSegmentHits(hits: SegmentHit[]): SegmentHit[] {
     // Remove duplicates
@@ -60,7 +60,9 @@ class TranscriptionsService {
 
   //Gets top 10 segments using a custom SQL query as the query is unecessary complicated with prisma
   public async getTrending(): Promise<SearchResponse> {
-    //First we try to get top 10 search queries on the last weeks trending, if length == 0 we take the global trending
+    const startTime = new Date().getTime();
+    console.log("Getting...")
+    // First we try to get top 10 search queries on the last weeks trending, if length == 0 we take the global trending
     let top10Queries: any[] = await this.prismaConnection.$queryRaw`
       SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count 
       FROM SearchLog
@@ -69,6 +71,8 @@ class TranscriptionsService {
       ORDER BY count DESC
       LIMIT 10;
     `;
+    console.log(`Time elapsed after first query: ${new Date().getTime() - startTime}ms`);
+  
     if (!top10Queries) {
       top10Queries = await this.prismaConnection.$queryRaw`
       SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count 
@@ -78,35 +82,41 @@ class TranscriptionsService {
       LIMIT 10;
     `;
     }
-    //Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
+    console.log(`Time elapsed after second query (if executed): ${new Date().getTime() - startTime}ms`);
+
+    // Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
     const queries: MultiSearchQuery[] = [];
     for (let i = 0; i < top10Queries.length; i++) {
-      const query: any = top10Queries[i];
+      const query: any = top10Queries[i].searchQueryLower.toLowerCase();
       queries.push({
         indexUid: "segments",
-        q: query.searchQueryLower,
+        q: query,
         limit: 1,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
         highlightPostTag: "</span>",
-        matchingStrategy: "last",
+        sort: ["start:asc"]
       });
     }
+    console.log(`Time elapsed after creating queries: ${new Date().getTime() - startTime}ms`);
 
-    //We perform the query and then we get SearchResultHits
+    // We perform the query and then we get SearchResultHits
     const d = await this.meilisearchConnection.multiSearch({
       queries: queries,
     });
+    console.log(`Time elapsed after multiSearch: ${new Date().getTime() - startTime}ms`);
 
-    //Flatten and get all hits
+    // Flatten and get all hits
     const allHits: any = d.results.map((e: any) => e.hits).flat();
 
     // Adding podcasts and episodes to the corresponding segments
     const podcastIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid);
     const episodeIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid);
 
-    //Get the podcasts and episodes
+    // Get the podcasts and episodes
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
+    console.log(`Time elapsed after fetching podcasts and episodes: ${new Date().getTime() - startTime}ms`);
+
     const podcastsObject: { [key: string]: PodcastHit } = {};
     const episodesObject: { [key: string]: EpisodeHit } = {};
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
@@ -350,17 +360,18 @@ class TranscriptionsService {
 
   public async getNew(): Promise<SearchResponse> {
     const startTime = new Date().getTime();
-    //Getting
-    const tenNewestEpisodes: any = await this.episodesIndex.search(null, {
-      limit: 5,
+    // Getting
+    const tenNewestEpisodes: any = await this.episodesIndex.search(undefined, {
+      limit: 10,
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
-
+    console.log(`Time elapsed after tenNewestEpisodes: ${new Date().getTime() - startTime}ms`);
+  
     const episodeIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.episodeGuid);
     const podcastIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.podcastGuid);
-
-    //Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
+  
+    // Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
     const queries: MultiSearchQuery[] = [];
     for (let i = 0; i < episodeIds.length; i++) {
       const filter = "belongsToEpisodeGuid=" + "'" + episodeIds[i] + "'";
@@ -374,20 +385,24 @@ class TranscriptionsService {
         sort: ["start:asc"],
       });
     }
-
+  
     console.log("Queries: ", queries.length);
-
-    //We perform the query and then we get SearchResultHits
+    console.log(`Time elapsed after creating queries: ${new Date().getTime() - startTime}ms`);
+  
+    // We perform the query and then we get SearchResultHits
     const d = await this.meilisearchConnection.multiSearch({
       queries: queries,
     });
-
-    //Flatten and get all hits
+    console.log(`Time elapsed after multiSearch: ${new Date().getTime() - startTime}ms`);
+  
+    // Flatten and get all hits
     const allHits: any = d.results.map((e: any) => e.hits).flat();
-
-    //Get the podcasts and episodes
+  
+    // Get the podcasts and episodes
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
-    const podcastsObject: { [key: string]: PodcastHit } = {};
+    console.log(`Time elapsed after fetching podcasts and episodes: ${new Date().getTime() - startTime}ms`);
+  
+    const podcastsObject: { [key: string]: PodcastHit } = {}; 
     const episodesObject: { [key: string]: EpisodeHit } = {};
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
     episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
@@ -397,7 +412,7 @@ class TranscriptionsService {
       query: "",
       processingTimeMs: 0,
       limit: undefined,
-      offset: undefined,
+      offset: undefined, 
       estimatedTotalHits: undefined,
     };
 
@@ -431,11 +446,11 @@ class TranscriptionsService {
           episodeLinkToEpisode: episodesObject[segment.belongsToEpisodeGuid].episodeLinkToEpisode,
           episodeEnclosure: episodesObject[segment.belongsToEpisodeGuid].episodeEnclosure,
           podcastLanguage: podcastsObject[segment.belongsToPodcastGuid].language,
-          podcastGuid: podcastsObject[segment.belongsToPodcastGuid].podcastGuid,
+          podcastGuid: podcastsObject[segment.belongsToPodcastGuid].podcastGuid, 
           imageUrl: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
-          podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
+          podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl, 
           episodeGuid: episodesObject[segment.belongsToEpisodeGuid].episodeGuid,
-          url: podcastsObject[segment.belongsToPodcastGuid].url,
+          url: podcastsObject[segment.belongsToPodcastGuid].url, 
           link: podcastsObject[segment.belongsToPodcastGuid].link,
           youtubeVideoLink: episodesObject[segment.belongsToEpisodeGuid].youtubeVideoLink || "",
           deviationTime: episodesObject[segment.belongsToEpisodeGuid].deviationTime || 0,
