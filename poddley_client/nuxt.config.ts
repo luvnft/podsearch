@@ -64,12 +64,6 @@ export default defineNuxtConfig({
         { rel: "manifest", href: "/site.webmanifest" },
         { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#373737" },
       ],
-      script: [
-        {
-          src: "https://plausible.io/js/script.js",
-          async: true,
-        },
-      ],
     },
   },
 });
