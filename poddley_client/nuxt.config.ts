@@ -21,16 +21,16 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: [
-    "@pinia/nuxt",
-    "@nuxtjs/tailwindcss",
-    "@nuxtjs/device",
-    "@vueuse/nuxt",
-    "nuxt-delay-hydration",
-  ],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible"],
   delayHydration: {
     // enables nuxt-delay-hydration in dev mode for testing
     debug: process.env.NODE_ENV === "development",
+  },
+  plausible: {
+    domain: "poddley.com",
+    trackLocalhost: true,
+    autoPageviews: true,
+    autoOutboundTracking: true,
   },
   runtimeConfig: {
     public: {
