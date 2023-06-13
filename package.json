@@ -4,5 +4,8 @@
   },
   "dependencies": {
     "@prisma/client": "^4.15.0"
-  }
+  },
+  "scripts": {
+    "build_client": "cd poddley_client && nuxt build",
+  },
 }
