@@ -5,26 +5,23 @@
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
 ## Frontend:
-- Nuxt 3 for client-stuff
+- Nuxt 3 for client-stuff (with SSR for perfect SEO)
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
 - Pinia for store
 - TypeScript
-- TailwindCSS for UI adjustments
+- Pure TailwindCSS for UI adjustments and also the integrated PurgeCSS
 - Bootstrap + Bootstrap Studio for responsive layout as it provides good UI for modifying design
-- Netlify.com for CI/CD of Client code + using them as a DNS-manager for easier setup.
-- Tracking is done by Plausible
+- Cloudflare page for CI/CD of Client code + using them as a DNS-manager for easier setup.
+- Tracking is done by [Plausible](https://plausible.io/)
 
 ## Backend:
 ### API:
 - Route-Controller-Service structure for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
-- Written in TypeScript
-- Prisma ORM, taking use of Optimistic Concurrency with the Prisma Python Client + MySQL as database
+- The backend is written in TypeScript
+- Prisma Object Relational Mapper is used for database querying and modeling. Used with MySQL as database
 
 ### General NGINX reverse proxy setup
-
-``
-
-server {
+    server {
     listen 80;
     server_name api.poddley.com;
 
@@ -51,42 +48,65 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/api.poddley.com/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-}
+    }
 
-``
 ### Full-text searching
-- Automatic indexing of meilisearch indexes based on new data in MySQL database is done using a cron-job that pushes into the meilisearch indexes.
-- Runs 24/7 on this machine=>![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a)... used to run on a local computer running an RTX 1650, also tried running an RTX3060 using ADT-Link from the m.2 nvme port on an laptop as a eGPU. That was deeply unsuccessful due to frequent crashes. Both latter solutions were unsatisfactory so splurged for a workstation.
-- Due to limitations on meilisearch and non-existant phrase-searching in combination with typo-tolerance, custom solution was made.
-  - Normal key-word based searching with ranking rules:
+- Rust based full-text search engine called Meilisearch is used to create fast full-text search of transcription data indexed from the MySQL database.
+- Due to limitations on meilisearch and non-existant phrase-searching with typo-tolerance, custom solution was made.
+  - Custom solution consisted of the following search-ranking score:
     - rankingRules: [
         "proximity",
         "typo",
         "words"
       ],
-   - Further search was done with 3-n-grams + jaccard string comparison finding the max score, sorting them based on similartScore and selecting the top 5. This has proved like a good solution
+   - ...and the server search was done with 3-n-grams + jaccard string comparison finding the max score, sorting them based on similarityScore and selecting the top 5. This has proved to be a good solution.
 
 ### Transcriber-service of podcast audio to text
-- Python script using ts-stable (a timestamp improved version of OpenAI's Whisper model)
-- Uses Puppeteer to get the top 10 podcasts from certain countries
-- Uses feedparser and podcastsindex.com's SQlite database for getting rss-feeds for further parsing
-- Express backend images endpoint using sharp to resize, image files stored in /uploads/ folder on backend provided by express
-- nginx does the reverse proxy forwarding
+- The transcriber is a python script that grabs a selection of podcast names from a json.
+- Queries a SqLite database downloaded daily from PodcastIndex.
+- Uses feedparser to get episode-names, audiofiles, titles etc. from the rss-feeds for further parsing
+- Uses the original whisper AI to transcribe data
+- Then uses WhisperX to re-align the timestamps in accordance with the audio file (using the large [wav2vec](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-english) model.
+- Then finds the youtube video that fits to that audio file and updates the episode in the database.
+- Downloads the youtube video and finds the offset in seconds between the audio-podcast and video-podcast to save time and avoid having to re-transcribe audio from youtube video as well. This implementation uses [British Broadcasting Channel's](https://github.com/bbc/audio-offset-finder) own implementation. This value is then added or subtracted from the "start"-value that accompanies all segments.
+- If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
+
+### Current running nginx reverse proxies for easier usage and https-setup:
   - images.poddley.com => .../api/images/ endpoints
   - api.poddley.com => .../api/ endpoints (transcriptions/search-functionality)
   - meilisearch.poddley.com => meilisearch GUI instance
   
 ### Other
-- HTTPS everywhere done with let's encrypt
+- HTTPS everywhere done with let's encrypt /free https certificates
 
 ### Lighthouse score
 ![100](https://github.com/lukamo1996/poddley/assets/52632596/73235617-c7d0-4222-8b03-2a5fdbb604c6)
 
 ### Cron jobs
-- Indexing from db to meilisearch-index
+- Indexing from db to meilisearch-index (every hour)
 - DeviationCalculator:
   - Positive means the youtube video needs reduction in the time
   - Negative means the youtube video needs the addition of time
+
+### AI services
+- All AI services run 24/7 on this machine=>![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a). I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
+
+- The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
+
+### Realizations:
+- No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds. Most was futile. Finally decided to try Cloudflare, went straight to 1.2 seconds.
+- Unused CSS and third-party script/services can be a pain in the ass to deal with.
+- CDN's are awesome
+- Binary Search is awesome
+- Lazy-loading is king.
+
+### Optimizations:
+- Assets compression:
+  - Decided to use Brotli Compression to improve transfer time.
+    *Since Brotli was designed to compress streams on the fly, it is faster at both compressing content on the server and decompressing it in the browser than in gzip. In some cases the overall front-end decompression is up to 64% faster than gzip.* [Source](https://eu.siteground.com/blog/brotli-vs-gzip-compression/#:~:text=Since%20Brotli%20was%20designed%20to,to%2064%25%20faster%20than%20gzip.)
+  - Only using webp on website due to faster loading speed and better compression during transfer [Source](https://developers.google.com/speed/webp/docs/webp_study#:~:text=From%20the%20tables%20above%2C%20we%20can%20observe%20that%20WebP%20gives%20additional%2025%25%2D34%25%20compression%20gains%20compared%20to%20JPEG%20at%20equal%20or%20slightly%20better%20SSIM%20index.)
+  
+  
 
 ## Features planned adding:
 ### Do-es
