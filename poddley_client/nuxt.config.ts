@@ -2,12 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  css: [
-    //Needed to make these globally available for all components/pages
-    "~/assets/css/imports/fonts.css",
-    "~/assets/css/global/global.css",
-    "~/assets/css/imports/tailwind.css",
-  ],
+  css: ["~/assets/css/imports/tailwind.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -23,7 +18,7 @@ export default defineNuxtConfig({
   },
   modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible"],
   delayHydration: {
-    mode: 'init'
+    mode: "init",
   },
   plausible: {
     domain: "poddley.com",
