@@ -148,3 +148,4 @@ server {
 - [ ] Lag troof blog
 - [ ] Lag lobsters blog
 - [ ] Lag egen lobsters type
+- [ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page
