@@ -3,7 +3,6 @@ require("dotenv").config({ path: "../.env" });
 export default defineNuxtConfig({
   ssr: true,
   css: [
-    "~/assets/css/imports/fonts.css",
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.css",
   ],
@@ -20,7 +19,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible", "nuxt-lazy-load"],
   delayHydration: {
     mode: 'init'
   },

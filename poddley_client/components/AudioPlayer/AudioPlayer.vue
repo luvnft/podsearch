@@ -5,9 +5,9 @@
     id="custom-audio"
     :class="`tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400 ${isPlayable ? '' : 'hideAudioPlayer'}`"
     ref="audioPlayerRef"
-    :preload="isVisible ? 'metadata' : 'none'"
+    :preload="'none'"
     :title="props.episodeTitle"
-    :src="props.audioLink"
+    :src="''"
     type="audio/mpeg"
     @canplaythrough="handleCanPlayThrough"
   />
