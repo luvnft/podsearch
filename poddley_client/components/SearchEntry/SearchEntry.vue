@@ -5,16 +5,15 @@
         <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
 
         <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
-          <!-- <LiteYouTubeEmbed
-            :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            :title="props.searchEntry.episodeTitle"
-            :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
-            webp
-            poster="mqdefault"
-            wrapperClass="yt-lite tw-rounded-lg"
-            name="youtubePlayButton"
-            rel="prefetch"
-          /> -->
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/w5qoe-ultyg"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
     </div>
@@ -33,7 +32,7 @@
           <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
         </div>
       </div>
-      <div class="row tw-flex flex-grow-1 tw-w-full">
+      <div class="row flex-grow-1 tw-flex tw-w-full">
         <div class="col-12">
           <p class="tw-my-1">
             <b>Episode:</b>
