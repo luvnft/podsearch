@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   css: [
     "~/assets/css/imports/tailwind.css",
     "~/assets/css/imports/bootstrap.css",
+    "~/assets/css/imports/bootstrap.css",
   ],
   nitro: {
     compressPublicAssets: {

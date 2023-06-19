@@ -1,6 +1,7 @@
 <template>
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 tw-py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
+    <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 tw-py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
 
@@ -10,6 +11,7 @@
             :title="props.searchEntry.episodeTitle"
             :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
             webp
+            poster="default"
             poster="default"
             wrapperClass="yt-lite tw-rounded-lg"
             name="youtubePlayButton"
@@ -23,11 +25,14 @@
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
         </div>
         <div class="col tw-m-0">
+        <div class="col tw-m-0">
           <ButtonsHomepageButton :link="props.searchEntry.link" />
         </div>
         <div class="col tw-m-0">
+        <div class="col tw-m-0">
           <ButtonsRssButton :link="props.searchEntry.url" />
         </div>
+        <div class="col tw-m-0">
         <div class="col tw-m-0">
           <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
         </div>
