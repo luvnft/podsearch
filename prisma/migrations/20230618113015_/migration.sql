@@ -1,4 +1,14 @@
 -- CreateTable
+CREATE TABLE `SearchLog` (
+    `id` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `searchQuery` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Episode` (
     `id` VARCHAR(191) NOT NULL,
     `episodeAuthor` VARCHAR(500) NOT NULL,
@@ -19,15 +29,21 @@ CREATE TABLE `Episode` (
     `episodeGuid` VARCHAR(500) NOT NULL,
     `episodePublished` DATETIME(3) NOT NULL,
     `episodeDuration` INTEGER NOT NULL,
-    `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `isTranscribed` BOOLEAN NOT NULL DEFAULT false,
     `beingTranscribed` BOOLEAN NOT NULL DEFAULT false,
     `causedError` BOOLEAN NOT NULL DEFAULT false,
-    `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `addedDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `reAlignedWithBigModel` BOOLEAN NOT NULL DEFAULT false,
+    `youtubeVideoLink` VARCHAR(191) NULL,
+    `deviationTime` DOUBLE NULL,
+    `highestSimilarityVideo` DOUBLE NULL,
+    `isRead` BOOLEAN NULL DEFAULT false,
+    `indexed` BOOLEAN NOT NULL DEFAULT false,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Episode_episodeGuid_key`(`episodeGuid`),
     INDEX `Episode_podcastGuid_fkey`(`podcastGuid`),
-    FULLTEXT INDEX `Episode_episodeTitle_episodeSummary_episodeAuthor_episodeAut_idx`(`episodeTitle`, `episodeSummary`, `episodeAuthor`, `episodeAuthors`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -69,11 +85,12 @@ CREATE TABLE `Podcast` (
     `newestEnclosureDuration` INTEGER NOT NULL,
     `priority` INTEGER NOT NULL,
     `updateFrequency` INTEGER NOT NULL,
-    `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `createdOn` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `youtubeChannel` VARCHAR(191) NULL,
+    `indexed` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `Podcast_podcastGuid_key`(`podcastGuid`),
-    FULLTEXT INDEX `Podcast_title_itunesOwnerName_itunesAuthor_description_categ_idx`(`title`, `itunesOwnerName`, `itunesAuthor`, `description`, `category1`, `category2`, `category3`, `category4`, `category5`, `category6`, `category7`, `category8`, `category9`, `category10`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -87,14 +104,14 @@ CREATE TABLE `Segment` (
     `belongsToEpisodeGuid` VARCHAR(500) NOT NULL,
     `belongsToTranscriptId` VARCHAR(500) NOT NULL,
     `text` VARCHAR(500) NOT NULL,
-    `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `indexed` BOOLEAN NOT NULL DEFAULT false,
     `segmentWordEntries` JSON NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     INDEX `Segment_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
     INDEX `Segment_belongsToTranscriptId_fkey`(`belongsToTranscriptId`),
     UNIQUE INDEX `Segment_belongsToEpisodeGuid_start_end_key`(`belongsToEpisodeGuid`, `start`, `end`),
-    FULLTEXT INDEX `Segment_text_idx`(`text`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -105,12 +122,12 @@ CREATE TABLE `Transcription` (
     `belongsToPodcastGuid` VARCHAR(500) NOT NULL,
     `belongsToEpisodeGuid` VARCHAR(500) NOT NULL,
     `transcription` MEDIUMTEXT NOT NULL,
-    `createdOnPazam` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `indexed` BOOLEAN NOT NULL DEFAULT false,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Transcription_belongsToEpisodeGuid_key`(`belongsToEpisodeGuid`),
     INDEX `Transcription_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
-    FULLTEXT INDEX `Transcription_transcription_idx`(`transcription`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
