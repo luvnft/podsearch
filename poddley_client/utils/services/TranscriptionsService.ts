@@ -10,6 +10,7 @@ export default class TranscriptionService extends ApiService {
       method: "GET",
       baseURL: this.BASE_URL,
     });
+    console.log(this.BASE_URL)
     const data: SearchResponse = res.data.value as SearchResponse;
     return data;
   }
