@@ -2,10 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  css: [
-    "~/assets/css/imports/tailwind.css",
-    "~/assets/css/imports/bootstrap.css",
-  ],
+  css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -21,7 +18,7 @@ export default defineNuxtConfig({
   },
   modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible", "nuxt-lazy-load"],
   delayHydration: {
-    mode: 'init'
+    mode: "init",
   },
   plausible: {
     domain: "poddley.com",
@@ -35,11 +32,7 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
     },
   },
-  routeRules: {
-    "/": {
-      redirect: "/new",
-    },
-  },
+  router: { options: { strict: true } },
   app: {
     head: {
       htmlAttrs: {
