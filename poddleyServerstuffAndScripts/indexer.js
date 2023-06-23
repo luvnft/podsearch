@@ -1,7 +1,3 @@
-import * as dotenv from "dotenv";
-dotenv.config("./");
-console.log(process.env.MEILISEARCH_IP); // remove this after you've confirmed it is working
-
 import prismaConnection from "./prismaConnection.js";
 import fs from "fs";
 import { MeiliSearch } from "meilisearch";
