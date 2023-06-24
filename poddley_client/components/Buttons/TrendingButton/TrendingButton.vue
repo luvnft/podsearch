@@ -1,12 +1,12 @@
 <template>
   <NuxtLink
     type="button"
-    :class="`tw-flex items-center font-medium ${
-      $route.name !== route ? 'tw-bg-gray-50' : 'tw-border-gray-400 tw-font-bold'
-    } tw-group tw-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-text-gray-400 tw-no-underline tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm`"
+    :class="`tw-flex items-center font-medium tw-group tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200  ${
+      $route.name !== route ? 'tw-bg-gray-50' : 'tw-border-gray-400 tw-bg-gray-100'
+    } tw-fill-gray-400 tw-p-2 tw-text-gray-400 tw-no-underline tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm`"
     :to="route"
   >
-    <IconsTrendingIcon class="tw-h-6 tw-w-6 tw-scale-90 group-hover:tw-fill-gray-500 group-hover:tw-text-gray-600" aria-hidden="true" v-if="!props.loading" />
+    <!-- <IconsTrendingIcon class="tw-h-6 tw-w-6 tw-scale-90 group-hover:tw-fill-gray-500 group-hover:tw-text-gray-600" aria-hidden="true" v-if="!props.loading" /> -->
     <span class="tw-text-gray-500 group-hover:tw-text-gray-600 group-active:tw-text-gray-600" v-if="!props.loading">Trending podcasts</span>
     <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="props.loading" />
   </NuxtLink>

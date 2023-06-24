@@ -10,7 +10,7 @@
             :title="props.searchEntry.episodeTitle"
             :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
             webp
-            poster="default"
+            poster="maxresdefault"
             wrapperClass="yt-lite tw-rounded-lg"
             name="youtubePlayButton"
           />
@@ -44,12 +44,13 @@
             <div class="segment tw-shadow tw-drop-shadow-sm">
               <div class="loader">
                 <span></span>
+                &nbsp;
               </div>
-              <span v-html="props.searchEntry._formatted.text" />
+              <span v-html="props.searchEntry._formatted.text.trim()" />
             </div>
           </div>
           <hr />
-          <p>
+          <p class = "tw-mb-0">
             <b>Time-location:</b>
             &nbsp;
             <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>

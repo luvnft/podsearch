@@ -2,7 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css"],
+  css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -25,6 +25,17 @@ export default defineNuxtConfig({
     trackLocalhost: true,
     autoPageviews: true,
     autoOutboundTracking: true,
+  },
+  googleFonts: {
+    families: {
+      Roboto: true,
+      "Josefin+Sans": true,
+      Lato: [100, 300],
+      Raleway: {
+        wght: [100, 400],
+        ital: [100],
+      },
+    },
   },
   runtimeConfig: {
     public: {
