@@ -1,18 +1,18 @@
 <template>
-  <audio
+ <audio
     :key="props.timeLocation"
     controls
     id="custom-audio"
     :class="`tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400 ${isPlayable ? '' : 'hideAudioPlayer'}`"
     ref="audioPlayerRef"
-    :preload="'none'"
+    :preload="isVisible ? 'metadata' : 'none'"
     :title="props.episodeTitle"
-    :src="''"
+    :src="props.audioLink"
     type="audio/mpeg"
     @canplaythrough="handleCanPlayThrough"
   />
-  <div class="tw-flex tw-justify-center tw-gap-2 tw-items-center" v-if="!isPlayable">
-    <span>Loading audio... </span>
+  <div class="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-pt-0" v-if="!isPlayable">
+    <span>Loading audio...</span>
     <IconsSpinnerIcon />
   </div>
 </template>

@@ -26,21 +26,15 @@ export default defineNuxtConfig({
     autoPageviews: true,
     autoOutboundTracking: true,
   },
-  googleFonts: {
-    families: {
-      Roboto: true,
-      "Josefin+Sans": true,
-      Lato: [100, 300],
-      Raleway: {
-        wght: [100, 400],
-        ital: [100],
-      },
-    },
-  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
+    },
+  },
+  routeRules: {
+    "/": {
+      redirect: "/new",
     },
   },
   router: { options: { strict: true } },
