@@ -1,5 +1,5 @@
 <template>
- <audio
+  <audio
     :key="props.timeLocation"
     controls
     id="custom-audio"
