@@ -36,6 +36,9 @@ export default defineNuxtConfig({
     "/": {
       redirect: "/new",
     },
+    "": {
+      redirect: "/new",
+    },
   },
   router: { options: { strict: false } },
   app: {
