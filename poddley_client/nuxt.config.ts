@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    "/": {
+    "": {
       redirect: "/new",
     },
   },
