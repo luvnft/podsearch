@@ -12,12 +12,14 @@ const wrappedComponent: Ref<HTMLElement | null> = ref(null);
 const isVisible = useElementVisibility(wrappedComponent);
 console.log("IsVisible first: ", isVisible.value);
 
-let unwatch = watch(isVisible, function (state) {
-  if (wrappedComponent.value) {
-    console.log("isVisible: ", isVisible.value);
-    isVisible.value = true;
-  }
-  unwatch();
+onMounted(() => {
+  let unwatch = watch(isVisible, function (state) {
+    if (wrappedComponent.value) {
+      console.log("isVisible: ", isVisible.value);
+      isVisible.value = true;
+    }
+    unwatch();
+  });
 });
 </script>
 
