@@ -3,22 +3,23 @@
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
-
         <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
-          <LiteYouTubeEmbed
-            :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            :title="props.searchEntry.episodeTitle"
-            :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
-            webp
-            poster="maxresdefault"
-            wrapperClass="yt-lite tw-rounded-lg"
-            name="youtubePlayButton"
-          />
+          <LoadItLazyWrapper>
+            <LiteYouTubeEmbed
+              :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
+              :title="props.searchEntry.episodeTitle"
+              :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
+              webp
+              poster="maxresdefault"
+              wrapperClass="yt-lite tw-rounded-lg"
+              name="youtubePlayButton"
+            />
+          </LoadItLazyWrapper>
         </div>
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
-      <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 tw-w-full gx-1 gx-sm-3 tw-mb-3 tw-flex tw-flex-row tw-items-center tw-justify-center">
+      <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
         <div class="col m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
         </div>
@@ -32,7 +33,7 @@
           <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
         </div>
       </div>
-      <div class="row tw-flex flex-grow-1 tw-w-full">
+      <div class="row flex-grow-1 tw-flex tw-w-full">
         <div class="col-12">
           <p class="tw-my-1">
             <b>Episode:</b>
@@ -50,7 +51,7 @@
             </div>
           </div>
           <hr />
-          <p class = "tw-mb-0">
+          <p class="tw-mb-0">
             <b>Time-location:</b>
             &nbsp;
             <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
@@ -58,7 +59,7 @@
           <hr />
         </div>
         <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-0 tw-pt-0">
-          <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
+          <!-- <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" /> -->
         </div>
       </div>
     </div>

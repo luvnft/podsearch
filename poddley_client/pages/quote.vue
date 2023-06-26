@@ -8,7 +8,6 @@
 import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
 
-
 //Router
 const route = useRoute();
 
