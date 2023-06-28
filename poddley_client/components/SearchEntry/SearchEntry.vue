@@ -13,7 +13,7 @@
             wrapperClass="yt-lite tw-rounded-lg"
             name="youtubePlayButton"
           /> -->
-          <YoutubeLiteEmbed :videoId="dQw4w9WgXcQ" posterQuality="maxresdefault" />
+          <lite-youtube :videoid="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" class="tw-rounded-lg" posterloading="lazy" autoload="false" />
         </div>
       </div>
     </div>
@@ -68,6 +68,7 @@
 <script lang="ts" setup>
 import { Hit } from "~~/types/SearchResponse";
 import { convertSecondsToTime } from "../../utils/tools/tools";
+import "@justinribeiro/lite-youtube";
 
 const props = defineProps<{
   searchEntry: Hit;
