@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt"],
   delayHydration: {
     mode: "init",
   },
@@ -61,9 +61,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-  vue: {  
-    compilerOptions: {
-      isCustomElement: (tag) => ['lite-youtube'].includes(tag),
-    },
-  }
 });
