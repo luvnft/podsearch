@@ -7,9 +7,8 @@
           <!-- <LiteYouTubeEmbed
             :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :title="props.searchEntry.episodeTitle"
-            :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
             webp
-            poster="maxresdefault"
+            poster="maxresdefault"  
             wrapperClass="yt-lite tw-rounded-lg"
             name="youtubePlayButton"
           /> -->
@@ -19,6 +18,10 @@
             class="tw-rounded-lg"
             posterloading="lazy"
             autoload="false"
+            :videoStartAt="`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`"
+            :videotitle="props.searchEntry.episodeTitle"
+            :posterquality="maxresdefault"
+            :videoplay="Play"
           />
         </div>
       </div>
@@ -74,7 +77,10 @@
 <script lang="ts" setup>
 import { Hit } from "~~/types/SearchResponse";
 import { convertSecondsToTime } from "../../utils/tools/tools";
-import "@justinribeiro/lite-youtube";
+
+onMounted(async () => {
+  await import("@justinribeiro/lite-youtube");
+});
 
 const props = defineProps<{
   searchEntry: Hit;
