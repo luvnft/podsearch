@@ -3,7 +3,7 @@
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
-        <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
+        <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
           <!-- <LiteYouTubeEmbed
             :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :title="props.searchEntry.episodeTitle"
@@ -13,7 +13,13 @@
             wrapperClass="yt-lite tw-rounded-lg"
             name="youtubePlayButton"
           /> -->
-          <lite-youtube :videoid="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" class="tw-rounded-lg" posterloading="lazy" autoload="false" />
+          <lite-youtube
+            v-if="props.searchEntry.youtubeVideoLink"
+            :videoid="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
+            class="tw-rounded-lg"
+            posterloading="lazy"
+            autoload="false"
+          />
         </div>
       </div>
     </div>
