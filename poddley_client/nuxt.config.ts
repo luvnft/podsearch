@@ -16,11 +16,10 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt"],
   delayHydration: {
     mode: "init",
   },
-
   plausible: {
     domain: "poddley.com",
     trackLocalhost: true,
@@ -38,7 +37,7 @@ export default defineNuxtConfig({
       redirect: "/new",
     },
   },
-  router: { options: { strict: false } },
+  router: { options: { strict: true } },
   app: {
     head: {
       htmlAttrs: {

@@ -2,7 +2,7 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "alwaysStrict": true,
     "strict": true,
@@ -16,5 +16,6 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist/types",
+    "typeRoots": ["./types/*"]
   }
 }

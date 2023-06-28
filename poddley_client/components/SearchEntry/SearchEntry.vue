@@ -4,17 +4,16 @@
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
         <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
-          <LoadItLazyWrapper>
-            <LiteYouTubeEmbed
-              :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-              :title="props.searchEntry.episodeTitle"
-              :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
-              webp
-              poster="maxresdefault"
-              wrapperClass="yt-lite tw-rounded-lg"
-              name="youtubePlayButton"
-            />
-          </LoadItLazyWrapper>
+          <!-- <LiteYouTubeEmbed
+            :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
+            :title="props.searchEntry.episodeTitle"
+            :params="`start=${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString() || '0'))}`"
+            webp
+            poster="maxresdefault"
+            wrapperClass="yt-lite tw-rounded-lg"
+            name="youtubePlayButton"
+          /> -->
+          <YoutubeLiteEmbed :videoId="dQw4w9WgXcQ" posterQuality="maxresdefault" />
         </div>
       </div>
     </div>
@@ -68,9 +67,7 @@
 
 <script lang="ts" setup>
 import { Hit } from "~~/types/SearchResponse";
-import { convertSecondsToTime } from "~~/utils/tools/tools";
-import LiteYouTubeEmbed from "vue-lite-youtube-embed";
-import "vue-lite-youtube-embed/style.css";
+import { convertSecondsToTime } from "../../utils/tools/tools";
 
 const props = defineProps<{
   searchEntry: Hit;

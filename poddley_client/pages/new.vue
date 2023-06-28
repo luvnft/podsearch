@@ -16,7 +16,6 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 async function initialLoad() {
   loading.value = true;
   searchResults.value = await transcriptionService.getNew();
-  console.log("SearchResults.", searchResults.value); 
   loading.value = false;
 }
 
