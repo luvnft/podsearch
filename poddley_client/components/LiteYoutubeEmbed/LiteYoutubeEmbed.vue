@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <button>Play button</button> -->
-    <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" class="tw-rounded-xl" @click="toggleiFrame()" v-if="!showiFrame" loading="lazy" />
+    <!-- <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" class="tw-rounded-xl" @click="toggleiFrame()" v-if="!showiFrame" loading="lazy" /> -->
 
     <div v-if="showiFrame">
       <iframe

@@ -24,7 +24,9 @@
             :videoplay="'Play'"
             :nocookie="true"
           /> -->
-          <LiteYoutubeEmbed
+          <img :src="`https://i.ytimg.com/vi/${(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)}/hq720.jpg`" class="tw-rounded-xl"  loading="lazy" />
+
+          <!-- <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :startTime="parseFloat(`${
               Math.floor(parseFloat(props.searchEntry.start.toString())) - 
@@ -38,7 +40,7 @@
             :pictureInPicture="true"
             :noCookie="true"
             :posterQuality="'hq720'"
-          />
+          /> -->
         </div>
       </div>
     </div>
