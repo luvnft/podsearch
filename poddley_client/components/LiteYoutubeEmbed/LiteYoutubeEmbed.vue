@@ -3,7 +3,7 @@
     <div class="video-container" v-if="!showiFrame" @click="toggleiFrame">
       <div class="tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
         <div class="tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
-          <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="tw-h-full tw-rounded-full image-with-vignette tw-border tw-border-gray-950 tw-brightness-75" />
+          <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-border tw-border-gray-950 tw-brightness-75" loading="lazy" />
         </div>
         <p class="tw-m-0 tw-flex tw-w-full tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
           {{ props.videoTitle }}
@@ -12,7 +12,7 @@
       <button id="playButton" class="centered-button" />
 
       <button class="image-with-vignette tw-rounded-xl">
-        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" />
+        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
     </div>
     <div v-if="showiFrame">
