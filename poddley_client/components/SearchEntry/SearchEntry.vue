@@ -83,7 +83,7 @@
           <hr />
         </div>
         <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-0 tw-pt-0">
-          <!-- <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" /> -->
+          <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div>
       </div>
     </div>
