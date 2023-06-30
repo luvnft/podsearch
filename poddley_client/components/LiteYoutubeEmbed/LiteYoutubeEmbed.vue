@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="video-container" v-if="!showiFrame" @click="toggleiFrame">
-      <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
+    <div class="video-container" @click="toggleiFrame">
+      <!-- <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
@@ -9,13 +9,13 @@
           {{ props.videoTitle }}
         </p>
       </div>
-      <button id="playButton" class="centered-button" />
+      <button id="playButton" class="centered-button" /> -->
 
       <button class="image-with-vignette tw-rounded-md">
-        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
+        <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
-    </div>
-    <div v-if="showiFrame">
+    </div> 
+    <!-- <div v-if="showiFrame">
       <iframe
         :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
         :title="props.videoTitle"
@@ -29,7 +29,7 @@
           aspectRatio: '16/9',
         }"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 

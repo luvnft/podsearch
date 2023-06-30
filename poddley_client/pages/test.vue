@@ -3,15 +3,62 @@
     <button>Play button</button>
     <img src="" />
 
-    <iframe
-      :width="props.width"
-      :height="props.height"
-      :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
-      :title="props.videoTitle"
-      frameborder="0"
-      :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${props.allowFullscreen ? 'allowfullscreen' : ''};`"
-      class = "tw-rounded-lg"
-    />
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/6E2VjTKXD5k/hqdefault.jpg?sqp=-oaymwExCNACELwBSFryq4qpAyMIARUAAIhCGAHwAQH4Af4JgALQBYoCDAgAEAEYZSBAKFAwDw==&rs=AOn4CLCJC589MiCmSUV1MZghuw81XrZWuA"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/WbEGmghn_jo/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDieyAQFrlagGTv2vTLeSWes56Gsg"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/dGwbIjhDhOE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCMu4sGDk1T3_YXA4CF8KFWUrPQCQ"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
+    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
+      <nuxt-img
+        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
+        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
+        loading="lazy"
+      />
+    </div>
   </div>
 </template>
 
@@ -64,5 +111,4 @@ const props = defineProps({
     default: false,
   },
 });
-
 </script>

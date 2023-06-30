@@ -2,43 +2,12 @@
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
-        <!-- <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" /> -->
+        <div v-if="!props.searchEntry.youtubeVideoLink" class="image-aspect-ratio tw-rounded-lg" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
 
         <div class="tw-rounded-lg tw-border-4 tw-border-transparent" v-if="props.searchEntry.youtubeVideoLink">
-          <!-- <LiteYouTubeEmbed
-            :id="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            :title="props.searchEntry.episodeTitle"
-            webp
-            poster="maxresdefault"  
-            wrapperClass="yt-lite tw-rounded-lg"
-            name="youtubePlayButton"
-          /> -->
-          <!-- <lite-youtube
-            :videoid="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            class="tw-rounded-lg"
-            posterloading="lazy"
-            autoload="false"
-            :videoStartAt="`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`"
-            :videotitle="props.searchEntry.episodeTitle"
-            :posterquality="'maxresdefault'"
-            :videoplay="'Play'"
-            :nocookie="true"
-          /> -->
-          <LiteYoutubeEmbed
-            :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            :startTime="parseFloat(`${
-              Math.floor(parseFloat(props.searchEntry.start.toString())) - 
-              Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString())) }`
-            )"
-            :width="'100%'"
-            :height="'auto'"
-            :videoTitle="props.searchEntry.episodeTitle"
-            :autoplay="false"
-            :allowFullscreen="true"
-            :pictureInPicture="true"
-            :noCookie="true"
-            :posterQuality="'hq720'"
-          />
+          <nuxt-img src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
+
+
         </div>
       </div>
     </div>
