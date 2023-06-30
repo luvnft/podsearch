@@ -1,64 +1,21 @@
 <template>
   <div>
-    <button>Play button</button>
-    <img src="" />
-
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/6E2VjTKXD5k/hqdefault.jpg?sqp=-oaymwExCNACELwBSFryq4qpAyMIARUAAIhCGAHwAQH4Af4JgALQBYoCDAgAEAEYZSBAKFAwDw==&rs=AOn4CLCJC589MiCmSUV1MZghuw81XrZWuA"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/WbEGmghn_jo/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDieyAQFrlagGTv2vTLeSWes56Gsg"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/dGwbIjhDhOE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCMu4sGDk1T3_YXA4CF8KFWUrPQCQ"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
-    <div class="tw-rounded-lg tw-border-4 tw-border-transparent">
-      <nuxt-img
-        src="https://i.ytimg.com/vi/0YIkIDV_8Pw/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIGUoSTAP&rs=AOn4CLANmZN_kP6uskQ1uCq0Wh3Of5-CPQ"
-        class="tw-rounded-md tw-bg-blend-darken tw-shadow-black"
-        loading="lazy"
-      />
-    </div>
+    <div class="img-container"><img src="http://placekitten.com/200/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/210/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/220/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/240/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/260/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/270/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/280/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/290/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/210" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/220" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/240" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/260" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/270" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/280" alt="" loading="lazy" /></div>
+    <div class="img-container"><img src="http://placekitten.com/200/290" alt="" loading="lazy" /></div>
   </div>
 </template>
 
