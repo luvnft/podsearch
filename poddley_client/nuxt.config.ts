@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
