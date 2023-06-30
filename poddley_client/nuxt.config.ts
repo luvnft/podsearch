@@ -16,7 +16,10 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxt/image"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt"],
+  delayHydration: {
+    mode: "init",
+  },
   plausible: {
     domain: "poddley.com",
     trackLocalhost: true,

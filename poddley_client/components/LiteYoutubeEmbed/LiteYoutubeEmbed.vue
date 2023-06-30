@@ -12,7 +12,7 @@
       <button id="playButton" class="centered-button" />
 
       <button class="image-with-vignette tw-rounded-md">
-        <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
+        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
     </div>
     <div v-if="showiFrame">
