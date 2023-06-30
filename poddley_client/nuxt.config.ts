@@ -26,7 +26,12 @@ export default defineNuxtConfig({
     autoPageviews: true,
     autoOutboundTracking: true,
   },
-  router: { options: { strict: false } },
+  routeRules: {
+    "/": {
+      redirect: "/new",
+    },
+  },
+  router: { options: { strict: true } },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
