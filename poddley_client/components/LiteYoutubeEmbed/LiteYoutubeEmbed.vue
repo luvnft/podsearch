@@ -1,5 +1,5 @@
 <template>
-  <div v-lazy-load>
+  <div>
     <div class="video-container" v-if="!showiFrame" @click="toggleiFrame">
       <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
