@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div class="img-container"><img src="http://placekitten.com/200/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/210/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/220/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/240/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/260/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/270/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/280/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/290/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/200" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/210" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/220" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/240" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/260" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/270" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/280" alt="" loading="lazy" /></div>
-    <div class="img-container"><img src="http://placekitten.com/200/290" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/210/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/220/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/240/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/260/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/270/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/280/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/290/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/200" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/210" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/220" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/240" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/260" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/270" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/280" alt="" loading="lazy" /></div>
+    <div class="img-container"><nuxt-img src="http://placekitten.com/200/290" alt="" loading="lazy" /></div>
   </div>
 </template>
 
