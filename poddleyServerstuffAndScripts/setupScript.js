@@ -3,7 +3,7 @@ import { MeiliSearch } from "meilisearch";
 // Load the environment variables from the .env file
 async function main() {
   console.log("Running getTasks");
-  const client = new MeiliSearch({ host: "localhost:7700" });
+  const client = new MeiliSearch({ host: "https://meilisearch.poddley.com" });
 
   const transcriptionsIndex = await client.index("transcriptions");
   const segmentsIndex = await client.index("segments");
@@ -16,9 +16,9 @@ async function main() {
 
   //Update ranking rules for seg and tra
   segmentsIndex.updateSettings({
-    searchableAttributes: ["text"],
+    searchableAttributes: ["text", "id"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["belongsToEpisodeGuid", "id"],
+    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToPodcastGuid", "belongsToTranscriptGuid"],
     rankingRules: ["sort", "proximity", "typo", "words"],
     sortableAttributes: ["start"],
   });

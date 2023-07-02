@@ -10,12 +10,14 @@
         id="search"
         placeholder="Search for a quote in a podcast"
         class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-11 tw-text-left tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
+        v-model="searchString"
+        :input="debouncedTriggerSearch"
       />
     </div>
     <button
       type="button"
       title="searchButton"
-      class="10 tw-group tw-flex tw-w-12 tw-items-center tw-justify-center tw-rounded-r-md tw-border-l tw-border-gray-300 tw-border-solid tw-bg-gray-50 tw-p-2 tw-text-gray-700 tw-shadow-sm hover:tw-bg-gray-100 active:tw-shadow-none"
+      class="10 tw-group tw-flex tw-w-12 tw-items-center tw-justify-center tw-rounded-r-md tw-border-l tw-border-solid tw-border-gray-300 tw-bg-gray-50 tw-p-2 tw-text-gray-700 tw-shadow-sm hover:tw-bg-gray-100 active:tw-shadow-none"
     >
       <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="!loading" />
       <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="loading" />
@@ -24,26 +26,38 @@
 </template>
 
 <script lang="ts" setup>
+//Imports
+import { SearchResponse } from "~/types/SearchResponse";
+import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { debounce } from "~~/utils/tools/tools";
 
-//Vars
-let loading: Ref<boolean> = ref(false);
-
+const transcriptionService: TranscriptionService = new TranscriptionService();
 const route = useRoute();
 const router = useRouter();
+const searchString: Ref<string> = ref("luka");
+let loading: Ref<boolean> = ref(false);
+let searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
 
-// //TriggerSearch
-// async function triggerSearch() {
-//   loading.value = true;
-//   updateUrl();
-//   await searchStore.search(searchStore.searchString);
-//   loading.value = false;
+//TriggerSearch
+async function triggerSearch() {
+  loading.value = true;
+  // updateUrl();
+  debouncedTriggerSearch(searchString);
+  loading.value = false;
+}
+const debouncedTriggerSearch = debounce(triggerSearch, 200);
 
-// }
+//Initialization function
+async function initialLoad() {
+  loading.value = true;
+  searchResults.value = await transcriptionService.getTrending();
+  loading.value = false;
+}
 
 // const updateUrl = () => {
 //   router.push({ query: { ...route.query, search: searchStore.searchString } });
 // };
 
-// const debouncedTriggerSearch = debounce(triggerSearch, 200);
+//Running
+// initialLoad();
 </script>

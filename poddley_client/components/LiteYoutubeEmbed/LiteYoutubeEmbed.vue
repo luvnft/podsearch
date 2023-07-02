@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="video-container" @click="toggleiFrame">
+    <div class="video-container" @click="toggleiFrame" v-if = "!showiFrame">
       <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
@@ -11,8 +11,8 @@
       </div>
       <button id="playButton" class="centered-button" />
 
-      <button class="image-with-vignette tw-rounded-md">
-        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
+      <button class="image-with-vignette tw-rounded-xl">
+        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
     </div>
     <div v-if="showiFrame">
@@ -23,7 +23,7 @@
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${
           props.allowFullscreen ? 'allowfullscreen' : ''
         };`"
-        class="tw-rounded-md"
+        class="tw-rounded-xl"
         width="100%"
         :style="{
           aspectRatio: '16/9',
@@ -128,12 +128,12 @@ const props = defineProps({
   right: 0;
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0.799) 100%);
   pointer-events: none;
-  border-radius: 6px !important;
+  border-radius: 12px !important;
 }
 
 .topbackground {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 50%);
+  border-radius: 12px;
 }
 
 @keyframes ripple {
@@ -156,8 +156,8 @@ const props = defineProps({
 .channelIcon::before {
   content: "";
   position: absolute;
-  width: 37px;
-  height: 37px;
+  width: 30px;
+  height: 30px;
   background-color: black;
   border-radius: 50%;
   z-index: -1;
