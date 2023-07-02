@@ -1,71 +1,54 @@
 <template>
-  <audio
-    :key="props.timeLocation"
-    controls
-    id="custom-audio"
-    :class="`tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400 ${isPlayable ? '' : 'hideAudioPlayer'}`"
-    ref="audioPlayerRef"
-    :preload="'none'"
-    :title="props.episodeTitle"
-    :src="''"
-    type="audio/mpeg"
-    @canplaythrough="handleCanPlayThrough"
-  />
-  <div class="tw-flex tw-justify-center tw-gap-2 tw-items-center" v-if="!isPlayable">
-    <span>Loading audio... </span>
-    <IconsSpinnerIcon />
+  <div class="tw-h-14 tw-w-full tw-rounded-lg tw-bg-white tw-text-sm tw-shadow-sm tw-shadow-gray-400 tw-flex tw-flex-row">
+    <div class="tw-flex tw-w-14 tw-items-center tw-justify-center">
+      <button class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-full hover:tw-bg-gray-200 tw-transition-all tw-duration-300 tw-fill-gray-900">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+          <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+        </svg>
+      </button>
+    </div>
+    <div class="tw-flex tw-w-22 tw-items-center tw-justify-start">
+      <span>13:21/17:22</span>
+    </div>
+    <div class="tw-flex  tw-items-center tw-justify-start">
+      <input type="range" min="0" max="100" value="0" class="tw-w-full" id="audioRange" />
+    </div>
+    <!-- <div class="tw-flex tw-w-full tw-items-center tw-justify-start">play</div>
+    <div class="tw-flex tw-w-full tw-items-center tw-justify-start">play</div> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useElementVisibility } from "@vueuse/core";
-
 const props = defineProps<{
   audioLink: string;
-  timeLocation: number;
+  startTime: number;
   episodeTitle: string;
 }>();
-const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
-const isVisible = useElementVisibility(audioPlayerRef);
-const isPlayable: Ref<Boolean> = ref(false);
-
-let unwatch = watch(isVisible, function (state) {
-  if (audioPlayerRef.value && state === true) {
-    audioPlayerRef.value.currentTime = props.timeLocation;
-  }
-  // stop watching after the first time
-  unwatch();
-});
-
-function handleCanPlayThrough() {
-  isPlayable.value = true;
-}
 </script>
 
 <style scoped>
-#custom-audio {
-  background-color: #fff;
-  border-radius: 0;
+/* This will be used to show the "played" part */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    #82cfd0 0%,
+    #82cfd0 50%,
+    /* this will be the "played" part */ #fdb813 50%,
+    #fdb813 75%,
+    /* this will be the "buffered" part */ #c4c4c4 75%,
+    #c4c4c4 100% /* this will be the "leftover" part */
+  );
 }
 
-#custom-audio::-webkit-media-controls-panel,
-#custom-audio::-webkit-media-controls {
-  background-color: #fff;
-  border-radius: 0;
-}
-
-#custom-audio::-webkit-media-controls-play-button,
-#custom-audio::-webkit-media-controls-volume-slider-container,
-#custom-audio::-webkit-media-controls-timeline-container,
-#custom-audio::-webkit-media-controls-mute-button,
-#custom-audio::-webkit-media-controls-timeline,
-#custom-audio::-webkit-media-controls-current-time-display {
-  color: #000;
-}
-
-.hideAudioPlayer {
-  visibility: hidden;
-  width: 0;
-  height: 0;
+input[type="range"]::-moz-range-track {
+  background: linear-gradient(
+    to right,
+    #82cfd0 0%,
+    #82cfd0 50%,
+    /* this will be the "played" part */ #fdb813 50%,
+    #fdb813 75%,
+    /* this will be the "buffered" part */ #c4c4c4 75%,
+    #c4c4c4 100% /* this will be the "leftover" part */
+  );
 }
 </style>

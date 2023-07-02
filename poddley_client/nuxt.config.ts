@@ -2,10 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  css: [
-    "~/assets/css/imports/tailwind.css",
-    "~/assets/css/imports/bootstrap.css",
-  ],
+  css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -19,9 +16,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "nuxt-delay-hydration", "@nuxtjs/plausible", "nuxt-lazy-load"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt"],
   delayHydration: {
-    mode: 'init'
+    mode: "init",
   },
   plausible: {
     domain: "poddley.com",
@@ -29,15 +26,16 @@ export default defineNuxtConfig({
     autoPageviews: true,
     autoOutboundTracking: true,
   },
+  routeRules: {
+    "/": {
+      redirect: "/new",
+    },
+  },
+  router: { options: { strict: true } },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
-    },
-  },
-  routeRules: {
-    "/": {
-      redirect: "/new",
     },
   },
   app: {

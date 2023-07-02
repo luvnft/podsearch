@@ -1,4 +1,7 @@
 # Poddley - Search podcasts like text
+
+## Build:
+[![Netlify Status](https://api.netlify.com/api/v1/badges/db94d7ff-0e30-42f0-a07c-feef0f00a28f/deploy-status)](https://app.netlify.com/sites/poddley/deploys)
 ## Demo
 [Demo Link](https://poddley.com)
 ## Showcase
