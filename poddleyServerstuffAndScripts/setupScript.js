@@ -10,22 +10,18 @@ async function main() {
   const episodesIndex = await client.index("episodes");
   const podcastsIndex = await client.index("podcasts");
 
-  segmentsIndex.updateFilterableAttributes(["belongsToEpisodeGuid", "id"]);
-  podcastsIndex.updateFilterableAttributes(["podcastGuid"]);
-  episodesIndex.updateFilterableAttributes(["episodeGuid"]);
-
-  //Update ranking rules for seg and tra
+  //Update indexes
   segmentsIndex.updateSettings({
     searchableAttributes: ["text"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["belongsToEpisodeGuid", "id"],
-    rankingRules: ["sort", "proximity", "typo", "words"],
+    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptGuid", "belongsToPodcastGuids"],
+    rankingRules: ["exactness", "sort", "proximity", "typo", "words"],
     sortableAttributes: ["start"],
   });
   transcriptionsIndex.updateSettings({
     searchableAttributes: ["transcription"],
     displayedAttributes: ["*"],
-    rankingRules: ["proximity", "typo", "words"],
+    rankingRules: ["exactness", "proximity", "typo", "words"],
   });
   podcastsIndex.updateSettings({
     searchableAttributes: ["*"],

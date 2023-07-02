@@ -17,3 +17,4 @@ json.json
 poddley_fulltext_indexer/segments_ndjson.ndjson
 *.wav
 *mp3
+**/uploads
