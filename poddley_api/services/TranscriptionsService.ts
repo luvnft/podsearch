@@ -8,12 +8,13 @@ import { Index, MeiliSearch, MultiSearchParams, MultiSearchQuery } from "meilise
 import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import { SearchQuery } from "../types/SearchQuery";
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
   public prismaConnection: PrismaClient = {} as PrismaClient;
   public meilisearchConnection: MeiliSearch;
-  public searchString: string = "";
+  public searchQuery: SearchQuery = {} as SearchQuery;
   public segmentsIndex: Index; 
   public podcastsIndex: Index;
   public episodesIndex: Index;
@@ -22,7 +23,7 @@ class TranscriptionsService {
     this.transcriptionsIndex = meilisearchConnection.index("transcriptions");
     this.segmentsIndex = meilisearchConnection.index("segments");
     this.podcastsIndex = meilisearchConnection.index("podcasts");
-    this.episodesIndex = meilisearchConnection.index("episodes");
+    this.episodesIndex = meilisearchConnection.index("episodes"); 
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
   }
@@ -60,41 +61,55 @@ class TranscriptionsService {
 
   //Gets top 10 segments using a custom SQL query as the query is unecessary complicated with prisma
   public async getTrending(): Promise<SearchResponse> {
-    const startTime = new Date().getTime();
-    console.log("Getting...")
+    const startTime = new Date().getTime(); 
+    console.log("Getting...22") 
     // First we try to get top 10 search queries on the last weeks trending, if length == 0 we take the global trending
-    let top10Queries: any[] = await this.prismaConnection.$queryRaw`
+    let top10Queries: string[] = [];
+
+    let query: any[] = await this.prismaConnection.$queryRaw`
       SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count 
-      FROM SearchLog
-      WHERE timestamp >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+1 DAY
+      FROM SearchLog 
+      WHERE createdAt  >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+1 DAY
       GROUP BY searchQueryLower
       ORDER BY count DESC
       LIMIT 10;
     `;
     console.log(`Time elapsed after first query: ${new Date().getTime() - startTime}ms`);
   
-    if (!top10Queries) {
-      top10Queries = await this.prismaConnection.$queryRaw`
-      SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count 
+    if (!query) {
+      query = await this.prismaConnection.$queryRaw`
+      SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count  
       FROM SearchLog
       GROUP BY searchQueryLower
-      ORDER BY count DESC
+      ORDER BY count DESC  
       LIMIT 10;
     `;
     }
     console.log(`Time elapsed after second query (if executed): ${new Date().getTime() - startTime}ms`);
-
+ 
+    //Convert top10Queries to pure strings
+    if (query.length > 0){
+      top10Queries = query.map((e: any) => e.searchQueryLower?.toLowerCase() || '');
+      console.log("OKKK")
+    }
+    else{
+      top10Queries = "this is top 10 entries when searchlog is empty .".split(" ");
+      console.log("NOOO")
+    }
+    console.log(query);
+    console.log(top10Queries)
     // Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
     const queries: MultiSearchQuery[] = [];
     for (let i = 0; i < top10Queries.length; i++) {
-      const query: any = top10Queries[i].searchQueryLower.toLowerCase();
+      const query: string = top10Queries[i];
+      console.log("Query is: ", query); 
       queries.push({
         indexUid: "segments",
         q: query,
         limit: 1,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
-        highlightPostTag: "</span>",
+        highlightPostTag: "</span>", 
         sort: ["start:asc"]
       });
     }
@@ -170,18 +185,18 @@ class TranscriptionsService {
   }
 
   //The search function (main one main use)
-  public async search(searchString: string): Promise<SearchResponse> {
+  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     // Calculating time
     const startTime = new Date().getTime();
 
     // Update the class seachString attribute
-    this.searchString = searchString;
+    this.searchQuery = searchQuery;
 
     // Search results
     const initialSearchResponse: SegmentResponse[] = [];
 
     // Run 1: Just normal search
-    const firstResponse: SegmentResponse = await this.searchSegments(searchString.replace(/^\S+\s*/g, ""));
+    const firstResponse: SegmentResponse = await this.searchSegments(searchQuery.searchString.replace(/^\S+\s*/g, ""));
     initialSearchResponse.push(firstResponse);
 
     // Merged results
@@ -271,7 +286,7 @@ class TranscriptionsService {
     finalResponse.query = mergedResults.query;
 
     //Returning
-    await this.logSearchQuery(searchString);
+    await this.logSearchQuery(searchQuery.searchString);
     return finalResponse;
   }
 
@@ -307,7 +322,7 @@ class TranscriptionsService {
 
   private calculateSimilarity(hit: SegmentHit) {
     const n = 3; // Adjust the value of n for the desired n-gram length
-    const originalNgrams = this.createNgrams(this.searchString, n);
+    const originalNgrams = this.createNgrams(this.searchQuery.searchString, n);
     const textNgrams = this.createNgrams(hit.text, n);
     const windowSize = originalNgrams.length;
 
@@ -361,11 +376,12 @@ class TranscriptionsService {
   public async getNew(): Promise<SearchResponse> {
     const startTime = new Date().getTime();
     // Getting
-    const tenNewestEpisodes: any = await this.episodesIndex.search(undefined, {
+    const tenNewestEpisodes: any = await this.episodesIndex.search("", {
       limit: 10,
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
+    console.log("Number of episodes: ", tenNewestEpisodes.hits.map((e: any, index: number) => index + " " + e.episodeTitle));
     console.log(`Time elapsed after tenNewestEpisodes: ${new Date().getTime() - startTime}ms`);
   
     const episodeIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.episodeGuid);
@@ -373,16 +389,17 @@ class TranscriptionsService {
   
     // Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
     const queries: MultiSearchQuery[] = [];
-    for (let i = 0; i < episodeIds.length; i++) {
+    for (let i = 0; i < episodeIds.length; i++) { 
       const filter = "belongsToEpisodeGuid=" + "'" + episodeIds[i] + "'";
       queries.push({
         indexUid: "segments",
-        limit: 1,
+        limit: 1, 
         filter: filter,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
         highlightPostTag: "</span>",
         sort: ["start:asc"],
+        q: "",
       });
     }
   
@@ -397,6 +414,7 @@ class TranscriptionsService {
   
     // Flatten and get all hits
     const allHits: any = d.results.map((e: any) => e.hits).flat();
+    console.log("ALl hits is: ", allHits.length);
   
     // Get the podcasts and episodes
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
@@ -474,7 +492,7 @@ class TranscriptionsService {
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
-      matchingStrategy: "all",
+      matchingStrategy: "all", 
     });
 
     const podcastIds: string[] = segmentResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid);
