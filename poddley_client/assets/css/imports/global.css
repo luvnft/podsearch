@@ -1,6 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap");
+
+html,
+body {
+  zoom: 1.2;
+}
+
 * {
-  font-family: "Roboto", "Arial", sans-serif;
+  /* font-family: "Roboto"; */
+  font-family: "Inter", sans-serif;
   font-size: 14px;
+  letter-spacing: -0.5px;
 }
 
 hr {

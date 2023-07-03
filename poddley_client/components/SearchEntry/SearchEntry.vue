@@ -36,12 +36,12 @@
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0">
           <div>
-            <p class="tw-font-bold tw-mb-2.5">
+            <p class="tw-mb-2.5 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
           </div>
           <div>
-            <div class="segment tw-shadow tw-drop-shadow-sm tw-shadow-slate-400 tw-mt-0 tw-mb-1.5">
+            <div class="segment tw-mb-1.5 tw-mt-0">
               <div class="loader">
                 <span></span>
                 &nbsp;
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div>
-            <p class="tw-mb-0 tw-mt-1">
+            <p class="tw-mb-0 tw-mt-1.5">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
@@ -121,7 +121,8 @@ const props = defineProps<{
   padding-bottom: 7px;
   background-color: white;
   padding-left: 7px;
-  border-radius: 2px;
+  border-radius: 6px;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
 }
 
 .image-aspect-ratio {

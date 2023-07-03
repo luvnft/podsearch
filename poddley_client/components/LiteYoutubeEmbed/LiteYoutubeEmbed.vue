@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="video-container" @click="toggleiFrame" v-if = "!showiFrame">
+    <div class="video-container" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
-        <p class="tw-m-0 tw-flex tw-w-full tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
-          {{ props.videoTitle }}
-        </p>
+        <div class="tw-flex tw-min-w-0 tw-items-center">
+          <p class="tw-m-0 tw-w-full tw-flex-row tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
+            {{ props.videoTitle }}
+          </p>
+        </div>
       </div>
       <button id="playButton" class="centered-button" />
 
