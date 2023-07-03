@@ -1,5 +1,5 @@
 <template>
-  <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
+  <div class="row tw-flex tw-h-full tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-3 tw-pb-5">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="props.searchEntry.youtubeVideoLink">
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 p-0 py-sm-2 tw-flex tw-flex-col tw-items-center tw-justify-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 p-0 py-sm-2 tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center">
       <!-- <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
         <div class="col tw-m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
@@ -33,16 +33,15 @@
           <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
         </div>
       </div> -->
-      <div class="row flex-grow-1 tw-flex tw-w-full">
-        <div class="col-12">
-          <p class="tw-my-1">
-            <b>Episode:</b>
-            {{ props.searchEntry.episodeTitle }}
-          </p>
-          <hr />
+      <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
+        <div class="col-12 tw-flex tw-flex-col tw-gap-y-0">
           <div>
-            <p class="tw-mb-1 tw-font-bold">Segment:</p>
-            <div class="segment tw-shadow tw-drop-shadow-sm">
+            <p class="tw-font-bold tw-mb-2.5">
+              {{ props.searchEntry.episodeTitle }}
+            </p>
+          </div>
+          <div>
+            <div class="segment tw-shadow tw-drop-shadow-sm tw-shadow-slate-400 tw-mt-0 tw-mb-1.5">
               <div class="loader">
                 <span></span>
                 &nbsp;
@@ -50,13 +49,13 @@
               <span v-html="props.searchEntry._formatted.text.trim()" />
             </div>
           </div>
-          <hr />
-          <p class="tw-mb-0">
-            <b>Time-location:</b>
-            &nbsp;
-            <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
-          </p>
-          <hr />
+          <div>
+            <p class="tw-mb-0 tw-mt-1">
+              <b>Time-location:</b>
+              &nbsp;
+              <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
+            </p>
+          </div>
         </div>
         <!-- <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-0 tw-pt-0">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
@@ -122,7 +121,7 @@ const props = defineProps<{
   padding-bottom: 7px;
   background-color: white;
   padding-left: 7px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .image-aspect-ratio {
