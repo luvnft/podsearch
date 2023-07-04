@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-flex tw-w-96 tw-rounded-md tw-border tw-border-gray-200 tw-shadow">
+  <div class="tw-flex tw-w-full tw-rounded-md tw-border tw-border-gray-200 tw-shadow">
     <div class="tw-relative tw-flex tw-flex-grow tw-items-stretch tw-border-none tw-bg-transparent focus-within:tw-z-10">
       <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3">
         <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
