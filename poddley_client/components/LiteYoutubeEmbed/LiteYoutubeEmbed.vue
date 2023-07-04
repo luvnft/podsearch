@@ -130,7 +130,6 @@ const props = defineProps({
   right: 0;
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0.799) 100%);
   pointer-events: none;
-  border-radius: 12px !important;
 }
 
 .topbackground {
@@ -138,7 +137,7 @@ const props = defineProps({
   border-radius: 12px;
 }
 
-@keyframes ripple {
+@keyframes ripple  {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
@@ -158,11 +157,16 @@ const props = defineProps({
 .channelIcon::before {
   content: "";
   position: absolute;
-  width: 30px;
-  height: 30px;
-  background-color: black;
-  border-radius: 50%;
+  width: 29px;
+  height: 29px;
+  background-color: rgb(80, 80, 80);
+  border-radius: 100%;
   z-index: -1;
   animation: ripple 2s ease-out infinite;
+}
+
+.channelIcon{
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
+
 }
 </style>

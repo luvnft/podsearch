@@ -7,7 +7,7 @@
     :to="route"
   >
     <!-- <IconsTrendingIcon class="tw-h-6 tw-w-6 tw-scale-90 group-hover:tw-fill-gray-500 group-hover:tw-text-gray-600" aria-hidden="true" v-if="!props.loading" /> -->
-    <span class="tw-text-gray-500 group-hover:tw-text-gray-600 group-active:tw-text-gray-600" v-if="!props.loading">Trending podcasts</span>
+    <span class="tw-text-gray-500 group-hover:tw-text-gray-600 group-active:tw-text-gray-600 tw-text-center" v-if="!props.loading">Trending podcasts</span>
     <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="props.loading" />
   </NuxtLink>
 </template>
