@@ -2,7 +2,7 @@
   <div>
     <div class="video-container" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
-        <div class="channelIcon tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
+        <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
         <div class="tw-flex tw-min-w-0 tw-items-center">
@@ -13,11 +13,15 @@
       </div>
       <button id="playButton" class="centered-button" />
 
-      <button class="image-with-vignette tw-rounded-xl">
+      <button class="image-with-vignette tw-rounded-xl after:tw-rounded-xl">
         <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
     </div>
-    <div v-if="showiFrame">
+    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-flex tw-w-full tw-aspect-video  tw-items-center tw-justify-center  ${loading ? 'tw-rounded-xl tw-border' : ''}`">
+      <div class="tw-flex tw-aspect-video tw-items-center tw-justify-center">
+        <IconsSpinnerIcon v-if="loading" />
+      </div>
+
       <iframe
         :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
         :title="props.videoTitle"
@@ -25,11 +29,9 @@
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${
           props.allowFullscreen ? 'allowfullscreen' : ''
         };`"
-        class="tw-rounded-xl"
-        width="100%"
-        :style="{
-          aspectRatio: '16/9',
-        }"
+        class="tw-aspect-video tw-w-full tw-rounded-xl"
+        @load="hello()"
+        v-show="!loading"
       />
     </div>
   </div>
@@ -41,9 +43,16 @@ import { PropType } from "vue";
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
 const showiFrame: Ref<boolean> = ref(false);
+const loading: Ref<boolean> = ref(false);
 
 function toggleiFrame() {
+  loading.value = true;
   showiFrame.value = true;
+}
+
+function hello() {
+  console.log("Now it's loaded bitch");
+  loading.value = false;
 }
 
 const props = defineProps({
@@ -137,7 +146,7 @@ const props = defineProps({
   border-radius: 12px;
 }
 
-@keyframes ripple  {
+@keyframes ripple {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
@@ -165,8 +174,7 @@ const props = defineProps({
   animation: ripple 2s ease-out infinite;
 }
 
-.channelIcon{
+.channelIcon {
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
-
 }
 </style>
