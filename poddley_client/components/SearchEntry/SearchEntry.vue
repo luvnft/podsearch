@@ -1,6 +1,6 @@
 <template>
   <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-2.5">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-2">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
@@ -36,7 +36,7 @@
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0">
           <div>
-            <p class="tw-mb-2.5 tw-font-bold">
+            <p class="tw-mb-2 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
           </div>

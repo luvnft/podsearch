@@ -1,7 +1,8 @@
 <template>
   <div>
+    <!-- Show off iFrame -->
     <div class="video-container" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
+      <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-pt-3 tw-text-white">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
@@ -17,9 +18,11 @@
         <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
     </div>
-    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-flex tw-w-full tw-aspect-video  tw-items-center tw-justify-center  ${loading ? 'tw-rounded-xl tw-border' : ''}`">
-      <div class="tw-flex tw-aspect-video tw-items-center tw-justify-center">
-        <IconsSpinnerIcon v-if="loading" />
+
+    <!-- Actual iFrame -->
+    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 tw-mb-1.5 ${loading ? 'tw-rounded-xl tw-border' : ''}`">
+      <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
+        <IconsSpinnerIcon />
       </div>
 
       <iframe
@@ -166,8 +169,8 @@ const props = defineProps({
 .channelIcon::before {
   content: "";
   position: absolute;
-  width: 29px;
-  height: 29px;
+  width: 35px;
+  height: 35px;
   background-color: rgb(80, 80, 80);
   border-radius: 100%;
   z-index: -1;
