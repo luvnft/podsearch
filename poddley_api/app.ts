@@ -10,7 +10,7 @@ const app: Express = express();
 const port: number = 3000;
 
 //Use helmet
-app.use(helmet());
+// app.use(helmet());
 
 //Enable CORS for front-end use
 app.use(cors());

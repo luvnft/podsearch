@@ -196,13 +196,16 @@ class TranscriptionsService {
     const initialSearchResponse: SegmentResponse[] = [];
 
     // Run 1: Just normal search
+    console.log("Searching this: ", searchQuery.searchString)
     const firstResponse: SegmentResponse = await this.searchSegments(searchQuery.searchString.replace(/^\S+\s*/g, ""));
     initialSearchResponse.push(firstResponse);
+
+    console.log("Funzies: ", firstResponse);
 
     // Merged results
     let mergedResults: SegmentResponse = {} as SegmentResponse;
 
-    // Merging hits
+    // Merging hits 
     mergedResults.hits = firstResponse.hits;
 
     // Assign similarity score to all hits
@@ -211,7 +214,7 @@ class TranscriptionsService {
     // Sort the hits before returning
     mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
 
-    // Slice the results to top 5
+    // Slice the results to top 10
     mergedResults.hits = mergedResults.hits.slice(0, 10);
 
     // Setting new unique hits
@@ -377,7 +380,7 @@ class TranscriptionsService {
     const startTime = new Date().getTime();
     // Getting
     const tenNewestEpisodes: any = await this.episodesIndex.search("", {
-      limit: 10,
+      limit: 50,
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
