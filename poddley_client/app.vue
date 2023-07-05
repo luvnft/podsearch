@@ -1,14 +1,6 @@
 <template>
-  <div class="wrapper">
-    <NuxtLayout>
-      <NuxtLoadingIndicator />
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout>
+    <NuxtLoadingIndicator />
+    <NuxtPage />
+  </NuxtLayout>
 </template>
-
-<style scoped>
-.wrapper{
-  zoom: 1.2;
-}
-</style>

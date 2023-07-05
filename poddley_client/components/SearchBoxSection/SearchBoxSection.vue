@@ -1,7 +1,7 @@
 <template>
   <div class="tw-flex tw-w-full tw-rounded-md tw-border tw-border-gray-200 tw-shadow">
     <div class="tw-relative tw-flex tw-flex-grow tw-items-stretch tw-border-none tw-bg-transparent focus-within:tw-z-10">
-      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3">
+      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3" v-if="showSearchIcon">
         <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
       </div>
       <input
@@ -9,9 +9,11 @@
         name="search"
         id="search"
         placeholder="Search for a quote in a podcast"
-        class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-11 tw-text-left tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
+        class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-4 tw-text-center tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
         v-model="searchString"
         :input="debouncedTriggerSearch"
+        @focusin="toggleSearchIcon(true)"
+        @focusout="toggleSearchIcon(false)"
       />
     </div>
     <button
@@ -31,10 +33,12 @@ import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { debounce } from "~~/utils/tools/tools";
 
-const transcriptionService: TranscriptionService = new TranscriptionService();
 const route = useRoute();
 const router = useRouter();
-const searchString: Ref<string> = ref("luka");
+const searchString: Ref<string> = ref("");
+const showSearchIcon: Ref<boolean> = ref(false);
+const transcriptionService: TranscriptionService = new TranscriptionService();
+
 let loading: Ref<boolean> = ref(false);
 let searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
 
@@ -52,6 +56,10 @@ async function initialLoad() {
   loading.value = true;
   searchResults.value = await transcriptionService.getTrending();
   loading.value = false;
+}
+
+function toggleSearchIcon(showvalue: boolean) {
+  showSearchIcon.value = showvalue;
 }
 
 // const updateUrl = () => {
