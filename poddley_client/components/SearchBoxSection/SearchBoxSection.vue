@@ -9,7 +9,7 @@
         name="search"
         id="search"
         placeholder="Search for a quote in a podcast"
-        class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-4 tw-text-center tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
+        class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-0 tw-text-center tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
         v-model="searchString"
         :input="debouncedTriggerSearch"
         @focusin="toggleSearchIcon(true)"

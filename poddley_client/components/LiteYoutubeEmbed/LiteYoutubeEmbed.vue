@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="tw-flex tw-flex-col tw-items-center">
     <!-- Show off iFrame -->
-    <div class="video-container" @click="toggleiFrame" v-if="!showiFrame">
+    <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-pt-3 tw-text-white">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Actual iFrame -->
-    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 tw-mb-1.5 ${loading ? 'tw-rounded-xl tw-border' : ''}`">
+    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-xl tw-border' : ''}`">
       <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
         <IconsSpinnerIcon />
       </div>

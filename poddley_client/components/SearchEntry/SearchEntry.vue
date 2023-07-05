@@ -1,5 +1,5 @@
 <template>
-  <div class="row tw-flex tw-flex-row tw-items-start tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
+  <div class="row tw-flex tw-h-56 tw-flex-col tw-items-center tw-justify-center tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-3 tw-shadow-md md:tw-gap-y-0">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-2">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="props.searchEntry.youtubeVideoLink">
@@ -16,6 +16,9 @@
             :posterQuality="'hq720'"
           />
         </div>
+        <div v-else>
+          {{ props.searchEntry.imageUrl }}
+        </div>
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-py-0">
@@ -23,7 +26,7 @@
         <div class="col tw-m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
         </div>
-        <div class="col tw-m-0">
+        <div class="col tw-m-0 tw-h-20 tw-w-20">
           <ButtonsHomepageButton :link="props.searchEntry.link" />
         </div>
         <div class="col tw-m-0">
