@@ -46,7 +46,7 @@ async function downScale() {
       .webp()
       .toBuffer();
 
-    uploadImageToApi(imgBuffer, apiUrl, `${newImageName}.webp`)
+    await uploadImageToApi(imgBuffer, apiUrl, `${newImageName}.webp`)
       .then(async (response) => {
         console.log("Image uploaded successfully:", response);
         await prisma.podcast.update({
