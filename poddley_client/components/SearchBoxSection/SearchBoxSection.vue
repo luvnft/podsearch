@@ -1,7 +1,7 @@
 <template>
   <div class="tw-flex tw-w-full tw-rounded-md tw-border tw-border-gray-200 tw-shadow">
     <div class="tw-relative tw-flex tw-flex-grow tw-items-stretch tw-border-none tw-bg-transparent focus-within:tw-z-10">
-      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3" v-if="showSearchIcon">
+      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3" v-if="showSearchIcon && windowWidth > 440">
         <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
       </div>
       <input
@@ -9,9 +9,8 @@
         name="search"
         id="search"
         placeholder="Search for a quote in a podcast"
-        class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-0 tw-text-center tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
+        class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-4 tw-text-center tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
         v-model="searchString"
-        :input="debouncedTriggerSearch"
         @focusin="toggleSearchIcon(true)"
         @focusout="toggleSearchIcon(false)"
       />
@@ -28,44 +27,29 @@
 </template>
 
 <script lang="ts" setup>
-//Imports
-import { SearchResponse } from "~/types/SearchResponse";
-import TranscriptionService from "~/utils/services/TranscriptionsService";
-import { debounce } from "~~/utils/tools/tools";
-
-const route = useRoute();
-const router = useRouter();
+//Vars
 const searchString: Ref<string> = ref("");
 const showSearchIcon: Ref<boolean> = ref(false);
-const transcriptionService: TranscriptionService = new TranscriptionService();
-
-let loading: Ref<boolean> = ref(false);
-let searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
-
-//TriggerSearch
-async function triggerSearch() {
-  loading.value = true;
-  // updateUrl();
-  debouncedTriggerSearch(searchString);
-  loading.value = false;
-}
-const debouncedTriggerSearch = debounce(triggerSearch, 200);
-
-//Initialization function
-async function initialLoad() {
-  loading.value = true;
-  searchResults.value = await transcriptionService.getTrending();
-  loading.value = false;
-}
+const windowWidth: Ref<number> = ref(0);
+const loading: Ref<boolean> = ref(false);
 
 function toggleSearchIcon(showvalue: boolean) {
   showSearchIcon.value = showvalue;
 }
 
-// const updateUrl = () => {
-//   router.push({ query: { ...route.query, search: searchStore.searchString } });
-// };
+const updateWidth = () => {
+  windowWidth.value = process.client ? window.innerWidth : 0;
+  console.log(windowWidth.value);
+};
 
-//Running
-// initialLoad();
+//On Mounted
+onMounted(() => {
+  windowWidth.value = window.innerWidth;
+  window.addEventListener("resize", updateWidth);
+});
+
+//Remove listener before unmounting
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
 </script>

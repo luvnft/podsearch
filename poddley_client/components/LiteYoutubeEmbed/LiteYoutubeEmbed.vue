@@ -145,7 +145,7 @@ const props = defineProps({
 }
 
 .topbackground {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 50%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
   border-radius: 12px;
 }
 
