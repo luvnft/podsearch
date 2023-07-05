@@ -1,10 +1,10 @@
 * {
-  font-family: "Verdana";
-  letter-spacing: -0.5px;
-  word-spacing: -1px;
+  font-family: sans-serif;
+  letter-spacing: -0.8px;
+  font-size: 16px;
 }
 
-hr{
-  margin-bottom:10px;
-  margin-top:10px;
+hr {
+  margin-bottom: 10px;
+  margin-top: 10px;
 }

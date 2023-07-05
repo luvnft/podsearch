@@ -26,11 +26,6 @@ export default defineNuxtConfig({
     autoPageviews: true,
     autoOutboundTracking: true,
   },
-  routeRules: {
-    "/": {
-      redirect: "/new",
-    },
-  },
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {

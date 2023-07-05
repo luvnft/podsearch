@@ -1,5 +1,4 @@
 <template>
-  <NavigationBar :loading="loading" />
   <SearchResults :searchEntries="searchResults.hits" v-if="searchResults" />
 </template>
 

@@ -1,21 +1,30 @@
 <template>
-  <div>
-    <div class="video-container" @click="toggleiFrame">
-      <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-py-3 tw-text-white">
-        <div class="channelIcon tw-flex tw-aspect-video tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full">
+  <div class="tw-flex tw-flex-col tw-items-center">
+    <!-- Show off iFrame -->
+    <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
+      <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-pt-3 tw-text-white">
+        <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
-        <p class="tw-m-0 tw-flex tw-w-full tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
-          {{ props.videoTitle }}
-        </p>
+        <div class="tw-flex tw-min-w-0 tw-items-center">
+          <p class="tw-m-0 tw-w-full tw-flex-row tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
+            {{ props.videoTitle }}
+          </p>
+        </div>
       </div>
       <button id="playButton" class="centered-button" />
 
-      <button class="image-with-vignette tw-rounded-md">
-        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-md tw-bg-blend-darken tw-shadow-black" loading="lazy" />
+      <button class="image-with-vignette tw-rounded-xl after:tw-rounded-xl">
+        <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" loading="lazy" />
       </button>
     </div>
-    <div v-if="showiFrame">
+
+    <!-- Actual iFrame -->
+    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-xl tw-border' : ''}`">
+      <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
+        <IconsSpinnerIcon />
+      </div>
+
       <iframe
         :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
         :title="props.videoTitle"
@@ -23,11 +32,9 @@
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${
           props.allowFullscreen ? 'allowfullscreen' : ''
         };`"
-        class="tw-rounded-md"
-        width="100%"
-        :style="{
-          aspectRatio: '16/9',
-        }"
+        class="tw-aspect-video tw-w-full tw-rounded-xl"
+        @load="hello()"
+        v-show="!loading"
       />
     </div>
   </div>
@@ -39,9 +46,16 @@ import { PropType } from "vue";
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
 const showiFrame: Ref<boolean> = ref(false);
+const loading: Ref<boolean> = ref(false);
 
 function toggleiFrame() {
+  loading.value = true;
   showiFrame.value = true;
+}
+
+function hello() {
+  console.log("Now it's loaded bitch");
+  loading.value = false;
 }
 
 const props = defineProps({
@@ -128,12 +142,11 @@ const props = defineProps({
   right: 0;
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0.799) 100%);
   pointer-events: none;
-  border-radius: 6px !important;
 }
 
 .topbackground {
   background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  border-radius: 6px;
+  border-radius: 12px;
 }
 
 @keyframes ripple {
@@ -156,11 +169,15 @@ const props = defineProps({
 .channelIcon::before {
   content: "";
   position: absolute;
-  width: 37px;
-  height: 37px;
-  background-color: black;
-  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background-color: rgb(80, 80, 80);
+  border-radius: 100%;
   z-index: -1;
   animation: ripple 2s ease-out infinite;
+}
+
+.channelIcon {
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
 }
 </style>
