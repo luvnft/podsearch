@@ -1,8 +1,8 @@
 <template>
-  <div @focusout="closeMenus" class = "tw-px-2">
+  <div @focusout="" class="tw-px-2">
     <Disclosure as="nav" class="tw-z-40 tw-border-none tw-bg-white tw-shadow-none">
       <div class="tw-mx-auto tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8">
-        <div class="tw-relative tw-flex tw-justify-between tw-h-10">
+        <div class="tw-relative tw-flex tw-h-12 tw-justify-between">
           <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
@@ -52,7 +52,7 @@
             </button>
 
             <!-- Profile dropdown -->
-            <Menu as="div" class="tw-z-40 tw-ml-0 tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center">
+            <Menu as="div" class="tw-z-40 tw-mr-0 tw-flex tw-h-10 tw-w-10 tw-origin-top-right tw-items-center tw-justify-center">
               <div>
                 <MenuButton
                   class="tw-flex tw-h-6 tw-w-6 tw-justify-center tw-rounded-full tw-bg-white tw-bg-cover tw-text-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
@@ -62,32 +62,34 @@
                   <span class="tw-sr-only">Open user menu</span>
                 </MenuButton>
               </div>
-              <transition
-                enter-active-class="tw-transition tw-ease-out tw-duration-200"
-                enter-from-class="tw-transform tw-opacity-0 tw-scale-95"
-                enter-to-class="tw-transform tw-opacity-100 tw-scale-100"
-                leave-active-class="tw-transition tw-ease-in tw-duration-75"
-                leave-from-class="tw-transform tw-opacity-100 tw-scale-100"
-                leave-to-class="tw-transform tw-opacity-0 tw-scale-95"
-                v-show="openProfileMenu"
+
+              <TransitionRoot
+                :show="openProfileMenu"
+                enter="tw-transition tw-ease-out tw-duration-500"
+                enter-from="tw-transform tw-opacity-0 tw-scale-95"
+                enter-to="tw-transform tw-opacity-100 tw-scale-100"
+                leave="tw-transition tw-ease-in tw-duration-75"
+                leave-from="tw-transform tw-opacity-100 tw-scale-100"
+                leave-to="tw-transform tw-opacity-0 tw-scale-95"
+                class="tw-absolute tw-right-0 tw-top-12"
               >
-                <div v-show="openProfileMenu">
+                <div v-show="openProfileMenu" class="tw-absolute tw-right-0">
                   <MenuItems
                     static
                     class="tw-absolute tw-right-0 tw-z-10 tw-mt-0 tw-w-40 tw-origin-top-right tw-rounded-md tw-bg-white tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
                   >
                     <MenuItem v-slot="{ active }">
-                      <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">About</a>
+                      <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Login</a>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                      <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Settings</a>
+                      <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Register</a>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                      <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Sign out</a>
+                      <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Saved</a>
                     </MenuItem>
                   </MenuItems>
                 </div>
-              </transition>
+              </TransitionRoot>
             </Menu>
           </div>
         </div>
@@ -115,10 +117,13 @@
                 <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">About</a>
               </MenuItem>
               <MenuItem v-slot="{ active }">
-                <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Settings</a>
+                <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Contact</a>
               </MenuItem>
               <MenuItem v-slot="{ active }">
-                <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Sign out</a>
+                <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Donate</a>
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+                <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">API</a>
               </MenuItem>
             </MenuItems>
           </TransitionRoot>
