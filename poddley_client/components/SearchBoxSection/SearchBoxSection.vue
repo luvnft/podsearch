@@ -1,7 +1,7 @@
 <template>
   <div class="tw-flex tw-w-full tw-rounded-md tw-border-none tw-h-9 tw-mb-0 tw-mt-0">
     <div class="tw-relative tw-flex tw-flex-grow tw-items-stretch tw-border-none tw-bg-transparent focus-within:tw-z-10">
-      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-2.5" v-if="showSearchIcon && windowWidth > 440">
+      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-2.5" v-if="windowWidth > 340">
         <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
       </div>
       <input

@@ -25,7 +25,7 @@
     </div>
 
     <!-- Actual iFrame -->
-    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-xl tw-border' : ''}`">
+    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-none tw-border' : ''}`">
       <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
         <IconsSpinnerIcon />
       </div>
@@ -37,7 +37,7 @@
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write;encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${
           props.allowFullscreen ? 'allowfullscreen' : ''
         };`"
-        class="tw-aspect-video tw-w-full tw-rounded-xl"
+        class="tw-aspect-video tw-w-full tw-rounded-none"
         @load="hello()"
         v-show="!loading"
       />
