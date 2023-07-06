@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-h-14 tw-w-full tw-rounded-lg tw-bg-white tw-text-sm tw-shadow-sm tw-shadow-gray-400 tw-flex tw-flex-row">
+  <div class="tw-h-12 tw-w-full tw-rounded-lg tw-bg-white tw-text-sm tw-shadow-sm tw-shadow-gray-400 tw-flex tw-flex-row">
     <div class="tw-flex tw-w-14 tw-items-center tw-justify-center">
       <button class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-full hover:tw-bg-gray-200 tw-transition-all tw-duration-300 tw-fill-gray-900">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">

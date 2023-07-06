@@ -2,7 +2,7 @@
   <div class="tw-flex tw-flex-col tw-items-center">
     <!-- Show off iFrame -->
     <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground tw-absolute tw-z-20 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-pt-3 tw-text-white">
+      <div class="topbackground tw-absolute tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-pt-3 tw-text-white tw-z-10">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
@@ -125,7 +125,7 @@ const props = defineProps({
   transform: translate(-50%, -50%);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24 27 14v20" fill="white"/></svg>');
   background-repeat: no-repeat;
-  z-index: 10;
+  z-index:5;
 }
 
 .image-with-vignette {

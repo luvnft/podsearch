@@ -1,6 +1,6 @@
 <template>
-  <div class="row tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-none md:tw-rounded-xl md:tw-border tw-border-white tw-bg-white tw-p-0 tw-px-0 tw-py-0 md:tw-shadow-md md:tw-h-56 md:tw-gap-y-0 tw-shadow-none">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-0 tw-px-0">
+  <div class="row tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-none md:tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-0 tw-px-1 tw-py-0 md:tw-shadow-md md:tw-h-56 md:tw-gap-y-0 tw-shadow-none flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm flex tw-flex-col tw-p-5 tw-leading-normal">
       <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
@@ -19,7 +19,7 @@
         <div v-else class="tw-aspect-video tw-h-full tw-rounded-xl tw-bg-cover tw-bg-top" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-py-0">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-py-0 flex flex-col justify-between p-4 leading-normal">
       <!-- <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
         <div class="col tw-m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
@@ -35,7 +35,7 @@
         </div>
       </div> -->
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
-        <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-py-2 tw-px-0">
+        <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-py-2 tw-px-1">
           <div>
             <p class="tw-mb-2 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
@@ -58,7 +58,7 @@
             </p>
           </div>
         </div>
-        <!-- <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-0 tw-pt-0">
+        <!-- <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-0 tw-pt-0 tw-px-0 ">
           <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
         </div> -->
       </div>

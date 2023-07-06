@@ -1,9 +1,9 @@
 <template>
   <div class="tw-flex tw-w-full tw-rounded-md tw-border-none tw-h-10 tw-mb-2">
     <div class="tw-relative tw-flex tw-flex-grow tw-items-stretch tw-border-none tw-bg-transparent focus-within:tw-z-10">
-      <!-- <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3" v-if="showSearchIcon && windowWidth > 440">
+      <div class="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-2.5" >
         <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
-      </div> -->
+      </div>
       <input
         type="text"
         name="search"
@@ -11,7 +11,6 @@
         placeholder="Search for a quote in a podcast"
         class="tw-block tw-w-full tw-justify-center tw-rounded-none tw-rounded-l-md tw-border-gray-300 tw-pl-0 tw-text-center tw-text-base focus:tw-border-indigo-500 focus:tw-ring-indigo-500"
         v-model="searchString"
-        autofocus
       />
     </div>
     <!-- <button
