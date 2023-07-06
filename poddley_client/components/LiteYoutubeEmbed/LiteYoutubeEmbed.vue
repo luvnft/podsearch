@@ -2,7 +2,7 @@
   <div class="tw-flex tw-flex-col tw-items-center">
     <!-- Show off iFrame -->
     <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground tw-absolute tw-flex tw-w-full tw-flex-row tw-gap-2 tw-px-4 tw-pt-3 tw-text-white tw-z-10">
+      <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
         <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
@@ -14,8 +14,13 @@
       </div>
       <button id="playButton" class="centered-button" />
 
-      <button class="image-with-vignette tw-rounded-xl after:tw-rounded-xl">
-        <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" @click="toggleiFrame()" class="tw-rounded-xl tw-bg-blend-darken tw-shadow-black" loading="lazy" />
+      <button class="image-with-vignette tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
+        <nuxt-img
+          :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
+          @click="toggleiFrame()"
+          class="tw-rounded-none tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          loading="lazy"
+        />
       </button>
     </div>
 
@@ -125,7 +130,7 @@ const props = defineProps({
   transform: translate(-50%, -50%);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24 27 14v20" fill="white"/></svg>');
   background-repeat: no-repeat;
-  z-index:5;
+  z-index: 5;
 }
 
 .image-with-vignette {
@@ -146,7 +151,6 @@ const props = defineProps({
 
 .topbackground {
   background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  border-radius: 12px;
 }
 
 @keyframes ripple {

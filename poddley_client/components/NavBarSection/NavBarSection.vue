@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-px-2">
+  <div class="tw-px-2 tw-py-1">
     <Disclosure as="nav" class="tw-z-40 tw-border-none tw-bg-white tw-pb-1 tw-pt-0 tw-shadow-none">
       <div class="tw-mx-auto tw-h-10 tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8" v-click-outside="closeMenus">
         <div class="tw-relative tw-flex tw-h-10 tw-justify-between">
@@ -108,7 +108,7 @@
             >
               <MenuItems
                 static
-                class="tw-absolute  tw-left-0 tw-z-40 tw-w-40 tw-origin-top-left tw-rounded-md tw-bg-white tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
+                class="tw-absolute tw-left-0 tw-z-40 tw-w-40 tw-origin-top-left tw-rounded-md tw-bg-white tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
               >
                 <MenuItem v-slot="{ active }">
                   <a href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">About</a>
