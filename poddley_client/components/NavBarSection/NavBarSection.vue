@@ -1,7 +1,7 @@
 <template>
-  <Disclosure as="nav" class="tw-bg-white tw-shadow-none tw-border-none" v-slot="{ open }">
+  <Disclosure as="nav" class="tw-border-none tw-bg-white tw-shadow-none tw-z-10" v-slot="{ open }">
     <div class="tw-mx-auto tw-max-w-7xl tw-px-2 sm:tw-px-6 lg:tw-px-8">
-      <div class="tw-relative tw-flex tw-h-16 tw-justify-between">
+      <div class="tw-relative tw-flex tw-h-[52px] tw-justify-between">
         <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden">
           <!-- Mobile menu button -->
           <DisclosureButton
@@ -14,7 +14,7 @@
         </div>
         <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center sm:tw-items-stretch sm:tw-justify-start">
           <div class="tw-flex tw-flex-shrink-0 tw-items-center">
-            <NavTitle class="tw-scale-[0.8]" />
+            <NavTitle class="tw-scale-75" />
           </div>
           <div class="tw-hidden sm:tw-ml-6 sm:tw-flex sm:tw-space-x-8">
             <!-- Current: "tw-border-indigo-500 tw-text-gray-900", Default: "tw-border-transparent tw-text-gray-500 hover:tw-border-gray-300 hover:tw-text-gray-700" -->
@@ -55,7 +55,7 @@
                 <span class="tw-sr-only">Open user menu</span>
                 <img
                   class="tw-h-8 tw-w-8 tw-rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  src="https://scontent.fosl3-1.fna.fbcdn.net/v/t39.30808-6/274350608_3078571592460508_8847747205312988074_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=8BTMjp2O2eEAX9GSGKb&_nc_ht=scontent.fosl3-1.fna&oh=00_AfBx-_i_BVui117fj6ZFHJd7-XkYHr2xKBvbKATSXoHWCA&oe=64ABA2F9"
                   alt=""
                 />
               </MenuButton>
@@ -85,6 +85,7 @@
           </Menu>
         </div>
       </div>
+      <SearchBoxSection />
     </div>
 
     <DisclosurePanel class="sm:tw-hidden">
