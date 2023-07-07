@@ -2,7 +2,7 @@
   <div class="row tw-flex tw-h-12 tw-w-full tw-flex-row tw-rounded-lg tw-bg-white tw-px-0 tw-text-sm tw-shadow-sm tw-shadow-gray-400">
     <audio ref="audioRef" :src="audioLink" @timeupdate="onTimeUpdate" @loadeddata="onLoadedData" preload="none" />
     <div class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center tw-pr-0">
-      <button class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-full tw-fill-gray-700 tw-transition-all tw-duration-300 hover:tw-bg-gray-200" @click="togglePlay">
+      <button class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-start -tw-mr-3 tw-rounded-full tw-fill-gray-700 tw-transition-all tw-duration-300 hover:tw-bg-gray-200" @click="togglePlay">
         <div v-if="!audioIsPlaying && !isBuffering">
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512" class="tw-ml-1">
             <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
@@ -15,7 +15,7 @@
             />
           </svg>
         </div>
-        <div v-if="isBuffering" class="tw-flex tw-items-center tw-justify-center">
+        <div v-if="isBuffering" class = "tw-flex tw-justify-center tw-items-center">
           <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-fill-slate-800 tw-text-gray-400" />
         </div>
       </button>
