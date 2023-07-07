@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
@@ -41,7 +41,26 @@ export default defineNuxtConfig({
     "@invictus.codes/nuxt-vuetify",
     "@nuxtjs/device",
     "@nuxtjs/color-mode",
+    "nuxt-lazy-load",
   ],
+  lazyLoad: {
+    // These are the default values
+    images: true,
+    videos: true,
+    audios: true,
+    iframes: true,
+    native: false,
+    directiveOnly: false,
+
+    // To remove class set value to false
+    loadingClass: "isLoading",
+    loadedClass: "isLoaded",
+    appendClass: "lazyLoad",
+
+    observerConfig: {
+      // See IntersectionObserver documentation
+    },
+  },
   delayHydration: {
     mode: "init",
   },
