@@ -51,7 +51,7 @@ export default defineNuxtConfig({
     videos: true,
     audios: true,
     iframes: true,
-    native: false,
+    native: true,
     directiveOnly: false,
 
     // To remove class set value to false
@@ -79,7 +79,6 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
     },
   },
-  image: {},
   app: {
     head: {
       htmlAttrs: {
