@@ -41,7 +41,6 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@invictus.codes/nuxt-vuetify",
     "@nuxtjs/device",
-    "@nuxtjs/color-mode",
     "nuxt-lazy-load",
     "@nuxtjs/critters",
   ],
