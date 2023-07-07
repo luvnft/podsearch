@@ -3,7 +3,7 @@
     <Disclosure as="nav" class="tw-z-40 tw-border-none tw-bg-white tw-pb-1 tw-pt-0 tw-shadow-none">
       <div class="tw-mx-auto tw-h-10 tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8" v-click-outside="closeMenus">
         <div class="tw-relative tw-flex tw-h-10 tw-justify-between">
-          <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden tw-scale-150 ">
+          <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-scale-150 tw-items-center sm:tw-hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
               class="tw-flex tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
@@ -14,7 +14,7 @@
               <XMarkIcon v-else class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
             </DisclosureButton>
           </div>
-          <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center sm:tw-items-stretch sm:tw-justify-start  tw-my-5">
+          <div class="tw-my-5 tw-flex tw-flex-1 tw-items-center tw-justify-center sm:tw-items-stretch sm:tw-justify-start">
             <div class="tw-flex tw-h-full tw-flex-shrink-0 tw-items-center">
               <NavTitle class="tw-scale-75" />
             </div>
@@ -40,7 +40,7 @@
               </a>
             </div>
           </div>
-          <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0 tw-scale-125">
+          <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-scale-125 tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0">
             <button
               type="button"
               class="tw-mx-0 tw-flex tw-h-9 tw-w-8 tw-items-center tw-justify-center tw-rounded-full tw-bg-white tw-text-gray-400 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
@@ -51,7 +51,7 @@
                 <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
               </div>
             </button>
-<!-- 
+            <!-- 
             <Menu as="div" class="tw-z-40 tw-mr-0 tw-flex tw-h-10 tw-w-10 tw-origin-top-right tw-items-center tw-justify-center">
               <div>
                 <MenuButton
