@@ -51,7 +51,7 @@
                 <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
               </div>
             </button>
-
+<!-- 
             <Menu as="div" class="tw-z-40 tw-mr-0 tw-flex tw-h-10 tw-w-10 tw-origin-top-right tw-items-center tw-justify-center">
               <div>
                 <MenuButton
@@ -90,7 +90,7 @@
                   </MenuItems>
                 </div>
               </TransitionRoot>
-            </Menu>
+            </Menu> -->
           </div>
         </div>
         <!-- Burger dropdown -->
