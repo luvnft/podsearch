@@ -60,7 +60,7 @@
             </p>
           </div>
         </div>
-        <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-pb-0 tw-pt-0">
+        <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-pb-0 tw-pt-0 pb-2">
           <AudioPlayer
             :audioLink="props.searchEntry.episodeEnclosure"
             :timeLocation="props.searchEntry.start"
