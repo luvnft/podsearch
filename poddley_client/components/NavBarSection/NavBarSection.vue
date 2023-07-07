@@ -57,7 +57,7 @@
                 <MenuButton
                   @click="toggleProfileMenu"
                   class="tw-flex tw-h-[22px] tw-w-[22px] tw-justify-center tw-rounded-full tw-bg-white tw-bg-cover tw-text-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
-                  :style="`background-image: url('https://scontent.fosl3-1.fna.fbcdn.net/v/t39.30808-6/274350608_3078571592460508_8847747205312988074_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=8BTMjp2O2eEAX9GSGKb&_nc_ht=scontent.fosl3-1.fna&oh=00_AfBx-_i_BVui117fj6ZFHJd7-XkYHr2xKBvbKATSXoHWCA&oe=64ABA2F9')`"
+                  :style="`background-image: url('')`"
                 >
                   <span class="tw-sr-only">Open user menu</span>
                 </MenuButton>
