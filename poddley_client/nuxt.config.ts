@@ -31,7 +31,17 @@ export default defineNuxtConfig({
       autoImport: true,
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxt/image", "@invictus.codes/nuxt-vuetify"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/device",
+    "nuxt-delay-hydration",
+    "@nuxtjs/plausible",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+    "@invictus.codes/nuxt-vuetify",
+    "@nuxtjs/device",
+    "@nuxtjs/color-mode",
+  ],
   delayHydration: {
     mode: "init",
   },
@@ -58,7 +68,11 @@ export default defineNuxtConfig({
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { hid: "description", name: "description", content: "Nuxt.js project" },
+        {
+          hid: "description",
+          name: "Poddley - Search podcasts like text",
+          content: "Search podcast transcriptions like text. It would functionalliy be like shazam, but for podcast transcriptions I suppose.",
+        },
         { name: "msapplication-TileColor", content: "#da532c" },
         { name: "theme-color", content: "#ffffff" },
       ],

@@ -3,7 +3,7 @@
     <!-- Show off iFrame -->
     <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
-        <div class="channelIcon tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
+        <div class="channelIcon before:tw-h-10 before:tw-w-10 tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
         <div class="tw-flex tw-min-w-0 tw-items-center">

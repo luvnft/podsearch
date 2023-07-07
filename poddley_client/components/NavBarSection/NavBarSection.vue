@@ -14,7 +14,7 @@
               <XMarkIcon v-else class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
             </DisclosureButton>
           </div>
-          <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center sm:tw-items-stretch sm:tw-justify-start">
+          <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center sm:tw-items-stretch sm:tw-justify-start  tw-my-5">
             <div class="tw-flex tw-h-full tw-flex-shrink-0 tw-items-center">
               <NavTitle class="tw-scale-75" />
             </div>

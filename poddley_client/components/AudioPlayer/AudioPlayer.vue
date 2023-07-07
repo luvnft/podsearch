@@ -1,7 +1,7 @@
 <template>
-  <div class="tw-w-full tw-rounded-lg tw-shadow-sm tw-shadow-gray-400">
+  <div :class="`tw-w-full tw-rounded-lg ${!isMobile ? 'tw-shadow-sm' : ''} tw-shadow-gray-400`">
     <div style="position: relative">
-      <audio 
+      <audio
         :key="props.timeLocation"
         controls
         id="custom-audio"
@@ -11,7 +11,7 @@
         preload="metadata"
         :title="props.episodeTitle"
         :src="props.audioLink"
-        type="audio/mpeg" 
+        type="audio/mpeg"
       />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
@@ -22,17 +22,22 @@
 </template>
 
 <script lang="ts" setup>
+import { Device } from "@nuxtjs/device/dist/runtime/types";
+
 const props = defineProps<{
   audioLink: string;
   timeLocation: number;
   episodeTitle: string;
 }>();
-
+const { isMobile }: Device = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
+const colorMode = useColorMode()
 
 onMounted(() => {
+  console.log(`This is phone?: ", ${isMobile}`);
+
   if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
   }
@@ -74,5 +79,4 @@ onMounted(() => {
 .loading::-webkit-media-controls-play-button {
   visibility: hidden;
 }
-
 </style>
