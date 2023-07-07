@@ -380,7 +380,7 @@ class TranscriptionsService {
     const startTime = new Date().getTime();
     // Getting
     const tenNewestEpisodes: any = await this.episodesIndex.search("", {
-      limit: 50,
+      limit: 10,
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
