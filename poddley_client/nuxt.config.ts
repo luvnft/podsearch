@@ -41,33 +41,14 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@invictus.codes/nuxt-vuetify",
     "@nuxtjs/device",
-    "nuxt-lazy-load",
     "@nuxtjs/critters",
   ],
-  lazyLoad: {
-    // These are the default values
-    images: true,
-    videos: true,
-    audios: true,
-    iframes: true,
-    native: true,
-    directiveOnly: false,
-
-    // To remove class set value to false
-    loadingClass: "isLoading",
-    loadedClass: "isLoaded",
-    appendClass: "lazyLoad",
-
-    observerConfig: {
-      // See IntersectionObserver documentation
-    },
-  },
   delayHydration: {
-    mode: "mount",
+    mode: "init",
   },
-  plausible: {
+  plausible: { 
     domain: "poddley.com",
-    trackLocalhost: true,
+    trackLocalhost: true, 
     autoPageviews: true,
     autoOutboundTracking: true,
   },
