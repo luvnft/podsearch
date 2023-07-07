@@ -1,7 +1,7 @@
 <template>
-  <div class="row tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-xl tw-border tw-border-white tw-bg-white tw-p-0 tw-px-1 tw-py-1.5 tw-shadow-md md:tw-h-56 md:tw-gap-y-0">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-items-start tw-justify-center tw-rounded-sm tw-py-2">
-      <div class="tw-min-w-full tw-max-w-full tw-rounded-lg">
+  <div class="tw-mx-0 tw-flex tw-flex-col tw-items-center tw-justify-center tw-bg-white tw-p-0 tw-shadow md:tw-gap-y-0">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex tw-m-0 tw-flex tw-flex-col tw-items-start tw-justify-center tw-px-0 tw-pb-1">
+      <div class="tw-min-w-full tw-max-w-full">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -16,13 +16,13 @@
             :posterQuality="'hq720'"
           />
         </div>
-        <div v-else>
-          <img crossorigin="anonymous" :src="props.searchEntry.imageUrl" />
-        </div>
+        <div v-else class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-py-0">
-      <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
+    <div
+      class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col justify-between leading-normal tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-3 tw-py-1"
+    >
+      <!-- <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
         <div class="col tw-m-0">
           <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
         </div>
@@ -35,9 +35,9 @@
         <div class="col tw-m-0">
           <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
         </div>
-      </div>
+      </div> -->
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
-        <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-py-2">
+        <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
           <div>
             <p class="tw-mb-2 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
@@ -60,9 +60,15 @@
             </p>
           </div>
         </div>
-        <!-- <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-pb-0 tw-pt-0">
-          <AudioPlayer :audioLink="props.searchEntry.episodeEnclosure" :timeLocation="props.searchEntry.start" :episodeTitle="props.searchEntry.episodeTitle" :key="props.searchEntry.text" />
-        </div> -->
+        <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-pb-0 tw-pt-0 pb-2">
+          <AudioPlayer
+            :audioLink="props.searchEntry.episodeEnclosure"
+            :timeLocation="props.searchEntry.start"
+            :episodeTitle="props.searchEntry.episodeTitle"
+            :key="props.searchEntry.text"
+            :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
+          />
+        </div>
       </div>
     </div>
   </div>

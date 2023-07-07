@@ -16,7 +16,32 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt"],
+  vuetify: {
+    /* vuetify options */
+    vuetifyOptions: {
+      // @TODO: list all vuetify options
+    },
+
+    moduleOptions: {
+      /* nuxt-vuetify module options */
+      treeshaking: false,
+      useIconCDN: true,
+
+      /* vite-plugin-vuetify options */
+      autoImport: true,
+    },
+  },
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/device",
+    "nuxt-delay-hydration",
+    "@nuxtjs/plausible",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+    "@invictus.codes/nuxt-vuetify",
+    "@nuxtjs/device",
+    "@nuxtjs/color-mode",
+  ],
   delayHydration: {
     mode: "init",
   },
@@ -33,6 +58,7 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
     },
   },
+  image: {},
   app: {
     head: {
       htmlAttrs: {
@@ -42,7 +68,11 @@ export default defineNuxtConfig({
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { hid: "description", name: "description", content: "Nuxt.js project" },
+        {
+          hid: "description",
+          name: "Poddley - Search podcasts like text",
+          content: "Search podcast transcriptions like text. It would functionalliy be like shazam, but for podcast transcriptions I suppose.",
+        },
         { name: "msapplication-TileColor", content: "#da532c" },
         { name: "theme-color", content: "#ffffff" },
       ],
