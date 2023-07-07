@@ -15,7 +15,7 @@
             />
           </svg>
         </div>
-        <div v-if="isBuffering">
+        <div v-if="isBuffering" class="tw-flex tw-items-center tw-justify-center">
           <IconsSpinnerIcon class="tw-h-6 tw-w-6 tw-fill-slate-800 tw-text-gray-400" />
         </div>
       </button>
