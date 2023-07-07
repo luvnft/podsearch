@@ -24,7 +24,7 @@ export default defineNuxtConfig({
 
     moduleOptions: {
       /* nuxt-vuetify module options */
-      treeshaking: false,
+      treeshaking: true,
       useIconCDN: true,
 
       /* vite-plugin-vuetify options */
@@ -42,6 +42,7 @@ export default defineNuxtConfig({
     "@nuxtjs/device",
     "@nuxtjs/color-mode",
     "nuxt-lazy-load",
+    "@nuxtjs/critters",
   ],
   lazyLoad: {
     // These are the default values
