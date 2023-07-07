@@ -8,7 +8,7 @@
         :class="{ loading: isLoading }"
         class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
         ref="audioPlayerRef"
-        preload="metadata"
+        :preload="isVisible ? 'metadata' : 'none'"
         :title="props.episodeTitle"
         :src="props.audioLink"
         type="audio/mpeg"
@@ -33,11 +33,24 @@ const { isMobile }: Device = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
-const colorMode = useColorMode()
+const isVisible = useElementVisibility(audioPlayerRef);
+const isPlayable: Ref<Boolean> = ref(false);
+
+let unwatch = watch(isVisible, function (state) {
+  if (audioPlayerRef.value && state === true) {
+    audioPlayerRef.value.currentTime = props.timeLocation;
+  }
+  // stop watching after the first time
+  unwatch();
+});
+
+function handleCanPlayThrough() {
+  isPlayable.value = true;
+}
 
 onMounted(() => {
   console.log(`This is phone?: ", ${isMobile}`);
-  
+
   if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
     console.log("Forcing");
