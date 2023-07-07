@@ -40,14 +40,15 @@
               </a>
             </div>
           </div>
-          <!-- <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0">
+          <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0">
             <button
               type="button"
               class="tw-mx-0 tw-flex tw-h-9 tw-w-8 tw-items-center tw-justify-center tw-rounded-full tw-bg-white tw-text-gray-400 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
+              @click="toggleSearchSection"
             >
-              <div class="tw-h-[26px] tw-w-[26px]">
+              <div>
                 <span class="tw-sr-only">View notifications</span>
-                <BellIcon class="tw-mx-0 tw-mt-0 tw-px-0" aria-hidden="true" />
+                <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
               </div>
             </button>
 
@@ -90,7 +91,7 @@
                 </div>
               </TransitionRoot>
             </Menu>
-          </div> -->
+          </div>
         </div>
         <!-- Burger dropdown -->
         <div class="tw-absolute tw-left-0 tw-z-40 tw-ml-2">
@@ -127,7 +128,7 @@
         </div>
       </div>
 
-      <SearchBoxSection />
+      <SearchBoxSection v-if="showSearchSection" />
     </Disclosure>
   </div>
 </template>
@@ -138,6 +139,10 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
 const openBurgerMenu: Ref<boolean> = ref(false);
 const openProfileMenu: Ref<boolean> = ref(false);
+const showSearchSection: Ref<boolean> = ref(false);
+
+const toggleSearchSection = () => (showSearchSection.value = !showSearchSection.value);
+
 const closeMenus = () => {
   console.log("outside");
   openBurgerMenu.value = false;

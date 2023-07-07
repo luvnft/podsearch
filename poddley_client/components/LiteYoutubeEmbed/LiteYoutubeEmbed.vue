@@ -3,7 +3,7 @@
     <!-- Show off iFrame -->
     <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
-        <div class="channelIcon tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
+        <div class="channelIcon tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full">
           <nuxt-img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/hq720.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
         <div class="tw-flex tw-min-w-0 tw-items-center">
@@ -143,7 +143,7 @@ const props = defineProps({
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: 0; 
   right: 0;
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0.799) 100%);
   pointer-events: none;
@@ -173,8 +173,6 @@ const props = defineProps({
 .channelIcon::before {
   content: "";
   position: absolute;
-  width: 35px;
-  height: 35px;
   background-color: rgb(80, 80, 80);
   border-radius: 100%;
   z-index: -1;
