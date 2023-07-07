@@ -37,9 +37,10 @@ const colorMode = useColorMode()
 
 onMounted(() => {
   console.log(`This is phone?: ", ${isMobile}`);
-
+  
   if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
+    console.log("Forcing");
   }
 });
 </script>
