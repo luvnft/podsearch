@@ -17,29 +17,12 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  vuetify: {
-    /* vuetify options */
-    vuetifyOptions: {
-      // @TODO: list all vuetify options
-    },
-
-    moduleOptions: {
-      /* nuxt-vuetify module options */
-      treeshaking: true,
-      useIconCDN: true,
-
-      /* vite-plugin-vuetify options */
-      autoImport: true,
-    },
-  },
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxtjs/device",
     "nuxt-delay-hydration",
     "@nuxtjs/plausible",
     "@vueuse/nuxt",
-    "@nuxt/image",
-    "@invictus.codes/nuxt-vuetify",
     "@nuxtjs/device",
     "@nuxtjs/critters",
   ],

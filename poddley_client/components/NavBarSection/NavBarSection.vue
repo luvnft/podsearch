@@ -3,7 +3,7 @@
     <Disclosure as="nav" class="tw-z-40 tw-border-none tw-bg-white tw-pb-1 tw-pt-0 tw-shadow-none">
       <div class="tw-mx-auto tw-h-10 tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8" v-click-outside="closeMenus">
         <div class="tw-relative tw-flex tw-h-10 tw-justify-between">
-          <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden">
+          <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden tw-scale-150 ">
             <!-- Mobile menu button -->
             <DisclosureButton
               class="tw-flex tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"

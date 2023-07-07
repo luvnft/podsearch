@@ -44,13 +44,7 @@ let unwatch = watch(isVisible, function (state) {
   unwatch();
 });
 
-function handleCanPlayThrough() {
-  isPlayable.value = true;
-}
-
 onMounted(() => {
-  console.log(`This is phone?: ", ${isMobile}`);
-
   if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
     console.log("Forcing");
