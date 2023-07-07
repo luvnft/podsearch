@@ -8,6 +8,7 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: false,
     },
+    minify: true,
   },
   pages: true,
   postcss: {
@@ -63,7 +64,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   plausible: {
     domain: "poddley.com",
