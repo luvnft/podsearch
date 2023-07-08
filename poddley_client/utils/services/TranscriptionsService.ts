@@ -1,6 +1,5 @@
 import { SearchResponse } from "~~/types/SearchResponse";
 import ApiService from "./ApiService";
-import { SearchQuery } from "types/SearchQuery";
 
 export default class TranscriptionService extends ApiService {
   public constructor() {
@@ -25,12 +24,12 @@ export default class TranscriptionService extends ApiService {
     return data;
   }
 
-  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
+  public async search(searchString: string): Promise<SearchResponse> {
     const res = await useFetch("/transcriptions/search", {
       method: "GET",
       baseURL: this.BASE_URL,
       query: {
-        searchQuery: searchQuery,
+        searchString: searchString,
       },
     });
     const data: SearchResponse = res.data.value as SearchResponse;

@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/device", "@nuxtjs/critters"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/device", "@nuxtjs/critters", "@pinia/nuxt"],
   delayHydration: {
     mode: "init",
   },
@@ -26,6 +26,16 @@ export default defineNuxtConfig({
     trackLocalhost: true,
     autoPageviews: true,
     autoOutboundTracking: true,
+  },
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      "defineStore", // import { defineStore } from 'pinia'
+      ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+    ],
+  },
+  imports: {
+    dirs: ["store"],
   },
   router: { options: { strict: true } },
   runtimeConfig: {

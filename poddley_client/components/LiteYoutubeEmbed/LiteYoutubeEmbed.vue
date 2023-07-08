@@ -4,7 +4,7 @@
     <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
         <div class="channelIcon tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full before:tw-h-10 before:tw-w-10">
-          <img :src="`https://i.ytimg.com/vi_webp/${props.videoId}/default.webp`" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
+          <img :src="props.searchEntry?.imageUrl" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
         </div>
         <div class="tw-flex tw-min-w-0 tw-items-center">
           <p class="tw-m-0 tw-w-full tw-flex-row tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
@@ -46,9 +46,10 @@
 </template>
 
 <script lang="ts" setup>
+import { Hit } from "types/SearchResponse";
 import { PropType } from "vue";
 
-type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
+type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720" | any;
 
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
@@ -111,6 +112,10 @@ const props = defineProps({
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,
+  },
+  searchEntry: {
+    type: Object as PropType<Hit>,
+    required: false,
   },
 });
 </script>

@@ -1,13 +1,14 @@
 <template>
-  <div class="tw-px-2 tw-py-1">
+  <div class="tw-px-3 tw-py-1">
     <Disclosure as="nav" class="tw-z-40 tw-border-none tw-bg-white tw-pb-0 tw-pt-0 tw-shadow-none">
       <div class="tw-mx-auto tw-h-12 tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8" v-click-outside="closeMenus">
         <div class="tw-relative tw-flex tw-h-full tw-justify-between">
           <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
-              class="tw-flex tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500 tw-scale-110"
+              class="tw-flex tw-scale-110 tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
               @click="toggleOpenBurgerMenu"
+              @keyup.space="toggleOpenBurgerMenu"
             >
               <span class="tw-sr-only">Open main menu</span>
               <Bars3Icon v-if="!openBurgerMenu" class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
@@ -40,10 +41,10 @@
               </a>
             </div>
           </div>
-          <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-scale-110 tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0">
+          <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-h-full tw-scale-110 tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0">
             <button
               type="button"
-              class="tw-mx-0 tw-flex tw-h-9 tw-w-8 tw-items-center tw-justify-center tw-rounded-full tw-bg-white tw-text-gray-400 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
+              class="tw-mx-0 tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-full tw-bg-white tw-text-gray-400 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
               @click="toggleSearchSection"
             >
               <div>

@@ -14,10 +14,11 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 //Initialization function
 async function initialLoad() {
   loading.value = true;
-  searchResults.value = await transcriptionService.getNew();
+  searchResults.value = await transcriptionService.search("In the history of human civilization");
   loading.value = false;
 }
 
-//Running
+//Running 
 initialLoad();
 </script>
+  

@@ -1,6 +1,6 @@
 <template>
-  <div :class="`tw-w-full tw-rounded-lg ${!isMobile ? 'tw-shadow-sm' : ''} tw-shadow-gray-400`">
-    <div style="position: relative">
+  <div :class="`tw-w-full tw-rounded-lg ${!isIos ? 'tw-shadow-sm tw-shadow-gray-400' : ''}`">
+    <div> 
       <audio
         :key="props.timeLocation"
         controls
@@ -29,12 +29,11 @@ const props = defineProps<{
   timeLocation: number;
   episodeTitle: string;
 }>();
-const { isMobile }: Device = useDevice();
+const { isIos }: Device = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
 const isVisible = useElementVisibility(audioPlayerRef);
-const isPlayable: Ref<Boolean> = ref(false);
 
 let unwatch = watch(isVisible, function (state) {
   if (audioPlayerRef.value && state === true) {
@@ -71,8 +70,10 @@ onMounted(() => {
 #custom-audio::-webkit-media-controls-mute-button,
 #custom-audio::-webkit-media-controls-timeline,
 #custom-audio::-webkit-media-controls-current-time-display {
-  color: #000;
+  color: #282828;
 }
+
+
 
 .spinner {
   position: absolute;
