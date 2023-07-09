@@ -6,19 +6,26 @@
 //Imports
 import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
+import { storeToRefs } from "pinia";
+import { debounce } from "../utils/tools/tools";
 
-let loading: Ref<boolean> = ref(false);
-let searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
+//Vars
+const searchStore = useSearchStore();
+const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
 const transcriptionService: TranscriptionService = new TranscriptionService();
+const { searchString } = storeToRefs(searchStore);
 
 //Initialization function
-async function initialLoad() {
-  loading.value = true;
-  searchResults.value = await transcriptionService.search("In the history of human civilization");
-  loading.value = false;
+async function makeSearch(string: string) {
+  console.log("Triggered");
+  searchResults.value = await transcriptionService.search(string);
 }
 
-//Running 
-initialLoad();
+const debouncedSearch = debounce(makeSearch, 500);
+
+//Running
+watch(searchString, debouncedSearch);
+
+//Initial calls
+makeSearch("following is a conversation with ");
 </script>
-  
