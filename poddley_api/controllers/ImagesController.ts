@@ -12,7 +12,6 @@ class ImagesController {
     try {
       const filename: string = req.params.filename;
       const filepath: string = this.imagesService.getFilePath(filename);
-      console.log(filepath)
       res.sendFile(filepath, (err: any) => {
         if (err) { 
           res.status(404).send("Image not found");

@@ -12,8 +12,8 @@ class TranscriptionsController {
 
   public search = async (req: Request, res: Response) => {
     try {
-      const searchQuery: SearchQuery = req.query.searchQuery as unknown as SearchQuery;
-      const data: SearchResponse = await this.transcriptionService.search(searchQuery);
+      const searchString: string = req.query.searchString as string;
+      const data: SearchResponse = await this.transcriptionService.search(searchString);
       res.status(200).send(data);
     } catch (error: any) {
       res.status(400).send({ message: JSON.stringify(error) });

@@ -4,6 +4,15 @@ import cors from "cors";
 import helmet from "helmet";
 import transcriptionsRouter from "./routes/transcriptions";
 import imagesRouter from "./routes/images";
+import rateLimit from 'express-rate-limit'
+
+//Limiter
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 1000, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
 
 //Setup
 const app: Express = express();
@@ -23,7 +32,10 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 app.use("/transcriptions", transcriptionsRouter);
 app.use("/images", imagesRouter);
 
-//Listen on port
+// Apply the rate limiting middleware to all requests
+app.use(limiter)
+
+//Listen on port 
 app.listen(port, () => {
   console.log(`Poddley API is listening at http://localhost:${port}`);
 });

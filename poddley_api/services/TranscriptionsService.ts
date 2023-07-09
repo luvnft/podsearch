@@ -14,7 +14,7 @@ class TranscriptionsService {
   public transcriptionsIndex: Index;
   public prismaConnection: PrismaClient = {} as PrismaClient;
   public meilisearchConnection: MeiliSearch;
-  public searchQuery: SearchQuery = {} as SearchQuery;
+  public searchString: string = "";
   public segmentsIndex: Index; 
   public podcastsIndex: Index;
   public episodesIndex: Index;
@@ -62,7 +62,7 @@ class TranscriptionsService {
   //Gets top 10 segments using a custom SQL query as the query is unecessary complicated with prisma
   public async getTrending(): Promise<SearchResponse> {
     const startTime = new Date().getTime(); 
-    console.log("Getting...22") 
+
     // First we try to get top 10 search queries on the last weeks trending, if length == 0 we take the global trending
     let top10Queries: string[] = [];
 
@@ -90,19 +90,15 @@ class TranscriptionsService {
     //Convert top10Queries to pure strings
     if (query.length > 0){
       top10Queries = query.map((e: any) => e.searchQueryLower?.toLowerCase() || '');
-      console.log("OKKK")
     }
     else{
       top10Queries = "this is top 10 entries when searchlog is empty .".split(" ");
-      console.log("NOOO")
     }
-    console.log(query);
-    console.log(top10Queries)
+
     // Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
     const queries: MultiSearchQuery[] = [];
     for (let i = 0; i < top10Queries.length; i++) {
       const query: string = top10Queries[i];
-      console.log("Query is: ", query); 
       queries.push({
         indexUid: "segments",
         q: query,
@@ -185,29 +181,37 @@ class TranscriptionsService {
   }
 
   //The search function (main one main use)
-  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
+  public async search(searchString: string): Promise<SearchResponse> {
     // Calculating time
     const startTime = new Date().getTime();
 
     // Update the class seachString attribute
-    this.searchQuery = searchQuery;
+    this.searchString = searchString;
+    console.log("Searching: ", this.searchString);
 
     // Search results
     const initialSearchResponse: SegmentResponse[] = [];
 
     // Run 1: Just normal search
-    console.log("Searching this: ", searchQuery.searchString)
-    const firstResponse: SegmentResponse = await this.searchSegments(searchQuery.searchString.replace(/^\S+\s*/g, ""));
+    const firstResponse: SegmentResponse = await this.searchSegments(searchString);
     initialSearchResponse.push(firstResponse);
 
-    console.log("Funzies: ", firstResponse);
+    // Run 2: Remove first word
+    const searchStringWithoutFirstWord: string = searchString.replace(/^\S+\s*/g, "");
+    const secondResponse: SegmentResponse = await this.searchSegments(searchStringWithoutFirstWord);
+    initialSearchResponse.push(secondResponse);
+
+    // Run 3: Remove last word
+    const searchStringWithoutLastWord: string = searchStringWithoutFirstWord.replace(/\s*\S+$/g, "");
+    const thirdResponse: SegmentResponse = await this.searchSegments(searchStringWithoutLastWord);
+    initialSearchResponse.push(thirdResponse);
 
     // Merged results
     let mergedResults: SegmentResponse = {} as SegmentResponse;
 
-    // Merging hits 
-    mergedResults.hits = firstResponse.hits;
-
+    // Merging hits
+    mergedResults.hits = firstResponse.hits.concat(secondResponse.hits);
+ 
     // Assign similarity score to all hits
     this.addSimilarityScoreToHits(mergedResults.hits);
 
@@ -289,7 +293,7 @@ class TranscriptionsService {
     finalResponse.query = mergedResults.query;
 
     //Returning
-    await this.logSearchQuery(searchQuery.searchString);
+    await this.logSearchQuery(searchString);
     return finalResponse;
   }
 
@@ -325,7 +329,7 @@ class TranscriptionsService {
 
   private calculateSimilarity(hit: SegmentHit) {
     const n = 3; // Adjust the value of n for the desired n-gram length
-    const originalNgrams = this.createNgrams(this.searchQuery.searchString, n);
+    const originalNgrams = this.createNgrams(this.searchString, n);
     const textNgrams = this.createNgrams(hit.text, n);
     const windowSize = originalNgrams.length;
 
@@ -365,7 +369,7 @@ class TranscriptionsService {
   private async searchSegments(searchString: string): Promise<SegmentResponse> {
     // Search the index
     const resData: SegmentResponse = await this.segmentsIndex.search(searchString, {
-      limit: 50,
+      limit: 10,
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
@@ -384,8 +388,6 @@ class TranscriptionsService {
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
-    console.log("Number of episodes: ", tenNewestEpisodes.hits.map((e: any, index: number) => index + " " + e.episodeTitle));
-    console.log(`Time elapsed after tenNewestEpisodes: ${new Date().getTime() - startTime}ms`);
   
     const episodeIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.episodeGuid);
     const podcastIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.podcastGuid);
@@ -406,9 +408,6 @@ class TranscriptionsService {
       });
     }
   
-    console.log("Queries: ", queries.length);
-    console.log(`Time elapsed after creating queries: ${new Date().getTime() - startTime}ms`);
-  
     // We perform the query and then we get SearchResultHits
     const d = await this.meilisearchConnection.multiSearch({
       queries: queries,
@@ -417,7 +416,6 @@ class TranscriptionsService {
   
     // Flatten and get all hits
     const allHits: any = d.results.map((e: any) => e.hits).flat();
-    console.log("ALl hits is: ", allHits.length);
   
     // Get the podcasts and episodes
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
