@@ -21,7 +21,7 @@ async function makeSearch(string: string) {
   searchResults.value = await transcriptionService.search(string);
 }
 
-const debouncedSearch = debounce(makeSearch, 500);
+const debouncedSearch = debounce(makeSearch, 200);
 
 //Running
 watch(searchString, debouncedSearch);
