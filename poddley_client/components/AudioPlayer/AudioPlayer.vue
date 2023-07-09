@@ -1,6 +1,6 @@
 <template>
-  <div :class="`tw-w-full tw-rounded-lg ${!isMobile ? 'tw-shadow-sm' : ''} tw-shadow-gray-400`">
-    <div style="position: relative">
+  <div :class="`tw-w-full tw-rounded-lg ${!isIos ? 'tw-shadow-sm tw-shadow-gray-400' : ''}`">
+    <div> 
       <audio
         :key="props.timeLocation"
         controls
@@ -8,7 +8,7 @@
         :class="{ loading: isLoading }"
         class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
         ref="audioPlayerRef"
-        preload="metadata"
+        :preload="isVisible ? 'metadata' : 'none'"
         :title="props.episodeTitle"
         :src="props.audioLink"
         type="audio/mpeg"
@@ -29,15 +29,21 @@ const props = defineProps<{
   timeLocation: number;
   episodeTitle: string;
 }>();
-const { isMobile }: Device = useDevice();
+const { isIos }: Device = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
-const colorMode = useColorMode()
+const isVisible = useElementVisibility(audioPlayerRef);
+
+let unwatch = watch(isVisible, function (state) {
+  if (audioPlayerRef.value && state === true) {
+    audioPlayerRef.value.currentTime = props.timeLocation;
+  }
+  // stop watching after the first time
+  unwatch();
+});
 
 onMounted(() => {
-  console.log(`This is phone?: ", ${isMobile}`);
-  
   if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
     console.log("Forcing");
@@ -64,8 +70,10 @@ onMounted(() => {
 #custom-audio::-webkit-media-controls-mute-button,
 #custom-audio::-webkit-media-controls-timeline,
 #custom-audio::-webkit-media-controls-current-time-display {
-  color: #000;
+  color: #282828;
 }
+
+
 
 .spinner {
   position: absolute;

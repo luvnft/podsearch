@@ -8,6 +8,7 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: false,
     },
+    minify: true,
   },
   pages: true,
   postcss: {
@@ -16,32 +17,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  vuetify: {
-    /* vuetify options */
-    vuetifyOptions: {
-      // @TODO: list all vuetify options
-    },
-
-    moduleOptions: {
-      /* nuxt-vuetify module options */
-      treeshaking: false,
-      useIconCDN: true,
-
-      /* vite-plugin-vuetify options */
-      autoImport: true,
-    },
-  },
-  modules: [
-    "@nuxtjs/tailwindcss",
-    "@nuxtjs/device",
-    "nuxt-delay-hydration",
-    "@nuxtjs/plausible",
-    "@vueuse/nuxt",
-    "@nuxt/image",
-    "@invictus.codes/nuxt-vuetify",
-    "@nuxtjs/device",
-    "@nuxtjs/color-mode",
-  ],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/device", "@nuxtjs/critters", "@pinia/nuxt"],
   delayHydration: {
     mode: "init",
   },
@@ -51,6 +27,16 @@ export default defineNuxtConfig({
     autoPageviews: true,
     autoOutboundTracking: true,
   },
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      "defineStore", // import { defineStore } from 'pinia'
+      ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+    ],
+  },
+  imports: {
+    dirs: ["store"],
+  },
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {
@@ -58,7 +44,6 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
     },
   },
-  image: {},
   app: {
     head: {
       htmlAttrs: {

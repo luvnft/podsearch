@@ -1,19 +1,20 @@
 <template>
-  <div class="tw-mx-0 tw-flex tw-flex-col tw-items-center tw-justify-center tw-bg-white tw-p-0 tw-shadow md:tw-gap-y-0">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex tw-m-0 tw-flex tw-flex-col tw-items-start tw-justify-center tw-px-0 tw-pb-1">
-      <div class="tw-min-w-full tw-max-w-full">
+  <div class="tw-mx-0 tw-flex tw-flex-col tw-items-center tw-justify-center tw-border-b tw-border-gray-300 tw-bg-white tw-p-0 tw-shadow-sm md:tw-gap-y-0">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex tw-m-0 tw-flex tw-flex-col tw-items-start tw-justify-center tw-px-0 tw-pb-1.5">
+      <div class="tw-min-h-full tw-min-w-full tw-max-w-full">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`)"
-            :width="'100%'"
-            :height="'auto'"
+            :width="'auto'"
+            :height="'100%'"
             :videoTitle="props.searchEntry.episodeTitle"
             :autoplay="false"
             :allowFullscreen="true"
             :pictureInPicture="true"
             :noCookie="true"
             :posterQuality="'hq720'"
+            :searchEntry="props.searchEntry"
           />
         </div>
         <div v-else class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
@@ -24,16 +25,16 @@
     >
       <!-- <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
         <div class="col tw-m-0">
-          <ButtonsPodcastButton :link="props.searchEntry.episodeLinkToEpisode" />
+          <ButtonsPodcastButton :link="searchEntry.episodeLinkToEpisode" />
         </div>
         <div class="col tw-m-0 tw-h-20 tw-w-20">
-          <ButtonsHomepageButton :link="props.searchEntry.link" />
+          <ButtonsHomepageButton :link="searchEntry.link" />
         </div>
         <div class="col tw-m-0">
-          <ButtonsRssButton :link="props.searchEntry.url" />
+          <ButtonsRssButton :link="searchEntry.url" />
         </div>
         <div class="col tw-m-0">
-          <ButtonsCopyLinkButton :segmentId="props.searchEntry.id" />
+          <ButtonsCopyLinkButton :segmentId="searchEntry.id" />
         </div>
       </div> -->
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
@@ -60,7 +61,7 @@
             </p>
           </div>
         </div>
-        <div class="col-12 mt-0 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-px-0 tw-pb-0 tw-pt-0 pb-2">
+        <div class="col-12 mt-0 pb-2 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-border-none tw-px-0 tw-pb-0 tw-pt-0">
           <AudioPlayer
             :audioLink="props.searchEntry.episodeEnclosure"
             :timeLocation="props.searchEntry.start"
