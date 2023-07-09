@@ -1,6 +1,6 @@
 <template>
   <div :class="`tw-w-full tw-rounded-lg ${!isIos ? 'tw-shadow-sm tw-shadow-gray-400' : ''}`">
-    <div> 
+    <div>
       <audio
         :key="props.timeLocation"
         controls
@@ -46,7 +46,6 @@ let unwatch = watch(isVisible, function (state) {
 onMounted(() => {
   if (audioPlayerRef.value) {
     audioPlayerRef.value.currentTime = props.timeLocation;
-    console.log("Forcing");
   }
 });
 </script>
@@ -72,8 +71,6 @@ onMounted(() => {
 #custom-audio::-webkit-media-controls-current-time-display {
   color: #282828;
 }
-
-
 
 .spinner {
   position: absolute;

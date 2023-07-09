@@ -21,11 +21,11 @@ async function makeSearch(string: string) {
   searchResults.value = await transcriptionService.search(string);
 }
 
-const debouncedSearch = debounce(makeSearch, 200);
+const debouncedSearch = debounce(makeSearch, 500);
 
 //Running
 watch(searchString, debouncedSearch);
 
 //Initial calls
-debouncedSearch("following is a conversation with ");
+makeSearch("following is a conversation with ");
 </script>
