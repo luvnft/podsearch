@@ -95,7 +95,7 @@
           </div>
         </div>
         <!-- Burger dropdown -->
-        <div class="tw-absolute tw-left-0 tw-z-40 tw-ml-2">
+        <div class="tw-absolute tw-left-0 tw-z-40 -tw-mt-0.5 tw-ml-3">
           <Menu as="div" class="tw-origin-top-left">
             <TransitionRoot
               :show="openBurgerMenu"
