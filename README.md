@@ -138,10 +138,10 @@
 - [x] Legg til nginx infoen, arkitekturen osv.
 - [x] Add bg to selected jutton and route to the buttons
 - [x] Fikse loading spinner bug
-- [x] We need 3 tabs that show at the top like the buttons:
-  - New episodes
-  - Trending episodes
-  - ~~Info~~
+- ~~[x] We need 3 tabs that show at the top like the buttons:~~
+  ~~- New episodes~~
+  ~~- Trending episodes~~
+  ~~- Info~~
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [x] Remove bold tab bar
