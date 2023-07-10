@@ -171,7 +171,7 @@
 - [ ] Write me an about page contact page and donate page
 - [x] Legg til loading indinator når api callet kjører
 - [x] Gjør search ikonet til en x når den er nede
-- [ ] Turn dedigated cpu to api server
+- [x] Turn dedigated cpu to api server
 - [x] use lowest db cpu
 - ~~[ ] concert search to multiseach to speed up search time~~
 - ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this. 
