@@ -18,10 +18,12 @@ const { searchString } = storeToRefs(searchStore);
 //Initialization function
 async function makeSearch(string: string) {
   console.log("Triggered");
+  searchStore.setLoadingState(true);
   searchResults.value = await transcriptionService.search(string);
+  searchStore.setLoadingState(false);
 }
 
-const debouncedSearch = debounce(makeSearch, 200);
+const debouncedSearch = debounce(makeSearch, 0);
 
 //Running
 watch(searchString, debouncedSearch);

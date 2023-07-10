@@ -47,9 +47,13 @@
               class="tw-mx-0 tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-full tw-bg-white tw-text-gray-400 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
               @click="toggleSearchSection"
             >
-              <div>
-                <span class="tw-sr-only">View notifications</span>
+              <div v-if="!showSearchSection">
+                <span class="tw-sr-only">Open searchbox</span>
                 <IconsMagnifyingGlass class="tw-h-6 tw-w-6 tw-text-gray-400" aria-hidden="true" />
+              </div>
+              <div v-else>
+                <span class="tw-sr-only">Close searchbox</span>
+                <XMarkIcon class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
               </div>
             </button>
             <!-- 
@@ -143,7 +147,6 @@ const openProfileMenu: Ref<boolean> = ref(false);
 const showSearchSection: Ref<boolean> = ref(false);
 
 const toggleSearchSection = () => (showSearchSection.value = !showSearchSection.value);
-
 const closeMenus = () => {
   console.log("outside");
   openBurgerMenu.value = false;
