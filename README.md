@@ -168,7 +168,24 @@
 - [ ] Add info component
 - [x] Fix unique segment issue by modifying triplet
 - [ ] Refactor the returning logic backend
-- [ ] Lag troof blog
-- [ ] Lag lobsters blog
-- [ ] Lag egen lobsters type
 - [ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page
+- [ ] Skriv et lite innlegg om hvordan det fungerer i bloggen din
+- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
+- [ ] Indexer restne av databasen
+- [ ] Pro membership og kontogreier
+- [ ] Record to text thing
+- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
+- [ ] Write me an about page contact page and donate page
+- [ ] Legg til loading indinator når api callet kjører
+- [ ] Gjør search ikonet til en x når den er nede
+- [ ] Turn dedigated cpu to api server
+- [ ] use lowest db cpu
+- [ ] concert search to multiseach to speed up search time
+- [ ] Enable teksting on all iframes
+- [ ] finish the rest of the desktop design and shit
+- [ ] Finn ut om du bare kan endre typen på deviation Image og tvinge string til å bli image
+        Segment ID:
+        The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
+        Getting segment time while audio is being played.
+        The process for implementing this is to load the first 1 min segments from a given location and then grab the next 1 min segments everytime the time is 10 seconds from the last time of the gotten segments. If someone jumps more than 10 seoconds a 
+        head or to a section for which we dont hjave the time like 1 hour ahead, then we just get the time on that spot and 1 min back and worth. However, we want to cache this to avoid re-fetchingsso how would we do that? We need to someone keep a track of the fetched segments and the once we still need to fetch, but this needs to be done elegantly, any ideas?	
