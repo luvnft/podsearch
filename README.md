@@ -149,41 +149,33 @@
 - [x] Legg til loading for audio while loading
 - [x] Legg til segment id 
 - [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-- [ ] Microphone-recording to text search (like Shazam)
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
-- [ ] Native app?
-- [ ] Add faceting for episode and podcast (route for episode og podcast)
+- ~~[ ] Native app?~~
+- ~~[ ] Add faceting for episode and podcast (route for episode og podcast)~~
 - [ ] Set up CI/CD pipeline for backend
 - [ ] Make MeiliSearch production probably.
-- [ ] Make the types shared between backend and client
+- ~~[ ] Make the types shared between backend and client~~
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Offer public API through external service
-- [ ] Legg til Remote Desktop til stasjonær
-- [ ] Start opp deviationCalculator og transcriber i dag vha remote desktop for å teste den.
-- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
-- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
-- [ ] Fix navbar
-- [ ] Detach logic of searching from navbar
-- [ ] Add info component
+- [x] Fix navbar
+- [x] Detach logic of searching from navbar
 - [x] Fix unique segment issue by modifying triplet
-- [ ] Refactor the returning logic backend
-- [ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page
-- [ ] Skriv et lite innlegg om hvordan det fungerer i bloggen din
+- [x] Refactor the returning logic backend
+- ~~[ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
 - [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
-- [ ] Indexer restne av databasen
+- [x] Indexer restne av databasen
 - [ ] Pro membership og kontogreier
 - [ ] Record to text thing
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
 - [ ] Write me an about page contact page and donate page
-- [ ] Legg til loading indinator når api callet kjører
-- [ ] Gjør search ikonet til en x når den er nede
+- [x] Legg til loading indinator når api callet kjører
+- [x] Gjør search ikonet til en x når den er nede
 - [ ] Turn dedigated cpu to api server
-- [ ] use lowest db cpu
-- [ ] concert search to multiseach to speed up search time
-- [ ] Enable teksting on all iframes
+- [x] use lowest db cpu
+- ~~[ ] concert search to multiseach to speed up search time~~
+- ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this. 
 - [ ] finish the rest of the desktop design and shit
-- [ ] Finn ut om du bare kan endre typen på deviation Image og tvinge string til å bli image
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
