@@ -149,26 +149,15 @@
 - [x] Legg til loading for audio while loading
 - [x] Legg til segment id 
 - [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-- [ ] Login/Sign-up functionality to enable users to save podcasts.
 - ~~[ ] Native app?~~
 - ~~[ ] Add faceting for episode and podcast (route for episode og podcast)~~
-- [ ] Set up CI/CD pipeline for backend
-- [ ] Make MeiliSearch production probably.
 - ~~[ ] Make the types shared between backend and client~~
-- [ ] Segments have to move
-- [ ] Add word, by, word, highlighting during playback
-- [ ] Offer public API through external service
 - [x] Fix navbar
 - [x] Detach logic of searching from navbar
 - [x] Fix unique segment issue by modifying triplet
 - [x] Refactor the returning logic backend
 - ~~[ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
-- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
 - [x] Indexer restne av databasen
-- [ ] Pro membership og kontogreier
-- [ ] Record to text thing
-- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
-- [ ] Write me an about page contact page and donate page
 - [x] Legg til loading indinator når api callet kjører
 - [x] Gjør search ikonet til en x når den er nede
 - [x] Turn dedigated cpu to api server
@@ -176,6 +165,18 @@
 - ~~[ ] concert search to multiseach to speed up search time~~
 - ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this. 
 - [ ] finish the rest of the desktop design and shit
+- [ ] Segments have to move
+- [ ] Add word, by, word, highlighting during playback
+- [ ] Offer public API through external service
+- [ ] Pro membership og kontogreier
+- [ ] Record to text thing
+- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
+- [ ] Write me an about page contact page and donate page
+- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
+- [ ] Set up CI/CD pipeline for backend
+- [ ] Make MeiliSearch production probably.
+- [ ] Login/Sign-up functionality to enable users to save podcasts.
+- [ ] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
