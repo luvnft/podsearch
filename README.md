@@ -7,6 +7,14 @@
 ## Showcase
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
+## Design timeline
+
+## Realizations
+- Don't optimize too early
+- Too much caching is bad
+- Don't debounce API calls as it worses UI and user-experience. Use rate-limiting instead or some kind of dynamic rate-limiting like google does (no debouncing on backend first 10 api calls, then rate-limiting)
+- 
+
 ## Frontend:
 - Nuxt 3 for client-stuff (with SSR for perfect SEO)
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
