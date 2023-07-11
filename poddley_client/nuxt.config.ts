@@ -22,10 +22,12 @@ export default defineNuxtConfig({
     mode: "init",
   },
   image: {
-    provider: "netlify",
+    cloudinary: {
+      baseURL: 'https://res.cloudinary.com/ddlbxpow7/image/upload/'
+    }
   },
   vueuse: {
-    autoImports: true,
+    autoImports: false,
     ssrHandlers: true,
   },
   plausible: {

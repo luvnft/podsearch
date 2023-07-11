@@ -23,6 +23,7 @@
 
 <script lang="ts" setup>
 import { Device } from "@nuxtjs/device/dist/runtime/types";
+import { useElementVisibility } from "@vueuse/core";
 
 const props = defineProps<{
   audioLink: string;
