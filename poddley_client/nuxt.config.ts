@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/device", "@nuxtjs/critters", "@pinia/nuxt"],
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   plausible: {
     domain: "poddley.com",
