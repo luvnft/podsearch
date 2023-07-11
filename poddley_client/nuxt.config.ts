@@ -8,7 +8,9 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: false,
     },
-    minify: true,
+    vercel: {
+      regions: ["eu-west-2"],
+    },
   },
   pages: true,
   postcss: {
@@ -21,11 +23,7 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "init",
   },
-  image: {
-    cloudinary: {
-      baseURL: "https://res.cloudinary.com/ddlbxpow7/image/upload/",
-    },
-  },
+  image: {},
   vueuse: {
     autoImports: false,
     ssrHandlers: true,
@@ -35,16 +33,6 @@ export default defineNuxtConfig({
     trackLocalhost: true,
     autoPageviews: true,
     autoOutboundTracking: true,
-  },
-  pinia: {
-    autoImports: [
-      // automatically imports `defineStore`
-      "defineStore", // import { defineStore } from 'pinia'
-      ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
-    ],
-  },
-  imports: {
-    dirs: ["store"],
   },
   router: { options: { strict: true } },
   runtimeConfig: {
