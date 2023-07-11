@@ -225,44 +225,44 @@ class TranscriptionsService {
     });
 
     // Search results => Perform it.
-    const initialSearchResponse: any = await this.meilisearchConnection.multiSearch({
-      queries: queries,
-    });
+  const initialSearchResponse: any = await this.meilisearchConnection.multiSearch({
+    queries,
+  });
 
-    // Flatten and get all hits
-    let allHits: SegmentHit[] = initialSearchResponse.results.map((e: any) => e.hits).flat();
-    allHits = this.removeDuplicateSegmentHits(allHits);
+  // Flatten and get all hits
+  let allHits: SegmentHit[] = initialSearchResponse.results.map((e: any) => e.hits).flat();
+  allHits = this.removeDuplicateSegmentHits(allHits);
 
-    // Adding podcasts and episodes to the corresponding segments
-    const podcastIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid);
-    const episodeIds: string[] = allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid);
+  // Get the podcasts and episodes
+  const [podcasts, episodes] = await Promise.all([
+    this.searchPodcastsWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))]),
+    this.searchEpisodesWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))])
+  ]);
 
-    // Get the podcasts and episodes
-    const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
-    console.log(`Time elapsed after fetching podcasts and episodes: ${new Date().getTime() - startTime}ms`);
-  
-    const podcastsObject: { [key: string]: PodcastHit } = {}; 
-    const episodesObject: { [key: string]: EpisodeHit } = {};
-    podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
-    episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
+  const podcastsObject: { [key: string]: PodcastHit } = {}; 
+  const episodesObject: { [key: string]: EpisodeHit } = {};
 
-    // Merged results
-    let mergedResults: SegmentResponse = {} as SegmentResponse;
+  podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
+  episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
 
-    // Merging hits
-    mergedResults.hits = allHits;
+  // Merged results
+  let mergedResults: SegmentResponse = {} as SegmentResponse;
+
+  // Merging hits
+  mergedResults.hits = allHits;
  
-    // Assign similarity score to all hits
-    this.addSimilarityScoreToHits(mergedResults.hits);
+  // Assign similarity score to all hits
+  this.addSimilarityScoreToHits(mergedResults.hits);
 
-    // Sort the hits before returning
-    mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
+  // Sort the hits before returning
+  mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
 
-    // Slice the results to top 10
-    mergedResults.hits = mergedResults.hits.slice(0, 10);
+  // Slice the results to top 10
+  mergedResults.hits = mergedResults.hits.slice(0, 10);
 
-    // Setting new unique hits
-    mergedResults.hits = this.removeDuplicateSegmentHits(mergedResults.hits);
+  // Setting new unique hits
+  mergedResults.hits = this.removeDuplicateSegmentHits(mergedResults.hits);
+
 
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
     episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
@@ -324,12 +324,12 @@ class TranscriptionsService {
     finalResponse.query = mergedResults.query;
 
     //Returning
-    await this.logSearchQuery(searchString);
+    // await this.logSearchQuery(searchString);
     return finalResponse;
   }
 
   private async searchPodcastsWithIds(podcastIds: string[]): Promise<PodcastResponse> {
-    // Search the index
+    // Search the index 
     podcastIds = podcastIds.map((e) => `'${e}'`);
     const filter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
     const resData: PodcastResponse = await this.podcastsIndex.search(null, {
