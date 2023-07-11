@@ -17,6 +17,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
+import { useSearchStore } from "../../store/searchStore";
 const searchStore = useSearchStore();
 const { searchString, loading } = storeToRefs(searchStore);
 </script>

@@ -8,6 +8,7 @@ import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { debounce } from "../utils/tools/tools";
+import { useSearchStore } from "../store/searchStore";
 
 //Vars
 const searchStore = useSearchStore();
