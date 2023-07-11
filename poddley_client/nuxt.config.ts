@@ -9,7 +9,6 @@ export default defineNuxtConfig({
       gzip: false,
     },
     minify: true,
-    static: true,
   },
   pages: true,
   postcss: {
@@ -20,11 +19,11 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image"],
   delayHydration: {
-    mode: "init",
+    mode: "manual",
   },
   image: {
     cloudflare: {
-      baseURL: "https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/",
+      baseURL: "https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w",
     },
   },
   vueuse: {
