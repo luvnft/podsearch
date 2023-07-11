@@ -18,10 +18,14 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/critters", "@pinia/nuxt", "@nuxt/image"],
   delayHydration: {
-    mode: "mount",
+    mode: "init",
   },
   image: {
-
+    provider: "netlify",
+  },
+  vueuse: {
+    autoImports: true,
+    ssrHandlers: true,
   },
   plausible: {
     domain: "poddley.com",
