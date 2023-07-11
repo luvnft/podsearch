@@ -9,11 +9,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    output: {
-      dir: "output",
-      serverDir: "output/server",
-      publicDir: "output/public",
-    },
+    static: true,
   },
   pages: true,
   postcss: {
@@ -24,7 +20,7 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image"],
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   image: {},
   vueuse: {
