@@ -8,6 +8,7 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: false,
     },
+    minify: true,
   },
   pages: true,
   postcss: {
