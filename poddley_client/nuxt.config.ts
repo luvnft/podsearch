@@ -23,8 +23,8 @@ export default defineNuxtConfig({
   },
   image: {
     cloudinary: {
-      baseURL: 'https://res.cloudinary.com/ddlbxpow7/image/upload/'
-    }
+      baseURL: "https://res.cloudinary.com/ddlbxpow7/image/upload/",
+    },
   },
   vueuse: {
     autoImports: false,
