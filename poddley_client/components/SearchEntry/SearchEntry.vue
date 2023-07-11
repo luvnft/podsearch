@@ -17,9 +17,11 @@
             :searchEntry="props.searchEntry"
           />
         </div>
-        <div v-else class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl">
-          <img src="https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/d00b9234-6e19-4899-753b-d1e405aa0200/public" provider="cloudflare" />
-        </div>
+        <div
+          v-else
+          class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
+          style="https: //imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/d00b9234-6e19-4899-753b-d1e405aa0200/public"
+        />
       </div>
     </div>
     <div
