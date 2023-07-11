@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: {
       brotli: true,
-      gzip: true,
+      gzip: false,
     },
     minify: true,
     static: true,
