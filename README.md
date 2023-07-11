@@ -175,6 +175,7 @@
 - [x] Turn dedigated cpu to api server
 - [x] use lowest db cpu
 - [ ] finish the rest of the desktop design and shit
+- [ ] possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Offer public API through external service
