@@ -18,7 +18,7 @@
           />
         </div>
         <div v-else class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl">
-          <img src="/fjsi" provider="cloudflare" />
+          <img :src="props.searchEntry.imageUrl" provider="cloudflare" />
         </div>
       </div>
     </div>
