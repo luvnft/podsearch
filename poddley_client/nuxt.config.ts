@@ -8,7 +8,6 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: false,
     },
-    minify: true,
   },
   pages: true,
   postcss: {
@@ -17,9 +16,12 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/device", "@nuxtjs/critters", "@pinia/nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/critters", "@pinia/nuxt", "@nuxt/image"],
   delayHydration: {
     mode: "mount",
+  },
+  image: {
+
   },
   plausible: {
     domain: "poddley.com",
