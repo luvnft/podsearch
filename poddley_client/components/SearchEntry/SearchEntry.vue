@@ -17,10 +17,11 @@
             :searchEntry="props.searchEntry"
           />
         </div>
-        <div
-          v-else
+        <div v-else />
+        <NuxtImg
           class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
-          :style="`background-image: url('https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/718c34c9-35e9-441f-c65c-2b0c1fe2ef00/public')`"
+          src="https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/718c34c9-35e9-441f-c65c-2b0c1fe2ef00/public"
+          provider="cloudflare"
         />
       </div>
     </div>
