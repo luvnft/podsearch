@@ -19,8 +19,7 @@ const limiter = rateLimit({
 const app: Express = express();
 const port: number = 3000;
 
-
-//Use helmet
+//Use helmet??
 // app.use(helmet());
 
 //Enable CORS for front-end use

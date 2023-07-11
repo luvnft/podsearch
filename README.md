@@ -7,6 +7,14 @@
 ## Showcase
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
+## Design timeline
+
+## Realizations
+- Don't optimize too early
+- Too much caching is bad
+- Don't debounce API calls as it worses UI and user-experience. Use rate-limiting instead or some kind of dynamic rate-limiting like google does (no debouncing on backend first 10 api calls, then rate-limiting)
+- 
+
 ## Frontend:
 - Nuxt 3 for client-stuff (with SSR for perfect SEO)
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
@@ -113,13 +121,31 @@
 
 ## Features planned adding:
 ### Do-es
-- [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
-- [x] Fix the indexing bug that causes the entire database to be re-indexed each time
+- ~~[ ] concert search to multiseach to speed up search time~~
+- ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
+- ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
+- [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
 - [x] ~~Joe Rogan Recorder~~(illegal)
 - [x] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
+- [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
+- [x] ~~Create spotify recorder~~ (it's illegal)
+- [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
+- [x] ~~Create spotify recorder~~ (it's illegal)
+- ~~[ ] Native app?~~
+- ~~[ ] Add faceting for episode and podcast (route for episode og podcast)~~
+- ~~[ ] Make the types shared between backend and client~~
+- ~~[x] We need 3 tabs that show at the top like the buttons:~~
+  ~~- New episodes~~
+  ~~- Trending episodes~~
+  ~~- Info~~
+- [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
+- [x]  ~~Add info component~~ (part of three tabs task) 
+- [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
+- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
+- ~~[ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
+- [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
+- [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
-- [x] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
-- [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
 - [x] Switch from Whisper OpenAI to https://github.com/guillaumekln/faster-whisper 4x increase in speed 🤩🤩🤩 and that is with the fucking Large-v2 model omg fuck
 - [x] Switch to this alignment model: jonatasgrosman/wav2vec2-large-xlsr-53-english
 - [x] Stick to MeiliSearch, but use the new MatchingStrategy functionality and see if you can adapt the phrase searching to accomodate your needs
@@ -127,55 +153,43 @@
 - [x] Fix 3x instance return on API
 - [x] Add second-hand jaccard highlighting 
 - [x] Downscale the pictures retrieved and store them on local
-- [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
-- [x] ~~Create spotify recorder~~ (it's illegal)
 - [x] Adjust python transcription script for optimistic concurrency 
 - [x] Reindex everything prior to 16. april.
 - [x] Indexer alt inn i meilisearch igjen.
 - [x] Sjekk om gratis vercel er bedre enn gratis netlify
 - [x] Fix segment-area design
-- [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
 - [x] Legg til nginx infoen, arkitekturen osv.
 - [x] Add bg to selected jutton and route to the buttons
 - [x] Fikse loading spinner bug
-- [x] We need 3 tabs that show at the top like the buttons:
-  - New episodes
-  - Trending episodes
-  - ~~Info~~
-- [x]  ~~Add info component~~ (part of three tabs task) 
-- [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [x] Remove bold tab bar
 - [x] Add loading spinner to the audio player as in v-if
 - [x] Legg til loading for audio while loading
 - [x] Legg til segment id 
-- [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-- [ ] Login/Sign-up functionality to enable users to save podcasts.
-- ~~[ ] Native app?~~
-- ~~[ ] Add faceting for episode and podcast (route for episode og podcast)~~
-- [ ] Set up CI/CD pipeline for backend
-- [ ] Make MeiliSearch production probably.
-- ~~[ ] Make the types shared between backend and client~~
-- [ ] Segments have to move
-- [ ] Add word, by, word, highlighting during playback
-- [ ] Offer public API through external service
 - [x] Fix navbar
 - [x] Detach logic of searching from navbar
 - [x] Fix unique segment issue by modifying triplet
 - [x] Refactor the returning logic backend
-- ~~[ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
-- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
 - [x] Indexer restne av databasen
+- [x] Legg til loading indinator når api callet kjører
+- [x] Gjør search ikonet til en x når den er nede
+- [x] Turn dedigated cpu to api server
+- [x] use lowest db cpu
+- [ ] finish the rest of the desktop design and shit
+- [ ] Segments have to move
+- [ ] Add word, by, word, highlighting during playback
+- [ ] Offer public API through external service
 - [ ] Pro membership og kontogreier
 - [ ] Record to text thing
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
 - [ ] Write me an about page contact page and donate page
-- [x] Legg til loading indinator når api callet kjører
-- [x] Gjør search ikonet til en x når den er nede
-- [ ] Turn dedigated cpu to api server
-- [x] use lowest db cpu
-- ~~[ ] concert search to multiseach to speed up search time~~
-- ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this. 
-- [ ] finish the rest of the desktop design and shit
+- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
+- [ ] Set up CI/CD pipeline for backend
+- [ ] Make MeiliSearch production probably.
+- [ ] Login/Sign-up functionality to enable users to save podcasts.
+- [ ] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
+- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
+- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
+- [ ] Create a blog post explaining the project? Wordpress?
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
