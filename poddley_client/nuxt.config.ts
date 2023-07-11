@@ -9,6 +9,11 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
+    output: {
+      dir: "output",
+      serverDir: "output/server",
+      publicDir: "output/public",
+    },
   },
   pages: true,
   postcss: {
