@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image"],
   delayHydration: {
-    mode: "mount",
+    mode: "init",
   },
   image: {},
   vueuse: {
