@@ -186,7 +186,8 @@
 - [ ] Set up CI/CD pipeline for backend
 - [ ] Make MeiliSearch production probably.
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
-- [ ] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
+- [ ] Try Workes on Cloudflare just in case, with the nitro template
+- [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Create a blog post explaining the project? Wordpress?
