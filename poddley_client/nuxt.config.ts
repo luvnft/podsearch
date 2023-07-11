@@ -6,11 +6,10 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: {
       brotli: true,
-      gzip: false,
+      gzip: true,
     },
-    vercel: {
-      regions: ["eu-west-2"],
-    },
+    minify: true,
+    preset: "netlify",
   },
   pages: true,
   postcss: {
@@ -21,7 +20,7 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@nuxtjs/critters", "@pinia/nuxt", "@nuxt/image"],
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   image: {},
   vueuse: {
