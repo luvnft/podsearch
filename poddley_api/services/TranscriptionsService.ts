@@ -15,7 +15,7 @@ class TranscriptionsService {
   public prismaConnection: PrismaClient = {} as PrismaClient;
   public meilisearchConnection: MeiliSearch;
   public searchString: string = "";
-  public segmentsIndex: Index; 
+  public segmentsIndex: Index;
   public podcastsIndex: Index;
   public episodesIndex: Index;
 
@@ -23,11 +23,11 @@ class TranscriptionsService {
     this.transcriptionsIndex = meilisearchConnection.index("transcriptions");
     this.segmentsIndex = meilisearchConnection.index("segments");
     this.podcastsIndex = meilisearchConnection.index("podcasts");
-    this.episodesIndex = meilisearchConnection.index("episodes"); 
+    this.episodesIndex = meilisearchConnection.index("episodes");
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
   }
- 
+
   //Returns unique hits for a SegmentHit array
   public removeDuplicateSegmentHits(hits: SegmentHit[]): SegmentHit[] {
     // Remove duplicates
@@ -61,7 +61,7 @@ class TranscriptionsService {
 
   //Gets top 10 segments using a custom SQL query as the query is unecessary complicated with prisma
   public async getTrending(): Promise<SearchResponse> {
-    const startTime = new Date().getTime(); 
+    const startTime = new Date().getTime();
 
     // First we try to get top 10 search queries on the last weeks trending, if length == 0 we take the global trending
     let top10Queries: string[] = [];
@@ -75,7 +75,7 @@ class TranscriptionsService {
       LIMIT 10;
     `;
     console.log(`Time elapsed after first query: ${new Date().getTime() - startTime}ms`);
-  
+
     if (!query) {
       query = await this.prismaConnection.$queryRaw`
       SELECT LOWER(searchQuery) AS searchQueryLower, COUNT(*) as count  
@@ -86,12 +86,12 @@ class TranscriptionsService {
     `;
     }
     console.log(`Time elapsed after second query (if executed): ${new Date().getTime() - startTime}ms`);
- 
+
     //Convert top10Queries to pure strings
-    if (query.length > 0){
+    if (query.length > 0) {
       top10Queries = query.map((e: any) => e.searchQueryLower?.toLowerCase() || '');
     }
-    else{
+    else {
       top10Queries = "this is top 10 entries when searchlog is empty .".split(" ");
     }
 
@@ -105,7 +105,7 @@ class TranscriptionsService {
         limit: 1,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
-        highlightPostTag: "</span>", 
+        highlightPostTag: "</span>",
         sort: ["start:asc"]
       });
     }
@@ -195,74 +195,73 @@ class TranscriptionsService {
     // Adding first query: Run 1: Just normal search
     queries.push({
       indexUid: "segments",
-      limit: 10, 
+      limit: 10,
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
       q: searchString,
     });
 
-    // Adding second query: Run 2: Remove first word¨
-    const searchStringWithoutFirstWord: string = searchString.replace(/^\S+\s*/g, "");
-    queries.push({
-      indexUid: "segments",
-      limit: 10, 
-      attributesToHighlight: ["text"],
-      highlightPreTag: '<span class="highlight">',
-      highlightPostTag: "</span>",
-      q: searchStringWithoutFirstWord,
-    });
+    // // Adding second query: Run 2: Remove first word¨
+    // const searchStringWithoutFirstWord: string = searchString.replace(/^\S+\s*/g, "");
+    // queries.push({
+    //   indexUid: "segments",
+    //   limit: 10,
+    //   attributesToHighlight: ["text"],
+    //   highlightPreTag: '<span class="highlight">',
+    //   highlightPostTag: "</span>",
+    //   q: searchStringWithoutFirstWord,
+    // });
 
-    // Adding third query: Run 3: Remove last word
-    const searchStringWithoutLastWord: string = searchStringWithoutFirstWord.replace(/\s*\S+$/g, "");
-    queries.push({
-      indexUid: "segments",
-      limit: 10, 
-      attributesToHighlight: ["text"],
-      highlightPreTag: '<span class="highlight">',
-      highlightPostTag: "</span>",
-      q: searchStringWithoutLastWord,
-    });
+    // // Adding third query: Run 3: Remove last word
+    // const searchStringWithoutLastWord: string = searchStringWithoutFirstWord.replace(/\s*\S+$/g, "");
+    // queries.push({
+    //   indexUid: "segments",
+    //   limit: 10,
+    //   attributesToHighlight: ["text"],
+    //   highlightPreTag: '<span class="highlight">',
+    //   highlightPostTag: "</span>",
+    //   q: searchStringWithoutLastWord,
+    // });
 
     // Search results => Perform it.
-  const initialSearchResponse: any = await this.meilisearchConnection.multiSearch({
-    queries,
-  });
+    const initialSearchResponse: any = await this.meilisearchConnection.multiSearch({
+      queries,
+    });
 
-  // Flatten and get all hits
-  let allHits: SegmentHit[] = initialSearchResponse.results.map((e: any) => e.hits).flat();
-  allHits = this.removeDuplicateSegmentHits(allHits);
+    // Flatten and get all hits
+    let allHits: SegmentHit[] = initialSearchResponse.results.map((e: any) => e.hits).flat();
+    allHits = this.removeDuplicateSegmentHits(allHits);
 
-  // Get the podcasts and episodes
-  const [podcasts, episodes] = await Promise.all([
-    this.searchPodcastsWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))]),
-    this.searchEpisodesWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))])
-  ]);
+    // Get the podcasts and episodes
+    const [podcasts, episodes] = await Promise.all([
+      this.searchPodcastsWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))]),
+      this.searchEpisodesWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))])
+    ]);
 
-  const podcastsObject: { [key: string]: PodcastHit } = {}; 
-  const episodesObject: { [key: string]: EpisodeHit } = {};
+    const podcastsObject: { [key: string]: PodcastHit } = {};
+    const episodesObject: { [key: string]: EpisodeHit } = {};
 
-  podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
-  episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
+    podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
+    episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
 
-  // Merged results
-  let mergedResults: SegmentResponse = {} as SegmentResponse;
+    // Merged results
+    let mergedResults: SegmentResponse = {} as SegmentResponse;
 
-  // Merging hits
-  mergedResults.hits = allHits;
- 
-  // Assign similarity score to all hits
-  this.addSimilarityScoreToHits(mergedResults.hits);
+    // Merging hits
+    mergedResults.hits = allHits;
 
-  // Sort the hits before returning
-  mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
+    // Assign similarity score to all hits
+    this.addSimilarityScoreToHits(mergedResults.hits);
 
-  // Slice the results to top 10
-  mergedResults.hits = mergedResults.hits.slice(0, 10);
+    // Sort the hits before returning
+    mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
 
-  // Setting new unique hits
-  mergedResults.hits = this.removeDuplicateSegmentHits(mergedResults.hits);
+    // Slice the results to top 10
+    mergedResults.hits = mergedResults.hits.slice(0, 10);
 
+    // Setting new unique hits
+    mergedResults.hits = this.removeDuplicateSegmentHits(mergedResults.hits);
 
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
     episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
@@ -300,7 +299,7 @@ class TranscriptionsService {
           imageUrl: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
           podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
           episodeGuid: episodesObject[segment.belongsToEpisodeGuid].episodeGuid,
-          url: podcastsObject[segment.belongsToPodcastGuid].url, 
+          url: podcastsObject[segment.belongsToPodcastGuid].url,
           link: podcastsObject[segment.belongsToPodcastGuid].link,
           youtubeVideoLink: episodesObject[segment.belongsToEpisodeGuid].youtubeVideoLink || "",
           deviationTime: episodesObject[segment.belongsToEpisodeGuid].deviationTime || 0,
@@ -323,8 +322,8 @@ class TranscriptionsService {
     finalResponse.processingTimeMs = elapsedTime;
     finalResponse.query = mergedResults.query;
 
-    //Returning
-    // await this.logSearchQuery(searchString);
+    // Log the entry async
+    this.logSearchQuery(searchString);
     return finalResponse;
   }
 
@@ -419,17 +418,17 @@ class TranscriptionsService {
       attributesToRetrieve: ["episodeGuid", "podcastGuid"],
       sort: ["addedDate:desc"],
     });
-  
+
     const episodeIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.episodeGuid);
     const podcastIds: string[] = tenNewestEpisodes.hits.map((episode: any) => episode.podcastGuid);
-  
+
     // Then we create a query for each searchString as MultiSearhQuery is faster and also what other way can one do it?
     const queries: MultiSearchQuery[] = [];
-    for (let i = 0; i < episodeIds.length; i++) { 
+    for (let i = 0; i < episodeIds.length; i++) {
       const filter = "belongsToEpisodeGuid=" + "'" + episodeIds[i] + "'";
       queries.push({
         indexUid: "segments",
-        limit: 1, 
+        limit: 1,
         filter: filter,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
@@ -438,21 +437,21 @@ class TranscriptionsService {
         q: "",
       });
     }
-  
+
     // We perform the query and then we get SearchResultHits
     const d = await this.meilisearchConnection.multiSearch({
       queries: queries,
     });
     console.log(`Time elapsed after multiSearch: ${new Date().getTime() - startTime}ms`);
-  
+
     // Flatten and get all hits
     const allHits: any = d.results.map((e: any) => e.hits).flat();
-  
+
     // Get the podcasts and episodes
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(Array.from(podcastIds)), this.searchEpisodesWithIds(Array.from(episodeIds))]);
     console.log(`Time elapsed after fetching podcasts and episodes: ${new Date().getTime() - startTime}ms`);
-  
-    const podcastsObject: { [key: string]: PodcastHit } = {}; 
+
+    const podcastsObject: { [key: string]: PodcastHit } = {};
     const episodesObject: { [key: string]: EpisodeHit } = {};
     podcasts.hits.forEach((podcastHit: PodcastHit) => (podcastsObject[podcastHit.podcastGuid] = podcastHit));
     episodes.hits.forEach((episodeHit: EpisodeHit) => (episodesObject[episodeHit.episodeGuid] = episodeHit));
@@ -462,7 +461,7 @@ class TranscriptionsService {
       query: "",
       processingTimeMs: 0,
       limit: undefined,
-      offset: undefined, 
+      offset: undefined,
       estimatedTotalHits: undefined,
     };
 
@@ -496,11 +495,11 @@ class TranscriptionsService {
           episodeLinkToEpisode: episodesObject[segment.belongsToEpisodeGuid].episodeLinkToEpisode,
           episodeEnclosure: episodesObject[segment.belongsToEpisodeGuid].episodeEnclosure,
           podcastLanguage: podcastsObject[segment.belongsToPodcastGuid].language,
-          podcastGuid: podcastsObject[segment.belongsToPodcastGuid].podcastGuid, 
+          podcastGuid: podcastsObject[segment.belongsToPodcastGuid].podcastGuid,
           imageUrl: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
-          podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl, 
+          podcastImage: podcastsObject[segment.belongsToPodcastGuid].imageUrl,
           episodeGuid: episodesObject[segment.belongsToEpisodeGuid].episodeGuid,
-          url: podcastsObject[segment.belongsToPodcastGuid].url, 
+          url: podcastsObject[segment.belongsToPodcastGuid].url,
           link: podcastsObject[segment.belongsToPodcastGuid].link,
           youtubeVideoLink: episodesObject[segment.belongsToEpisodeGuid].youtubeVideoLink || "",
           deviationTime: episodesObject[segment.belongsToEpisodeGuid].deviationTime || 0,
@@ -524,7 +523,7 @@ class TranscriptionsService {
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
-      matchingStrategy: "all", 
+      matchingStrategy: "all",
     });
 
     const podcastIds: string[] = segmentResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid);
