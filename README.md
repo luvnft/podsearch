@@ -183,7 +183,7 @@
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
 - [ ] Write me an about page contact page and donate page
 - [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
-- [ ] Set up CI/CD pipeline for backend
+- [ ] Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)
 - [ ] Make MeiliSearch production probably.
 - [ ] Login/Sign-up functionality to enable users to save podcasts.
 - [ ] Try Workes on Cloudflare just in case, with the nitro template
