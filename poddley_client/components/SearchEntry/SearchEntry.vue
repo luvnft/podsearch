@@ -17,12 +17,7 @@
             :searchEntry="props.searchEntry"
           />
         </div>
-        <div v-else />
-        <NuxtImg
-          class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
-          src="https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/718c34c9-35e9-441f-c65c-2b0c1fe2ef00/public"
-          provider="cloudflare"
-        />
+        <div v-else class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl" :style="`background-image: url('${props.searchEntry.imageUrl}')`" />
       </div>
     </div>
     <div
