@@ -59,7 +59,7 @@
                 <XMarkIcon class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
               </div>
             </button>
-            <!-- 
+            
             <Menu as="div" class="tw-z-40 tw-mr-0 tw-flex tw-h-10 tw-w-10 tw-origin-top-right tw-items-center tw-justify-center">
               <div>
                 <MenuButton
@@ -98,10 +98,10 @@
                   </MenuItems>
                 </div>
               </TransitionRoot>
-            </Menu> -->
+            </Menu>
 
             <div v-if="user" class="tw-relative tw-inline-block tw-text-left tw-z-50">
-              <img id="avatarButton" @click="changeProfileClicked" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-end" class="tw-w-10 tw-h-10 tw-rounded-full tw-cursor-pointer" :src="imgURL()" alt="User dropdown">
+              <img id="avatarButton" @click="changeProfileClicked" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-end" class="tw-w-10 tw-h-10 tw-rounded-full tw-cursor-pointer" alt="User dropdown">
               <!-- Dropdown menu -->
               <div v-if="profileClicked" id="userDropdown" class="tw-z-10 tw-bg-white tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-shadow tw-w-44 tw-dark:bg-gray-700 tw-dark:divide-gray-600 tw-absolute tw-top-full tw-right-0 mt-2">
                 <div class="tw-px-4 tw-py-3 tw-text-sm tw-text-gray-900 tw-dark:text-white">
