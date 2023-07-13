@@ -186,7 +186,8 @@
 - [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens
 - [ ] Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)
 - [ ] Make MeiliSearch production probably.
-- [ ] Login/Sign-up functionality to enable users to save podcasts.
+- [x] Login/Sign-up functionality.
+- [ ] functionality to enable users to save podcasts.
 - [ ] Try Workes on Cloudflare just in case, with the nitro template
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
