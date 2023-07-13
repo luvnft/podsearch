@@ -14,6 +14,9 @@ class TranscriptionsController {
     try {
       const searchString: string = req.query.searchString as string;
       const data: SearchResponse = await this.transcriptionService.search(searchString);
+
+      // res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+
       res.status(200).send(data);
     } catch (error: any) {
       res.status(400).send({ message: JSON.stringify(error) });
@@ -30,7 +33,7 @@ class TranscriptionsController {
   };
 
   public getNew = async (req: Request, res: Response) => {
-    try {
+    try { 
       const data: SearchResponse = await this.transcriptionService.getNew();
       res.status(200).send(data);
     } catch (error: any) {

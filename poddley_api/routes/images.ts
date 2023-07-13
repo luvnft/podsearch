@@ -5,7 +5,7 @@ import basicAuth from "express-basic-auth";
 
 dotenv.config({ path: "../.env" });
 
-//Authorization handler
+// Authorization handler
 const basicAuthorization = basicAuth({
   users: {
     [process.env.API_USERNAME as string]: [process.env.API_PASSWORD as string][0],
@@ -15,17 +15,17 @@ const basicAuthorization = basicAuth({
   },
 });
 
-//Initialize controller
+// Initialize controller
 const imagesController: ImagesController = new ImagesController();
 
-//Router
+// Router
 const imagesRouter: express.Router = express.Router();
 
-//Get Routes
-imagesRouter.get("/:filename", imagesController.getImage);
+// Get Routes
+// imagesRouter.get("/:filename", imagesController.getImage);
 
-//Post Routes
-imagesRouter.post("/", basicAuthorization, imagesController.uploadImage);
+// Post Routes
+// imagesRouter.post("/", basicAuthorization, imagesController.uploadImage);
 
-//Export it
+// Export it
 export default imagesRouter;

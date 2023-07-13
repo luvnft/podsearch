@@ -12,7 +12,6 @@ const limiter = rateLimit({
   max: 1000, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: true, // Disable the `X-RateLimit-*` headers
-
 })
 
 //Setup
@@ -34,7 +33,7 @@ app.use("/transcriptions", transcriptionsRouter);
 app.use("/images", imagesRouter);
 
 // Apply the rate limiting middl  eware to all requests 
-app.use(limiter)
+// app.use(limiter)
 
 //Listen on port 
 app.listen(port, () => {

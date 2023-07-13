@@ -89,9 +89,8 @@ class TranscriptionsService {
 
     //Convert top10Queries to pure strings
     if (query.length > 0) {
-      top10Queries = query.map((e: any) => e.searchQueryLower?.toLowerCase() || '');
-    }
-    else {
+      top10Queries = query.map((e: any) => e.searchQueryLower?.toLowerCase() || "");
+    } else {
       top10Queries = "this is top 10 entries when searchlog is empty .".split(" ");
     }
 
@@ -106,7 +105,7 @@ class TranscriptionsService {
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
         highlightPostTag: "</span>",
-        sort: ["start:asc"]
+        sort: ["start:asc"],
       });
     }
     console.log(`Time elapsed after creating queries: ${new Date().getTime() - startTime}ms`);
@@ -236,7 +235,7 @@ class TranscriptionsService {
     // Get the podcasts and episodes
     const [podcasts, episodes] = await Promise.all([
       this.searchPodcastsWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))]),
-      this.searchEpisodesWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))])
+      this.searchEpisodesWithIds([...new Set(allHits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))]),
     ]);
 
     const podcastsObject: { [key: string]: PodcastHit } = {};
@@ -328,7 +327,7 @@ class TranscriptionsService {
   }
 
   private async searchPodcastsWithIds(podcastIds: string[]): Promise<PodcastResponse> {
-    // Search the index 
+    // Search the index
     podcastIds = podcastIds.map((e) => `'${e}'`);
     const filter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
     const resData: PodcastResponse = await this.podcastsIndex.search(null, {
