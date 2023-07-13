@@ -39,6 +39,7 @@
               >
                 API
               </a>
+              <a v-if="user">HEI, DENNE MELDINGEN KAN BARE DU SOM ER LOGGET INN SE, MR.{{ user.user_metadata.full_name }}</a>
             </div>
           </div>
           <div class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-h-full tw-scale-110 tw-items-center tw-pl-2 tw-pr-0 sm:tw-static sm:tw-inset-auto sm:tw-ml-6 sm:tw-pr-0">
@@ -56,13 +57,13 @@
                 <XMarkIcon class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
               </div>
             </button>
-            <!-- 
+
             <Menu as="div" class="tw-z-40 tw-mr-0 tw-flex tw-h-10 tw-w-10 tw-origin-top-right tw-items-center tw-justify-center">
               <div>
                 <MenuButton
                   @click="toggleProfileMenu"
                   class="tw-flex tw-h-[22px] tw-w-[22px] tw-justify-center tw-rounded-full tw-bg-white tw-bg-cover tw-text-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2"
-                  :style="`background-image: url('')`"
+                  :style="`background-image: url('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg')`"
                 >
                   <span class="tw-sr-only">Open user menu</span>
                 </MenuButton>
@@ -95,7 +96,58 @@
                   </MenuItems>
                 </div>
               </TransitionRoot>
-            </Menu> -->
+            </Menu>
+
+            <div v-if="user" class="tw-relative tw-z-50 tw-inline-block tw-text-left">
+              <img
+                id="avatarButton"
+                @click="changeProfileClicked"
+                type="button"
+                data-dropdown-toggle="userDropdown"
+                data-dropdown-placement="bottom-end"
+                class="tw-h-10 tw-w-10 tw-cursor-pointer tw-rounded-full"
+                alt="User dropdown"
+              />
+              <!-- Dropdown menu -->
+              <div
+                v-if="profileClicked"
+                id="userDropdown"
+                class="tw-dark:bg-gray-700 tw-dark:divide-gray-600 mt-2 tw-absolute tw-right-0 tw-top-full tw-z-10 tw-w-44 tw-divide-y tw-divide-gray-100 tw-rounded-lg tw-bg-white tw-shadow"
+              >
+                <div class="tw-dark:text-white tw-px-4 tw-py-3 tw-text-sm tw-text-gray-900">
+                  <div>{{ user.user_metadata.full_name }}</div>
+                  <div class="tw-truncate tw-text-sm">{{ user.user_metadata.email }}</div>
+                </div>
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                  <li>
+                    <span class="tw-block tw-px-4 tw-py-2 hover:tw-text-gray-500 dark:hover:tw-text-gray-300">
+                      <a href="#" class="tw-no-underline">Dashboard</a>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="tw-block tw-px-4 tw-py-2 hover:tw-text-gray-500 dark:hover:tw-text-gray-300">
+                      <a href="#" class="tw-no-underline">Settings</a>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="tw-block tw-px-4 tw-py-2 hover:tw-text-gray-500 dark:hover:tw-text-gray-300">
+                      <a href="#" class="tw-no-underline">Earnings</a>
+                    </span>
+                  </li>
+                </ul>
+
+                <div class="tw-py-1">
+                  <a
+                    @click="logout"
+                    href="#"
+                    class="tw-hover:bg-gray-100 tw-dark:hover:bg-gray-600 tw-dark:text-gray-200 tw-dark:hover:text-white tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700"
+                  >
+                    Sign out
+                  </a>
+                </div>
+              </div>
+            </div>
+            <button v-else @click="login">Login</button>
           </div>
         </div>
         <!-- Burger dropdown -->
@@ -145,6 +197,22 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 const openBurgerMenu: Ref<boolean> = ref(false);
 const openProfileMenu: Ref<boolean> = ref(false);
 const showSearchSection: Ref<boolean> = ref(false);
+const profileClicked = ref(false);
+const client = useSupabaseAuthClient();
+const user = useSupabaseUser();
+
+const changeProfileClicked = () => {
+  profileClicked.value = !profileClicked.value;
+};
+
+const logout = async () => {
+  await client.auth.signOut();
+  navigateTo("/login");
+};
+
+const login = async () => {
+  navigateTo("/login");
+};
 
 const toggleSearchSection = () => (showSearchSection.value = !showSearchSection.value);
 const closeMenus = () => {

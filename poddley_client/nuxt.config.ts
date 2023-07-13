@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase"],
   delayHydration: {
     mode: "init",
   },
