@@ -21,11 +21,6 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "manual",
   },
-  image: {
-    cloudflare: {
-      baseURL: "https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w",
-    },
-  },
   vueuse: {
     autoImports: false,
     ssrHandlers: true,
