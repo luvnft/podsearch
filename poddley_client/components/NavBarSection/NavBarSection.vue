@@ -97,7 +97,7 @@
                     </MenuItem>
                   </MenuItems>
                 </div>
-              </TransitionRoot>
+              </TransitionRoot> 
             </Menu>
 
             <div v-if="user" class="tw-relative tw-inline-block tw-text-left tw-z-50">
