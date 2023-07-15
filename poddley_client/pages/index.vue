@@ -55,5 +55,5 @@ const throttledSearch = _Throttle(makeSearch, 300); // throttling the search to 
 watch(searchString, throttledSearch);
 
 //Initial calls
-throttledSearch("The following is a conversation with attia");
+makeSearch("The following is a conversation with");
 </script>
