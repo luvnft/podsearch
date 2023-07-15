@@ -175,7 +175,7 @@
 - [x] Turn dedigated cpu to api server
 - [x] use lowest db cpu
 - [ ] finish the rest of the desktop design and shit
-- [ ] possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
+- [x] possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
 - [ ] Segments have to move
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Offer public API through external service
@@ -187,12 +187,13 @@
 - [ ] Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)
 - [ ] Make MeiliSearch production probably.
 - [x] Login/Sign-up functionality.
-- [ ] functionality to enable users to save podcasts.
-- [ ] Try Workes on Cloudflare just in case, with the nitro template
+- ~~[x] Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Create a blog post explaining the project? Wordpress?
+- [x] Dont have debouncing on client side, but do have throttling + cancellable promises
+
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
