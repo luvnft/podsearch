@@ -26,11 +26,17 @@
             static
             class="tw-absolute tw-right-0 tw-z-40 tw-w-40 tw-origin-top-right tw-rounded-md tw-bg-white tw-py-1 tw-text-right tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
           >
-            <MenuItem v-slot="{ active }">
-              <NuxtLink to="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Login</NuxtLink>
+            <MenuItem v-slot="{ active }" v-if="user">
+              <code>{{ user.email }}</code>
             </MenuItem>
-            <MenuItem v-slot="{ active }">
-              <NuxtLink to href="#" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Sign up</NuxtLink>
+            <MenuItem v-slot="{ active }" v-if="!user">
+              <NuxtLink to="/login" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Login</NuxtLink>
+            </MenuItem>
+            <MenuItem v-slot="{ active }" v-if="!user">
+              <NuxtLink :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Sign up</NuxtLink>
+            </MenuItem>
+            <MenuItem v-slot="{ active }" v-if="user">
+              <button @click="logout" :class="`${active ? 'tw-bg-gray-100' : ''} tw-block tw-w-full tw-px-4 tw-py-2 tw-text-right tw-text-sm tw-text-gray-700 tw-no-underline`">Logout</button>
             </MenuItem>
           </MenuItems>
         </TransitionRoot>
@@ -52,10 +58,5 @@ const user = useSupabaseUser();
 
 const logout = async () => {
   await client.auth.signOut();
-  navigateTo("/login");
-};
-
-const login = async () => {
-  navigateTo("/login");
 };
 </script>
