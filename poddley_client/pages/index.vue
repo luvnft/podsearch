@@ -5,7 +5,6 @@
 <script lang="ts" setup>
 //Imports
 import { SearchResponse } from "~/types/SearchResponse";
-import { throttle } from "lodash";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
@@ -50,7 +49,7 @@ async function makeSearch(string: string) {
   }
 }
 
-const throttledSearch = throttle(makeSearch, 300); // throttling the search to once every 300ms
+const throttledSearch = _Throttle(makeSearch, 300); // throttling the search to once every 300ms
 
 //Running
 watch(searchString, throttledSearch);
