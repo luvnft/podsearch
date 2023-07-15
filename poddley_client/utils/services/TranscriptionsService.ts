@@ -1,36 +1,38 @@
 import { SearchResponse } from "~~/types/SearchResponse";
-import axios, { AxiosInstance } from "axios";
 import ApiService from "./ApiService";
 
 export default class TranscriptionService extends ApiService {
-  private apiClient: AxiosInstance;
-
   public constructor() {
     super();
-    this.apiClient = axios.create({
-      baseURL: this.BASE_URL,
-    });
   }
 
   public async getNew(): Promise<SearchResponse> {
-    const res = await this.apiClient.get("/transcriptions/new");
+    const res = await useFetch("/transcriptions/new", {
+      method: "GET",
+      baseURL: this.BASE_URL,
+    });
     const data: SearchResponse = res.data.value as SearchResponse;
     return data;
   }
 
   public async getTrending(): Promise<SearchResponse> {
-    const res = await this.apiClient.get("/transcriptions/trending");
+    const res = await useFetch("/transcriptions/trending", {
+      method: "GET",
+      baseURL: this.BASE_URL,
+    });
     const data: SearchResponse = res.data.value as SearchResponse;
     return data;
   }
 
-  public async search(searchString: string): Promise<any> {
-    const res = await this.apiClient.get("transcriptions/search", {
-      params: {
+  public async search(searchString: string): Promise<SearchResponse> {
+    const res = await useFetch("/transcriptions/search", {
+      method: "GET",
+      baseURL: this.BASE_URL,
+      query: {
         searchString: searchString,
       },
     });
-    const data: SearchResponse = res.data as SearchResponse;
+    const data: SearchResponse = res.data.value as SearchResponse;
     return data;
   }
 }
