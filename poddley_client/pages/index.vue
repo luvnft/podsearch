@@ -1,5 +1,5 @@
 <template>
-  <SearchResults :searchEntries="searchResults.hits" v-if="searchResults" :key="searchResults" />
+  <SearchResults :searchEntries="searchResults.hits" v-if="searchResults" />
 </template>
 
 <script lang="ts" setup>
@@ -7,7 +7,7 @@
 import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
-import { debounce } from "../utils/tools/tools";
+import { debounce } from "lodash";
 import { useSearchStore } from "../store/searchStore";
 
 //Vars
@@ -25,7 +25,11 @@ async function makeSearch(string: string) {
   console.log(searchResults.value);
 }
 
-const debouncedSearch = debounce(makeSearch, 50);
+const debouncedSearch = debounce(makeSearch, 1000, {
+  leading: true,
+  trailing: true,
+  maxWait: 1000,
+});
 
 //Running
 watch(searchString, debouncedSearch);
