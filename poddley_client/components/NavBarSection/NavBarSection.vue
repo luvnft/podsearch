@@ -4,7 +4,7 @@
       <div class="tw-mx-auto tw-h-10 tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8">
         <div class="tw-relative tw-flex tw-h-full tw-w-full tw-justify-between">
           <div class="tw-my-0 tw-flex tw-h-full tw-w-full tw-flex-1 tw-items-center tw-justify-between sm:tw-items-stretch sm:tw-justify-start">
-            <div class="tw-flex tw-h-10 tw-w-full tw-flex-shrink-0 tw-items-center tw-justify-between tw-gap-0.5">
+            <div class="tw-flex tw-h-12 tw-w-full tw-flex-shrink-0 tw-items-center tw-justify-between tw-gap-0.5">
               <BurgerMenu @click="toggleOpenBurgerMenu" @keyup.spaceup="toggleOpenBurgerMenu()" :openBurgerMenu="openBurgerMenu" />
               <ButtonsDonateButton />
               <NavTitle />
