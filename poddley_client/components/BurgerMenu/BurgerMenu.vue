@@ -1,22 +1,18 @@
 <template>
   <div>
-    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden" v-click-outside="closeMenus">
-      <!-- Mobile menu button -->
-      <DisclosureButton
+    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-items-center sm:tw-hidden">
+      <button
         class="tw-flex tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
-        @click="toggleOpenBurgerMenu"
-        @keyup.space="toggleOpenBurgerMenu"
       >
         <span class="tw-sr-only">Open main menu</span>
-        <Bars3Icon v-if="!openBurgerMenu" class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
+        <Bars3Icon v-if="!props.openBurgerMenu" class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
         <XMarkIcon v-else class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
-      </DisclosureButton>
+      </button>
     </div>
-    <!-- Mobile menu dropdown -->
     <div class="tw-absolute tw-left-0 tw-top-10 tw-z-40 tw-ml-0">
       <Menu as="div" class="tw-origin-top-left">
         <TransitionRoot
-          :show="openBurgerMenu"
+          :show="props.openBurgerMenu"
           enter="tw-transition tw-ease-out tw-duration-500 tw-z-40"
           enter-from="tw-transform tw-opacity-0 tw-scale-95"
           enter-to="tw-transform tw-opacity-100 tw-scale-100"
@@ -52,19 +48,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, TransitionRoot } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
-const openBurgerMenu: Ref<boolean> = ref(false);
-
-const toggleOpenBurgerMenu = () => {
-  if (openBurgerMenu.value) {
-    openBurgerMenu.value = false;
-  } else {
-    closeMenus();
-    openBurgerMenu.value = true;
-  }
-};
-
-const closeMenus = () => {
-  console.log("outside");
-  openBurgerMenu.value = false;
-};
+const props = defineProps<{
+  openBurgerMenu: boolean;
+}>();
 </script>
