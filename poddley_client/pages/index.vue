@@ -25,7 +25,7 @@ async function makeSearch(string: string) {
   console.log(searchResults.value);
 }
 
-const debouncedSearch = debounce(makeSearch, 1000, {
+const debouncedSearch = debounce(makeSearch, 250, {
   leading: true,
   trailing: true,
   maxWait: 1000,
