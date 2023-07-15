@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-min-h-screen tw-flex tw-flex-col tw-justify-center tw-items-center tw-py-12 sm:tw-px-6 lg:tw-px-8">
+  <!-- <div class="tw-min-h-screen tw-flex tw-flex-col tw-justify-center tw-items-center tw-py-12 sm:tw-px-6 lg:tw-px-8">
     <h2 class="tw-my-6 tw-text-center tw-text-3xl tw-font-extrabold tw-u-text-white">
       Sign in to continue to Poddley
     </h2>
@@ -14,46 +14,47 @@
         Log in with GitHub
       </button>
     </div>
-  </div>
+  </div> -->
+  <p>ok</p>
 </template>
 
 <script lang="ts" setup>
-const supabase = useSupabaseAuthClient();
-const user = useSupabaseUser();
-const router = useRouter();
+// const supabase = useSupabaseAuthClient();
+// const user = useSupabaseUser();
+// const router = useRouter();
 
-watchEffect(() => {
-  if(user.value) {
-    //TODO: maybe change this later
-    router.push('/');
-  }
-})
+// watchEffect(() => {
+//   if(user.value) {
+//     //TODO: maybe change this later
+//     router.push('/');
+//   }
+// })
 
-async function signInWithGitHub() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'github',
-  })
-  console.log(data, error)
-}
+// async function signInWithGitHub() {
+//   const { data, error } = await supabase.auth.signInWithOAuth({
+//     provider: 'github',
+//   })
+//   console.log(data, error)
+// }
 
-async function signInWithGoogle() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
-      },
-    },
-  })
-  console.log(data, error)
-}
+// async function signInWithGoogle() {
+//   const { data, error } = await supabase.auth.signInWithOAuth({
+//     provider: 'google',
+//     options: {
+//       queryParams: {
+//         access_type: 'offline',
+//         prompt: 'consent',
+//       },
+//     },
+//   })
+//   console.log(data, error)
+// }
 
 
 
-async function signout() {
-  const { error } = await supabase.auth.signOut()
-}
+// async function signout() {
+//   const { error } = await supabase.auth.signOut()
+// }
 
 </script>
 

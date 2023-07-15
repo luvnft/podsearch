@@ -24,11 +24,11 @@ async function makeSearch(string: string) {
   searchStore.setLoadingState(false);
 }
 
-const debouncedSearch = debounce(makeSearch, 250);
+const debouncedSearch = debounce(makeSearch, 0);
 
 //Running
-watch(searchString, debouncedSearch);
+watch(searchString, makeSearch);
 
 //Initial calls
-makeSearch("following is a conversation with ");
+makeSearch("The following is a conversation with attia");
 </script>

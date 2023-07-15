@@ -17,14 +17,15 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase"],
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase"],
   vueuse: {
     autoImports: false,
     ssrHandlers: true,
   },
+  image: {},
   plausible: {
     domain: "poddley.com",
     trackLocalhost: true,
