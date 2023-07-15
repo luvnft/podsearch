@@ -22,13 +22,12 @@ async function makeSearch(string: string) {
   searchStore.setLoadingState(true);
   searchResults.value = await transcriptionService.search(string);
   searchStore.setLoadingState(false);
-  console.log(searchResults.value);
 }
 
 const debouncedSearch = debounce(makeSearch, 250, {
   leading: true,
   trailing: true,
-  maxWait: 1000,
+  maxWait: 250,
 });
 
 //Running
