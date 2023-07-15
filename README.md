@@ -193,6 +193,8 @@
 - [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
 - [ ] Read then entire Odin Project: https://www.theodinproject.com/about
 - [ ] Create a blog post explaining the project? Wordpress?
+- [ ] Dont have debouncing on client side, but do have debounced api calls on the server ![ThinkSmartGIF](https://github.com/lukamo1996/poddley/assets/52632596/ec92628e-27a3-47aa-80b6-8e3f5d2a3b4f)
+
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
