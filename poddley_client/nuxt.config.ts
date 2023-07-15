@@ -29,7 +29,6 @@ export default defineNuxtConfig({
     prefix: "_",
   },
   supabase: {
-    redirect: true,
     key: process.env.SUPABASE_KEY,
     url: process.env.SUPABASE_URL,
   },
