@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <div class="tw-inset-y-0 tw-right-0 tw-flex tw-items-center sm:tw-hidden">
+  <div class="tw-h-full">
+    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-items-center sm:tw-hidden">
       <button
-        class="tw-flex tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
+        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
       >
         <span class="tw-sr-only">Open profile menu</span>
-        <UserCircleIcon v-if="!props.openProfileMenu" class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
-        <XMarkIcon v-else class="tw-block tw-h-6 tw-w-6" aria-hidden="true" />
+        <UserCircleIcon v-if="!props.openProfileMenu" class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
+        <XMarkIcon v-else class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
       </button>
     </div>
-    <div class="tw-absolute tw-right-0 tw-top-10 tw-z-40 tw-ml-0">
+
+    <div class="tw-absolute tw-right-0 tw-top-11 tw-z-40 tw-ml-0">
       <Menu as="div" class="tw-origin-top-right">
         <TransitionRoot
           :show="props.openProfileMenu"

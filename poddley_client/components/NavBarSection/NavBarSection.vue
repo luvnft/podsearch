@@ -1,15 +1,19 @@
 <template>
-  <div class="tw-px-1.5 tw-py-0.5">
+  <div class="tw-px-0.5 tw-py-0.5">
     <nav class="tw-z-40 tw-border-none tw-bg-white tw-pb-0 tw-pt-0 tw-shadow-none" v-click-outside="closeMenus">
-      <div class="tw-mx-auto tw-h-10 tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8">
+      <div class="tw-mx-auto tw-h-full tw-w-full tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8">
         <div class="tw-relative tw-flex tw-h-full tw-w-full tw-justify-between">
           <div class="tw-my-0 tw-flex tw-h-full tw-w-full tw-flex-1 tw-items-center tw-justify-between sm:tw-items-stretch sm:tw-justify-start">
-            <div class="tw-flex tw-h-12 tw-w-full tw-flex-shrink-0 tw-items-center tw-justify-between tw-gap-0.5">
-              <BurgerMenu @click="toggleOpenBurgerMenu" @keyup.spaceup="toggleOpenBurgerMenu()" :openBurgerMenu="openBurgerMenu" />
-              <ButtonsDonateButton />
-              <NavTitle />
-              <SearchBox @click="toggleSearchSection" @keyup.spaceup="toggleSearchSection" :openSearchSection="openSearchSection" />
-              <ProfileMenu @click="toggleProfileMenu" @keyup.spaceup="toggleProfileMenu" :openProfileMenu="openProfileMenu" />
+            <div class="container-fluid tw-flex tw-h-full tw-w-full tw-flex-shrink-0 tw-items-center tw-justify-between tw-p-0">
+              <div class="tw-flex tw-h-full tw-w-full tw-flex-nowrap tw-items-center tw-justify-between">
+                <div class="tw-flex tw-h-12 tw-w-full">
+                  <BurgerMenu @click="toggleOpenBurgerMenu" :openBurgerMenu="openBurgerMenu" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <ButtonsDonateButton class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <NavTitle class="col-4 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <ProfileMenu @click="toggleProfileMenu" :openProfileMenu="openProfileMenu" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -20,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { Disclosure } from "@headlessui/vue";
 const openSearchSection: Ref<boolean> = ref(false);
 const openBurgerMenu: Ref<boolean> = ref(false);
 const openProfileMenu: Ref<boolean> = ref(false);
