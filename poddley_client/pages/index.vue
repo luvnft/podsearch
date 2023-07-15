@@ -24,7 +24,7 @@ async function makeSearch(string: string) {
   searchStore.setLoadingState(false);
 }
 
-const debouncedSearch = debounce(makeSearch, 50);
+const debouncedSearch = debounce(makeSearch, 250);
 
 //Running
 watch(searchString, debouncedSearch);
