@@ -50,10 +50,17 @@ async function makeSearch(string: string) {
   }
 }
 
+<<<<<<< HEAD
 const throttledSearch = throttle(makeSearch, 300); // throttling the search to once every 300ms
 
 //Running
 watch(searchString, throttledSearch);
+=======
+const debouncedSearch = debounce(makeSearch, 250);
+
+//Running
+watch(searchString, debouncedSearch);
+>>>>>>> 57c6b7ea57dd30b86fa4a520c670838671efb714
 
 //Initial calls
 throttledSearch("The following is a conversation with attia");
