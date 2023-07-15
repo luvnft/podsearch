@@ -9,11 +9,3 @@ export function convertSecondsToTime(sec: number): string {
 
   return `${hoursString}:${minutesString}:${secondsString}`;
 }
-
-export function debounce(fn: Function, ms: number = 200) {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
-}
