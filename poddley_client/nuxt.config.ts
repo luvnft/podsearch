@@ -2,6 +2,9 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
+  devtools: {
+    enabled: true,
+  },
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
@@ -18,19 +21,19 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "mount",
+    mode: "manual",
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash"],
   vueuse: {
     autoImports: false,
     ssrHandlers: true,
   },
-  lodash: {
-    prefix: "_",
-  },
   supabase: {
     key: process.env.SUPABASE_KEY,
     url: process.env.SUPABASE_URL,
+  },
+  lodash: {
+    prefix: "_",
   },
   image: {},
   plausible: {
@@ -43,9 +46,6 @@ export default defineNuxtConfig({
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
-    },
-    supabase: {
-      serviceKey: process.env.SUPABASE_KEY,
     },
   },
   app: {

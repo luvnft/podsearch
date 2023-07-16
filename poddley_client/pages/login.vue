@@ -18,16 +18,10 @@ const supabase = useSupabaseAuthClient();
 const user = useSupabaseUser();
 const router = useRouter();
 
-watchEffect(() => {
-  if (user.value) {
-    //TODO: maybe change this later
-    router.push("/");
-  }
-});
 
 async function signInWithGitHub() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "github",
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email: "luka_momcilovic@hotmail.com",
   });
   console.log(data, error);
 }
