@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="props.link" class="tw-flex tw-flex-col tw-items-center tw-gap-1 tw-text-gray-600 tw-no-underline">
+  <NuxtLink :to="props.link" class="tw-flex tw-flex-col tw-justify-center tw-gap-1 tw-text-gray-600 tw-no-underline tw-w-full tw-h-full">
     <button
       type="button"
       title="podcastButton"

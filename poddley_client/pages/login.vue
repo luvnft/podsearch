@@ -18,9 +18,6 @@ const supabase = useSupabaseAuthClient();
 const user = useSupabaseUser();
 const router = useRouter();
 
-console.log(user);
-console.log(supabase);
-
 watchEffect(() => {
   if (user.value) {
     //TODO: maybe change this later

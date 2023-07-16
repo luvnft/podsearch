@@ -23,20 +23,21 @@
     <div
       class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col justify-between leading-normal tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-3 tw-py-1"
     >
-      <!-- <div class="row row-cols-4 row-cols-sm-4 tw-pw-2 gx-1 gx-sm-3 tw-mb-3 tw-flex tw-w-full tw-flex-row tw-items-center tw-justify-center">
-        <div class="col tw-m-0">
+      <div class="row tw-w-full tw-pb-2 tw-pt-1">
+        <div class="col-3 tw-px-1">
           <ButtonsPodcastButton :link="searchEntry.episodeLinkToEpisode" />
         </div>
-        <div class="col tw-m-0 tw-h-20 tw-w-20">
+        <div class="col-3 tw-px-1">
           <ButtonsHomepageButton :link="searchEntry.link" />
         </div>
-        <div class="col tw-m-0">
+        <div class="col-3 tw-px-1">
           <ButtonsRssButton :link="searchEntry.url" />
         </div>
-        <div class="col tw-m-0">
+        <div class="col-3 tw-px-1">
           <ButtonsCopyLinkButton :segmentId="searchEntry.id" />
         </div>
-      </div> -->
+      </div>
+
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
           <div>
