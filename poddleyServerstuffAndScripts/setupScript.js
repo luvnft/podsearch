@@ -12,9 +12,9 @@ async function main() {
 
   //Update indexes
   segmentsIndex.updateSettings({
-    searchableAttributes: ["text", "id"],
+    searchableAttributes: ["text"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptGuid", "belongsToPodcastGuid"],
+    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptGuid", "belongsToPodcastGuid", "start", "end"],
     rankingRules: ["exactness", "sort", "proximity", "typo", "words"],
     sortableAttributes: ["start"],
   });
