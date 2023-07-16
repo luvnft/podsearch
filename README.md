@@ -1,7 +1,5 @@
 # Poddley - Search podcasts like text
 
-## Build:
-[![Netlify Status](https://api.netlify.com/api/v1/badges/db94d7ff-0e30-42f0-a07c-feef0f00a28f/deploy-status)](https://app.netlify.com/sites/poddley/deploys)
 ## Demo
 [Demo Link](https://poddley.com)
 ## Showcase
@@ -13,7 +11,6 @@
 - Don't optimize too early
 - Too much caching is bad
 - Don't debounce API calls as it worses UI and user-experience. Use rate-limiting instead or some kind of dynamic rate-limiting like google does (no debouncing on backend first 10 api calls, then rate-limiting)
-- 
 
 ## Frontend:
 - Nuxt 3 for client-stuff (with SSR for perfect SEO)
@@ -23,7 +20,7 @@
 - Pure TailwindCSS for UI adjustments and also the integrated PurgeCSS
 - Bootstrap + Bootstrap Studio for responsive layout as it provides good UI for modifying design
 - Cloudflare page for CI/CD of Client code + using them as a DNS-manager for easier setup.
-- Tracking is done by [Plausible](https://plausible.io/)
+- Tracking is done by ~~[Plausible](https://plausible.io/)~~ Cloudflare was free so...
 
 ## Backend:
 ### API:
