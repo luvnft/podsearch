@@ -28,6 +28,10 @@ export default defineNuxtConfig({
   lodash: {
     prefix: "_",
   },
+  supabase: {
+    key: process.env.SUPABASE_KEY,
+    url: process.env.SUPABASE_URL,
+  },
   image: {},
   plausible: {
     domain: "poddley.com",
@@ -39,6 +43,9 @@ export default defineNuxtConfig({
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
+    },
+    supabase: {
+      serviceKey: process.env.SUPABASE_KEY,
     },
   },
   app: {

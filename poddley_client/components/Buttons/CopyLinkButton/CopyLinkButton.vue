@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-m-0 tw-flex tw-flex-row tw-items-center tw-gap-1 tw-text-gray-600 tw-no-underline">
+  <div class="tw-flex tw-h-full tw-w-full tw-flex-col tw-justify-center tw-gap-1 tw-text-gray-600 tw-no-underline">
     <button
       @click="handleCopyClick"
       type="button"
