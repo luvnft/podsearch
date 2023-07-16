@@ -15,11 +15,11 @@ const limiter = rateLimit({
 })
 
 //Setup
-const app: Express = express();
+const app: Express = express(); 
 const port: number = 3000;
 
-//Use helmet??
-// app.use(helmet());
+// Use helmet
+app.use(helmet());
 
 //Enable CORS for front-end use
 app.use(cors());
@@ -33,12 +33,12 @@ app.use("/transcriptions", transcriptionsRouter);
 app.use("/images", imagesRouter);
 
 // Apply the rate limiting middl  eware to all requests 
-// app.use(limiter)
+app.use(limiter)
 
 //Listen on port 
-app.listen(port, () => {
+app.listen(port, () => { 
   console.log(`Poddley API is listening at http://localhost:${port}`);
 });
- 
+
 //Export it
 export { app };
