@@ -21,9 +21,9 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "manual",
+    mode: "mount",
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration", "@nuxtjs/plausible", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration",  "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash"],
   vueuse: {
     autoImports: false,
     ssrHandlers: true,
@@ -36,12 +36,6 @@ export default defineNuxtConfig({
     prefix: "_",
   },
   image: {},
-  plausible: {
-    domain: "poddley.com",
-    trackLocalhost: true,
-    autoPageviews: true,
-    autoOutboundTracking: true,
-  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,

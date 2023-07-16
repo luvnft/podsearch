@@ -1,5 +1,5 @@
 <template>
-  <SearchResults :searchEntries="searchResults.hits" v-if="searchResults" />
+  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
 </template>
 
 <script lang="ts" setup>
