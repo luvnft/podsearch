@@ -186,6 +186,20 @@
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Kontogreier, lagre ting og tang, pro konto?
 
+- [ ] search filter
+- [ ] ipvote downvote
+- [ ] delete accoutn save segments
+- [ ] profile upload etc using r3
+- [x] drop usage of hq720
+- [x] start delayed hydratipn again
+- [ ] download all podcats 
+- [ ] set up entire setip backend script
+- [ ] increase zoom further to 25% or 10%??
+- [x] fix donation page
+- [x] fix nav buttons
+- [ ] add the firefox colors as the nuxt progress bar bar color
+- [x] fix the layout shitfs on the image downloading time…
+
 - [ ] Add segment search functionality route so it can be shared.
 - [ ] Fix the buttons
 - [ ] Segments have to move
