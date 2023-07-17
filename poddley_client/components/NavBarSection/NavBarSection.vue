@@ -10,7 +10,7 @@
                   <BurgerMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <ButtonsDonateButton class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <NavTitle class="col-4 tw-flex tw-h-full tw-items-center tw-justify-center" />
-                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 tw-p-0 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <SearchBox class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center tw-p-0" @click="toggleSearchSection" :openSearchSection="openSearchSection" />
                   <ProfileMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                 </div>
               </div>
@@ -24,9 +24,16 @@
 </template>
 
 <script setup lang="ts">
+import { onKeyUp } from "@vueuse/core";
+
 const openSearchSection: Ref<boolean> = ref(false);
 const openBurgerMenu: Ref<boolean> = ref(false);
 const openProfileMenu: Ref<boolean> = ref(false);
+
+// Custom escape-listener for the
+onKeyUp("Escape", () => {
+  if (openSearchSection.value) toggleSearchSection();
+});
 
 const closeMenus = () => {
   openBurgerMenu.value = false;

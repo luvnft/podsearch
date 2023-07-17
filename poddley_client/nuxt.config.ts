@@ -21,16 +21,12 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "mount",
+    mode: "manual",
   },
   headlessui: {
     prefix: "Headless",
   },
   modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
-  vueuse: {
-    autoImports: false,
-    ssrHandlers: true,
-  },
   supabase: {
     key: process.env.SUPABASE_KEY,
     url: process.env.SUPABASE_URL,
