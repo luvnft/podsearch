@@ -50,7 +50,7 @@
 import { Hit } from "types/SearchResponse";
 import { PropType } from "vue";
 
-type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720" | any;
+type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);

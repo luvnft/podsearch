@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent focus-within:tw-z-10">
+  <div class="tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent focus-within:tw-z-10 tw-ring-0 tw-mt-[1px]">
     <input
       type="text"
       name="search"

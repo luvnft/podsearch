@@ -13,7 +13,7 @@
             :allowFullscreen="true"
             :pictureInPicture="true"
             :noCookie="true"
-            :posterQuality="'sddefault'"
+            posterQuality="hqdefault"
             :searchEntry="props.searchEntry"
           />
         </div>

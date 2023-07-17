@@ -10,7 +10,7 @@
                   <BurgerMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <ButtonsDonateButton class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <NavTitle class="col-4 tw-flex tw-h-full tw-items-center tw-justify-center" />
-                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 tw-p-0 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <ProfileMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                 </div>
               </div>
@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <SearchBoxSection v-if="openSearchSection" class="tw-my-[1px] tw-flex tw-h-10 tw-items-center tw-justify-center" />
+      <SearchBoxSection v-if="openSearchSection" class="tw-flex tw-h-12 tw-items-center tw-justify-center" />
     </nav>
   </div>
 </template>
