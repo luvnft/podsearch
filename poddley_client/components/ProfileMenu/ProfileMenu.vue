@@ -5,7 +5,7 @@
         class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
       >
         <span class="tw-sr-only">Open main menu</span>
-        <Bars3Icon v-if="!open" class="tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
+        <UserCircleIcon v-if="!open" class="tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
         <XMarkIcon v-else class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
       </HeadlessMenuButton>
       <transition
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
+import { XMarkIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
 
 const client = useSupabaseAuthClient();
 const user = useSupabaseUser();
