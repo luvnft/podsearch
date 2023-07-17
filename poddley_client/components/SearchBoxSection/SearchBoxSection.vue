@@ -1,11 +1,11 @@
 <template>
-  <div class="tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent focus-within:tw-z-10 tw-ring-0 tw-mt-[1px]">
+  <div class="tw-relative tw-mt-[1px] tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent tw-ring-0 focus-within:tw-z-10">
     <input
       type="text"
       name="search"
       id="search"
       placeholder="Search for a quote in a podcast here"
-      class="tw-block tw-h-full tw-w-full tw-justify-center tw-rounded-md tw-border-gray-300 tw-pl-0 tw-text-center tw-text-base focus:tw-border-gray-500 focus:tw-ring-gray-500"
+      class="tw-block tw-h-full tw-w-full tw-justify-center tw-rounded-md tw-border-gray-300 tw-pl-0 tw-pr-8 tw-text-center tw-text-base focus:tw-border-gray-500 focus:tw-ring-gray-500"
       autofocus
       v-model="searchString"
     />
