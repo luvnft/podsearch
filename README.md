@@ -174,22 +174,26 @@
 - [x] Turn dedigated cpu to api server
 - [x] use lowest db cpu
 - [x] possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
-- [ ] Offer public API through external service
-- [ ] Record to text thing
-- [ ] Segments have to move
+- [x] Write me an about page contact page and donate page
 - [x] Disable plausible, netlify, vercel and images.poddley.com. Cloudflare literally does all that for free..
 - [x] Login/Sign-up functionality.
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [x] Dont have debouncing on client side, but do have throttling + cancellable promises
+- [x] Add helmet and add rate-limiting
+
+- [ ] Offer public API through external service
+- [ ] Record to text thing
 - [ ] Add word, by, word, highlighting during playback
+- [ ] Kontogreier, lagre ting og tang, pro konto?
+
+- [ ] Add segment search functionality route so it can be shared.
+- [ ] Fix the buttons
+- [ ] Segments have to move
 - [ ] Make MeiliSearch production probably.
 - [ ] Create a blog post explaining the project? Wordpress?
-- [ ] Kontogreier, lagre ting og tang, pro konto?
 - [ ] finish the rest of the desktop design and shit
-- [ ] Write me an about page contact page and donate page
 - [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens 
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
-- [x] Add helmet and add rate-limiting
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
