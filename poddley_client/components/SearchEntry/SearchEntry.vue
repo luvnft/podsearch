@@ -6,14 +6,14 @@
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`)"
-            :width="'auto'"
-            :height="'100%'"
+            width="100%"
+            height="auto"
             :videoTitle="props.searchEntry.episodeTitle"
             :autoplay="false"
             :allowFullscreen="true"
             :pictureInPicture="true"
             :noCookie="true"
-            :posterQuality="'hq720'"
+            :posterQuality="'sddefault'"
             :searchEntry="props.searchEntry"
           />
         </div>
