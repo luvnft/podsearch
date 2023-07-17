@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "manual",
+    mode: "mount",
   },
   headlessui: {
     prefix: "Headless",
