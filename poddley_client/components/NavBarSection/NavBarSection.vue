@@ -7,11 +7,11 @@
             <div class="container-fluid tw-flex tw-h-full tw-w-full tw-flex-shrink-0 tw-items-center tw-justify-between tw-p-0">
               <div class="tw-flex tw-h-full tw-w-full tw-flex-nowrap tw-items-center tw-justify-between">
                 <div class="tw-flex tw-h-12 tw-w-full">
-                  <BurgerMenu @click="toggleOpenBurgerMenu" :openBurgerMenu="openBurgerMenu" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <BurgerMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <ButtonsDonateButton class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <NavTitle class="col-4 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
-                  <ProfileMenu @click="toggleProfileMenu" :openProfileMenu="openProfileMenu" class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <ProfileMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                 </div>
               </div>
             </div>
@@ -40,15 +40,6 @@ const toggleSearchSection = () => {
   } else {
     closeMenus();
     openSearchSection.value = true;
-  }
-};
-
-const toggleOpenBurgerMenu = () => {
-  if (openBurgerMenu.value) {
-    openBurgerMenu.value = false;
-  } else {
-    closeMenus();
-    openBurgerMenu.value = true;
   }
 };
 
