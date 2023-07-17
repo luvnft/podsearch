@@ -1,6 +1,6 @@
 <template>
   <div class="tw-h-full">
-    <HeadlessMenu as="div" class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-origin-top-left tw-items-center sm:tw-hidden" v-slot="{ open, close }">
+    <HeadlessMenu as="div" class="tw-inset-y-0 tw-right-0 tw-flex tw-h-full tw-w-full tw-origin-top-left tw-items-center sm:tw-hidden" v-slot="{ open, close }">
       <HeadlessMenuButton
         class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
       >
