@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-px-0.5 tw-py-0.5">
+  <div class="tw-px-0.5 tw-py-0.5" v-on-click-outside="closeMenus">
     <nav class="tw-z-40 tw-border-none tw-bg-white tw-pb-0 tw-pt-0 tw-shadow-none">
       <div class="tw-mx-auto tw-h-full tw-w-full tw-max-w-7xl tw-px-0 sm:tw-px-6 lg:tw-px-8">
         <div class="tw-relative tw-flex tw-h-full tw-w-full tw-justify-between">
@@ -24,7 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { onKeyUp } from "@vueuse/core";
+import { onKeyUp, onClickOutside } from "@vueuse/core";
+import { vOnClickOutside } from "@vueuse/components";
 
 const openSearchSection: Ref<boolean> = ref(false);
 const openBurgerMenu: Ref<boolean> = ref(false);
