@@ -23,7 +23,6 @@
     "@types/node": "^18.13.0",
     "@vueuse/nuxt": "^10.1.2",
     "axios": "^1.4.0",
-    "click-outside-vue3": "^4.0.1",
     "nuxt": "^3.0.0",
     "nuxt-delay-hydration": "^1.2.1",
     "pinia": "^2.1.4",
