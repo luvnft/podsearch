@@ -15,7 +15,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
         </div>
       </div>
       <SearchBoxSection v-if="openSearchSection" class="tw-flex tw-h-12 tw-items-center tw-justify-center" />
