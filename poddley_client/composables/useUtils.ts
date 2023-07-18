@@ -1,3 +1,11 @@
+export type Utils = ReturnType<typeof useUtils>;
+
+export const useUtils = () => {
+  return {
+    convertSecondsToTime,
+  };
+};
+
 export function convertSecondsToTime(sec: number): string {
   const hours = Math.floor(sec / 3600);
   const minutes = Math.floor((sec % 3600) / 60);

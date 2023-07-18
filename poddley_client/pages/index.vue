@@ -7,13 +7,18 @@ import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
+import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
+import { Utils } from "composables/useUtils";
 
 //Vars
+const route: RouteLocationNormalizedLoaded = useRoute();
+const router: Router = useRouter();
 const searchStore = useSearchStore();
 const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
 const { searchString } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const initialSearchQuery: string = "The following is a conversation with attia";
+const utils: Utils = useUtils();
 let worker;
 
 //Running
@@ -42,20 +47,23 @@ onMounted(() => {
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch(string: string) {
   searchStore.setLoadingState(true);
+
+  // Update url query:
+  // utils.updateRouteQuery("searchString", string, router, route);
+
   // Send a message to the worker to perform the search
   if (worker) {
     console.log("Triggered");
     console.log("string is: ", string);
     worker.postMessage({ action: "search", payload: string });
   } else {
-    searchStore.setLoadingState(true);
     searchResults.value = await transcriptionService.search(initialSearchQuery);
     searchStore.setLoadingState(false);
   }
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 300, {
+const debouncedSearch = _Debounce(makeSearch, 500, {
   leading: true,
   trailing: true,
   maxWait: 500,
@@ -65,5 +73,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 watch(searchString, debouncedSearch);
 
 // This is the initial instant query to provide good UI
-makeSearch(initialSearchQuery);
+const routeSearchString: string = (route.query.searchString as string) || initialSearchQuery;
+makeSearch(routeSearchString);
 </script>

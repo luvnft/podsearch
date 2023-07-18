@@ -58,7 +58,7 @@
             <p class="tw-mb-0 tw-mt-1.5">
               <b>Time-location:</b>
               &nbsp;
-              <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
+              <u>{{ utils.convertSecondsToTime(props.searchEntry.start) }}</u>
             </p>
           </div>
         </div>
@@ -77,9 +77,10 @@
 </template>
 
 <script lang="ts" setup>
+import { Utils } from "composables/useUtils";
 import { Hit } from "~~/types/SearchResponse";
-import { convertSecondsToTime } from "../../utils/tools/tools";
 
+const utils: Utils = useUtils();
 const props = defineProps<{
   searchEntry: Hit;
 }>();
