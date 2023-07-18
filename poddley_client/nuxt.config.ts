@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: false,
     },
-    minify: false,
+    minify: true,
   },
   pages: true,
   postcss: {
@@ -18,10 +18,10 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "mount",
+    mode: "init",
   },
   vueuse: {
-    ssrHandlers: false,
+    ssrHandlers: true,
     autoImports: false,
   },
   headlessui: {

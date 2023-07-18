@@ -55,9 +55,10 @@ async function makeSearch(string: string) {
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 250, {
+const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
+  maxWait: 500,
 });
 
 // Listening to searchString change and calling debouncedSearch
