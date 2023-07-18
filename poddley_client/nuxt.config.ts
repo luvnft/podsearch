@@ -20,6 +20,10 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
+  vueuse: {
+    ssrHandlers: true,
+    autoImports: true,
+  },
   headlessui: {
     prefix: "Headless",
   },

@@ -17,47 +17,39 @@ const initialSearchQuery: string = "The following is a conversation with attia";
 let worker;
 
 //Running
-// onMounted(() => {
-//   setTimeout(() => {
-//     if (process.client) {
-//       // Creating a worker
-//       worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
+onMounted(() => {
+  if (process.client) {
+    // Creating a worker
+    worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
 
-//       // Listening for messages from worker
-//       worker.onmessage = (event: any) => {
-//         const { action, payload } = event.data;
+    // Listening for messages from worker
+    worker.onmessage = (event: any) => {
+      const { action, payload } = event.data;
 
-//         switch (action) {
-//           case "searchCompleted":
-//             console.log("Received payload: ", payload);
-//             searchResults.value = payload;
-//             searchStore.setLoadingState(false);
-//             break;
-//           case "searchFailed":
-//             console.error("Search failed: ", payload);
-//             searchStore.setLoadingState(false);
-//             break;
-//         }
-//       };
-//     }
-//   }, 1000);
-// });
-
-async function makeSyncSearch() {
-  searchResults.value = await transcriptionService.search(initialSearchQuery);
-}
+      switch (action) {
+        case "searchCompleted":
+          searchResults.value = payload;
+          searchStore.setLoadingState(false);
+          break;
+        case "searchFailed":
+          searchStore.setLoadingState(false);
+          break;
+      }
+    };
+  }
+});
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
-function makeSearch(string: string) {
+async function makeSearch(string: string) {
   searchStore.setLoadingState(true);
   // Send a message to the worker to perform the search
   if (worker) {
-    console.log("From worker");
+    console.log("Triggered");
+    console.log("string is: ", string)
     worker.postMessage({ action: "search", payload: string });
   } else {
-    console.log("Not from worker");
     searchStore.setLoadingState(true);
-    makeSyncSearch();
+    searchResults.value = await transcriptionService.search(initialSearchQuery);
     searchStore.setLoadingState(false);
   }
 }
@@ -72,5 +64,5 @@ const debouncedSearch = _Debounce(makeSearch, 0, {
 watch(searchString, debouncedSearch);
 
 // This is the initial instant query to provide good UI
-makeSyncSearch();
+makeSearch(initialSearchQuery);
 </script>
