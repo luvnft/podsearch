@@ -181,41 +181,54 @@
 - [x] Dont have debouncing on client side, but do have throttling + cancellable promises
 - [x] Add helmet and add rate-limiting
 
+Business Stuff
 - [ ] Offer public API through external service
+- [ ] Kontogreier, lagre ting og tang, pro konto?
+    - [ ] profile upload etc using r3
+    - [ ] ipvote downvote
+    - [ ] delete accoutn save segments
+
+Cool stuff
 - [ ] Record to text thing
 - [ ] Add word, by, word, highlighting during playback
-- [ ] Kontogreier, lagre ting og tang, pro konto?
-
 - [ ] search filter
-- [ ] ipvote downvote
-- [ ] delete accoutn save segments
-- [ ] profile upload etc using r3
+- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens 
+
+Performance:
+- [ ] download all podcats (should be)...
+
+Must
+- [ ] Fix the buttons
+- [ ] add dark mode...
+- [ ] find out why loding indicator doesnt work
+- [ ] finish the rest of the desktop design and shit
+- [ ] Make MeiliSearch production probably.
+- [ ] Segments have to move
+- [ ] Add segment search functionality route so it can be shared.
+- [ ] add the firefox colors as the nuxt progress bar bar color
+
+Oslo
+- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
+
+Luka egne greier:
+- [ ] Create a blog post explaining the project? Wordpress?
+
 - [x] drop usage of hq720
 - [x] start delayed hydratipn again
-- [ ] download all podcats 
-- [ ] set up entire setip backend script
-- [ ] increase zoom further to 25% or 10%??
+- ~~[ ] increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
 - [x] fix donation page
 - [x] fix nav buttons
-- [ ] add the firefox colors as the nuxt progress bar bar color
 - [x] fix the layout shitfs on the image downloading time…
 
-- [ ] Add segment search functionality route so it can be shared.
-- [ ] Fix the buttons
 - [x] Add esc listener to non-headless ui stuff
-- [ ] Segments have to move
-- [ ] Make MeiliSearch production probably.
-- [ ] Create a blog post explaining the project? Wordpress?
-- [ ] finish the rest of the desktop design and shit
-- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens 
-- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
 - [x] use vueUse instead of vlickoutside
 - [x] øk margin på search oxen og marginBottom
-- [ ] find out why loding indicator doesnt work
 - [x] set logo to be nuxtlink not href
 - ~~[ ] move navbar to bottom~~ (bad idea, so no)
 - ~~[ ] bruk en annen audio player kanskje som er bedre til å ferche metadata???~~
-- [ ] add dark mode...
+
+OsloGreier:
+- 
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
