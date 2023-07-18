@@ -204,8 +204,9 @@ Must
 - [ ] finish the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
 - [ ] Segments have to move
-- [ ] Add segment search functionality route so it can be shared.
+- [x] Add segment search functionality route so it can be shared.
 - [ ] add the firefox colors as the nuxt progress bar bar color
+- [x] search button index redirect
 
 Oslo
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
