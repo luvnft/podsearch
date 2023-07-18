@@ -67,7 +67,7 @@ const debouncedSearch = _Debounce(makeSearch, 0, {
 });
 
 // Listening to searchString change and calling debouncedSearch
-// watch(searchString, debouncedSearch);
+watch(searchString, debouncedSearch);
 
 // This is the initial instant query to provide good UI
 debouncedSearch(initialSearchQuery);
