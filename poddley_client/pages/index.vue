@@ -58,7 +58,6 @@ async function makeSearch(string: string) {
 const debouncedSearch = _Debounce(makeSearch, 250, {
   leading: true,
   trailing: true,
-  maxWait: 250,
 });
 
 // Listening to searchString change and calling debouncedSearch

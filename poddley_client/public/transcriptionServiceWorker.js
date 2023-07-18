@@ -6,13 +6,20 @@ self.addEventListener("message", async (event) => {
 
   switch (action) {
     case "search":
-      console.log("Inside Search, with payload: ", payload);
-      const res = await transcriptionsServiceSearch.search(payload);
-      console.log(res);
-      self.postMessage({
-        action: "searchCompleted",
-        payload: res,
-      });
+      try {
+        console.log("Inside Search, with payload: ", payload);
+        const res = await transcriptionsServiceSearch.search(payload);
+        console.log(res);
+        self.postMessage({
+          action: "searchCompleted",
+          payload: res,
+        });
+      } catch (e) {
+        self.postMessage({
+          action: "searchFailed",
+          payload: "",
+        });
+      }
       break;
   }
 });
