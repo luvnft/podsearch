@@ -18,16 +18,23 @@
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 import { watchEffect } from "vue";
-import { Router } from ".nuxt/vue-router";
+import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 const router: Router = useRouter();
+const route: RouteLocationNormalizedLoaded = useRoute();
 
 const searchStore = useSearchStore();
 const { searchString, loading } = storeToRefs(searchStore);
+onMounted(() => {
+  console.log("SearchString.value is: ", searchString.value);
+  console.log("Route is: ", route.query?.searchString);
+  searchString.value = (route.query?.searchString as string) || "";
 
-watchEffect(() => {
-  if (searchString.value) {
-    navigateWithQuery();
-  }
+  watch(searchString, () => {
+    if (searchString.value) {
+      console.log("Sadly: ", searchString.value);
+      navigateWithQuery();
+    }
+  });
 });
 
 const navigateWithQuery = () => {
