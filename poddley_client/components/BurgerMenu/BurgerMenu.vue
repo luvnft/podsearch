@@ -17,7 +17,6 @@
         leave-to-class="tw-transform tw-scale-95 tw-opacity-0"
       >
         <HeadlessMenuItems
-          tabindex="0"
           class="tw-absolute tw-left-0 tw-top-12 tw-z-40 tw-w-40 tw-origin-top-left tw-rounded-md tw-bg-white tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
           @click="close"
         >
