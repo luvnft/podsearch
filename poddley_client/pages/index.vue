@@ -45,7 +45,7 @@ async function makeSearch(string: string) {
   // Send a message to the worker to perform the search
   if (worker) {
     console.log("Triggered");
-    console.log("string is: ", string)
+    console.log("string is: ", string);
     worker.postMessage({ action: "search", payload: string });
   } else {
     searchStore.setLoadingState(true);
@@ -55,9 +55,10 @@ async function makeSearch(string: string) {
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 0, {
+const debouncedSearch = _Debounce(makeSearch, 250, {
   leading: true,
   trailing: true,
+  maxWait: 250,
 });
 
 // Listening to searchString change and calling debouncedSearch

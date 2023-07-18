@@ -6,7 +6,6 @@ export default class TranscriptionsServiceSearch {
 
   public constructor() {
     this.BASE_URL = "https://api.poddley.com" || "http://localhost:3000";
-    console.log(88)
   }
 
   protected getBaseUrl(): string {
