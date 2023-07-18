@@ -2,9 +2,6 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  devtools: {
-    enabled: true,
-  },
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
@@ -21,7 +18,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: false,
+    mode: "mount",
   },
   headlessui: {
     prefix: "Headless",
