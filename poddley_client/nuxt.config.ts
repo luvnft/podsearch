@@ -18,11 +18,11 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "mount",
+    mode: "init",
   },
   vueuse: {
-    ssrHandlers: true,
-    autoImports: true,
+    ssrHandlers: false,
+    autoImports: false,
   },
   headlessui: {
     prefix: "Headless",
