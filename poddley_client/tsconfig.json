@@ -7,7 +7,7 @@
     "alwaysStrict": true,
     "strict": true,
     "target": "es6",
-    "module": "commonjs",
+    "module": "ESNext",
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
@@ -15,6 +15,6 @@
     "sourceMap": true,
     "outDir": "dist",
     "declaration": true,
-    "declarationDir": "dist/types",
+    "declarationDir": "dist/types"
   }
 }
