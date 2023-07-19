@@ -1,6 +1,5 @@
 export interface SearchQuery {
-    searchString: string;
-    type: SearchType;
+  searchString: string | undefined;
+  sort?: string[];
+  filter?: string;
 }
-
-type SearchType = "segment" | "transcription";
