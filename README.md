@@ -199,6 +199,7 @@ Performance:
 
 Must
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
+- [ ] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [ ] Fix the buttons
 - [ ] add dark mode...
 - [ ] finish the rest of the desktop design and shit
