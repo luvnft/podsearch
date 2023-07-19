@@ -12,29 +12,8 @@ class TranscriptionsController {
 
   public search = async (req: Request, res: Response) => {
     try {
-      const searchString: string = req.query.searchString as string;
-      const data: SearchResponse = await this.transcriptionService.search(searchString);
-
-      // res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-
-      res.status(200).send(data);
-    } catch (error: any) {
-      res.status(400).send({ message: JSON.stringify(error) });
-    }
-  };
-
-  public getTrending = async (req: Request, res: Response) => {
-    try {
-      const data: SearchResponse = await this.transcriptionService.getTrending();
-      res.status(200).send(data);
-    } catch (error: any) {
-      res.status(400).send({ message: JSON.stringify(error) });
-    }
-  };
-
-  public getNew = async (req: Request, res: Response) => {
-    try { 
-      const data: SearchResponse = await this.transcriptionService.getNew();
+      const searchQuery: SearchQuery = req.body.searchQuery as SearchQuery;
+      const data: SearchResponse = await this.transcriptionService.search(searchQuery);
       res.status(200).send(data);
     } catch (error: any) {
       res.status(400).send({ message: JSON.stringify(error) });

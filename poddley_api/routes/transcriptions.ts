@@ -8,9 +8,7 @@ const transcriptionsController: TranscriptionsController = new TranscriptionsCon
 const transcriptionsRouter: express.Router = express.Router();
 
 //Get Routes
-transcriptionsRouter.get("/new", transcriptionsController.getNew); 
-transcriptionsRouter.get("/trending", transcriptionsController.getTrending);
-transcriptionsRouter.get("/search", transcriptionsController.search);
-
+transcriptionsRouter.post("/search", transcriptionsController.search);
+ 
 //Export it
-export default transcriptionsRouter;
+export default transcriptionsRouter; 
