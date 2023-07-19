@@ -6,14 +6,14 @@
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`)"
-            :width="'auto'"
-            :height="'100%'"
+            width="100%"
+            height="auto"
             :videoTitle="props.searchEntry.episodeTitle"
             :autoplay="false"
             :allowFullscreen="true"
             :pictureInPicture="true"
             :noCookie="true"
-            :posterQuality="'hq720'"
+            posterQuality="hqdefault"
             :searchEntry="props.searchEntry"
           />
         </div>
@@ -58,7 +58,7 @@
             <p class="tw-mb-0 tw-mt-1.5">
               <b>Time-location:</b>
               &nbsp;
-              <u>{{ convertSecondsToTime(props.searchEntry.start) }}</u>
+              <u>{{ utils.convertSecondsToTime(props.searchEntry.start) }}</u>
             </p>
           </div>
         </div>
@@ -77,9 +77,10 @@
 </template>
 
 <script lang="ts" setup>
+import { Utils } from "composables/useUtils";
 import { Hit } from "~~/types/SearchResponse";
-import { convertSecondsToTime } from "../../utils/tools/tools";
 
+const utils: Utils = useUtils();
 const props = defineProps<{
   searchEntry: Hit;
 }>();

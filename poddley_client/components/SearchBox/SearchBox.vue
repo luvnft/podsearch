@@ -2,7 +2,7 @@
   <div class="tw-h-full">
     <div class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-items-center sm:tw-hidden">
       <button
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
+        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 hover:tw-border-none focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
       >
         <span class="tw-sr-only">Open search field</span>
         <IconsMagnifyingGlass v-if="!props.openSearchSection" class="tw-block tw-h-full tw-w-full tw-fill-gray-400 group-hover:tw-fill-gray-500 tw-scale-[0.85]" aria-hidden="true" />

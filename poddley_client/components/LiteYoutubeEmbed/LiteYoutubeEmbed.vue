@@ -1,7 +1,7 @@
 <template>
   <div class="tw-flex tw-flex-col tw-items-center">
     <!-- Show off iFrame -->
-    <div class="video-container tw-flex" @click="toggleiFrame" v-if="!showiFrame">
+    <div class="video-container tw-flex tw-w-full" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
         <div class="channelIcon tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full before:tw-h-10 before:tw-w-10">
           <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
@@ -14,12 +14,13 @@
       </div>
       <button id="playButton" class="centered-button" />
 
-      <button class="image-with-vignette tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
-        <NuxtImg
+      <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
+        <div
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
           @click="toggleiFrame()"
-          class="tw-rounded-none tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
           loading="lazy"
+          class="tw-aspect-video tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          :style="`background-image: url('https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp')`"
         />
       </button>
     </div>
@@ -49,7 +50,7 @@
 import { Hit } from "types/SearchResponse";
 import { PropType } from "vue";
 
-type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720" | any;
+type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);

@@ -2,14 +2,11 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  devtools: {
-    enabled: true,
-  },
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
-      gzip: false,
+      gzip: true,
     },
     minify: true,
   },
@@ -23,11 +20,14 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "nuxt-delay-hydration",  "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash"],
   vueuse: {
-    autoImports: false,
     ssrHandlers: true,
+    autoImports: false,
   },
+  headlessui: {
+    prefix: "Headless",
+  },
+  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
   supabase: {
     key: process.env.SUPABASE_KEY,
     url: process.env.SUPABASE_URL,

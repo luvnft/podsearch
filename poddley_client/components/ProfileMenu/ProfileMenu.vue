@@ -1,57 +1,39 @@
 <template>
   <div class="tw-h-full">
-    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-items-center sm:tw-hidden">
-      <button
+    <HeadlessMenu as="div" class="tw-inset-y-0 tw-right-0 tw-flex tw-h-full tw-w-full tw-origin-top-left tw-items-center sm:tw-hidden" v-slot="{ open, close }">
+      <HeadlessMenuButton
         class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
       >
-        <span class="tw-sr-only">Open profile menu</span>
-        <UserCircleIcon v-if="!props.openProfileMenu" class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
+        <span class="tw-sr-only">Open main menu</span>
+        <UserCircleIcon v-if="!open" class="tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
         <XMarkIcon v-else class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
-      </button>
-    </div>
-
-    <div class="tw-absolute tw-right-0 tw-top-11 tw-z-40 tw-ml-0">
-      <Menu as="div" class="tw-origin-top-right">
-        <TransitionRoot
-          :show="props.openProfileMenu"
-          enter="tw-transition tw-ease-out tw-duration-500 tw-z-40"
-          enter-from="tw-transform tw-opacity-0 tw-scale-95"
-          enter-to="tw-transform tw-opacity-100 tw-scale-100"
-          leave="tw-transition tw-ease-in tw-duration-75"
-          leave-from="tw-transform tw-opacity-100 tw-scale-100"
-          leave-to="tw-transform tw-opacity-0 tw-scale-95"
-          class="tw-relative tw-right-0 tw-top-1 tw-z-40"
+      </HeadlessMenuButton>
+      <transition
+        enter-active-class="tw-transition tw-duration-100 tw-ease-out"
+        enter-from-class="tw-transform tw-scale-95 tw-opacity-0"
+        enter-to-class="tw-transform tw-scale-100 tw-opacity-100"
+        leave-active-class="tw-transition tw-duration-75 tw-ease-in"
+        leave-from-class="tw-transform tw-scale-100 tw-opacity-100"
+        leave-to-class="tw-transform tw-scale-95 tw-opacity-0"
+      >
+        <HeadlessMenuItems
+          class="tw-absolute tw-right-0 tw-top-12 tw-z-40 tw-w-40 tw-origin-top-right tw-rounded-md tw-bg-white tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
+          @click="close"
         >
-          <MenuItems
-            static
-            class="tw-absolute tw-right-0 tw-z-40 tw-w-40 tw-origin-top-right tw-rounded-md tw-bg-white tw-py-1 tw-text-right tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
-          >
-            <MenuItem v-slot="{ active }" v-if="user">
-              <code>{{ user.email }}</code>
-            </MenuItem>
-            <MenuItem v-slot="{ active }" v-if="!user">
-              <NuxtLink to="/login" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Login</NuxtLink>
-            </MenuItem>
-            <MenuItem v-slot="{ active }" v-if="!user">
-              <NuxtLink :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Sign up</NuxtLink>
-            </MenuItem>
-            <MenuItem v-slot="{ active }" v-if="user">
-              <button @click="logout" :class="`${active ? 'tw-bg-gray-100' : ''} tw-block tw-w-full tw-px-4 tw-py-2 tw-text-right tw-text-sm tw-text-gray-700 tw-no-underline`">Logout</button>
-            </MenuItem>
-          </MenuItems>
-        </TransitionRoot>
-      </Menu>
-    </div>
+          <HeadlessMenuItem v-slot="{ active }">
+            <NuxtLink to="login" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Login/Signup</NuxtLink>
+          </HeadlessMenuItem>
+          <HeadlessMenuItem v-slot="{ active }" v-if="user">
+            <button @click="logout" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Logout</button>
+          </HeadlessMenuItem>
+        </HeadlessMenuItems>
+      </transition>
+    </HeadlessMenu>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, TransitionRoot } from "@headlessui/vue";
-import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
-
-const props = defineProps<{
-  openProfileMenu: boolean;
-}>();
+import { XMarkIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
 
 const client = useSupabaseAuthClient();
 const user = useSupabaseUser();

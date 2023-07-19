@@ -140,6 +140,8 @@
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
 - ~~[ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
+- ~~[ ] Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
+- ~~[x] Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -172,26 +174,62 @@
 - [x] Turn dedigated cpu to api server
 - [x] use lowest db cpu
 - [x] possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
-- [ ] Add word, by, word, highlighting during playback
-- [ ] Offer public API through external service
-- [ ] Pro membership og kontogreier
-- [ ] Record to text thing
-- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
-- [ ] Write me an about page contact page and donate page
-- [ ] Segments have to move
-- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens 
-- [ ] finish the rest of the desktop design and shit
-- [ ] Disable plausible, netlify, vercel and images.poddley.com. Cloudflare literally does all that for free..
-- [ ] Make MeiliSearch production probably.
-- ~~[ ] Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
+- [x] Write me an about page contact page and donate page
+- [x] Disable plausible, netlify, vercel and images.poddley.com. Cloudflare literally does all that for free..
 - [x] Login/Sign-up functionality.
-- ~~[x] Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
-- [ ] Read everything on dev-tut regarding these topics: ruby on rails, ruby, node.js, typescript, javascript, ruby, javascript, git, algorithm
-- [ ] Read then entire Odin Project: https://www.theodinproject.com/about
-- [ ] Create a blog post explaining the project? Wordpress?
 - [x] Dont have debouncing on client side, but do have throttling + cancellable promises
-- [ ] .
+- [x] Add helmet and add rate-limiting
+
+Business Stuff
+- [ ] Offer public API through external service
+- [ ] Kontogreier, lagre ting og tang, pro konto?
+    - [ ] profile upload etc using r3
+    - [ ] ipvote downvote
+    - [ ] delete accoutn save segments
+
+Cool stuff
+- [ ] Record to text thing
+- [ ] Add word, by, word, highlighting during playback
+- [ ] search filter
+- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens 
+
+Performance:
+- [ ] download all podcats (should be)...
+
+Must
+- [ ] Fix the buttons
+- [ ] add dark mode...
+- [ ] find out why loding indicator doesnt work
+- [ ] finish the rest of the desktop design and shit
+- [ ] Make MeiliSearch production probably.
+- [ ] Segments have to move
+- [x] Add segment search functionality route so it can be shared.
+- [ ] add the firefox colors as the nuxt progress bar bar color
+- [x] search button index redirect
+
+Oslo
+- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
+
+Luka egne greier:
+- [ ] Create a blog post explaining the project? Wordpress?
+
+- [x] drop usage of hq720
+- [x] start delayed hydratipn again
+- ~~[ ] increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
+- [x] fix donation page
+- [x] fix nav buttons
+- [x] fix the layout shitfs on the image downloading time…
+
+- [x] Add esc listener to non-headless ui stuff
+- [x] use vueUse instead of vlickoutside
+- [x] øk margin på search oxen og marginBottom
+- [x] set logo to be nuxtlink not href
+- ~~[ ] move navbar to bottom~~ (bad idea, so no)
+- ~~[ ] bruk en annen audio player kanskje som er bedre til å ferche metadata???~~
+
+OsloGreier:
+- 
         Segment ID:
         The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
         Getting segment time while audio is being played.
