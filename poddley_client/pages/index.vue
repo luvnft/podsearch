@@ -52,13 +52,11 @@ async function makeSearch(query: SearchQuery) {
   searchStore.setLoadingState(true);
   searchQuery.value = query;
 
-  console.log("JIJI", query);
-
   // Send a message to the worker to perform the search
   if (worker) {
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
-    searchResults.value = await transcriptionService.search(initialSearchQuery);
+    searchResults.value = await transcriptionService.search(query);
     searchStore.setLoadingState(false);
   }
 }

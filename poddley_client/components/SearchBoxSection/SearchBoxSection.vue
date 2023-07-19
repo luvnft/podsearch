@@ -17,11 +17,9 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
-import { watchEffect } from "vue";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
-import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
-import { Hit } from "~~/types/SearchResponse";
+import { createDefaultSearchQuery } from "../../types//SearchQuery";
 
 const utils: Utils = useUtils();
 const router: Router = useRouter();
@@ -30,9 +28,6 @@ const searchStore = useSearchStore();
 const { searchQuery, loading } = storeToRefs(searchStore);
 
 onMounted(() => {
-  searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
-  console.log("TROLLOLO: ", searchQuery.value);
-
   watch(searchQuery, () => {
     if (searchQuery) {
       console.log("OK");
@@ -40,6 +35,8 @@ onMounted(() => {
     }
   });
 });
+
+searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
 
 const navigateWithQuery = () => {
   router.push({
