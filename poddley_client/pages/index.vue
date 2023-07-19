@@ -73,6 +73,5 @@ watchDeep(searchQuery, debouncedSearch);
 // This is the initial instant query to provide good UI
 const routeSearchQuery: SearchQuery = (utils.decodeQuery(route.query?.searchQuery) as SearchQuery) || initialSearchQuery;
 searchQuery.value = routeSearchQuery;
-console.log("Calling routeSearchQuery", routeSearchQuery);
 makeSearch(routeSearchQuery);
 </script>

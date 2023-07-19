@@ -19,7 +19,6 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
-import { createDefaultSearchQuery } from "../../types//SearchQuery";
 
 const utils: Utils = useUtils();
 const router: Router = useRouter();
@@ -30,7 +29,6 @@ const { searchQuery, loading } = storeToRefs(searchStore);
 onMounted(() => {
   watch(searchQuery, () => {
     if (searchQuery) {
-      console.log("OK");
       navigateWithQuery();
     }
   });

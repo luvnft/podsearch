@@ -14,7 +14,6 @@ export default class TranscriptionsServiceSearch {
   }
 
   protected async fetchPost<T>(url: string, searchQuery: SearchQuery): Promise<T> {
-    console.log(this.getBaseUrl());
     const response: AxiosResponse = await axios({
       url: this.getBaseUrl() + url,
       method: "POST",
