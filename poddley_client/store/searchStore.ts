@@ -1,17 +1,16 @@
 import { defineStore } from "pinia";
+import { SearchQuery } from "types/SearchQuery";
 
 export const useSearchStore = defineStore("searchStore", () => {
   //Searchvariable
-  const searchString: Ref<string> = ref("");
+  const searchQuery: Ref<SearchQuery> = ref({} as SearchQuery);
   const loading: Ref<boolean> = ref(false);
 
-  const updateSearchString = (searchText: string) => (searchString.value = searchText);
   const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);
 
   //Returning
   return {
-    searchString,
-    updateSearchString,
+    searchQuery,
     loading,
     setLoadingState,
   };

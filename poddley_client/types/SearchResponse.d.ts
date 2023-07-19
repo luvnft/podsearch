@@ -52,3 +52,7 @@ export interface Formatted {
   url: string;
   link: string;
 }
+
+interface Cache {
+  [key: number]: SearchResponse;
+}

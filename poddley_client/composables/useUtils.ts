@@ -3,6 +3,8 @@ export type Utils = ReturnType<typeof useUtils>;
 export const useUtils = () => {
   return {
     convertSecondsToTime,
+    encodeQuery,
+    decodeQuery,
   };
 };
 
@@ -16,4 +18,14 @@ export function convertSecondsToTime(sec: number): string {
   const secondsString = seconds.toString().padStart(2, "0");
 
   return `${hoursString}:${minutesString}:${secondsString}`;
+}
+
+export function encodeQuery(query: any) {
+  if (!query) return undefined;
+  return encodeURIComponent(JSON.stringify(query));
+}
+
+export function decodeQuery(query: any) {
+  if (!query) return undefined;
+  return JSON.parse(decodeURIComponent(query));
 }

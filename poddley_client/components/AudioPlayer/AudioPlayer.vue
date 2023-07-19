@@ -12,6 +12,7 @@
         :title="props.episodeTitle"
         :src="props.audioLink"
         type="audio/mpeg"
+        @timeupdate="onTimeUpdate"
       />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
@@ -49,6 +50,14 @@ onMounted(() => {
     audioPlayerRef.value.currentTime = props.timeLocation;
   }
 });
+
+const onTimeUpdate = (event: Event) => {
+  emit("timeupdate", (event.target as HTMLAudioElement).currentTime);
+};
+
+const emit = defineEmits<{
+  (event: "timeupdate", number: number): void;
+}>();
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
+  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits?.length > 0" />
 </template>
 <script lang="ts" setup>
 //Imports
@@ -8,15 +8,20 @@ import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
+import { SearchQuery } from "types/SearchQuery";
+import { Utils } from "composables/useUtils";
+import { watchDeep } from "@vueuse/core";
 
 //Vars
 const route: RouteLocationNormalizedLoaded = useRoute();
-const router: Router = useRouter();
 const searchStore = useSearchStore();
 const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
-const { searchString } = storeToRefs(searchStore);
+const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
-const initialSearchQuery: string = "The following is a conversation with attia";
+const initialSearchQuery: SearchQuery = {
+  searchString: "The following is a conversation with attia",
+};
+const utils: Utils = useUtils();
 let worker;
 
 //Running
@@ -43,17 +48,17 @@ onMounted(() => {
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
-async function makeSearch(string: string) {
+async function makeSearch(query: SearchQuery) {
   searchStore.setLoadingState(true);
-  searchString.value = string;
+  searchQuery.value = query;
+
+  console.log("JIJI", query);
 
   // Send a message to the worker to perform the search
   if (worker) {
-    console.log("Triggered");
-    console.log("string is: ", searchString.value);
-    worker.postMessage({ action: "search", payload: searchString.value });
+    worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
-    searchResults.value = await transcriptionService.search(searchString.value);
+    searchResults.value = await transcriptionService.search(initialSearchQuery);
     searchStore.setLoadingState(false);
   }
 }
@@ -65,10 +70,11 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 });
 
 // Listening to searchString change and calling debouncedSearch
-watch(searchString, debouncedSearch);
+watchDeep(searchQuery, debouncedSearch);
 
 // This is the initial instant query to provide good UI
-console.log(route.query?.searchString)
-const routeSearchString: string = (route.query?.searchString as string) || initialSearchQuery;
-makeSearch(routeSearchString);
+const routeSearchQuery: SearchQuery = (utils.decodeQuery(route.query?.searchQuery) as SearchQuery) || initialSearchQuery;
+searchQuery.value = routeSearchQuery;
+console.log("Calling routeSearchQuery", routeSearchQuery);
+makeSearch(routeSearchQuery);
 </script>

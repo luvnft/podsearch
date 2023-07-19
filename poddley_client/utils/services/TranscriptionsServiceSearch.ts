@@ -1,5 +1,6 @@
 import { SearchResponse } from "~~/types/SearchResponse";
 import axios, { AxiosResponse } from "axios";
+import { SearchQuery } from "types/SearchQuery";
 
 export default class TranscriptionsServiceSearch {
   protected BASE_URL: string;
@@ -12,12 +13,12 @@ export default class TranscriptionsServiceSearch {
     return this.BASE_URL;
   }
 
-  protected async fetch<T>(url: string, method: "GET" | "POST", params?: any): Promise<T> {
+  protected async fetchPost<T>(url: string, searchQuery: SearchQuery): Promise<T> {
     console.log(this.getBaseUrl());
     const response: AxiosResponse = await axios({
       url: this.getBaseUrl() + url,
-      method,
-      params,
+      method: "POST",
+      data: { searchQuery },
     });
 
     if (response.status >= 200 && response.status < 300) {
@@ -26,18 +27,8 @@ export default class TranscriptionsServiceSearch {
 
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  public async getNew(): Promise<SearchResponse> {
-    const data = await this.fetch<SearchResponse>("/transcriptions/new", "GET");
-    return data;
-  }
-
-  public async getTrending(): Promise<SearchResponse> {
-    const data = await this.fetch<SearchResponse>("/transcriptions/trending", "GET");
-    return data;
-  }
-
-  public async search(searchString: string): Promise<SearchResponse> {
-    const data = await this.fetch<SearchResponse>("/transcriptions/search", "GET", { searchString });
+  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
+    const data = await this.fetchPost<SearchResponse>("/transcriptions/search", searchQuery);
     return data;
   }
 }
