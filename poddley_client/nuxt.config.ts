@@ -28,10 +28,10 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
-  supabase: {
-    key: process.env.SUPABASE_KEY,
-    url: process.env.SUPABASE_URL,
-  },
+  // supabase: {
+  //   key: process.env.SUPABASE_KEY,
+  //   url: process.env.SUPABASE_URL,
+  // },
   lodash: {
     prefix: "_",
   },
