@@ -37,9 +37,8 @@ onMounted(() => {
 });
 
 // When initial load, grab the route query and decode into ref
-console.log(utils.decodeQuery(route.query?.searchQuery));
-console.log(utils.decodeQuery(route.query?.searchQuery) || createDefaultSearchQuery());
 searchQuery.value = utils.decodeQuery(route.query?.searchQuery) || createDefaultSearchQuery();
+console.log("SearchQuery: ", searchQuery.value);
 
 //Navigate function
 const navigateWithQuery = () => {

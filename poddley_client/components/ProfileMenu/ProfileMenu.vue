@@ -35,10 +35,10 @@
 <script setup lang="ts">
 import { XMarkIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
 
-const client = useSupabaseAuthClient();
-const user = useSupabaseUser();
+// const client = useSupabaseAuthClient();
+// const user = useSupabaseUser();
 
-const logout = async () => {
-  await client.auth.signOut();
-};
+// const logout = async () => {
+//   await client.auth.signOut();
+// };
 </script>
