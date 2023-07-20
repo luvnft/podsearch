@@ -10,6 +10,7 @@ import { useSearchStore } from "../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
+import { watchDeep } from "@vueuse/core";
 
 //Vars
 let worker: Worker;
@@ -70,7 +71,7 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 });
 
 // Listening to searchString change and calling debouncedSearch
-watch(searchQuery, debouncedSearch);
+watchDeep(searchQuery, debouncedSearch);
 
 // On page load run makeSearch
 makeSearch();
