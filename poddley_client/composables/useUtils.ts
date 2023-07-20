@@ -21,6 +21,7 @@ export function convertSecondsToTime(sec: number): string {
 }
 
 export function encodeQuery(query: any) {
+  if (!query) return undefined;
   try {
     return encodeURIComponent(JSON.stringify(query));
   } catch (e: any) {
@@ -29,6 +30,7 @@ export function encodeQuery(query: any) {
 }
 
 export function decodeQuery(query: any) {
+  if (!query) return undefined;
   try {
     return JSON.parse(decodeURIComponent(query));
   } catch (e: any) {
