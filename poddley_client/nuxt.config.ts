@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "manual",
+    mode: false,
   },
   vueuse: {
     ssrHandlers: true,
