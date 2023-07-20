@@ -17,9 +17,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  delayHydration: {
-    mode: false,
-  },
   vueuse: {
     ssrHandlers: true,
     autoImports: false,
@@ -27,7 +24,7 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "nuxt-lodash", "nuxt-headlessui"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "nuxt-lodash", "nuxt-headlessui"],
   lodash: {
     prefix: "_",
   },
