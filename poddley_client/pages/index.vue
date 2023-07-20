@@ -20,7 +20,7 @@ const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
-  searchString: "The following is a conversation with attia",
+  searchString: "hello",
 };
 let worker;
 
@@ -60,6 +60,7 @@ async function makeSearch() {
     console.log("Based: ", routeBasedQuery);
     let query: SearchQuery;
     query = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
+    searchQuery.value = query;
     console.log("Initial Search query is: ", query);
     searchResults.value = await transcriptionService.search(searchQuery.value);
     searchStore.setLoadingState(false);
