@@ -36,10 +36,6 @@ onMounted(() => {
   });
 });
 
-// When initial load, grab the route query and decode into ref
-searchQuery.value = utils.decodeQuery(route.query?.searchQuery) || createDefaultSearchQuery();
-console.log("SearchQuery: ", searchQuery.value);
-
 //Navigate function
 const navigateWithQuery = () => {
   router.push({
