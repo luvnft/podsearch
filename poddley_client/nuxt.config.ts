@@ -27,11 +27,7 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
-  // supabase: {
-  //   key: process.env.SUPABASE_KEY,
-  //   url: process.env.SUPABASE_URL,
-  // },
+  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "nuxt-lodash", "nuxt-headlessui"],
   lodash: {
     prefix: "_",
   },
