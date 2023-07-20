@@ -60,6 +60,8 @@ async function makeSearch() {
     console.log("Routebased: ", routeBasedQuery);
     console.log("Query: ", query);
     searchResults.value = await transcriptionService.search(query);
+    console.log("SearchResults: ", searchResults.value);
+    searchQuery.value = query;
     searchStore.setLoadingState(false);
   }
 }
