@@ -20,7 +20,7 @@ const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
-  searchString: "The following is a conversation with attia",
+  searchString: "hello",
 };
 let worker;
 
