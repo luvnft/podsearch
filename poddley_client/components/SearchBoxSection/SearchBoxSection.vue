@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-relative tw-mb-1 tw-mt-1 tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent tw-ring-0 focus-within:tw-z-10">
+  <div class="tw-relative tw-mb-1 tw-mt-1 tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent tw-ring-0 focus-within:tw-z-10" v-if="searchQuery">
     <input
       type="text"
       name="search"
@@ -19,6 +19,7 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
+import { createDefaultSearchQuery } from "../../types/SearchQuery";
 
 const utils: Utils = useUtils();
 const router: Router = useRouter();
@@ -26,6 +27,7 @@ const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
 const { searchQuery, loading } = storeToRefs(searchStore);
 
+//When mounted start the watcher to navigate if not on page etc.
 onMounted(() => {
   watch(searchQuery, () => {
     if (searchQuery) {
@@ -34,8 +36,12 @@ onMounted(() => {
   });
 });
 
-searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
+// When initial load, grab the route query and decode into ref
+console.log(utils.decodeQuery(route.query?.searchQuery));
+console.log(utils.decodeQuery(route.query?.searchQuery) || createDefaultSearchQuery());
+searchQuery.value = utils.decodeQuery(route.query?.searchQuery) || createDefaultSearchQuery();
 
+//Navigate function
 const navigateWithQuery = () => {
   router.push({
     path: "/",

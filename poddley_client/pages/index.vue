@@ -18,10 +18,10 @@ const searchStore = useSearchStore();
 const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
+const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
   searchString: "The following is a conversation with attia",
 };
-const utils: Utils = useUtils();
 let worker;
 
 //Running
@@ -48,15 +48,20 @@ onMounted(() => {
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
-async function makeSearch(query: SearchQuery) {
+async function makeSearch() {
   searchStore.setLoadingState(true);
-  searchQuery.value = query;
 
   // Send a message to the worker to perform the search
   if (worker) {
+    console.log("OK???");
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
-    searchResults.value = await transcriptionService.search(query);
+    const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+    console.log("Based: ", routeBasedQuery);
+    let query: SearchQuery;
+    query = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
+    console.log("Initial Search query is: ", query);
+    searchResults.value = await transcriptionService.search(searchQuery.value);
     searchStore.setLoadingState(false);
   }
 }
@@ -70,8 +75,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 // Listening to searchString change and calling debouncedSearch
 watchDeep(searchQuery, debouncedSearch);
 
-// This is the initial instant query to provide good UI
-const routeSearchQuery: SearchQuery = (utils.decodeQuery(route.query?.searchQuery) as SearchQuery) || initialSearchQuery;
-searchQuery.value = routeSearchQuery;
-makeSearch(routeSearchQuery);
+// On page load run makeSearch
+makeSearch();
 </script>
