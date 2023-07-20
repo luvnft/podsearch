@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-relative tw-mb-1 tw-mt-1 tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent tw-ring-0 focus-within:tw-z-10" v-if="searchQuery">
+  <div class="tw-relative tw-mb-1 tw-mt-1 tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent tw-ring-0 focus-within:tw-z-10">
     <input
       type="text"
       name="search"
@@ -29,11 +29,6 @@ const { searchQuery, loading } = storeToRefs(searchStore);
 onMounted(() => {
   watch(searchQuery, () => {
     if (searchQuery) {
-      // When initial load, grab the route query and decode into ref
-      if (utils.decodeQuery(route.query?.searchQuery)) {
-        searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
-        console.log("From Route: ", searchQuery.value);
-      }
       navigateWithQuery();
     }
   });
