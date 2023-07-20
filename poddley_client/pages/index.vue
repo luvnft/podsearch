@@ -60,7 +60,7 @@ async function makeSearch() {
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
     searchQuery.value = query;
     console.log("SearchQuery is: ", searchQuery);
-    searchResults.value = await transcriptionService.search(searchQuery.value);
+    searchResults.value = await transcriptionService.search(query);
     searchStore.setLoadingState(false);
   }
 }
