@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "mount",
+    mode: "manual",
   },
   vueuse: {
     ssrHandlers: true,
