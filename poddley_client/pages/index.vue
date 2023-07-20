@@ -10,19 +10,15 @@ import { useSearchStore } from "../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
-import { watchDeep } from "@vueuse/core";
 
 //Vars
+let worker: Worker;
 const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
-const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
+const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
-const initialSearchQuery: SearchQuery = {
-  searchString: "hello",
-};
-let worker;
 
 //Running
 onMounted(() => {
@@ -32,6 +28,7 @@ onMounted(() => {
 
     // Listening for messages from worker
     worker.onmessage = (event: any) => {
+      console.log("Message received!");
       const { action, payload } = event.data;
 
       switch (action) {
@@ -57,9 +54,8 @@ async function makeSearch() {
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
     const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-    const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
-    searchQuery.value = query;
-    console.log("SearchQuery is: ", searchQuery);
+    const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+    console.log("Initial Search query is: ", searchQuery);
     searchResults.value = await transcriptionService.search(query);
     searchStore.setLoadingState(false);
   }
@@ -70,9 +66,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
 });
-
-// Listening to searchString change and calling debouncedSearch
-watchDeep(searchQuery, debouncedSearch);
 
 // On page load run makeSearch
 makeSearch();

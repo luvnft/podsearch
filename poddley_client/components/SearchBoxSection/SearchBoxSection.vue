@@ -10,7 +10,6 @@
       v-model="searchQuery.searchString"
       @input="navigateWithQuery"
     />
-    <!-- <IconsSpinnerIcon v-show="loading" class="tw-absolute tw-right-3 tw-top-1/2 tw-mt-0 tw--translate-y-1/2 tw-scale-90 tw-transform" /> -->
   </div>
 </template>
 
@@ -19,7 +18,6 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
-import { createDefaultSearchQuery } from "../../types/SearchQuery";
 
 const utils: Utils = useUtils();
 const router: Router = useRouter();
@@ -27,11 +25,18 @@ const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
 const { searchQuery, loading } = storeToRefs(searchStore);
 
-watch(searchQuery, () => {
-  if (searchQuery) {
-    navigateWithQuery();
-  }
+//When mounted start the watcher to navigate if not on page etc.
+onMounted(() => {
+  watch(searchQuery, () => {
+    if (searchQuery) {
+      navigateWithQuery();
+    }
+  });
 });
+
+// When initial load, grab the route query and decode into ref
+searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
+console.log("SearchQuery: ", searchQuery.value);
 
 //Navigate function
 const navigateWithQuery = () => {
