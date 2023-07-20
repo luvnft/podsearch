@@ -54,8 +54,10 @@ async function makeSearch() {
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
     const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+    console.log("Routebased: ", routeBasedQuery);
+    console.log("Query: ", query);
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-    console.log("Initial Search query is: ", searchQuery);
+    console.log("Initial Search query is: ", query);
     searchResults.value = await transcriptionService.search(query);
     searchStore.setLoadingState(false);
   }
