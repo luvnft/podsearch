@@ -72,31 +72,28 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 watchDeep(searchQuery, debouncedSearch);
 
 // On page load run makeSearch
-onServerPrefetch(async () => {
+onServerPrefetch(() => {
+  console.log("OK!");
   const route2: RouteLocationNormalizedLoaded = useRoute();
-
   const time = new Date().getTime();
   console.log("ServerPrefetch?", time);
-  const routeBasedQuery = utils.decodeQuery(route2.query?.searchQuery);
-  console.log(JSON.stringify(routeBasedQuery));
   console.log("route", JSON.stringify(route2));
-  const query: SearchQuery = routeBasedQuery
-    ? routeBasedQuery
-    : {
-        searchString: "luka",
-      };
 
-  console.log("Routebased: ", routeBasedQuery);
-  console.log("Query: ", query);
-  console.log(window);
-  searchQuery.value = query;
-  searchResults.value = await transcriptionService.search(query);
+  // const routeBasedQuery = utils.decodeQuery(route2.query?.searchQuery);
+  // console.log(JSON.stringify(routeBasedQuery));
+  // const query: SearchQuery = routeBasedQuery
+  //   ? routeBasedQuery
+  //   : {
+  //       searchString: "luka",
+  //     };
+  // console.log("Routebased: ", routeBasedQuery);
+  // console.log("Query: ", query);
+  // searchQuery.value = query;
+  // searchResults.value = await transcriptionService.search(query);
 });
 
 const time = new Date().getTime();
 console.log("Second?", time);
 
-onBeforeMount(async () => {
-  await makeSearch();
-});
+makeSearch();
 </script>
