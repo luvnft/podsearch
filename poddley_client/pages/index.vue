@@ -21,6 +21,9 @@ const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 
+if (process.server){
+  console.log("On server");
+}
 //Running
 onMounted(() => {
   // if (process.client) {
