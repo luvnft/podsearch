@@ -11,9 +11,7 @@ export const useSearchStore = defineStore("searchStore", () => {
   const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
 
   const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-  const searchQuery: Ref<SearchQuery> = ref({
-    searchString: routeBasedQuery,
-  });
+  const searchQuery: Ref<SearchQuery> = ref(query);
   console.log("From pinia: ", searchQuery.value);
   const loading: Ref<boolean> = ref(false);
   const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
