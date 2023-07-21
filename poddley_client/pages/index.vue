@@ -23,26 +23,26 @@ const utils: Utils = useUtils();
 
 //Running
 onMounted(() => {
-  if (process.client) {
-    // Creating a worker
-    worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
+  // if (process.client) {
+  //   // Creating a worker
+  //   worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
 
-    // Listening for messages from worker
-    worker.onmessage = (event: any) => {
-      console.log("Message received!");
-      const { action, payload } = event.data;
+  //   // Listening for messages from worker
+  //   worker.onmessage = (event: any) => {
+  //     console.log("Message received!");
+  //     const { action, payload } = event.data;
 
-      switch (action) {
-        case "searchCompleted":
-          searchResults.value = payload;
-          searchStore.setLoadingState(false);
-          break;
-        case "searchFailed":
-          searchStore.setLoadingState(false);
-          break;
-      }
-    };
-  }
+  //     switch (action) {
+  //       case "searchCompleted":
+  //         searchResults.value = payload;
+  //         searchStore.setLoadingState(false);
+  //         break;
+  //       case "searchFailed":
+  //         searchStore.setLoadingState(false);
+  //         break;
+  //     }
+  //   };
+  // }
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
@@ -75,5 +75,9 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 watchDeep(searchQuery, debouncedSearch);
 
 // On page load run makeSearch
+onServerPrefetch(()=> {
+  console.log("FIrst?")
+})
+
 makeSearch();
 </script>

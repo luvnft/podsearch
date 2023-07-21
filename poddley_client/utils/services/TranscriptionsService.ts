@@ -8,8 +8,6 @@ export default class TranscriptionService extends ApiService {
   }
 
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
-    console.log("Now making a search for: ", searchQuery);
-    console.log("The BASE_URL: ", this.BASE_URL)
     const res = await useFetch("/transcriptions/search", {
       method: "POST",
       baseURL: this.BASE_URL,
