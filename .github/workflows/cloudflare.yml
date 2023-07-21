@@ -15,21 +15,21 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        node: [ 14 ]
+        node: [ 16 ]  # change the Node.js version to 16 here
 
     steps:
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3  # update this action to use v3
         with:
           node-version: ${{ matrix.node }}
 
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2  # it's a good idea to use the latest stable version of checkout action too
 
       - name: Cache node_modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3  # assuming v3 is the latest stable version, if not adjust to the latest stable version
         with:
           path: node_modules
-          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles('**/yarn.lock') }}  # simplified the hashFiles input 
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
