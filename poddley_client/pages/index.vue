@@ -77,12 +77,16 @@ onServerPrefetch(async () => {
   console.log("FIrst?", time);
   const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
 
-  const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-  searchQuery.value = query;
-  searchResults.value = await transcriptionService.search(searchQuery.value);
+  const query: SearchQuery = routeBasedQuery
+    ? routeBasedQuery
+    : {
+        searchString: "luka",
+      };
 
   console.log("Routebased: ", routeBasedQuery);
   console.log("Query: ", query);
+  searchQuery.value = query;
+  searchResults.value = await transcriptionService.search(searchQuery.value);
 });
 
 const time = new Date().getTime();
