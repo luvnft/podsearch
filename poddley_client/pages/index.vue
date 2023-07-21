@@ -54,11 +54,14 @@ async function makeSearch() {
 
   // Send a message to the worker to perform the search
   if (worker) {
+    console.log("in worker")
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
+    console.log("supposed real")
     const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
     searchResults.value = await transcriptionService.search(query);
+    console.log(searchResults.value);
     searchStore.setLoadingState(false);
   }
 }
