@@ -3,21 +3,24 @@ name: cloudflare
 on:
   push:
     branches:
-      - master
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        node: [ 16 ]
+        node: [ 14 ]
 
     steps:
       - uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: ${{ matrix.node }}
 
       - name: Checkout
         uses: actions/checkout@master
@@ -26,7 +29,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ubuntu-latest-node-v16-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
@@ -36,12 +39,8 @@ jobs:
         run: yarn build
         env:
           NITRO_PRESET: cloudflare
-          NUXT_API_URL: 'https://cms.fredrikburmester.com/'
-          NUXT_SSR: 'true'
 
       - name: Publish to Cloudflare
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          command: publish --name fb-nuxt-${{ github.ref_name }}
-name: cloudflare
