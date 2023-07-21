@@ -22,7 +22,6 @@ const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
-const nuxtApp: NuxtApp = useNuxtApp();
 
 //Running
 onMounted(() => {
@@ -51,11 +50,16 @@ onMounted(() => {
 
 //Initial Server Prefetch function
 async function makeSearchServer() {
+  const nuxtApp: NuxtApp = useNuxtApp();
   const root: string = nuxtApp.ssrContext?.runtimeConfig.public.HOMEPAGE || "";
   const queryString: string = nuxtApp.ssrContext?.url || "";
   const url: URL = new URL(queryString, root);
-  const routeBasedQuery = utils.decodeQuery(url.href);
+  const searchQueryFromUrl: string | null = url.searchParams.get("searchQuery");
+  const routeBasedQuery = utils.decodeQuery(searchQueryFromUrl);
+  console.log("JJJ", routeBasedQuery);
+
   const routeQuery: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+  console.log("KKK", routeQuery);
   searchResults.value = await transcriptionService.search(routeQuery);
 }
 
