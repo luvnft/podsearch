@@ -8,7 +8,6 @@
       class="tw-block tw-h-full tw-w-full tw-justify-center tw-rounded-md tw-border-gray-300 tw-pl-0 tw-pr-8 tw-text-center tw-text-base focus:tw-border-gray-500 focus:tw-ring-gray-500"
       autofocus
       v-model="searchQuery.searchString"
-      @input="navigateWithQuery"
     />
   </div>
 </template>
