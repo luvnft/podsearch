@@ -11,6 +11,8 @@ import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 import { watchDeep } from "@vueuse/core";
+import { NuxtApp, NuxtPayload } from "nuxt/app";
+import { server } from "process";
 
 //Vars
 let worker: Worker;
@@ -20,34 +22,42 @@ const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
+const nuxtApp: NuxtApp = useNuxtApp();
 
 //Running
 onMounted(() => {
-  // if (process.client) {
-  //   // Creating a worker
-  //   worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
-  //   // Listening for messages from worker
-  //   worker.onmessage = (event: any) => {
-  //     console.log("Message received!");
-  //     const { action, payload } = event.data;
-  //     switch (action) {
-  //       case "searchCompleted":
-  //         searchResults.value = payload;
-  //         searchStore.setLoadingState(false);
-  //         break;
-  //       case "searchFailed":
-  //         searchStore.setLoadingState(false);
-  //         break;
-  //     }
-  //   };
-  // }
+  if (process.client) {
+    // Creating a worker
+    worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
+    // Listening for messages from worker
+    worker.onmessage = (event: any) => {
+      console.log("Message received!");
+      const { action, payload } = event.data;
+      switch (action) {
+        case "searchCompleted":
+          searchResults.value = payload;
+          searchStore.setLoadingState(false);
+          break;
+        case "searchFailed":
+          searchStore.setLoadingState(false);
+          break;
+      }
+    };
+  }
 
   // Listening to searchString change and calling debouncedSearch
   watchDeep(searchQuery, debouncedSearch);
-
-  const time = new Date().getTime();
-  console.log("Second?", time);
 });
+
+//Initial Server Prefetch function
+async function makeSearchServer() {
+  const root: string = nuxtApp.ssrContext?.runtimeConfig.public.HOMEPAGE || "";
+  const queryString: string = nuxtApp.ssrContext?.url || "";
+  const url: URL = new URL(queryString, root);
+  const routeBasedQuery = utils.decodeQuery(url.href);
+  const routeQuery: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+  searchResults.value = await transcriptionService.search(routeQuery);
+}
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
@@ -55,17 +65,11 @@ async function makeSearch() {
 
   // Send a message to the worker to perform the search
   if (worker) {
-    console.log("OK???");
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
     const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-    console.log("Routebased: ", routeBasedQuery);
-    console.log("Query: ", query);
-
     searchResults.value = await transcriptionService.search(query);
-    console.log(searchResults.value)
     searchStore.setLoadingState(false);
   }
 }
@@ -77,7 +81,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 });
 
 onServerPrefetch(async () => {
- await makeSearch();
-
-})
+  await makeSearchServer();
+});
 </script>
