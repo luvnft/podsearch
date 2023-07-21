@@ -18,6 +18,11 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  router: {
+    options: {
+      strict: true,
+    },
+  },
   vueuse: {
     ssrHandlers: true,
     autoImports: false,
