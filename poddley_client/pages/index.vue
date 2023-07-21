@@ -48,21 +48,6 @@ onMounted(() => {
   watchDeep(searchQuery, debouncedSearch);
 });
 
-//Initial Server Prefetch function
-async function makeSearchServer() {
-  const nuxtApp: NuxtApp = useNuxtApp();
-  const root: string = nuxtApp.ssrContext?.runtimeConfig.public.HOMEPAGE || "";
-  const queryString: string = nuxtApp.ssrContext?.url || "";
-  const url: URL = new URL(queryString, root);
-  const searchQueryFromUrl: string | null = url.searchParams.get("searchQuery");
-  const routeBasedQuery = utils.decodeQuery(searchQueryFromUrl);
-  console.log("JJJ", routeBasedQuery);
-
-  const routeQuery: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-  console.log("KKK", routeQuery);
-  searchResults.value = await transcriptionService.search(routeQuery);
-}
-
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
   searchStore.setLoadingState(true);
@@ -88,8 +73,5 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 watchDeep(searchQuery, debouncedSearch);
 
 // This is the initial instant query to provide good UI
-const routeSearchQuery: SearchQuery = (utils.decodeQuery(route.query?.searchQuery) as SearchQuery) || initialSearchQuery;
-searchQuery.value = routeSearchQuery;
-console.log("Calling routeSearchQuery", routeSearchQuery);
-makeSearch(routeSearchQuery);
+makeSearch();
 </script>
