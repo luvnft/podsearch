@@ -95,7 +95,7 @@ onServerPrefetch(async () => {
 const time = new Date().getTime();
 console.log("Second?", time);
 
-onBeforeMount(() => {
-  makeSearch();
+onBeforeMount(async () => {
+  await makeSearch();
 });
 </script>
