@@ -9,6 +9,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
+    static: true,
   },
   pages: true,
   postcss: {
@@ -35,6 +36,7 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://poddley.com",
     },
   },
+
   app: {
     head: {
       htmlAttrs: {
