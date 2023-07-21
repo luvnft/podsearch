@@ -9,7 +9,6 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    static: true,
   },
   pages: true,
   postcss: {
