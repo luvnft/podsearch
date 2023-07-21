@@ -8,6 +8,7 @@
       class="tw-block tw-h-full tw-w-full tw-justify-center tw-rounded-md tw-border-gray-300 tw-pl-0 tw-pr-8 tw-text-center tw-text-base focus:tw-border-gray-500 focus:tw-ring-gray-500"
       autofocus
       v-model="searchQuery.searchString"
+      @input="navigateWithQuery"
     />
   </div>
 </template>
@@ -24,26 +25,26 @@ const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
 const { searchQuery, loading } = storeToRefs(searchStore);
 
-// //When mounted start the watcher to navigate if not on page etc.
-// onMounted(() => {
-//   watch(searchQuery, () => {
-//     if (searchQuery) {
-//       navigateWithQuery();
-//     }
-//   });
-// });
+//When mounted start the watcher to navigate if not on page etc.
+onMounted(() => {
+  watch(searchQuery, () => {
+    if (searchQuery) {
+      navigateWithQuery();
+    }
+  });
+});
 
-// // When initial load, grab the route query and decode into ref
-// if (utils.decodeQuery(route.query?.searchQuery)) {
-//   searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
-//   console.log("From Route: ", searchQuery.value);
-// }
+// When initial load, grab the route query and decode into ref
+if (utils.decodeQuery(route.query?.searchQuery)) {
+  searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
+  console.log("From Route: ", searchQuery.value);
+}
 
-// //Navigate function
-// const navigateWithQuery = () => {
-//   router.push({
-//     path: "/",
-//     query: { searchQuery: utils.encodeQuery(searchQuery.value) },
-//   });
-// };
+//Navigate function
+const navigateWithQuery = () => {
+  router.push({
+    path: "/",
+    query: { searchQuery: utils.encodeQuery(searchQuery.value) },
+  });
+};
 </script>
