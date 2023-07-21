@@ -26,12 +26,10 @@ onMounted(() => {
   // if (process.client) {
   //   // Creating a worker
   //   worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
-
   //   // Listening for messages from worker
   //   worker.onmessage = (event: any) => {
   //     console.log("Message received!");
   //     const { action, payload } = event.data;
-
   //     switch (action) {
   //       case "searchCompleted":
   //         searchResults.value = payload;
@@ -59,8 +57,7 @@ async function makeSearch() {
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
     console.log("Routebased: ", routeBasedQuery);
     console.log("Query: ", query);
-    searchResults.value = await transcriptionService.search(query);
-    console.log("SearchResults: ", searchResults.value);
+    searchResults.value = await transcriptionService.search(searchQuery.value);
     searchStore.setLoadingState(false);
   }
 }
@@ -75,9 +72,19 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
 watchDeep(searchQuery, debouncedSearch);
 
 // On page load run makeSearch
-onServerPrefetch(()=> {
-  console.log("FIrst?")
-})
+onServerPrefetch(async () => {
+  const time = new Date().getTime();
+  console.log("FIrst?", time);
+  const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
 
-makeSearch();
+  const query: SearchQuery = routeBasedQuery
+  searchQuery.value = query;
+  searchResults.value = await transcriptionService.search(searchQuery.value);
+
+  console.log("Routebased: ", routeBasedQuery);
+  console.log("Query: ", query);
+});
+
+const time = new Date().getTime();
+console.log("Second?", time);
 </script>
