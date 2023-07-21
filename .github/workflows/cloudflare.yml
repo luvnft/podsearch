@@ -29,7 +29,7 @@ jobs:
         uses: actions/cache@v3  # assuming v3 is the latest stable version, if not adjust to the latest stable version
         with:
           path: node_modules
-          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles('**/yarn.lock') }}  # simplified the hashFiles input 
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
