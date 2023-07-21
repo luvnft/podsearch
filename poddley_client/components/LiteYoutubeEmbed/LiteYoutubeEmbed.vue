@@ -61,6 +61,7 @@ function toggleiFrame() {
 }
 
 function hello() {
+  console.log("Now it's loaded bitch");
   loading.value = false;
 }
 
