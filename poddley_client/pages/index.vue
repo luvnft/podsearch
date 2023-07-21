@@ -47,8 +47,6 @@ onMounted(() => {
 
   const time = new Date().getTime();
   console.log("Second?", time);
-
-  makeSearch();
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
@@ -75,4 +73,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
 });
+
+makeSearch();
 </script>
