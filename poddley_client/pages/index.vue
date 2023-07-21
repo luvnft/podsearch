@@ -12,7 +12,6 @@ import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 import { watchDeep } from "@vueuse/core";
 import { NuxtApp, NuxtPayload } from "nuxt/app";
-import { server } from "process";
 
 //Vars
 let worker: Worker;
