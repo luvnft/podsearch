@@ -27,6 +27,7 @@ const { searchQuery, loading } = storeToRefs(searchStore);
 
 //When mounted start the watcher to navigate if not on page etc.
 onMounted(() => {
+  console.log(route.query?.searchQuery);
   watch(searchQuery, () => {
     if (searchQuery) {
       console.log("OK");
@@ -37,7 +38,7 @@ onMounted(() => {
 
 // When initial load, grab the route query and decode into ref
 if (utils.decodeQuery(route.query?.searchQuery)) {
-  searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
+  searchQuery.value = utils.decodeQuery(route.query.searchQuery);
   console.log("From Route: ", searchQuery.value);
 }
 

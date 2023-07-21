@@ -1,5 +1,5 @@
 <template>
-  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits?.length > 0" />
+  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
 </template>
 <script lang="ts" setup>
 //Imports
@@ -43,9 +43,6 @@ onMounted(() => {
       }
     };
   }
-
-  // Listening to searchString change and calling debouncedSearch
-  watchDeep(searchQuery, debouncedSearch);
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
@@ -54,14 +51,17 @@ async function makeSearch() {
 
   // Send a message to the worker to perform the search
   if (worker) {
-    console.log("in worker")
-    worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+    console.log("in worker, query is: ", searchQuery.value);
+    if (searchQuery.value) {
+      worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+    }
   } else {
-    console.log("supposed real")
     const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-    searchResults.value = await transcriptionService.search(query);
-    console.log(searchResults.value);
+    console.log("Query from index: ", query);
+    if (query) {
+      searchResults.value = await transcriptionService.search(query);
+    }
     searchStore.setLoadingState(false);
   }
 }
@@ -71,9 +71,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
 });
-
-// Listening to searchString change and calling debouncedSearch
-watchDeep(searchQuery, debouncedSearch);
 
 // This is the initial instant query to provide good UI
 makeSearch();

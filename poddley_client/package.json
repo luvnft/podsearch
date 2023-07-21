@@ -5,7 +5,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "nuxt build && npx wrangler dev .output/server/index.mjs --site .output/public/",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
