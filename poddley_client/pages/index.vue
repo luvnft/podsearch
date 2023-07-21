@@ -21,9 +21,6 @@ const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 
-if (process.server){
-  console.log("On server");
-}
 //Running
 onMounted(() => {
   // if (process.client) {
@@ -68,7 +65,7 @@ async function makeSearch() {
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
     console.log("Routebased: ", routeBasedQuery);
     console.log("Query: ", query);
-    searchResults.value = await transcriptionService.search(searchQuery.value);
+    searchResults.value = await transcriptionService.search(query);
     searchStore.setLoadingState(false);
   }
 }
