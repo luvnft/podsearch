@@ -33,10 +33,14 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+        run: |
+          cd poddley_client
+          yarn
 
       - name: Build
-        run: yarn build
+        run: |
+          cd poddley_client
+          yarn build
         env:
           NITRO_PRESET: cloudflare
 
