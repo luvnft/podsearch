@@ -63,7 +63,9 @@ async function makeSearch() {
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
     console.log("Routebased: ", routeBasedQuery);
     console.log("Query: ", query);
+
     searchResults.value = await transcriptionService.search(query);
+    console.log(searchResults.value)
     searchStore.setLoadingState(false);
   }
 }
@@ -74,5 +76,8 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   trailing: true,
 });
 
-makeSearch();
+onServerPrefetch(async () => {
+ await makeSearch();
+
+})
 </script>
