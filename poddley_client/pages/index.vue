@@ -73,10 +73,13 @@ watchDeep(searchQuery, debouncedSearch);
 
 // On page load run makeSearch
 onServerPrefetch(async () => {
+  const route2: RouteLocationNormalizedLoaded = useRoute();
+
   const time = new Date().getTime();
   console.log("ServerPrefetch?", time);
-  const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-
+  const routeBasedQuery = utils.decodeQuery(route2.query?.searchQuery);
+  console.log(JSON.stringify(routeBasedQuery));
+  console.log("route", JSON.stringify(route2));
   const query: SearchQuery = routeBasedQuery
     ? routeBasedQuery
     : {
@@ -91,4 +94,8 @@ onServerPrefetch(async () => {
 
 const time = new Date().getTime();
 console.log("Second?", time);
+
+onBeforeMount(() => {
+  makeSearch();
+});
 </script>
