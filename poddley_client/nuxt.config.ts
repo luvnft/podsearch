@@ -17,11 +17,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  router: {
-    options: {
-      strict: false,
-    },
-  },
   vueuse: {
     ssrHandlers: true,
     autoImports: false,
@@ -41,7 +36,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   app: {
     head: {

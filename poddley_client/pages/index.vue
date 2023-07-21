@@ -74,7 +74,7 @@ watchDeep(searchQuery, debouncedSearch);
 // On page load run makeSearch
 onServerPrefetch(async () => {
   const time = new Date().getTime();
-  console.log("FIrst?", time);
+  console.log("ServerPrefetch?", time);
   const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
 
   const query: SearchQuery = routeBasedQuery
@@ -86,7 +86,7 @@ onServerPrefetch(async () => {
   console.log("Routebased: ", routeBasedQuery);
   console.log("Query: ", query);
   searchQuery.value = query;
-  searchResults.value = await transcriptionService.search(searchQuery.value);
+  searchResults.value = await transcriptionService.search(query);
 });
 
 const time = new Date().getTime();
