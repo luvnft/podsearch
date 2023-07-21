@@ -25,26 +25,26 @@ const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
 const { searchQuery, loading } = storeToRefs(searchStore);
 
-//When mounted start the watcher to navigate if not on page etc.
-onMounted(() => {
-  watch(searchQuery, () => {
-    if (searchQuery) {
-      navigateWithQuery();
-    }
-  });
-});
+// //When mounted start the watcher to navigate if not on page etc.
+// onMounted(() => {
+//   watch(searchQuery, () => {
+//     if (searchQuery) {
+//       navigateWithQuery();
+//     }
+//   });
+// });
 
-// When initial load, grab the route query and decode into ref
-if (utils.decodeQuery(route.query?.searchQuery)) {
-  searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
-  console.log("From Route: ", searchQuery.value);
-}
+// // When initial load, grab the route query and decode into ref
+// if (utils.decodeQuery(route.query?.searchQuery)) {
+//   searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
+//   console.log("From Route: ", searchQuery.value);
+// }
 
-//Navigate function
-const navigateWithQuery = () => {
-  router.push({
-    path: "/",
-    query: { searchQuery: utils.encodeQuery(searchQuery.value) },
-  });
-};
+// //Navigate function
+// const navigateWithQuery = () => {
+//   router.push({
+//     path: "/",
+//     query: { searchQuery: utils.encodeQuery(searchQuery.value) },
+//   });
+// };
 </script>
