@@ -1,5 +1,5 @@
-name = "playground"
-main = "./.output/server/index.mjs"
+name = "poddley"
+main = "./poddley_client/.output/server/index.mjs"
 workers_dev = true
 compatibility_date = "2022-09-10"
 account_id = "cc664ea0e464c8171ed71af53a1e3f5b"
