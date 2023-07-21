@@ -88,6 +88,7 @@ onServerPrefetch(async () => {
 
   console.log("Routebased: ", routeBasedQuery);
   console.log("Query: ", query);
+  console.log(window);
   searchQuery.value = query;
   searchResults.value = await transcriptionService.search(query);
 });
