@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    preset: "cloudflare-pages-static",
+    preset: "cloudflare",
   },
   pages: true,
   postcss: {
