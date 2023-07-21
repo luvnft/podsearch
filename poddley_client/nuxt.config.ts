@@ -9,9 +9,6 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    prerender: {
-      routes: [],
-    },
   },
   pages: true,
   postcss: {

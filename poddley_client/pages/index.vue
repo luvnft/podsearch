@@ -41,6 +41,14 @@ onMounted(() => {
   //     }
   //   };
   // }
+
+  // Listening to searchString change and calling debouncedSearch
+  watchDeep(searchQuery, debouncedSearch);
+
+  const time = new Date().getTime();
+  console.log("Second?", time);
+
+  makeSearch();
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
@@ -67,33 +75,4 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
 });
-
-// Listening to searchString change and calling debouncedSearch
-watchDeep(searchQuery, debouncedSearch);
-
-// On page load run makeSearch
-onServerPrefetch(() => {
-  console.log("OK!");
-  const route2: RouteLocationNormalizedLoaded = useRoute();
-  const time = new Date().getTime();
-  console.log("ServerPrefetch?", time);
-  console.log("route", JSON.stringify(route2));
-
-  // const routeBasedQuery = utils.decodeQuery(route2.query?.searchQuery);
-  // console.log(JSON.stringify(routeBasedQuery));
-  // const query: SearchQuery = routeBasedQuery
-  //   ? routeBasedQuery
-  //   : {
-  //       searchString: "luka",
-  //     };
-  // console.log("Routebased: ", routeBasedQuery);
-  // console.log("Query: ", query);
-  // searchQuery.value = query;
-  // searchResults.value = await transcriptionService.search(query);
-});
-
-const time = new Date().getTime();
-console.log("Second?", time);
-
-makeSearch();
 </script>
