@@ -54,7 +54,6 @@ async function makeSearch() {
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
     const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-
     const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
     searchResults.value = await transcriptionService.search(query);
     searchStore.setLoadingState(false);
