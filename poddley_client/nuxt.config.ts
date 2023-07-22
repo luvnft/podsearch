@@ -25,12 +25,19 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "nuxt-lodash", "nuxt-headlessui"],
+  delayHydration: {
+    mode: "mount",
+  },
+  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
   lodash: {
     prefix: "_",
   },
   image: {
     provider: "cloudflare",
+  },
+  supabase: {
+    key: process.env.SUPABASE_KEY,
+    url: process.env.SUPABASE_URL,
   },
   runtimeConfig: {
     public: {

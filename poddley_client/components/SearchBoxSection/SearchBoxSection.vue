@@ -16,19 +16,17 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
-import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
+import { Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
 
 const utils: Utils = useUtils();
 const router: Router = useRouter();
-const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
-const { searchQuery, loading } = storeToRefs(searchStore);
+const { searchQuery } = storeToRefs(searchStore);
 
 //When mounted start the watcher to navigate if not on page etc.
 watch(searchQuery, () => {
   if (searchQuery) {
-    console.log("OK");
     navigateWithQuery();
   }
 });

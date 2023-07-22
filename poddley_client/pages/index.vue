@@ -11,28 +11,62 @@ import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 import { watchDeep } from "@vueuse/core";
-import { NuxtApp, NuxtPayload } from "nuxt/app";
 
 //Vars
-let worker: Worker; 
+let worker: Worker;
 const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
 const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
-const app = useNuxtApp()
-console.log(app);
-async function init() {
-  const d: SearchQuery = utils.decodeQuery(route.query.searchQuery) || { searchString: "" };
-  searchResults.value = await transcriptionService.search(d);
-}
 
+//Running
+onMounted(() => {
+  if (process.client) {
+    // Creating a worker
+    worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
+
+    // Listening for messages from worker
+    worker.onmessage = (event: any) => {
+      console.log("Message received!");
+      const { action, payload } = event.data;
+
+      switch (action) {
+        case "searchCompleted":
+          searchResults.value = payload;
+          searchStore.setLoadingState(false);
+          break;
+        case "searchFailed":
+          searchStore.setLoadingState(false);
+          break;
+      }
+    };
+  }
+});
+
+// If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-  searchResults.value = await transcriptionService.search(searchQuery.value);
+  searchStore.setLoadingState(true);
+
+  // Send a message to the worker to perform the search
+  if (worker) {
+    worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+  } else {
+    const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+
+    const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+    searchResults.value = await transcriptionService.search(query);
+    searchStore.setLoadingState(false);
+  }
 }
 
-watchDeep(searchQuery, makeSearch);
+// Debounced search calls makeSearch if it follows the limits of the debounce function
+const debouncedSearch = _Debounce(makeSearch, 300, {
+  leading: true,
+  trailing: true,
+});
 
-init();
+// Listening to searchString change and calling debouncedSearch
+watchDeep(searchQuery, debouncedSearch);
 </script>
