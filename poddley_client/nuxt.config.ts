@@ -33,7 +33,10 @@ export default defineNuxtConfig({
     prefix: "_",
   },
   image: {
-    provider: "",
+    provider: "cloudflare",
+    cloudflare: {
+      baseURL: "",
+    },
   },
   runtimeConfig: {
     public: {
