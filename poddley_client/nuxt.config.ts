@@ -32,6 +32,12 @@ export default defineNuxtConfig({
   image: {
     provider: "cloudflare",
   },
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
+      HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
+    },
+  },
   app: {
     head: {
       htmlAttrs: {
