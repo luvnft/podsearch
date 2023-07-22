@@ -22,64 +22,11 @@ const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 
-//Running
-onMounted(() => {
-  if (process.client) {
-    // Creating a worker
-    worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
-    // Listening for messages from worker
-    worker.onmessage = (event: any) => {
-      console.log("Message received!");
-      const { action, payload } = event.data;
-      switch (action) {
-        case "searchCompleted":
-          searchResults.value = payload;
-          searchStore.setLoadingState(false);
-          break;
-        case "searchFailed":
-          searchStore.setLoadingState(false);
-          break;
-      }
-    };
-  }
-});
-
-// If the request gets this far, we set the loading to true and we send a request to the webworker
-async function makeSearch() {
-  searchStore.setLoadingState(true);
-
-  // Send a message to the worker to perform the search
-  if (worker) {
-    console.log("in worker, query is: ", searchQuery.value);
-    if (searchQuery.value) {
-      worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
-    }
-  } else {
-    let routeBasedQuery;
-    try {
-      routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-    } catch (e) {
-      console.log("Issue: ", e);
-    }
-    const query: SearchQuery = routeBasedQuery
-      ? routeBasedQuery
-      : {
-          searchString: "hello",
-        };
-    console.log("Query from index: ", query);
-    if (query) {
-      searchResults.value = await transcriptionService.search(query);
-    }
-    searchStore.setLoadingState(false);
-  }
+async function init() {
+  const d: SearchQuery = utils.decodeQuery(route.query.searchQuery) || { searchString: "" };
+  console.log("D:", d);
+  searchResults.value = await transcriptionService.search(d);
 }
 
-// Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 300, {
-  leading: true,
-  trailing: true,
-});
-
-// This is the initial instant query to provide good UI
-makeSearch();
+init();
 </script>

@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
+
   },
   pages: true,
   postcss: {

@@ -30,9 +30,12 @@ export function encodeQuery(query: any) {
 }
 
 export function decodeQuery(query: any) {
+  console.log("Incoming query: ", query);
   if (!query) return undefined;
   try {
-    return JSON.parse(decodeURIComponent(query));
+    const d = JSON.parse(decodeURIComponent(query));
+    console.log("d is: ", d);
+    return d;
   } catch (e: any) {
     return undefined;
   }
