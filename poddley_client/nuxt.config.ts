@@ -31,7 +31,9 @@ export default defineNuxtConfig({
   lodash: {
     prefix: "_",
   },
-  image: {},
+  image: {
+    provider: "cloudflare",
+  },
   appConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,

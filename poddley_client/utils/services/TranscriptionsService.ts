@@ -12,7 +12,7 @@ export default class TranscriptionService extends ApiService {
     const res = await useFetch("/transcriptions/search", {
       method: "POST",
       baseURL: this.BASE_URL,
-      body: { searchQuery: searchQuery },
+      body: { searchQuery },
     });
     const data: SearchResponse = res.data.value as SearchResponse;
     console.log("Data is: ", data);
