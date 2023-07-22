@@ -27,7 +27,7 @@ async function init() {
   console.log("D:", d);
   searchResults.value = await transcriptionService.search(d);
   console.log(searchResults.value);
-  console.log(useRuntimeConfig())
+  console.log(useRuntimeConfig());
 }
 
 async function makeSearch() {
@@ -36,8 +36,7 @@ async function makeSearch() {
 
 onServerPrefetch(() => {
   console.log("SearchHHH", searchResults.value);
-})
-
+});
 
 watchDeep(searchQuery, makeSearch);
 

@@ -28,5 +28,6 @@ onMounted(() => {
     document.removeEventListener("keydown", handleSpacebarClick);
   });
   
+  
 });
 </script>
