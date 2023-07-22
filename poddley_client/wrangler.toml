@@ -7,8 +7,3 @@ route = "poddley.com"
 
 [site]
 bucket = ".output/public"
-
-[vars]
-NUXT_API_BASE_URL_DEV="https://api.poddley.com"
-NUXT_API_BASE_URL="https://api.poddley.com"
-NODE_ENV="production"
