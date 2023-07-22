@@ -1,5 +1,8 @@
 # Poddley - Search podcasts like text
 
+## Status build
+[![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
+
 ## Demo
 [Demo Link](https://poddley.com)
 ## Showcase
