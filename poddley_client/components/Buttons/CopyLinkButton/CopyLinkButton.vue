@@ -19,7 +19,7 @@ const props = defineProps<{
 const textVisible: Ref<Boolean> = ref(false);
 
 async function handleCopyClick() {
-  navigator.clipboard.writeText(useRuntimeConfig().public.HOMEPAGE + "/quote?id=" + props.segmentId);
+  navigator.clipboard.writeText(useAppConfig().public.HOMEPAGE + "/quote?id=" + props.segmentId);
   showText();
 }
 

@@ -55,8 +55,17 @@ async function makeSearch() {
       worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
     }
   } else {
-    const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-    const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+    let routeBasedQuery;
+    try {
+      routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+    } catch (e) {
+      console.log("Issue: ", e);
+    }
+    const query: SearchQuery = routeBasedQuery
+      ? routeBasedQuery
+      : {
+          searchString: "hello",
+        };
     console.log("Query from index: ", query);
     if (query) {
       searchResults.value = await transcriptionService.search(query);

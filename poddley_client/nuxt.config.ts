@@ -19,11 +19,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  router: {
-    options: {
-      strict: false,
-    },
-  },
   vueuse: {
     ssrHandlers: true,
     autoImports: false,
@@ -36,13 +31,12 @@ export default defineNuxtConfig({
     prefix: "_",
   },
   image: {},
-  runtimeConfig: {
+  appConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://poddley.com",
     },
   },
-
   app: {
     head: {
       htmlAttrs: {
