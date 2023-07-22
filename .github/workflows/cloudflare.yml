@@ -48,4 +48,4 @@ jobs:
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          command: 'deploy ./poddley_client/.output/server/index.mjs'
+          command: 'deploy ./poddley_client/.output/server/index.mjs --keep-vars'
