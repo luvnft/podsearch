@@ -10,10 +10,6 @@ export const useSearchStore = defineStore("searchStore", () => {
   const loading: Ref<boolean> = ref(false);
   const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
   const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);
-  const envy: any = ref("");
-  envy.value = globalThis;
-
-  console.log(envy.value);
 
   //Returning
   return {
@@ -21,6 +17,5 @@ export const useSearchStore = defineStore("searchStore", () => {
     loading,
     setLoadingState,
     searchResults,
-    envy
   };
 });
