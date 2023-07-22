@@ -1,6 +1,3 @@
-import { useSearchStore } from "../../store/searchStore";
-const store = useSearchStore();
-
 export default class ApiService {
   protected BASE_URL: string;
 

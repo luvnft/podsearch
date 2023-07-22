@@ -32,9 +32,6 @@ export default defineNuxtConfig({
   image: {
     provider: "cloudflare",
   },
-  $env: {
-    NUXT_API_BASE_URL: globalThis.NUXT_API_BASE_URL,
-  },
   app: {
     head: {
       htmlAttrs: {

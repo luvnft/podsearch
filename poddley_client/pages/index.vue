@@ -14,7 +14,7 @@ import { watchDeep } from "@vueuse/core";
 import { NuxtApp, NuxtPayload } from "nuxt/app";
 
 //Vars
-let worker: Worker;
+let worker: Worker; 
 const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
 const searchResults: Ref<SearchResponse> = useState();
@@ -24,19 +24,12 @@ const utils: Utils = useUtils();
 
 async function init() {
   const d: SearchQuery = utils.decodeQuery(route.query.searchQuery) || { searchString: "" };
-  console.log("D:", d);
   searchResults.value = await transcriptionService.search(d);
-  console.log(searchResults.value);
-  console.log(useRuntimeConfig());
 }
 
 async function makeSearch() {
   searchResults.value = await transcriptionService.search(searchQuery.value);
 }
-
-onServerPrefetch(() => {
-  console.log("SearchHHH", searchResults.value);
-});
 
 watchDeep(searchQuery, makeSearch);
 
