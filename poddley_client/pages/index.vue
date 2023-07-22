@@ -34,8 +34,12 @@ async function makeSearch() {
   searchResults.value = await transcriptionService.search(searchQuery.value);
 }
 
+onServerPrefetch(() => {
+  console.log("SearchHHH", searchResults.value);
+})
 
-// watchDeep(searchQuery, makeSearch);
+
+watchDeep(searchQuery, makeSearch);
 
 init();
 </script>
