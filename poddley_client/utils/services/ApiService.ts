@@ -4,7 +4,7 @@ const store = useSearchStore();
 export default class ApiService {
   protected BASE_URL: string;
 
-  protected constructor() {
+  protected constructor() { 
     this.BASE_URL = "";
   }
 
