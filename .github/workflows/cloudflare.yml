@@ -41,7 +41,7 @@ jobs:
         run: |
           cd poddley_client
           yarn build
-        env:
+        env: 
           NITRO_PRESET: cloudflare
 
       - name: Publish to Cloudflare
