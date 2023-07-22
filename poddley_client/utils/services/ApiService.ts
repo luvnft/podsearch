@@ -6,7 +6,7 @@ export default class ApiService {
 
   protected constructor() { 
     this.BASE_URL = "";
-  }
+  } 
 
   protected getBaseUrl() {
     return this.BASE_URL;
