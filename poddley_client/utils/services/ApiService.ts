@@ -10,5 +10,5 @@ export default class ApiService {
 
   protected getBaseUrl() {
     return this.BASE_URL;
-  }
+  } 
 }
