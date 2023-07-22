@@ -26,6 +26,8 @@ async function init() {
   const d: SearchQuery = utils.decodeQuery(route.query.searchQuery) || { searchString: "" };
   console.log("D:", d);
   searchResults.value = await transcriptionService.search(d);
+  console.log(searchResults.value);
+  console.log(useRuntimeConfig())
 }
 
 async function makeSearch() {
@@ -33,7 +35,7 @@ async function makeSearch() {
 }
 
 
-watchDeep(searchQuery, makeSearch);
+// watchDeep(searchQuery, makeSearch);
 
 init();
 </script>
