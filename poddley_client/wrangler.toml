@@ -7,3 +7,6 @@ route = "poddley.com"
 
 [site]
 bucket = ".output/public"
+
+[env.production]
+route = "poddley.com" 

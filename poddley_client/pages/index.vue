@@ -28,5 +28,11 @@ async function init() {
   searchResults.value = await transcriptionService.search(d);
 }
 
+async function makeSearch() {
+  searchResults.value = await transcriptionService.search(searchQuery.value);
+}
+
+watchDeep(searchQuery, makeSearch);
+
 init();
 </script>
