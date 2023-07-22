@@ -1,4 +1,4 @@
-import { useSearchStore } from "store/searchStore";
+import { useSearchStore } from "../../store/searchStore";
 const store = useSearchStore();
 
 export default class ApiService {
