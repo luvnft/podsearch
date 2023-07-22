@@ -15,6 +15,8 @@ export default class TranscriptionService extends ApiService {
       body: { searchQuery },
     });
     const data: SearchResponse = res.data.value as SearchResponse;
+    console.log("This BASE_URL: ", this.BASE_URL);
+    console.log()
     console.log("Data is: ", data);
     return data;
   }
