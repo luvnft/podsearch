@@ -33,6 +33,6 @@ async function makeSearch() {
 }
 
 watchDeep(searchQuery, makeSearch);
-
+console.log(NODE_ENV);
 init();
 </script>
