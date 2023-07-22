@@ -21,7 +21,8 @@ const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
-
+const app = useNuxtApp()
+console.log(app);
 async function init() {
   const d: SearchQuery = utils.decodeQuery(route.query.searchQuery) || { searchString: "" };
   searchResults.value = await transcriptionService.search(d);
