@@ -53,10 +53,13 @@ async function makeSearch() {
   if (worker) {
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
-    const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-    const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-    searchResults.value = await transcriptionService.search(query);
-    searchStore.setLoadingState(false);
+    try {
+      const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+      const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+      searchResults.value = await transcriptionService.search(query);
+      searchStore.setLoadingState(false);
+    } catch (e) {}
+    watchDeep(searchQuery, debouncedSearch);
   }
 }
 
@@ -65,9 +68,6 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
 });
-
-// Listening to searchString change and calling debouncedSearch
-watchDeep(searchQuery, debouncedSearch);
 
 // Make initial search (this probably runs as useServerPrefetch)
 makeSearch();
