@@ -34,5 +34,9 @@ async function makeSearch() {
 
 watchDeep(searchQuery, makeSearch);
 
+onServerPrefetch(() => {
+  console.log(NODE_ENV);
+})
+
 init();
 </script>
