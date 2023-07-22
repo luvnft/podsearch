@@ -33,11 +33,7 @@ export default defineNuxtConfig({
     prefix: "_",
   },
   image: {
-    provider: "cloudflare",
-  },
-  supabase: {
-    key: process.env.SUPABASE_KEY,
-    url: process.env.SUPABASE_URL,
+    provider: "",
   },
   runtimeConfig: {
     public: {
