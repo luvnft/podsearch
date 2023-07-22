@@ -2,10 +2,10 @@ export default class ApiService {
   protected BASE_URL: string;
 
   protected constructor() {
-    this.BASE_URL = globalThis.NUXT_API_BASE_URL || "";
+      this.BASE_URL = useRuntimeConfig().public.baseURL;
   }
 
   protected getBaseUrl() {
-    return this.BASE_URL;
+      return this.BASE_URL;
   }
 }

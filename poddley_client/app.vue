@@ -27,5 +27,6 @@ onMounted(() => {
   onUnmounted(() => {
     document.removeEventListener("keydown", handleSpacebarClick);
   });
+  
 });
 </script>
