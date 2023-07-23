@@ -22,10 +22,14 @@ export default defineNuxtConfig({
     ssrHandlers: true,
     autoImports: true,
   },
+
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite"],
+  delayHydration: {
+    mode: "init",
+  },
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
     prefix: "_",
   },
