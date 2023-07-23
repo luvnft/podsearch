@@ -1,5 +1,5 @@
 export interface SearchQuery {
-  searchString: string;
+  searchString?: string;
   sort?: string[];
   filter?: string;
 }

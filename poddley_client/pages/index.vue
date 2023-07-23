@@ -46,18 +46,19 @@ onMounted(() => {
   }
 });
 
+function searchViaWorker() {
+  searchStore.setLoadingState(true);
+  worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+}
+
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
   // Send a message to the worker to perform the search
   if (worker) {
-    searchStore.setLoadingState(true);
-    console.log("Call to worker");
-    worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+    searchViaWorker();
   } else {
     //First run on server
     if (process.server) {
-      console.log("Not call to worker");
-
       searchStore.setLoadingState(true);
       try {
         const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
@@ -79,7 +80,6 @@ const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300);
 
 // Make initial search (this probably runs as useServerPrefetch)
 onServerPrefetch(async () => {
-  console.log("Server prefetch!");
   await makeSearch();
 });
 
