@@ -30,27 +30,13 @@
     <div
       class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col justify-between leading-normal tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-3 tw-py-1"
     >
-      <div class="row tw-w-full tw-pb-2 tw-pt-1">
-        <div class="col-3 tw-px-1">
-          <ButtonsPodcastButton :link="searchEntry.episodeLinkToEpisode" />
-        </div>
-        <div class="col-3 tw-px-1">
-          <ButtonsHomepageButton :link="searchEntry.link" />
-        </div>
-        <div class="col-3 tw-px-1">
-          <ButtonsRssButton :link="searchEntry.url" />
-        </div>
-        <div class="col-3 tw-px-1">
-          <ButtonsCopyLinkButton :segmentId="searchEntry.id" />
-        </div>
-      </div>
-
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
-          <div>
-            <p class="tw-mb-2 tw-font-bold">
+          <div class="tw-mb-2 tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-justify-between">
+            <p class="tw-mb-0 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
+            <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
             <div class="segment tw-mb-1.5 tw-mt-1 tw-rounded-lg">
