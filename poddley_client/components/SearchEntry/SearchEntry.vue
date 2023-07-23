@@ -5,7 +5,7 @@
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`)"
+            :startTime="computedStartTime"
             width="100%"
             height="auto"
             :videoTitle="props.searchEntry.episodeTitle"
@@ -20,7 +20,7 @@
         <img
           v-else
           loading="lazy"
-          class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
+          class="tw-aspect-video tw-h-full tw-w-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
           style="object-fit: cover; object-position: top"
           :src="props.searchEntry.imageUrl"
           alt="Description of Image"
@@ -91,6 +91,13 @@ const utils: Utils = useUtils();
 const props = defineProps<{
   searchEntry: Hit;
 }>();
+
+const computedStartTime = computed(() => {
+  const start = parseFloat(props.searchEntry.start.toString()) || 0;
+  const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
+  const val = start - deviationTime;
+  return val < 0 ? 0 : val;
+});
 </script>
 
 <style scoped>
