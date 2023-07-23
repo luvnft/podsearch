@@ -15,12 +15,11 @@
       <button id="playButton" class="centered-button" />
 
       <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
-        <div
+        <NuxtImg
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
           @click="toggleiFrame()"
           loading="lazy"
           class="tw-aspect-video tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
-          :style="`background-image: url('https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp')`"
         />
       </button>
     </div>
