@@ -15,12 +15,13 @@
       <button id="playButton" class="centered-button" />
 
       <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
-        <div
-          :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-          @click="toggleiFrame()"
+        <img
           loading="lazy"
-          class="tw-aspect-video tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
-          :style="`background-image: url('https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp')`"
+          class="tw-aspect-video tw-w-full tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          style="object-fit: cover; object-position: center"
+          :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
+          alt="Description of Image"
+          @click="toggleiFrame()"
         />
       </button>
     </div>
@@ -35,12 +36,11 @@
         :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
         :title="props.videoTitle"
         frameborder="0"
-        :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write;encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${
-          props.allowFullscreen ? 'allowfullscreen' : ''
-        };`"
+        :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
+        :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
         class="tw-aspect-video tw-w-full tw-rounded-none"
-        @load="hello()"
         v-show="!loading"
+        @load="iFrameLoaded()"
       />
     </div>
   </div>
@@ -49,20 +49,18 @@
 <script lang="ts" setup>
 import { Hit } from "types/SearchResponse";
 import { PropType } from "vue";
-
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 
+function iFrameLoaded() {
+  loading.value = false;
+}
+
 function toggleiFrame() {
   loading.value = true;
   showiFrame.value = true;
-}
-
-function hello() {
-  console.log("Now it's loaded bitch");
-  loading.value = false;
 }
 
 const props = defineProps({

@@ -1,5 +1,9 @@
 <template>
-  <button type="button" class="tw-flex items-center tw-shadow tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-p-2 font-medium tw-fill-gray-400 hover:tw-bg-gray-100 active:tw-shadow-sm tw-flex tw-items-center tw-justify-center tw-group" title = "aboutButton">
-    <IconsAboutIcon class="tw-h-6 tw-w-6 tw-text-gray-400 group-hover:tw-fill-gray-500 tw-scale-90" aria-hidden="true" />
+  <button
+    type="button"
+    class="items-center font-medium tw-group tw-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm"
+    title="aboutButton"
+  >
+    <IconsAboutIcon />
   </button>
 </template>

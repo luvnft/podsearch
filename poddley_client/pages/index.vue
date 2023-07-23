@@ -1,5 +1,5 @@
 <template>
-  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits?.length > 0" />
+  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
 </template>
 <script lang="ts" setup>
 //Imports
@@ -13,17 +13,16 @@ import { Utils } from "composables/useUtils";
 import { watchDeep } from "@vueuse/core";
 
 //Vars
+let worker: Worker;
 const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
-const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
+const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
-const initialSearchQuery: SearchQuery = {
-  searchString: "The following is a conversation with attia",
-};
 const utils: Utils = useUtils();
-let worker;
-
+const initialSearchQuery: SearchQuery = {
+  searchString: "The following is a conversation",
+};
 //Running
 onMounted(() => {
   if (process.client) {
@@ -37,10 +36,10 @@ onMounted(() => {
       switch (action) {
         case "searchCompleted":
           searchResults.value = payload;
-          searchStore.setLoadingState(false);
+          debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
-          searchStore.setLoadingState(false);
+          debounceSetLoadingToggle(false);
           break;
       }
     };
@@ -48,33 +47,43 @@ onMounted(() => {
 });
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
-async function makeSearch(query: SearchQuery) {
-  searchStore.setLoadingState(true);
-  searchQuery.value = query;
-
-  console.log("JIJI", query);
-
+async function makeSearch() {
   // Send a message to the worker to perform the search
   if (worker) {
+    searchStore.setLoadingState(true);
+    console.log("Call to worker");
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
-    searchResults.value = await transcriptionService.search(initialSearchQuery);
-    searchStore.setLoadingState(false);
+    //First run on server
+    if (process.server) {
+      console.log("Not call to worker");
+
+      searchStore.setLoadingState(true);
+      try {
+        const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
+        searchResults.value = await transcriptionService.search(query);
+        searchStore.setLoadingState(false);
+      } catch (e) {}
+    }
   }
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 300, {
+const debouncedSearch = _Debounce(makeSearch, 200, {
   leading: true,
   trailing: true,
 });
 
-// Listening to searchString change and calling debouncedSearch
-watchDeep(searchQuery, debouncedSearch);
+const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300);
 
-// This is the initial instant query to provide good UI
-const routeSearchQuery: SearchQuery = (utils.decodeQuery(route.query?.searchQuery) as SearchQuery) || initialSearchQuery;
-searchQuery.value = routeSearchQuery;
-console.log("Calling routeSearchQuery", routeSearchQuery);
-makeSearch(routeSearchQuery);
+// Make initial search (this probably runs as useServerPrefetch)
+onServerPrefetch(async () => {
+  console.log("Server prefetch!");
+  await makeSearch();
+});
+
+onMounted(() => {
+  watchDeep(searchQuery, debouncedSearch);
+});
 </script>

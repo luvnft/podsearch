@@ -1,5 +1,8 @@
 # Poddley - Search podcasts like text
 
+## Status build
+[![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
+
 ## Demo
 [Demo Link](https://poddley.com)
 ## Showcase
@@ -198,14 +201,15 @@ Performance:
 - [ ] download all podcats (should be)...
 
 Must
+- [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
+- [ ] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [ ] Fix the buttons
 - [ ] add dark mode...
-- [ ] find out why loding indicator doesnt work
 - [ ] finish the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
 - [ ] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
-- [ ] add the firefox colors as the nuxt progress bar bar color
+- [ ] add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work
 - [x] search button index redirect
 
 Oslo

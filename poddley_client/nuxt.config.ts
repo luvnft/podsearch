@@ -9,6 +9,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
+    preset: "cloudflare",
   },
   pages: true,
   postcss: {
@@ -17,25 +18,27 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  delayHydration: {
-    mode: "mount",
-  },
   vueuse: {
     ssrHandlers: true,
-    autoImports: false,
+    autoImports: true,
   },
+
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
-  supabase: {
-    key: process.env.SUPABASE_KEY,
-    url: process.env.SUPABASE_URL,
+  delayHydration: {
+    mode: "init",
   },
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
     prefix: "_",
   },
-  image: {},
+  image: {
+    provider: "cloudflare",
+    cloudflare: {
+      baseURL: "",
+    },
+  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,

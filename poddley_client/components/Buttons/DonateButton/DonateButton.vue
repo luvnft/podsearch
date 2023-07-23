@@ -6,7 +6,7 @@
         :href="donateLink"
       >
         <span class="tw-sr-only">Donate button</span>
-        <IconsDonateIcon class="tw-block tw-h-full tw-w-full tw-scale-[0.79] tw-fill-gray-400 tw-p-[1px] group-hover:tw-fill-gray-500" aria-hidden="true" />
+        <svg-icon name="donate" class="tw-block tw-h-full tw-w-full tw-scale-[0.79] tw-fill-gray-400 tw-p-[1px] group-hover:tw-fill-gray-500" aria-hidden="true" />
       </a>
     </div>
   </div>

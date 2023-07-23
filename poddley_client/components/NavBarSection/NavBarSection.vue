@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { onKeyUp, onClickOutside } from "@vueuse/core";
+import { onKeyUp } from "@vueuse/core";
 import { vOnClickOutside } from "@vueuse/components";
 
 const openSearchSection: Ref<boolean> = ref(false);
@@ -35,7 +35,7 @@ const openProfileMenu: Ref<boolean> = ref(false);
 
 // Custom escape-listener for the
 onKeyUp("Escape", () => {
-  if (openSearchSection.value) toggleSearchSection();
+  if (openSearchSection.value) closeMenus();
 });
 
 const closeMenus = () => {
@@ -50,15 +50,6 @@ const toggleSearchSection = () => {
   } else {
     closeMenus();
     openSearchSection.value = true;
-  }
-};
-
-const toggleProfileMenu = () => {
-  if (openProfileMenu.value) {
-    openProfileMenu.value = false;
-  } else {
-    closeMenus();
-    openProfileMenu.value = true;
   }
 };
 </script>

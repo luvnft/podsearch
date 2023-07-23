@@ -14,7 +14,6 @@ export default class TranscriptionsServiceSearch {
   }
 
   protected async fetchPost<T>(url: string, searchQuery: SearchQuery): Promise<T> {
-    console.log(this.getBaseUrl());
     const response: AxiosResponse = await axios({
       url: this.getBaseUrl() + url,
       method: "POST",
@@ -28,6 +27,7 @@ export default class TranscriptionsServiceSearch {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
+    console.log("Calling search!")
     const data = await this.fetchPost<SearchResponse>("/transcriptions/search", searchQuery);
     return data;
   }
