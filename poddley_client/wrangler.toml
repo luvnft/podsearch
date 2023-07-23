@@ -7,3 +7,6 @@ route = "poddley.com"
 
 [site]
 bucket = ".output/public"
+
+[placement]
+mode = "smart"

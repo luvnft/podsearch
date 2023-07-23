@@ -69,7 +69,7 @@ const debouncedSearch = _Debounce(makeSearch, 200, {
   trailing: true,
 });
 
-const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 200);
+const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300);
 
 // Make initial search (this probably runs as useServerPrefetch)
 makeSearch();
