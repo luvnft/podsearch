@@ -22,7 +22,6 @@ export default defineNuxtConfig({
     ssrHandlers: true,
     autoImports: false,
   },
-
   headlessui: {
     prefix: "Headless",
   },

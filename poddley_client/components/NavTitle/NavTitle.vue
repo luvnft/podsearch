@@ -2,14 +2,14 @@
   <div>
     <div class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-overflow-hidden sm:tw-hidden">
       <NuxtLink
-        v-if="!loading"
+        v-if="loading"
         to="/"
         class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-0 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
         @click="toHomeClick"
       >
         <svg-icon name="logo" class="tw-mt-1.5 tw-scale-[0.44]" />
       </NuxtLink>
-      <svg-icon name="spinner" v-if="loading" />
+      <LoadingIcon v-if="true" />
     </div>
   </div>
 </template>
