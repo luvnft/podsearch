@@ -22,13 +22,14 @@ export default defineNuxtConfig({
     ssrHandlers: true,
     autoImports: false,
   },
+
   headlessui: {
     prefix: "Headless",
   },
   delayHydration: {
     mode: "init",
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite"],
   lodash: {
     prefix: "_",
   },

@@ -28,7 +28,7 @@
     <!-- Actual iFrame -->
     <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-none tw-border' : ''}`">
       <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
-        <IconsSpinnerIcon />
+        <svg-icon name="spinner" />
       </div>
 
       <iframe
@@ -39,7 +39,6 @@
           props.allowFullscreen ? 'allowfullscreen' : ''
         };`"
         class="tw-aspect-video tw-w-full tw-rounded-none"
-        @load="hello()"
         v-show="!loading"
       />
     </div>
@@ -58,11 +57,6 @@ const loading: Ref<boolean> = ref(false);
 function toggleiFrame() {
   loading.value = true;
   showiFrame.value = true;
-}
-
-function hello() {
-  console.log("Now it's loaded bitch");
-  loading.value = false;
 }
 
 const props = defineProps({

@@ -29,16 +29,15 @@ onMounted(() => {
 
     // Listening for messages from worker
     worker.onmessage = (event: any) => {
-      console.log("Message received!");
       const { action, payload } = event.data;
 
       switch (action) {
         case "searchCompleted":
           searchResults.value = payload;
-          searchStore.setLoadingState(false);
+          debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
-          searchStore.setLoadingState(false);
+          debounceSetLoadingToggle(false);
           break;
       }
     };
@@ -51,24 +50,29 @@ async function makeSearch() {
 
   // Send a message to the worker to perform the search
   if (worker) {
+    console.log("Call to worker");
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
+    console.log("Not call to worker");
     try {
       const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
       const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
       searchResults.value = await transcriptionService.search(query);
       searchStore.setLoadingState(false);
     } catch (e) {}
-    watchDeep(searchQuery, debouncedSearch);
   }
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 300, {
+const debouncedSearch = _Debounce(makeSearch, 100, {
   leading: true,
   trailing: true,
 });
 
+const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 200);
+
 // Make initial search (this probably runs as useServerPrefetch)
 makeSearch();
+
+watchDeep(searchQuery, debouncedSearch);
 </script>
