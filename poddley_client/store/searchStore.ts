@@ -4,7 +4,7 @@ import { SearchResponse } from "types/SearchResponse";
 
 export const useSearchStore = defineStore("searchStore", () => {
   const searchQuery: Ref<SearchQuery> = ref({
-    searchString: "The following is a conversation",
+    searchString: "",
   });
   const loading: Ref<boolean> = ref(false);
   const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
