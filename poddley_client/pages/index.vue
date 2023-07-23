@@ -61,8 +61,8 @@ async function makeSearch() {
       searchStore.setLoadingState(true);
       try {
         const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-        searchResults.value = await transcriptionService.search(initialSearchQuery);
+        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
+        searchResults.value = await transcriptionService.search(query);
         searchStore.setLoadingState(false);
       } catch (e) {}
     }

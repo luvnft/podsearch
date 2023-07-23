@@ -16,7 +16,7 @@
       />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
-        <svg-icon name="spinner" />
+        <IconsSpinnerIcon />
       </div>
     </div>
   </div>
