@@ -46,20 +46,23 @@ onMounted(() => {
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-  searchStore.setLoadingState(true);
-
   // Send a message to the worker to perform the search
   if (worker) {
+    searchStore.setLoadingState(true);
     console.log("Call to worker");
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
   } else {
-    console.log("Not call to worker");
-    try {
-      const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-      const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
-      searchResults.value = await transcriptionService.search(query);
-      searchStore.setLoadingState(false);
-    } catch (e) {}
+    if (process.server) {
+      console.log("Not call to worker");
+
+      searchStore.setLoadingState(true);
+      try {
+        const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+        searchResults.value = await transcriptionService.search(query);
+        searchStore.setLoadingState(false);
+      } catch (e) {}
+    }
   }
 }
 
@@ -72,7 +75,12 @@ const debouncedSearch = _Debounce(makeSearch, 200, {
 const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300);
 
 // Make initial search (this probably runs as useServerPrefetch)
-makeSearch();
+onServerPrefetch(async() => {
+  console.log("Server prefetch!")
+  await makeSearch();
+});
 
-watchDeep(searchQuery, debouncedSearch);
+onMounted(() => {
+  watchDeep(searchQuery, debouncedSearch);
+});
 </script>

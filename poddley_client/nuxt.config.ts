@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
-    
+
   },
   pages: true,
   postcss: {
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   delayHydration: {
-    mode: "mount",
+    mode: "init",
   },
   modules: ["@nuxtjs/tailwindcss", "nuxt-delay-hydration", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite"],
   lodash: {
