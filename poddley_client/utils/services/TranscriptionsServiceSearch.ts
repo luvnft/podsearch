@@ -27,7 +27,6 @@ export default class TranscriptionsServiceSearch {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
-    console.log("Calling search!")
     const data = await this.fetchPost<SearchResponse>("/transcriptions/search", searchQuery);
     return data;
   }
