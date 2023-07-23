@@ -3,7 +3,6 @@ import { SearchQuery } from "../types/SearchQuery";
 import { SearchResponse } from "types/SearchResponse";
 
 export const useSearchStore = defineStore("searchStore", () => {
-  //Searchvariable
   const searchQuery: Ref<SearchQuery> = ref({
     searchString: "",
   });
