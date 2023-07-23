@@ -4,7 +4,6 @@ node_modules
 .nitro
 .cache
 .output
-.env
 dist
 podcastindex_feeds.db.tgz
 podcasts.db

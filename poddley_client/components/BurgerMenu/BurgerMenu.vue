@@ -27,7 +27,7 @@
             <NuxtLink to="contact" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Contact</NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink :href="donateLink" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Donate</NuxtLink>
+            <a :href="donateLink" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Donate</a>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }">
             <NuxtLink to="developer" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">For developers</NuxtLink>

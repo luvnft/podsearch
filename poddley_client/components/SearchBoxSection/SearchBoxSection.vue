@@ -10,37 +10,28 @@
       v-model="searchQuery.searchString"
       @input="navigateWithQuery"
     />
-    <!-- <IconsSpinnerIcon v-show="loading" class="tw-absolute tw-right-3 tw-top-1/2 tw-mt-0 tw--translate-y-1/2 tw-scale-90 tw-transform" /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
-import { watchEffect } from "vue";
-import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
-import { SearchQuery } from "types/SearchQuery";
+import { Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
-import { Hit } from "~~/types/SearchResponse";
 
 const utils: Utils = useUtils();
 const router: Router = useRouter();
-const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
-const { searchQuery, loading } = storeToRefs(searchStore);
+const { searchQuery } = storeToRefs(searchStore);
 
-onMounted(() => {
-  searchQuery.value = utils.decodeQuery(route.query?.searchQuery);
-  console.log("TROLLOLO: ", searchQuery.value);
-
-  watch(searchQuery, () => {
-    if (searchQuery) {
-      console.log("OK");
-      navigateWithQuery();
-    }
-  });
+//When mounted start the watcher to navigate if not on page etc.
+watch(searchQuery, () => {
+  if (searchQuery) {
+    navigateWithQuery();
+  }
 });
 
+//Navigate function
 const navigateWithQuery = () => {
   router.push({
     path: "/",

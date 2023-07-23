@@ -7,9 +7,7 @@ self.addEventListener("message", async (event) => {
   switch (action) {
     case "search":
       try {
-        console.log("Inside Search, with payload: ", parsedPayload);
         const res = await transcriptionsServiceSearch.search(parsedPayload);
-        console.log(res);
         self.postMessage({
           action: "searchCompleted",
           payload: res,

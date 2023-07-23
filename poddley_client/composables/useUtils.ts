@@ -22,10 +22,21 @@ export function convertSecondsToTime(sec: number): string {
 
 export function encodeQuery(query: any) {
   if (!query) return undefined;
-  return encodeURIComponent(JSON.stringify(query));
+  try {
+    return encodeURIComponent(JSON.stringify(query));
+  } catch (e: any) {
+    return undefined;
+  }
 }
 
 export function decodeQuery(query: any) {
+  console.log("Incoming query: ", query);
   if (!query) return undefined;
-  return JSON.parse(decodeURIComponent(query));
+  try {
+    const d = JSON.parse(decodeURIComponent(query));
+    console.log("d is: ", d);
+    return d;
+  } catch (e: any) {
+    return undefined;
+  }
 }
