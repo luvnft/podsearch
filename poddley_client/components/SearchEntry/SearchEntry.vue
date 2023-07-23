@@ -17,7 +17,14 @@
             :searchEntry="props.searchEntry"
           />
         </div>
-        <NuxtImg v-else loading="lazy" class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl" :src="props.searchEntry.imageUrl" />
+        <img
+          v-else
+          loading="lazy"
+          class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
+          style="object-fit: cover; object-position: top"
+          :src="props.searchEntry.imageUrl"
+          alt="Description of Image"
+        />
       </div>
     </div>
     <div

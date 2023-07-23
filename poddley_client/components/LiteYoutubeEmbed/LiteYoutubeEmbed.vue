@@ -15,11 +15,13 @@
       <button id="playButton" class="centered-button" />
 
       <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
-        <NuxtImg
-          :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-          @click="toggleiFrame()"
+        <img
           loading="lazy"
           class="tw-aspect-video tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          style="object-fit: cover; object-position: center"
+          :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
+          alt="Description of Image"
+          @click="toggleiFrame()"
         />
       </button>
     </div>
@@ -47,11 +49,19 @@
 <script lang="ts" setup>
 import { Hit } from "types/SearchResponse";
 import { PropType } from "vue";
-
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
+
+let youtubeImage;
+let youtubeImageIsVisible;
+
+onBeforeMount(() => {
+  console.log("Rendered!");
+  youtubeImage = ref();
+  youtubeImageIsVisible = useElementVisibility(youtubeImage);
+});
 
 function toggleiFrame() {
   loading.value = true;
