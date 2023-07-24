@@ -26,9 +26,9 @@ class TranscriptionsService {
     this.episodesIndex = meilisearchConnection.index("episodes");
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
-  }
+  } 
 
-  //Returns unique hits for a SegmentHit array
+  //Returns unique hits for a SegmentHit array 
   public removeDuplicateSegmentHits(hits: SegmentHit[]): SegmentHit[] {
     // Remove duplicates
     const uniqueHits: SegmentHit[] = [];

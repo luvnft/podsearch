@@ -11,4 +11,4 @@ const transcriptionsRouter: express.Router = express.Router();
 transcriptionsRouter.post("/search", transcriptionsController.search);
  
 //Export it
-export default transcriptionsRouter; 
+export default transcriptionsRouter;  
