@@ -44,7 +44,7 @@
                 <span></span>
                 &nbsp;
               </div>
-              <span v-html="props.searchEntry._formatted.text.trim()" />
+              <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
             </div>
           </div>
           <div>
@@ -62,6 +62,7 @@
             :episodeTitle="props.searchEntry.episodeTitle"
             :key="props.searchEntry.text"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
+            @timeupdate="handleTimeUpdate"
           />
         </div>
       </div>
@@ -71,19 +72,90 @@
 
 <script lang="ts" setup>
 import { Utils } from "composables/useUtils";
-import { Hit } from "~~/types/SearchResponse";
+import { Hit, SearchResponse } from "~~/types/SearchResponse";
+import { BinTree } from "bintrees";
+import TranscriptionService from "../../utils/services/TranscriptionsService";
+import { SearchQuery } from "types/SearchQuery";
 
-const utils: Utils = useUtils();
 const props = defineProps<{
   searchEntry: Hit;
 }>();
 
+const utils: Utils = useUtils();
+const transcriptionService: TranscriptionService = new TranscriptionService();
 const computedStartTime = computed(() => {
   const start = parseFloat(props.searchEntry.start.toString()) || 0;
   const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
   const val = start - deviationTime;
   return val < 0 ? 0 : val;
 });
+const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
+
+async function search(searchQuery: SearchQuery) {
+  const searchResponse: SearchResponse = await transcriptionService.search(searchQuery);
+  return searchResponse;
+}
+
+// Debounced subgetter
+const debouncedSegmentSearcher = _Debounce(search, 300, {
+  leading: true,
+  trailing: false,
+  maxWait: 300,
+});
+
+//Time update live subs functionality, currentTime is in seconds and milliseconds as in 1.031241
+interface HitNodeData {
+  start: number;
+  end: number;
+  hit: Hit;
+}
+
+function nodeComparator(node1: any, node2: any): number {
+  return node1.start - node2.start;
+}
+
+const findHitNodeInTree = (node: any | null, currentTime: number): any | null => {
+  if (node == null) {
+    return null;
+  }
+
+  if (currentTime >= node.data.start && currentTime < node.data.end) {
+    return node;
+  }
+
+  return findHitNodeInTree(node.left, currentTime) || findHitNodeInTree(node.right, currentTime);
+};
+
+const hitCacheTree = new BinTree<HitNodeData>(nodeComparator);
+
+const handleTimeUpdate = async (currentTime: number) => {
+  console.log("Time updated: ", currentTime);
+  let episodeGuid = props.searchEntry.episodeGuid;
+  // Check if there's a hit in the cache for the current time
+  let hitNodeData = findHitNodeInTree(hitCacheTree["_root"], currentTime);
+
+  // If found return
+  if (hitNodeData) {
+    return hitNodeData.data;
+  }
+
+  // If we dont find it, we need to fetch it
+  console.log("Fetching: ", "EpisodeGuid is: ", episodeGuid);
+  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start <= ${currentTime} AND end >= ${currentTime})`;
+  console.log(constructedFilter);
+  // Fetch the segment
+  const searchQuery: SearchQuery = {
+    filter: constructedFilter,
+  };
+  console.log();
+  if (currentTime > currentPlayingSegment.value.end) {
+    console.log("Inside", currentPlayingSegment.value.end, "and ", currentTime);
+    const d: SearchResponse = await debouncedSegmentSearcher(searchQuery);
+    if (d?.hits.length > 0 && d?.hits[0].id !== props.searchEntry.id) {
+      currentPlayingSegment.value = d.hits[0];
+    }
+  }
+};
 </script>
 
 <style scoped>
