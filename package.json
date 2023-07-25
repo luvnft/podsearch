@@ -1,8 +1,8 @@
 {
   "devDependencies": {
-    "prisma": "^4.16.1"
+    "prisma": "^5.0.0"
   },
   "dependencies": {
-    "@prisma/client": "^4.16.1"
+    "@prisma/client": "^5.0.0"
   }
 }
