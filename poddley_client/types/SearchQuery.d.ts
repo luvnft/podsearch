@@ -3,4 +3,6 @@ export interface SearchQuery {
   sort?: string[];
   filter?: string;
   limit?: number;
+  hitsPerPage?: number;
+  page?: number;
 }

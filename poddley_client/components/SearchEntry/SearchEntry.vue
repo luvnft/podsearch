@@ -63,7 +63,6 @@
             :key="props.searchEntry.text"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
             @timeupdate="handleTimeUpdate"
-            @on-started-play="handleStartedPlaying"
           />
         </div>
       </div>
@@ -73,81 +72,71 @@
 
 <script lang="ts" setup>
 import { Utils } from "composables/useUtils";
-import { Hit, SearchResponse } from "~/types/SearchResponse";
+import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
-import { SearchQuery } from "~/types/SearchQuery";
+import { SearchQuery } from "types/SearchQuery";
 
 const props = defineProps<{
   searchEntry: Hit;
 }>();
 
-const fetchAheadValue: number = 300; //seconds
 const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
-const hitCache: Hit[] = [props.searchEntry];
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
-const currentTimeRef: Ref<number> = ref(0);
+const hitCache: HitCache = {
+  [props.searchEntry.episodeGuid]: {
+    hits: [props.searchEntry],
+    numberOfPages: undefined,
+    lastFetchedPage: undefined,
+  },
+};
 
 const computedStartTime = computed(() => {
-  const start = props.searchEntry.start ?? 0;
-  const deviationTime = props.searchEntry.deviationTime ?? 0;
+  const start = parseFloat(props.searchEntry.start.toString()) || 0;
+  const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
   const val = start - deviationTime;
   return val < 0 ? 0 : val;
 });
 
-const handleStartedPlaying = async () => {
-  await handleTimeUpdate(currentTimeRef.value);
-};
-
-async function search(searchQuery: SearchQuery): Promise<SearchResponse> {
-  console.log("Actually fetching from the API");
-  return await transcriptionService.search(searchQuery);
+async function search(searchQuery: SearchQuery) {
+  console.log("Real SEEEEEAAARCCH");
+  const searchResponse: SearchResponse = await transcriptionService.search(searchQuery);
+  return searchResponse;
 }
 
-const debouncedSegmentSearcher = _Debounce(search, 500, {
+const debouncedSegmentSearcher = _Debounce(search, 300, {
   leading: true,
-  trailing: true,
-  maxWait: 500,
+  trailing: false,
 });
 
-async function fetchCache() {
-  const episodeGuid = props.searchEntry.episodeGuid;
-  const constructedFilter = `belongsToEpisodeGuid='${episodeGuid}' AND (start ${currentTimeRef.value} TO ${currentTimeRef.value + fetchAheadValue})`;
+const handleTimeUpdate = async (currentTime: number) => {
+  console.log("Time updated: ", currentTime);
+  let episodeGuid = props.searchEntry.episodeGuid;
+  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}'`;
+  const hitsPerPage: number = 100;
+  const page: number = hitCache[episodeGuid].lastFetchedPage || 0;
 
-  if (currentTimeRef.value > currentPlayingSegment.value.end && currentTimeRef.value > hitCache[hitCache.length - 1].end) {
-    const d: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, limit: 100000, sort: ["start:asc"] });
+  // First We gotta check if we have the currentTime hit in the episodeGuid hit array?
+  let foundHit = hitCache[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
 
-    if (!d) return;
-    d.hits.forEach((hit: Hit) => {
-      if (!hitCache.some((cacheHit: Hit) => cacheHit.id === hit.id)) {
-        hitCache.push(hit);
-      }
-    });
-
-    const currentSegment = hitCache.find((hit: Hit) => currentTimeRef.value >= hit.start && currentTimeRef.value <= hit.end);
-    if (currentSegment) {
-      currentPlayingSegment.value = currentSegment;
-    }
-  }
-}
-
-async function populateCache(currentTime: number) {
-  let foundHit = hitCache.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
-  console.log("CurrentTime is: ", currentTime);
+  // If we do, we just set
   if (foundHit) {
-    console.log("Found in cache!");
+    console.log("Found hit and setting it");
     currentPlayingSegment.value = foundHit;
-
     console.log(hitCache);
   } else {
-    console.log("Didn't find in cache!");
-    await fetchCache();
-  }
-}
+    console.log("Fetching new page: ", page);
+    const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"], page: page, hitsPerPage: hitsPerPage, limit: 10 });
 
-const handleTimeUpdate = async (currentTime: number) => {
-  currentTimeRef.value = currentTime;
-  await populateCache(currentTime);
+    if (res.hits.length > 0) {
+      // Update hitCache with new hits
+      hitCache[episodeGuid].hits.push(...res.hits);
+      hitCache[episodeGuid].lastFetchedPage = page + 1;
+
+      const newlyAddedFoundHit = hitCache[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+      currentPlayingSegment.value = newlyAddedFoundHit;
+    }
+  }
 };
 </script>
 

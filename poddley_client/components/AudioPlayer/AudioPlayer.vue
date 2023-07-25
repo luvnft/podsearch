@@ -8,7 +8,7 @@
         :class="{ loading: isLoading }"
         class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
         ref="audioPlayerRef"
-        :preload="isVisible ? 'metadata' : 'none'"
+        :preload="'none'"
         :title="props.episodeTitle"
         :src="props.audioLink"
         type="audio/mpeg"
