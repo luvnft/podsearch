@@ -20,7 +20,9 @@ const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
-
+const initialSearchQuery: SearchQuery = {
+  searchString: "The following is a conversation",
+};
 //Running
 onMounted(() => {
   if (process.client) {
@@ -44,21 +46,23 @@ onMounted(() => {
   }
 });
 
+function searchViaWorker() {
+  searchStore.setLoadingState(true);
+  worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+}
+
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
   // Send a message to the worker to perform the search
   if (worker) {
-    searchStore.setLoadingState(true);
-    console.log("Call to worker");
-    worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
+    searchViaWorker();
   } else {
+    //First run on server
     if (process.server) {
-      console.log("Not call to worker");
-
       searchStore.setLoadingState(true);
       try {
         const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : searchQuery.value;
+        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
         searchResults.value = await transcriptionService.search(query);
         searchStore.setLoadingState(false);
       } catch (e) {}
@@ -75,8 +79,7 @@ const debouncedSearch = _Debounce(makeSearch, 200, {
 const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300);
 
 // Make initial search (this probably runs as useServerPrefetch)
-onServerPrefetch(async() => {
-  console.log("Server prefetch!")
+onServerPrefetch(async () => {
   await makeSearch();
 });
 

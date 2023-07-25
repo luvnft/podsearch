@@ -202,16 +202,20 @@ Performance:
 
 Must
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
-- [ ] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
-- [ ] Fix the buttons
-- [ ] add dark mode...
+- [x] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
+- [x] Fix the buttons
+- [ ] add dark mode... toggle button + functionality.
+- [ ] add dark mode setting to user (preference)
 - [ ] finish the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
-- [ ] Segments have to move
+- [x] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
 - [ ] add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work
 - [x] search button index redirect
-
+- [ ] time location needs to update if livesubs are enabled.
+- [ ] livesubs button is needed
+- [ ] binary tree subs cache object needs to be available
+- [ ] add filter functionality to search functionality (search transcripts, search podcasts, search episodes)
 Oslo
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
 
@@ -231,11 +235,3 @@ Luka egne greier:
 - [x] set logo to be nuxtlink not href
 - ~~[ ] move navbar to bottom~~ (bad idea, so no)
 - ~~[ ] bruk en annen audio player kanskje som er bedre til å ferche metadata???~~
-
-OsloGreier:
-- 
-        Segment ID:
-        The segment ID is essentially quite easy to implement. Simply have a copy button in the upper right corner of the segment and when a user clicks on it a link will be appended toeh copy value of the OS. This will point to a simply have search="id" just like normal search as it wouldnt really make any difference as the meilisearch wouldnt find any unique instance of it in the database if some transcription isnt directly referncing that segment, but athats' 0% probable.
-        Getting segment time while audio is being played.
-        The process for implementing this is to load the first 1 min segments from a given location and then grab the next 1 min segments everytime the time is 10 seconds from the last time of the gotten segments. If someone jumps more than 10 seoconds a 
-        head or to a section for which we dont hjave the time like 1 hour ahead, then we just get the time on that spot and 1 min back and worth. However, we want to cache this to avoid re-fetchingsso how would we do that? We need to someone keep a track of the fetched segments and the once we still need to fetch, but this needs to be done elegantly, any ideas?	

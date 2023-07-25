@@ -13,10 +13,11 @@
         :src="props.audioLink"
         type="audio/mpeg"
         @timeupdate="onTimeUpdate"
+        @playing="onTimeUpdate"
       />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
-        <svg-icon name="spinner" />
+        <IconsSpinnerIcon />
       </div>
     </div>
   </div>
@@ -57,7 +58,12 @@ const onTimeUpdate = (event: Event) => {
 
 const emit = defineEmits<{
   (event: "timeupdate", number: number): void;
+  (event: "startedPlay", isPlaying: boolean);
 }>();
+
+const startedPlay = () => {
+  emit("startedPlay", true);
+};
 </script>
 
 <style scoped>

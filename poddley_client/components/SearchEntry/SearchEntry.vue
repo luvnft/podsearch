@@ -5,7 +5,7 @@
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-            :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString())) - Math.floor(parseFloat((props.searchEntry.deviationTime || 0).toString()))}`)"
+            :startTime="computedStartTime"
             width="100%"
             height="auto"
             :videoTitle="props.searchEntry.episodeTitle"
@@ -20,7 +20,7 @@
         <img
           v-else
           loading="lazy"
-          class="tw-aspect-video tw-h-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
+          class="tw-aspect-video tw-h-full tw-w-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
           style="object-fit: cover; object-position: top"
           :src="props.searchEntry.imageUrl"
           alt="Description of Image"
@@ -30,27 +30,13 @@
     <div
       class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col justify-between leading-normal tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-3 tw-py-1"
     >
-      <div class="row tw-w-full tw-pb-2 tw-pt-1">
-        <div class="col-3 tw-px-1">
-          <ButtonsPodcastButton :link="searchEntry.episodeLinkToEpisode" />
-        </div>
-        <div class="col-3 tw-px-1">
-          <ButtonsHomepageButton :link="searchEntry.link" />
-        </div>
-        <div class="col-3 tw-px-1">
-          <ButtonsRssButton :link="searchEntry.url" />
-        </div>
-        <div class="col-3 tw-px-1">
-          <ButtonsCopyLinkButton :segmentId="searchEntry.id" />
-        </div>
-      </div>
-
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
-          <div>
-            <p class="tw-mb-2 tw-font-bold">
+          <div class="tw-mb-2 tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-justify-between">
+            <p class="tw-mb-0 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
+            <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
             <div class="segment tw-mb-1.5 tw-mt-1 tw-rounded-lg">
@@ -58,14 +44,14 @@
                 <span></span>
                 &nbsp;
               </div>
-              <span v-html="props.searchEntry._formatted.text.trim()" />
+              <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
             </div>
           </div>
           <div>
             <p class="tw-mb-0 tw-mt-1.5">
               <b>Time-location:</b>
               &nbsp;
-              <u>{{ utils.convertSecondsToTime(props.searchEntry.start) }}</u>
+              <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
             </p>
           </div>
         </div>
@@ -76,6 +62,8 @@
             :episodeTitle="props.searchEntry.episodeTitle"
             :key="props.searchEntry.text"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
+            @timeupdate="handleTimeUpdate"
+            @startedPlay="handleStartedPlaying"
           />
         </div>
       </div>
@@ -85,12 +73,84 @@
 
 <script lang="ts" setup>
 import { Utils } from "composables/useUtils";
-import { Hit } from "~~/types/SearchResponse";
+import { Hit, SearchResponse } from "~~/types/SearchResponse";
+import TranscriptionService from "../../utils/services/TranscriptionsService";
+import { SearchQuery } from "types/SearchQuery";
 
-const utils: Utils = useUtils();
 const props = defineProps<{
   searchEntry: Hit;
 }>();
+
+const handleStartedPlaying = () => {
+  console.log("Started playing!");
+};
+
+const fetchAheadValue: number = 300; //seconds
+const utils: Utils = useUtils();
+const transcriptionService: TranscriptionService = new TranscriptionService();
+const hitCache: Hit[] = [props.searchEntry];
+const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
+
+const computedStartTime = computed(() => {
+  const start = parseFloat(props.searchEntry.start.toString()) || 0;
+  const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
+  const val = start - deviationTime;
+  return val < 0 ? 0 : val;
+});
+
+async function search(searchQuery: SearchQuery) {
+  console.log("Real SEEEEEAAARCCH");
+  const searchResponse: SearchResponse = await transcriptionService.search(searchQuery);
+  return searchResponse;
+}
+
+const debouncedSegmentSearcher = _Debounce(search, 300, {
+  leading: true,
+  trailing: true,
+  maxWait: 300,
+});
+
+console.log("HitCacche:", hitCache);
+
+const handleTimeUpdate = async (currentTime: number) => {
+  console.log("Time updated: ", currentTime);
+  let episodeGuid = props.searchEntry.episodeGuid;
+
+  // Check cache for hit segment
+  let foundHit = hitCache.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+
+  if (foundHit) {
+    console.log("Fount it and setting it lol");
+    currentPlayingSegment.value = foundHit;
+
+    return;
+  }
+  const belongsToEpisodeGuidFilter: string = `belongsToEpisodeGuid='${episodeGuid}'`;
+  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start ${parseFloat(currentTime.toFixed(2)) - fetchAheadValue} TO ${
+    parseFloat(currentTime.toFixed(2)) + fetchAheadValue
+  })`;
+
+  if (currentTime > currentPlayingSegment.value.end && currentTime > hitCache[hitCache.length - 1].end) {
+    console.log("CurrentTime is : ", currentTime, " and last hit is: ", hitCache[hitCache.length - 1].end);
+    console.log("Inside", currentPlayingSegment.value.end, "and ", currentTime);
+    console.log("Fetching: ", "EpisodeGuid is: ", episodeGuid);
+    console.log("Constructedfilter: ", constructedFilter);
+    const d: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, limit: 100, sort: ["start:asc"] });
+    console.log("D", d);
+    if (!d) return;
+    d?.hits.forEach((hit: Hit) => {
+      // Check if hit is not already in the cache
+      if (!hitCache.some((cacheHit: Hit) => cacheHit.id === hit.id)) {
+        hitCache.push(hit);
+      }
+    });
+
+    const currentSegment = hitCache.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+    if (currentSegment) {
+      currentPlayingSegment.value = currentSegment;
+    }
+  }
+};
 </script>
 
 <style scoped>

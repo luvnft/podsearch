@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
-
   },
   pages: true,
   postcss: {
@@ -26,12 +25,13 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: [
-      "@nuxtjs/tailwindcss", "@nuxtjs/color-mode", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite"
-  ],
-  colorMode: {
-    classSuffix: ''
+  delayHydration: {
+    mode: "init",
   },
+  colorMode: {
+    classSuffix: 'tw-'
+  },
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
     prefix: "_",
   },

@@ -26,12 +26,12 @@ class TranscriptionsService {
     this.episodesIndex = meilisearchConnection.index("episodes");
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
-  }
+  } 
 
-  //Returns unique hits for a SegmentHit array
+  //Returns unique hits for a SegmentHit array 
   public removeDuplicateSegmentHits(hits: SegmentHit[]): SegmentHit[] {
     // Remove duplicates
-    const uniqueHits: SegmentHit[] = []; 
+    const uniqueHits: SegmentHit[] = [];
     const seenSet: Set<string> = new Set();
     for (let hit of hits) {
       if (seenSet.has(hit.id)) continue;
@@ -70,18 +70,23 @@ class TranscriptionsService {
     console.log("Searching: ", this.searchQuery.searchString);
 
     // Queries
-    const queries: MultiSearchQuery[] = [
+    let queries: MultiSearchQuery[] = [
       {
         indexUid: "segments",
         limit: 10,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="highlight">',
         highlightPostTag: "</span>",
-        q: this.searchQuery.searchString,
-        filter: this.searchQuery?.filter || undefined,
-        sort: this.searchQuery?.sort || undefined,
       },
     ];
+
+    // If searchString, add it:
+    if (this.searchQuery.searchString !== undefined) queries[0].q = searchQuery.searchString;
+
+    // If filter add it
+    if (this.searchQuery.filter) queries[0].filter = searchQuery.filter;
+
+    console.log(queries[0]);
 
     // Search results => Perform it.
     const initialSearchResponse: any = await this.meilisearchConnection.multiSearch({ queries });
@@ -112,7 +117,7 @@ class TranscriptionsService {
       mergedResults.hits = this.removeDuplicateSegmentHits(mergedResults.hits);
       mergedResults.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
     }
-
+    console.log(mergedResults.hits)
     mergedResults.hits = mergedResults.hits.slice(0, 10);
     //Modify segments with more properties
     const finalResponse: SearchResponse = {
