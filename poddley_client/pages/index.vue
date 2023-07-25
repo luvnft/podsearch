@@ -83,7 +83,8 @@ onServerPrefetch(async () => {
   await makeSearch();
 });
 
-onMounted(() => {
+onMounted(async () => {
+  if (!searchResults?.value) makeSearch();
   watchDeep(searchQuery, debouncedSearch);
 });
 </script>
