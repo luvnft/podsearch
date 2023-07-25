@@ -17,7 +17,7 @@
       <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
         <img
           loading="lazy"
-          class="tw-aspect-video tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          class="tw-aspect-video tw-w-full tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
           style="object-fit: cover; object-position: center"
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
           alt="Description of Image"
@@ -29,18 +29,18 @@
     <!-- Actual iFrame -->
     <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-none tw-border' : ''}`">
       <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
-        <svg-icon name="spinner" />
+        <IconsSpinnerIcon />
       </div>
 
       <iframe
         :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
         :title="props.videoTitle"
         frameborder="0"
-        :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write;encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share; ${
-          props.allowFullscreen ? 'allowfullscreen' : ''
-        };`"
+        :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
+        :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
         class="tw-aspect-video tw-w-full tw-rounded-none"
         v-show="!loading"
+        @load="iFrameLoaded()"
       />
     </div>
   </div>
@@ -54,14 +54,9 @@ type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 
-let youtubeImage;
-let youtubeImageIsVisible;
-
-onBeforeMount(() => {
-  console.log("Rendered!");
-  youtubeImage = ref();
-  youtubeImageIsVisible = useElementVisibility(youtubeImage);
-});
+function iFrameLoaded() {
+  loading.value = false;
+}
 
 function toggleiFrame() {
   loading.value = true;
