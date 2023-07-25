@@ -62,7 +62,7 @@
             :episodeTitle="props.searchEntry.episodeTitle"
             :key="props.searchEntry.text"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
-            @timeupdate="handleTimeUpdate"
+            @timeupdate="handleTimeUpdateDebounced"
           />
         </div>
       </div>
@@ -72,9 +72,13 @@
 
 <script lang="ts" setup>
 import { Utils } from "composables/useUtils";
+import { storeToRefs } from "pinia";
+import { useSearchStore } from "../../store/searchStore";
 import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
+const searchStore = useSearchStore();
+const { hitCache } = storeToRefs(searchStore);
 
 const props = defineProps<{
   searchEntry: Hit;
@@ -83,14 +87,11 @@ const props = defineProps<{
 const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
-const hitCache: HitCache = {
-  [props.searchEntry.episodeGuid]: {
-    hits: [props.searchEntry],
-    numberOfPages: undefined,
-    lastFetchedPage: undefined,
-  },
+hitCache.value[props.searchEntry.episodeGuid] = {
+  hits: [props.searchEntry.episodeGuid],
+  lastFetchedPage: undefined,
+  numberOfPages: undefined,
 };
-
 const computedStartTime = computed(() => {
   const start = parseFloat(props.searchEntry.start.toString()) || 0;
   const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
@@ -99,45 +100,75 @@ const computedStartTime = computed(() => {
 });
 
 async function search(searchQuery: SearchQuery) {
-  console.log("Real SEEEEEAAARCCH");
+  console.log("====> Sending API request!");
   const searchResponse: SearchResponse = await transcriptionService.search(searchQuery);
   return searchResponse;
 }
 
-const debouncedSegmentSearcher = _Debounce(search, 300, {
+const debouncedSegmentSearcher = _Debounce(search, 1000, {
   leading: true,
-  trailing: false,
+  trailing: true,
+  maxWait: 1000,
 });
 
+const removeDuplicateHits = (hits: Hit[]) => {
+  const hitsIds: Set<string> = new Set();
+  const uniqueHits: Hit[] = [];
+  for (let i = 0; i < hits.length; i++) {
+    const hit: Hit = hits[i];
+
+    if (hitsIds.has(hit.id)) continue;
+
+    // If new
+    hitsIds.add(hit.id);
+
+    // add unique hit
+    uniqueHits.push(hit);
+  }
+
+  // return
+  return uniqueHits;
+};
+
 const handleTimeUpdate = async (currentTime: number) => {
-  console.log("Time updated: ", currentTime);
   let episodeGuid = props.searchEntry.episodeGuid;
   const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}'`;
-  const hitsPerPage: number = 100;
-  const page: number = hitCache[episodeGuid].lastFetchedPage || 0;
+  const hitsPerPage: number = 1000;
+  const page: number = hitCache.value[episodeGuid].lastFetchedPage || 1;
 
   // First We gotta check if we have the currentTime hit in the episodeGuid hit array?
-  let foundHit = hitCache[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+  let foundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
 
   // If we do, we just set
   if (foundHit) {
-    console.log("Found hit and setting it");
+    console.log("CurrentTime: ", currentTime, "Found hit, setting currentPlatingSegment to the foundHit");
     currentPlayingSegment.value = foundHit;
-    console.log(hitCache);
   } else {
-    console.log("Fetching new page: ", page);
-    const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"], page: page, hitsPerPage: hitsPerPage, limit: 10 });
-
+    const hitCacheHitsLength: number = hitCache.value[episodeGuid].hits.length - 1;
+    const lastElement: Hit = hitCache.value[episodeGuid].hits[hitCacheHitsLength];
+    if (currentTime < lastElement.end) {
+      console.log("Didn't find hitCache, but the currentTime is part of the sorted hitCache array, so we dont sent API request again.", hitCache);
+      // Terminate early.
+      return;
+    }
+    const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"], page: page, hitsPerPage: hitsPerPage });
     if (res.hits.length > 0) {
       // Update hitCache with new hits
-      hitCache[episodeGuid].hits.push(...res.hits);
-      hitCache[episodeGuid].lastFetchedPage = page + 1;
+      hitCache.value[episodeGuid].hits.push(...res.hits);
+      hitCache.value[episodeGuid].hits = removeDuplicateHits(hitCache.value[episodeGuid].hits);
+      hitCache.value[episodeGuid].lastFetchedPage = page + 1;
 
-      const newlyAddedFoundHit = hitCache[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+      const newlyAddedFoundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
       currentPlayingSegment.value = newlyAddedFoundHit;
     }
   }
 };
+
+const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 1000, {
+  trailing: true,
+  leading: true,
+  maxWait: 1000,
+});
 </script>
 
 <style scoped>
