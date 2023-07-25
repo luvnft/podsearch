@@ -3,7 +3,6 @@ import express, { Express } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import transcriptionsRouter from "./routes/transcriptions";
-import imagesRouter from "./routes/images";
 import rateLimit from 'express-rate-limit'
 
 //Limiter
@@ -30,7 +29,6 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 
 //Use the routes 
 app.use("/transcriptions", transcriptionsRouter);
-app.use("/images", imagesRouter);
 
 // Apply the rate limiting middl  eware to all requests 
 app.use(limiter)
