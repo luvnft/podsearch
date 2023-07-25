@@ -63,7 +63,7 @@
             :key="props.searchEntry.text"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
             @timeupdate="handleTimeUpdate"
-            @startedPlay="handleStartedPlaying"
+            @on-started-play="handleStartedPlaying"
           />
         </div>
       </div>
@@ -73,83 +73,81 @@
 
 <script lang="ts" setup>
 import { Utils } from "composables/useUtils";
-import { Hit, SearchResponse } from "~~/types/SearchResponse";
+import { Hit, SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
-import { SearchQuery } from "types/SearchQuery";
+import { SearchQuery } from "~/types/SearchQuery";
 
 const props = defineProps<{
   searchEntry: Hit;
 }>();
-
-const handleStartedPlaying = () => {
-  console.log("Started playing!");
-};
 
 const fetchAheadValue: number = 300; //seconds
 const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const hitCache: Hit[] = [props.searchEntry];
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
+const currentTimeRef: Ref<number> = ref(0);
 
 const computedStartTime = computed(() => {
-  const start = parseFloat(props.searchEntry.start.toString()) || 0;
-  const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
+  const start = props.searchEntry.start ?? 0;
+  const deviationTime = props.searchEntry.deviationTime ?? 0;
   const val = start - deviationTime;
   return val < 0 ? 0 : val;
 });
 
-async function search(searchQuery: SearchQuery) {
-  console.log("Real SEEEEEAAARCCH");
-  const searchResponse: SearchResponse = await transcriptionService.search(searchQuery);
-  return searchResponse;
+const handleStartedPlaying = async () => {
+  await handleTimeUpdate(currentTimeRef.value);
+};
+
+async function search(searchQuery: SearchQuery): Promise<SearchResponse> {
+  console.log("Actually fetching from the API");
+  return await transcriptionService.search(searchQuery);
 }
 
-const debouncedSegmentSearcher = _Debounce(search, 300, {
+const debouncedSegmentSearcher = _Debounce(search, 500, {
   leading: true,
   trailing: true,
-  maxWait: 300,
+  maxWait: 500,
 });
 
-console.log("HitCacche:", hitCache);
+async function fetchCache() {
+  const episodeGuid = props.searchEntry.episodeGuid;
+  const constructedFilter = `belongsToEpisodeGuid='${episodeGuid}' AND (start ${currentTimeRef.value} TO ${currentTimeRef.value + fetchAheadValue})`;
 
-const handleTimeUpdate = async (currentTime: number) => {
-  console.log("Time updated: ", currentTime);
-  let episodeGuid = props.searchEntry.episodeGuid;
+  if (currentTimeRef.value > currentPlayingSegment.value.end && currentTimeRef.value > hitCache[hitCache.length - 1].end) {
+    const d: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, limit: 100000, sort: ["start:asc"] });
 
-  // Check cache for hit segment
-  let foundHit = hitCache.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
-
-  if (foundHit) {
-    console.log("Fount it and setting it lol");
-    currentPlayingSegment.value = foundHit;
-
-    return;
-  }
-  const belongsToEpisodeGuidFilter: string = `belongsToEpisodeGuid='${episodeGuid}'`;
-  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start ${parseFloat(currentTime.toFixed(2)) - fetchAheadValue} TO ${
-    parseFloat(currentTime.toFixed(2)) + fetchAheadValue
-  })`;
-
-  if (currentTime > currentPlayingSegment.value.end && currentTime > hitCache[hitCache.length - 1].end) {
-    console.log("CurrentTime is : ", currentTime, " and last hit is: ", hitCache[hitCache.length - 1].end);
-    console.log("Inside", currentPlayingSegment.value.end, "and ", currentTime);
-    console.log("Fetching: ", "EpisodeGuid is: ", episodeGuid);
-    console.log("Constructedfilter: ", constructedFilter);
-    const d: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, limit: 100, sort: ["start:asc"] });
-    console.log("D", d);
     if (!d) return;
-    d?.hits.forEach((hit: Hit) => {
-      // Check if hit is not already in the cache
+    d.hits.forEach((hit: Hit) => {
       if (!hitCache.some((cacheHit: Hit) => cacheHit.id === hit.id)) {
         hitCache.push(hit);
       }
     });
 
-    const currentSegment = hitCache.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+    const currentSegment = hitCache.find((hit: Hit) => currentTimeRef.value >= hit.start && currentTimeRef.value <= hit.end);
     if (currentSegment) {
       currentPlayingSegment.value = currentSegment;
     }
   }
+}
+
+async function populateCache(currentTime: number) {
+  let foundHit = hitCache.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+  console.log("CurrentTime is: ", currentTime);
+  if (foundHit) {
+    console.log("Found in cache!");
+    currentPlayingSegment.value = foundHit;
+
+    console.log(hitCache);
+  } else {
+    console.log("Didn't find in cache!");
+    await fetchCache();
+  }
+}
+
+const handleTimeUpdate = async (currentTime: number) => {
+  currentTimeRef.value = currentTime;
+  await populateCache(currentTime);
 };
 </script>
 

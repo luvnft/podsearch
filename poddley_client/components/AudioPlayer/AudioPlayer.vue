@@ -13,7 +13,7 @@
         :src="props.audioLink"
         type="audio/mpeg"
         @timeupdate="onTimeUpdate"
-        @playing="onTimeUpdate"
+        @playing="onStartedPlay"
       />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
@@ -32,6 +32,12 @@ const props = defineProps<{
   timeLocation: number;
   episodeTitle: string;
 }>();
+const emit = defineEmits<{
+  (event: "timeupdate", currentTime: number): void;
+  (event: "isVisible", isVisible: boolean);
+  (event: "onStartedPlay", startedPlay: boolean);
+}>();
+
 const { isIos }: Device = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
@@ -56,13 +62,8 @@ const onTimeUpdate = (event: Event) => {
   emit("timeupdate", (event.target as HTMLAudioElement).currentTime);
 };
 
-const emit = defineEmits<{
-  (event: "timeupdate", number: number): void;
-  (event: "startedPlay", isPlaying: boolean);
-}>();
-
-const startedPlay = () => {
-  emit("startedPlay", true);
+const onStartedPlay = () => {
+  emit("onStartedPlay", true);
 };
 </script>
 
