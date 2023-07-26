@@ -18,7 +18,7 @@ const app: Express = express();
 const port: number = 3000;
 
 // Use helmet
-app.use(helmet());
+app.use(helmet()); 
 
 //Enable CORS for front-end use
 app.use(cors());
@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 //Use the routes 
 app.use("/transcriptions", transcriptionsRouter);
 
-// Apply the rate limiting middl  eware to all requests 
+// Apply the rate limiting middleware to all requests 
 app.use(limiter)
 
 //Listen on port 
