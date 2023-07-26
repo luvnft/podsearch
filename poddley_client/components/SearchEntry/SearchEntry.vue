@@ -132,13 +132,12 @@ const removeDuplicateHits = (hits: Hit[]) => {
 
 const handleTimeUpdate = async (currentTime: number) => {
   let episodeGuid = props.searchEntry.episodeGuid;
-  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}'`;
-  const hitsPerPage: number = 1000;
-  const page: number = hitCache.value[episodeGuid].lastFetchedPage || 1;
-
+  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start >= ${currentTime} AND start <= ${currentTime + 300})`;
+  console.log("constructedFilter: ", constructedFilter);
   // First We gotta check if we have the currentTime hit in the episodeGuid hit array?
-  let foundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
-
+  let foundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end) || null;
+  console.log("Current time is: ", currentTime, " and the foundHit is: ", foundHit);
+  console.log("HitCache: ", hitCache);
   // If we do, we just set
   if (foundHit) {
     console.log("CurrentTime: ", currentTime, "Found hit, setting currentPlatingSegment to the foundHit");
@@ -146,20 +145,20 @@ const handleTimeUpdate = async (currentTime: number) => {
   } else {
     const hitCacheHitsLength: number = hitCache.value[episodeGuid].hits.length - 1;
     const lastElement: Hit = hitCache.value[episodeGuid].hits[hitCacheHitsLength];
-    if (currentTime < lastElement.end) {
+    if (currentTime <= lastElement.end) {
       console.log("Didn't find hitCache, but the currentTime is part of the sorted hitCache array, so we dont sent API request again.", hitCache);
       // Terminate early.
-      return;
-    }
-    const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"], page: page, hitsPerPage: hitsPerPage });
-    if (res.hits.length > 0) {
-      // Update hitCache with new hits
-      hitCache.value[episodeGuid].hits.push(...res.hits);
-      hitCache.value[episodeGuid].hits = removeDuplicateHits(hitCache.value[episodeGuid].hits);
-      hitCache.value[episodeGuid].lastFetchedPage = page + 1;
+      currentPlayingSegment.value = currentPlayingSegment.value;
+    } else {
+      const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"] });
+      if (res?.hits?.length > 0) {
+        // Update hitCache with new hits
+        hitCache.value[episodeGuid].hits.push(...res.hits);
+        hitCache.value[episodeGuid].hits = removeDuplicateHits(hitCache.value[episodeGuid].hits);
 
-      const newlyAddedFoundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
-      currentPlayingSegment.value = newlyAddedFoundHit;
+        const newlyAddedFoundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
+        currentPlayingSegment.value = newlyAddedFoundHit;
+      }
     }
   }
 };
