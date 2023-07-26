@@ -12,7 +12,7 @@ export default class TranscriptionsServiceSearch {
   protected getBaseUrl(): string {
     return this.BASE_URL;
   }
-
+ 
   protected async fetchPost<T>(url: string, searchQuery: SearchQuery): Promise<T> {
     const response: AxiosResponse = await axios({
       url: this.getBaseUrl() + url,
@@ -26,8 +26,8 @@ export default class TranscriptionsServiceSearch {
 
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
-    const data = await this.fetchPost<SearchResponse>("/transcriptions/search", searchQuery);
+  public async search(searchQuery: SearchQuery): Promise<any> {
+    const data = await this.fetchPost<any>("/transcriptions/search", searchQuery);
     return data;
   }
 }

@@ -3,7 +3,6 @@
 </template>
 <script lang="ts" setup>
 //Imports
-import { SearchResponse } from "~/types/SearchResponse";
 import TranscriptionService from "~/utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
@@ -16,8 +15,8 @@ import { watchDeep } from "@vueuse/core";
 let worker: Worker;
 const route: RouteLocationNormalizedLoaded = useRoute();
 const searchStore = useSearchStore();
-const searchResults: Ref<SearchResponse> = useState();
 const { searchQuery } = storeToRefs(searchStore);
+const searchResults: Ref<any> = useState();
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
