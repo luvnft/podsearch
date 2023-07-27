@@ -2,6 +2,8 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
+  devtools: true,
+  logLevel: "verbose",
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
@@ -10,6 +12,7 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
+    logLevel: 5
   },
   pages: true,
   postcss: {

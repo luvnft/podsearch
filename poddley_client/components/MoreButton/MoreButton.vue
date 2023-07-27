@@ -77,13 +77,13 @@ const props = defineProps<{
 const copySegmentLink = () => {
   const rootPage: string = useRuntimeConfig().public.HOMEPAGE;
   const segmentId: string = props.searchEntry.id;
-  const searchString: string | null = null;
   const filter: string = `id='${segmentId}'`;
   const constructedSearchQuery: SearchQuery = {
     filter: filter,
   };
   // Save url to user copy/paste
-  const encodedUrl: string = rootPage + "/" + utils.encodeQuery(constructedSearchQuery);
-  navigator.clipboard.writeText(encodedUrl);
+  const encodedUrl: string = utils.encodeQuery(constructedSearchQuery) || "";
+  const finalUrl: string = rootPage + "?searchQuery=" + encodedUrl;
+  navigator.clipboard.writeText(finalUrl);
 };
 </script>
