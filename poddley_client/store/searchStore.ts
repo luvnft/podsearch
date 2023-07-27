@@ -10,7 +10,6 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
   const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);
   const hitCache: Ref<HitCache> = ref({} as HitCache);
-
   //Returning
   return {
     searchQuery,
