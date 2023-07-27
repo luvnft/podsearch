@@ -14,6 +14,7 @@ import { watchDeep } from "@vueuse/core";
 //Vars
 let worker: Worker;
 const route: RouteLocationNormalizedLoaded = useRoute();
+const requestUrl: URL = useRequestURL()
 const searchStore = useSearchStore();
 const { searchQuery } = storeToRefs(searchStore);
 const searchResults: Ref<any> = useState();
@@ -61,7 +62,9 @@ async function makeSearch() {
       searchStore.setLoadingState(true);
       try {
         const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
+        console.log("RouteBasedQuery: ", requestUrl)
         const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
+        console.log("Searching with query:", query)
         searchResults.value = await transcriptionService.search(query);
         searchStore.setLoadingState(false);
       } catch (e) {}

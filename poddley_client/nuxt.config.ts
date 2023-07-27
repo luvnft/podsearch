@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   delayHydration: {
-    mode: "init",
+    mode: "manual",
   },
   modules: [
     "@nuxtjs/tailwindcss",
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
-      HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000" : "poddley.com",
+      HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000/" : "poddley.com/",
     },
   },
   app: {
