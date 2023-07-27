@@ -75,7 +75,7 @@ class TranscriptionsService {
     // If searchString, add it:
     if (this.searchQuery.filter) mainQuery.filter = searchQuery.filter;
     if (this.searchQuery.sort) mainQuery.sort = searchQuery.sort;
-    if (this.searchQuery.limit) mainQuery.limit = searchQuery.limit;
+    if (this.searchQuery.limit) mainQuery.limit = searchQuery?.limit <= 100 ? searchQuery.limit : 10;
     if (this.searchQuery.hitsPerPage) mainQuery.hitsPerPage = searchQuery.hitsPerPage;
     if (this.searchQuery.page) mainQuery.page = searchQuery.page;
     if (this.searchQuery.searchString) mainQuery.q = this.searchQuery.searchString;
