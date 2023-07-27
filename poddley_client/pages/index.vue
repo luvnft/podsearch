@@ -84,5 +84,5 @@ onServerPrefetch(async () => {
   await makeSearch();
 });
 
-watchDeep(searchQuery.value, debouncedSearch);
+watch(searchQuery.value, debouncedSearch);
 </script>
