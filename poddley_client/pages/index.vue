@@ -9,12 +9,12 @@ import { useSearchStore } from "../store/searchStore";
 import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
-import { watchDeep } from "@vueuse/core";
 
 //Vars
 let worker: Worker;
 const route: RouteLocationNormalizedLoaded = useRoute();
-const requestUrl: URL = useRequestURL()
+const routePath: Ref<string> = ref(route.fullPath);
+const requestUrl: URL = useRequestURL();
 const searchStore = useSearchStore();
 const { searchQuery } = storeToRefs(searchStore);
 const searchResults: Ref<any> = useState();
@@ -53,20 +53,19 @@ function searchViaWorker() {
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
+  console.log("HUH?=?");
   // Send a message to the worker to perform the search
   if (worker) {
     searchViaWorker();
   } else {
     //First run on server
     if (process.server) {
-      searchStore.setLoadingState(true);
       try {
-        const routeBasedQuery = utils.decodeQuery(route.query?.searchQuery);
-        console.log("RouteBasedQuery: ", requestUrl)
-        const query: SearchQuery = routeBasedQuery ? routeBasedQuery : initialSearchQuery;
-        console.log("Searching with query:", query)
+        const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
+        const parsedRouteBasedQuery: SearchQuery | null = routeBasedQuery ? JSON.parse(routeBasedQuery) : null;
+        const query: SearchQuery = parsedRouteBasedQuery ? parsedRouteBasedQuery : initialSearchQuery;
+        console.log("Searching with query: ", query.filter);
         searchResults.value = await transcriptionService.search(query);
-        searchStore.setLoadingState(false);
       } catch (e) {}
     }
   }
@@ -85,8 +84,5 @@ onServerPrefetch(async () => {
   await makeSearch();
 });
 
-onMounted(async () => {
-  if (!searchResults?.value) makeSearch();
-  watchDeep(searchQuery, debouncedSearch);
-});
+watchDeep(searchQuery.value, debouncedSearch);
 </script>
