@@ -22,7 +22,7 @@ const { loading, searchQuery } = storeToRefs(searchStore);
 const toHomeClick = () => {
   console.log("Clicked!");
   searchQuery.value = {
-    ...searchQuery,
+    ...searchQuery.value,
     searchString: "",
   };
   console.log("SearchQuery", searchQuery.value);
