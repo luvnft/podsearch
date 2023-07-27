@@ -80,7 +80,7 @@ class TranscriptionsService {
     if (this.searchQuery.page) mainQuery.page = searchQuery.page;
     if (this.searchQuery.searchString) mainQuery.q = this.searchQuery.searchString;
 
-    // Search results => Perform it.
+    // Search results => Perform it. 
     let initialSearchResponse: any = await this.segmentsIndex.search(undefined, mainQuery);
     console.log(initialSearchResponse);
 
