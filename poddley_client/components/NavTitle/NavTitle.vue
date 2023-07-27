@@ -20,6 +20,11 @@ const searchStore = useSearchStore();
 const { loading, searchQuery } = storeToRefs(searchStore);
 
 const toHomeClick = () => {
-  searchQuery.value.searchString = "";
+  console.log("Clicked!");
+  searchQuery.value = {
+    ...searchQuery,
+    searchString: "",
+  };
+  console.log("SearchQuery", searchQuery.value);
 };
 </script>

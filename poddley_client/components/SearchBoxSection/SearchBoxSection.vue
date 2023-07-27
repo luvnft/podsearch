@@ -24,12 +24,12 @@ const router: Router = useRouter();
 const searchStore = useSearchStore();
 const { searchQuery } = storeToRefs(searchStore);
 
-//When mounted start the watcher to navigate if not on page etc.
-watch(searchQuery, () => {
-  if (searchQuery) {
-    navigateWithQuery();
-  }
-});
+// //When mounted start the watcher to navigate if not on page etc.
+// watch(searchQuery, () => {
+//   if (searchQuery) {
+//     navigateWithQuery();
+//   }
+// });
 
 //Navigate function
 const navigateWithQuery = () => {
