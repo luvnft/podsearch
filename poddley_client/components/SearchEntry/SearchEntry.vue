@@ -32,7 +32,7 @@
     >
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
-          <div class="tw-mb-2 tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-justify-between">
+          <div class="tw-mb-2 tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-justify-between tw-pr-1">
             <p class="tw-mb-0 tw-font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
@@ -40,19 +40,16 @@
           </div>
           <div>
             <div class="segment tw-mb-1.5 tw-mt-1 tw-rounded-lg">
-              <div class="loader">
-                <span></span>
-                &nbsp;
-              </div>
               <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
             </div>
           </div>
-          <div>
+          <div class="tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5">
             <p class="tw-mb-0 tw-mt-1.5">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
             </p>
+            <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
           </div>
         </div>
         <div class="col-12 mt-0 pb-2 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-border-none tw-px-0 tw-pb-0 tw-pt-0">
@@ -84,14 +81,20 @@ const props = defineProps<{
   searchEntry: Hit;
 }>();
 
+const subtitlesActivated: Ref<boolean> = ref(false);
 const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
 hitCache.value[props.searchEntry.episodeGuid] = {
-  hits: [props.searchEntry.episodeGuid],
+  hits: [props.searchEntry],
   lastFetchedPage: undefined,
   numberOfPages: undefined,
 };
+
+const toggleSubtitles = () => {
+  subtitlesActivated.value = !subtitlesActivated.value;
+};
+
 const computedStartTime = computed(() => {
   const start = parseFloat(props.searchEntry.start.toString()) || 0;
   const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
@@ -131,25 +134,27 @@ const removeDuplicateHits = (hits: Hit[]) => {
 };
 
 const handleTimeUpdate = async (currentTime: number) => {
-  let episodeGuid = props.searchEntry.episodeGuid;
-  const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start >= ${currentTime} AND start <= ${currentTime + 300})`;
-  console.log("constructedFilter: ", constructedFilter);
-  // First We gotta check if we have the currentTime hit in the episodeGuid hit array?
-  let foundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end) || null;
-  console.log("Current time is: ", currentTime, " and the foundHit is: ", foundHit);
-  console.log("HitCache: ", hitCache);
-  // If we do, we just set
-  if (foundHit) {
-    console.log("CurrentTime: ", currentTime, "Found hit, setting currentPlatingSegment to the foundHit");
-    currentPlayingSegment.value = foundHit;
-  } else {
-    const hitCacheHitsLength: number = hitCache.value[episodeGuid].hits.length - 1;
-    const lastElement: Hit = hitCache.value[episodeGuid].hits[hitCacheHitsLength];
-    if (currentTime <= lastElement.end) {
-      console.log("Didn't find hitCache, but the currentTime is part of the sorted hitCache array, so we dont sent API request again.", hitCache);
-      // Terminate early.
-      currentPlayingSegment.value = currentPlayingSegment.value;
+  if (!subtitlesActivated.value) return;
+  else {
+    let episodeGuid = props.searchEntry.episodeGuid;
+    // The reason for doing currentTime - 2 when it kinda should just be (currentTime) is purely because MeiliSearch is kinds shait at comparing decimals, probably a bug trollolo
+    const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start >= ${currentTime - 2} AND start <= ${currentTime + 300})`;
+    // First We gotta check if we have the currentTime hit in the episodeGuid hit array?
+    let foundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end) || null;
+    // If we do, we just set
+    if (foundHit) {
+      console.log("CurrentTime: ", currentTime, "Found hit, setting currentPlatingSegment to the foundHit");
+      console.log("HitCache: ", hitCache);
+      console.log("Setting foundHit: ", foundHit);
+      currentPlayingSegment.value = foundHit;
     } else {
+      const hitCacheHitsLength: number = hitCache.value[episodeGuid].hits.length - 1;
+      const lastElement: Hit = hitCache.value[episodeGuid].hits[hitCacheHitsLength];
+      // if (currentTime <= lastElement.end) {
+      //   console.log("Didn't find hitCache, but the currentTime is part of the sorted hitCache array, so we dont sent API request again.", hitCache);
+      //   // Terminate early.
+      //   currentPlayingSegment.value = currentPlayingSegment.value;
+      // } else {
       const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"] });
       if (res?.hits?.length > 0) {
         // Update hitCache with new hits
@@ -157,7 +162,11 @@ const handleTimeUpdate = async (currentTime: number) => {
         hitCache.value[episodeGuid].hits = removeDuplicateHits(hitCache.value[episodeGuid].hits);
 
         const newlyAddedFoundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
-        currentPlayingSegment.value = newlyAddedFoundHit;
+        currentPlayingSegment.value = newlyAddedFoundHit ? newlyAddedFoundHit : currentPlayingSegment.value;
+        // }
+      }
+      else{
+        console.log("Mamma mia!")
       }
     }
   }
