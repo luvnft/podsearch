@@ -75,7 +75,7 @@ class TranscriptionsService {
     // If searchString, add it:
     if (this.searchQuery.filter) mainQuery.filter = searchQuery.filter;
     if (this.searchQuery.sort) mainQuery.sort = searchQuery.sort;
-    if (this.searchQuery.limit) mainQuery.limit = searchQuery?.limit <= 100 ? searchQuery.limit : 10;
+    mainQuery.limit = searchQuery.limit === undefined ? 10 : searchQuery.limit <= 100 ? searchQuery.limit : 10;
     if (this.searchQuery.hitsPerPage) mainQuery.hitsPerPage = searchQuery.hitsPerPage;
     if (this.searchQuery.page) mainQuery.page = searchQuery.page;
     if (this.searchQuery.searchString) mainQuery.q = this.searchQuery.searchString;
@@ -89,9 +89,9 @@ class TranscriptionsService {
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
     const podcastsMap: Map<string, PodcastHit> = new Map(podcasts.hits.map((podcast) => [podcast.podcastGuid, podcast]));
     const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
-
+ 
     // Merged results
-    let segmentHits: SegmentHit[] =  initialSearchResponse.hits;
+    let segmentHits: SegmentHit[] = initialSearchResponse.hits;
 
     // Assign similarity score to all hits. If no searchString, nothing to calculate essentially
     if (this.searchQuery.searchString) {
