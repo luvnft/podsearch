@@ -20,7 +20,7 @@
       <HeadlessMenuItems
         class="tw-absolute tw-right-0 tw-z-10 tw-mt-2 tw-w-56 tw-origin-top-right tw-rounded-md tw-bg-white tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
       >
-        <div class="tw-py-1">
+        <div class="tw-w-full tw-py-1">
           <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
             <a
               :href="props.searchEntry.link"
@@ -40,15 +40,16 @@
             </a>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
-            <a
+            <button
               :href="props.searchEntry.id"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
+              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-w-full tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
+              @click="copySegmentLink"
             >
               Copy link to segment
               <svg-icon name="copylink" class="tw-h-5 tw-w-4 tw-p-0.5" />
-            </a>
+            </button>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
             <a
               :href="props.searchEntry.episodeLinkToEpisode"
               :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
@@ -66,8 +67,23 @@
 <script setup lang="ts">
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
 import { Hit } from "../../types/SearchResponse";
-
+import { SearchQuery } from "types/SearchQuery";
+import { Utils } from "composables/useUtils";
+const utils: Utils = useUtils();
 const props = defineProps<{
   searchEntry: Hit;
 }>();
+
+const copySegmentLink = () => {
+  const rootPage: string = useRuntimeConfig().public.HOMEPAGE;
+  const segmentId: string = props.searchEntry.id;
+  const filter: string = `id='${segmentId}'`;
+  const constructedSearchQuery: SearchQuery = {
+    filter: filter,
+  };
+  // Save url to user copy/paste
+  const encodedUrl: string = utils.encodeQuery(constructedSearchQuery) || "";
+  const finalUrl: string = rootPage + "?searchQuery=" + encodedUrl;
+  navigator.clipboard.writeText(finalUrl);
+};
 </script>

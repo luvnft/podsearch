@@ -1,5 +1,5 @@
 <template>
-  <div :class="`tw-w-full tw-rounded-lg ${!isIos ? 'tw-shadow-sm tw-shadow-gray-400' : ''}`">
+  <div :class="`customShadow tw-w-full tw-rounded-lg ${!isIos ? 'tw-shadow-gray-400' : ''}`">
     <div>
       <audio
         :key="props.timeLocation"
@@ -101,5 +101,11 @@ const onStartedPlay = () => {
 
 .loading::-webkit-media-controls-play-button {
   visibility: hidden;
+}
+
+.customShadow {
+  --tw-shadow: 0 0 2px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4) !important;
+  --tw-shadow-colored: 0 3px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 </style>
