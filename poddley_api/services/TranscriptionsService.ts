@@ -140,7 +140,6 @@ class TranscriptionsService {
       hits: searchResponseHits,
     };
     return finalSearchResponse;
-    return {} as SearchResponse;
   }
 
   private async searchPodcastsWithIds(podcastIds: string[]): Promise<PodcastResponse> {
