@@ -195,7 +195,7 @@ Cool stuff
 - [ ] Record to text thing
 - [ ] Add word, by, word, highlighting during playback
 - [ ] search filter
-- [ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens 
+- ~~[ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
 
 Performance:
 - [ ] download all podcats (should be)...
@@ -215,8 +215,7 @@ Must
 - [ ] time location needs to update if livesubs are enabled.
 - [ ] livesubs button is needed
 - [ ] binary tree subs cache object needs to be available
-- [ ] add filter functionality to search functionality (search transcripts, search podcasts, search episodes)
-Oslo
+- [ ] add filter functionality to search functionality (search transcripts, search podcasts, search episodes) 
 - [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
 
 Luka egne greier:
