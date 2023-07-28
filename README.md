@@ -246,4 +246,4 @@ Has to be a live version auto
     - [ ] Søk podcast gir dropdown som man trykker på og som så viser alle episoder for den podcasten der episodene er sortert etter publicationDate og kun segments start:asc[0] vises
     - [ ] Søk episoder viser dropdown som man trykker på og som så viser den gitte episoden man har trykket på
     - [ ] Sorterings funksjonalitet der man kan sortere episodene i podcast dropdownen i ascending/descending publicationDate
-- External API to sell.
+- [ ] External API to sell.
