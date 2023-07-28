@@ -52,8 +52,8 @@ image 1, 2, 3, 4, 5, 6, ,7 ,8
 ## Backend:
 ### Services:
 The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
-- Indexer (runs continuously every 5 minutes)
 - API
+- Indexer (runs continuously every 5 minutes)
 - Meilisearch instance
 
 ### API:
@@ -62,7 +62,11 @@ The services are running primarily as pm2-processes. With daemon-autorestart on 
 - Prisma Object Relational Mapper is used for database querying and modeling. Used with MySQL as database.
 
 ### Indexer 
-Contunously fetches from database and pushing in new transcriptions.
+Contunously fetches from database and pushing in new transcriptions to Meilisearch instance.
+
+### Meilisearch instance
+A meilisearch instance running with the following settings:
+...
 
 ### Transcriber/Re-alignment-service
 - The transcriber is a python script that grabs a selection of podcast names from a json.
@@ -72,6 +76,9 @@ Contunously fetches from database and pushing in new transcriptions.
 - Then uses WhisperX to re-align the timestamps in accordance with the audio file (using the large [wav2vec](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-english) model.
 - Then finds the youtube video that fits to that audio file and updates the episode in the database.
 - Downloads the youtube video and finds the offset in seconds between the audio-podcast and video-podcast to save time and avoid having to re-transcribe audio from youtube video as well. This implementation uses [British Broadcasting Channel's](https://github.com/bbc/audio-offset-finder) own implementation. This value is then added or subtracted from the "start"-value that accompanies all segments.
+- DeviationCalculator:
+  - Positive means the youtube video needs reduction in the time
+  - Negative means the youtube video needs the addition of time
 - If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
 
 ### General NGINX reverse proxy setup
@@ -116,21 +123,14 @@ Contunously fetches from database and pushing in new transcriptions.
    - ...and the server search was done with 3-n-grams + jaccard string comparison finding the max score, sorting them based on similarityScore and selecting the top 5. This has proved to be a good solution.
 
 ### Current running nginx reverse proxies for easier usage and https-setup:
-  - images.poddley.com => .../api/images/ endpoints
   - api.poddley.com => .../api/ endpoints (transcriptions/search-functionality)
   - meilisearch.poddley.com => meilisearch GUI instance
   
 ### Other
-- HTTPS everywhere done with let's encrypt /free https certificates
+- HTTPS everywhere done with let's encrypt. Free https certificates
 
 ### Lighthouse score
-![100](https://github.com/lukamo1996/poddley/assets/52632596/73235617-c7d0-4222-8b03-2a5fdbb604c6)
-
-### Cron jobs
-- Indexing from db to meilisearch-index (every hour)
-- DeviationCalculator:
-  - Positive means the youtube video needs reduction in the time
-  - Negative means the youtube video needs the addition of time
+Has to be a live version auto
 
 ### AI services
 - All AI services run 24/7 on this machine=>![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a). I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
@@ -139,7 +139,7 @@ Contunously fetches from database and pushing in new transcriptions.
 
 ## Features planned adding:
 ### Do-es
-- ~~[ ] concert search to multiseach to speed up search time~~
+- ~~[ ] Covert search to multiseach to speed up search time~~
 - ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
 - ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
 - [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
@@ -193,62 +193,57 @@ Contunously fetches from database and pushing in new transcriptions.
 - [x] Legg til loading indinator når api callet kjører
 - [x] Gjør search ikonet til en x når den er nede
 - [x] Turn dedigated cpu to api server
-- [x] use lowest db cpu
-- [x] possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
+- [x] Use lowest db cpu
+- [x] Possible idea: nuxt generate all static files => serve on bunnyCDN all as static => create CI/CD pipeline to bunnyCDN, kinda want to avoid cloudflare tbh
 - [x] Write me an about page contact page and donate page
 - [x] Disable plausible, netlify, vercel and images.poddley.com. Cloudflare literally does all that for free..
 - [x] Login/Sign-up functionality.
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
-- [x] Dont have debouncing on client side, but do have throttling + cancellable promises
+- [x] Don't have debouncing on client side, but do have throttling + cancellable promises
 - [x] Add helmet and add rate-limiting
-
-Business Stuff
-- [ ] Offer public API through external service
-- [ ] Kontogreier, lagre ting og tang, pro konto?
-    - [ ] profile upload etc using r3
-    - [ ] ipvote downvote
-    - [ ] delete accoutn save segments
-
-Cool stuff
-- [ ] Record to text thing
 - [ ] Add word, by, word, highlighting during playback
-- [ ] search filter
 - ~~[ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
-
-Performance:
-- [ ] download all podcats (should be)...
-
-Must
+- [ ] Download all podcats (should be)...
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
 - [x] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [x] Fix the buttons
-- [ ] add dark mode... toggle button + functionality.
-- [ ] add dark mode setting to user (preference)
-- [ ] finish the rest of the desktop design and shit
+- [ ] Add dark mode... toggle button + functionality.
+- [ ] Finiah the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
 - [x] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
-- [ ] add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work
-- [x] search button index redirect
-- [ ] time location needs to update if livesubs are enabled.
-- [ ] livesubs button is needed
-- [ ] binary tree subs cache object needs to be available
-- [ ] add filter functionality to search functionality (search transcripts, search podcasts, search episodes) 
-- [ ] Start opp transcriberen igjen, som da kjører index, aligner, find uoutube find deviation, legg inn i database. Indexeren kjører uavhengig av dette.
-
-Luka egne greier:
+- [ ] Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work
+- [x] Search button index redirect
+- [x] Time location needs to update if livesubs are enabled.
+- [x] Livesubs button is needed
+- ~~[ ] Binary tree subs cache object needs to be available~~ (unnecessary)
+- [ ] Start opp transcriberen igjen
 - [ ] Create a blog post explaining the project? Wordpress?
-
-- [x] drop usage of hq720
-- [x] start delayed hydratipn again
-- ~~[ ] increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
-- [x] fix donation page
-- [x] fix nav buttons
-- [x] fix the layout shitfs on the image downloading time…
-
+- [x] Drop usage of hq720
+- [x] Start delayed hydratipn again
+- ~~[ ] Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
+- [x] Fix donation page
+- [x] Fix nav buttons
+- [x] Fix the layout shitfs on the image downloading time…
 - [x] Add esc listener to non-headless ui stuff
-- [x] use vueUse instead of vlickoutside
-- [x] øk margin på search oxen og marginBottom
-- [x] set logo to be nuxtlink not href
-- ~~[ ] move navbar to bottom~~ (bad idea, so no)
-- ~~[ ] bruk en annen audio player kanskje som er bedre til å ferche metadata???~~
+- [x] Use vueUse instead of vlickoutside
+- [x] Øk margin på search oxen og marginBottom
+- [x] Set logo to be nuxtlink not href
+- ~~[ ] Move navbar to bottom~~ (bad idea, so no)
+- ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
+- [ ] Skal kun blinke hvis man starter play
+- [ ] Dark mode
+- [ ] Account-stuff:
+- [ ] Slett konto
+    - [ ] Se lagrede podcasts/episodes/quotes
+    - [ ] Subscribe to podcasts to be notified on email when a new episode is out
+    - [ ] Upload picture/profile pic using r3
+    - [ ] Downvote/Upvote segments/podcasts/episodes
+    - [ ] Settings as in darkmode/light mode preference
+    - [ ] Audio to text transformation search
+- [ ] Weird initial search doesnt use correct shit
+- [ ] Search filter
+    - [ ] Søk podcast gir dropdown som man trykker på og som så viser alle episoder for den podcasten der episodene er sortert etter publicationDate og kun segments start:asc[0] vises
+    - [ ] Søk episoder viser dropdown som man trykker på og som så viser den gitte episoden man har trykket på
+    - [ ] Sorterings funksjonalitet der man kan sortere episodene i podcast dropdownen i ascending/descending publicationDate
+- External API to sell.
