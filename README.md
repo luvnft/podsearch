@@ -21,7 +21,6 @@ image 1, 2, 3, 4, 5, 6, ,7 ,8
 - No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds. Most was futile. Finally decided to try Cloudflare, went straight to 1.2 seconds.
 - Unused CSS and third-party script/services can be a pain in the ass to deal with.
 - CDN's are awesome
-- Binary Search is awesome
 - Lazy-loading is king.
 - Assets compression:
   - Decided to use Brotli Compression to improve transfer time.
