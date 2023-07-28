@@ -1,4 +1,3 @@
-
 # Poddley - Search podcasts like text
 
 ## Status build
@@ -27,7 +26,6 @@ image 1, 2, 3, 4, 5, 6, ,7 ,8
     *Since Brotli was designed to compress streams on the fly, it is faster at both compressing content on the server and decompressing it in the browser than in gzip. In some cases the overall front-end decompression is up to 64% faster than gzip.* [Source](https://eu.siteground.com/blog/brotli-vs-gzip-compression/#:~:text=Since%20Brotli%20was%20designed%20to,to%2064%25%20faster%20than%20gzip.)
   - Only using webp on website due to faster loading speed and better compression during transfer [Source](https://developers.google.com/speed/webp/docs/webp_study#:~:text=From%20the%20tables%20above%2C%20we%20can%20observe%20that%20WebP%20gives%20additional%2025%25%2D34%25%20compression%20gains%20compared%20to%20JPEG%20at%20equal%20or%20slightly%20better%20SSIM%20index.)
   
-
 ## Frontend:
 - Nuxt 3 for client-stuff:
 	- SSR enabled
@@ -201,24 +199,17 @@ Has to be a live version auto
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [x] Don't have debouncing on client side, but do have throttling + cancellable promises
 - [x] Add helmet and add rate-limiting
-- [ ] Add word, by, word, highlighting during playback
 - ~~[ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
-- [ ] Download all podcats (should be)...
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
 - [x] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [x] Fix the buttons
-- [ ] Add dark mode... toggle button + functionality.
-- [ ] Finiah the rest of the desktop design and shit
-- [ ] Make MeiliSearch production probably.
 - [x] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
-- [ ] Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work
+- ~~[ ] Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
 - [x] Search button index redirect
 - [x] Time location needs to update if livesubs are enabled.
 - [x] Livesubs button is needed
 - ~~[ ] Binary tree subs cache object needs to be available~~ (unnecessary)
-- [ ] Start opp transcriberen igjen
-- [ ] Create a blog post explaining the project? Wordpress?
 - [x] Drop usage of hq720
 - [x] Start delayed hydratipn again
 - ~~[ ] Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
@@ -232,18 +223,17 @@ Has to be a live version auto
 - ~~[ ] Move navbar to bottom~~ (bad idea, so no)
 - ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [ ] Skal kun blinke hvis man starter play
-- [ ] Dark mode
-- [ ] Account-stuff:
 - [ ] Slett konto
     - [ ] Se lagrede podcasts/episodes/quotes
     - [ ] Subscribe to podcasts to be notified on email when a new episode is out
     - [ ] Upload picture/profile pic using r3
     - [ ] Downvote/Upvote segments/podcasts/episodes
-    - [ ] Settings as in darkmode/light mode preference
     - [ ] Audio to text transformation search
-- [ ] Weird initial search doesnt use correct shit
-- [ ] Search filter
-    - [ ] Søk podcast gir dropdown som man trykker på og som så viser alle episoder for den podcasten der episodene er sortert etter publicationDate og kun segments start:asc[0] vises
-    - [ ] Søk episoder viser dropdown som man trykker på og som så viser den gitte episoden man har trykket på
-    - [ ] Sorterings funksjonalitet der man kan sortere episodene i podcast dropdownen i ascending/descending publicationDate
 - [ ] External API to sell.
+- [ ] Start opp transcriberen igjen
+- [ ] Create a blog post explaining the project?
+- [ ] Add dark mode... toggle button + functionality.
+- [ ] Finish the rest of the desktop design and shit
+- [ ] Make MeiliSearch production probably.
+- [ ] Add word, by, word, highlighting during playback
+- [ ] Download all podcats (should be)...
