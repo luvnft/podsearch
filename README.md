@@ -1,3 +1,4 @@
+
 # Poddley - Search podcasts like text
 
 ## Status build
@@ -5,31 +6,74 @@
 
 ## Demo
 [Demo Link](https://poddley.com)
+
 ## Showcase
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
 ## Design timeline
+image 1, 2, 3, 4, 5, 6, ,7 ,8 
 
 ## Realizations
 - Don't optimize too early
 - Too much caching is bad
-- Don't debounce API calls as it worses UI and user-experience. Use rate-limiting instead or some kind of dynamic rate-limiting like google does (no debouncing on backend first 10 api calls, then rate-limiting)
+- Debouncing API should be (human reaction time in ms - API latency).
+- Always rate-limit API-calls on backend
+- No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds. Most was futile. Finally decided to try Cloudflare, went straight to 1.2 seconds.
+- Unused CSS and third-party script/services can be a pain in the ass to deal with.
+- CDN's are awesome
+- Binary Search is awesome
+- Lazy-loading is king.
+- Assets compression:
+  - Decided to use Brotli Compression to improve transfer time.
+    *Since Brotli was designed to compress streams on the fly, it is faster at both compressing content on the server and decompressing it in the browser than in gzip. In some cases the overall front-end decompression is up to 64% faster than gzip.* [Source](https://eu.siteground.com/blog/brotli-vs-gzip-compression/#:~:text=Since%20Brotli%20was%20designed%20to,to%2064%25%20faster%20than%20gzip.)
+  - Only using webp on website due to faster loading speed and better compression during transfer [Source](https://developers.google.com/speed/webp/docs/webp_study#:~:text=From%20the%20tables%20above%2C%20we%20can%20observe%20that%20WebP%20gives%20additional%2025%25%2D34%25%20compression%20gains%20compared%20to%20JPEG%20at%20equal%20or%20slightly%20better%20SSIM%20index.)
+  
 
 ## Frontend:
-- Nuxt 3 for client-stuff (with SSR for perfect SEO)
+- Nuxt 3 for client-stuff:
+	- SSR enabled
+	- Pages-structure
+	- Nitro-server with gzip- and brotli-compression and minified assets
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
-- Pinia for store
-- TypeScript
-- Pure TailwindCSS for UI adjustments and also the integrated PurgeCSS
-- Bootstrap + Bootstrap Studio for responsive layout as it provides good UI for modifying design
+- TypeScript everywhere.
 - Cloudflare page for CI/CD of Client code + using them as a DNS-manager for easier setup.
-- Tracking is done by ~~[Plausible](https://plausible.io/)~~ Cloudflare was free so...
+- Tracking was done by ~~[Plausible](https://plausible.io/)~~ Switched to Cloudflare as it was free
+- ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic (as in the first 1 second API calls should be instantaneous, but the ones after shan't). Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
+- Nuxt 3 modules used:
+	- TailwindCSS module (integrated PurgeCSS and fast design development)
+	- Supabase module
+	- NuxtImage module
+	- HeadlessUI module
+	- SVG-sprite-module (for reducing SVG-requests to server)
+	- Nuxt Delayed Hydration module (for improved Lighthouse score and loading time)
+	- Lodash module (for _Debounce-function)
+	- Device module (for iPhone-device detection)
+	- Pinia Nuxt Module (for global storage across components)
 
 ## Backend:
+### Services:
+The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
+- Indexer (runs continuously every 5 minutes)
+- API
+- Meilisearch instance
+
 ### API:
-- Route-Controller-Service structure for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
+- Route-Controller-Service architecture for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
 - The backend is written in TypeScript
-- Prisma Object Relational Mapper is used for database querying and modeling. Used with MySQL as database
+- Prisma Object Relational Mapper is used for database querying and modeling. Used with MySQL as database.
+
+### Indexer 
+Contunously fetches from database and pushing in new transcriptions.
+
+### Transcriber/Re-alignment-service
+- The transcriber is a python script that grabs a selection of podcast names from a json.
+- Queries a SqLite database downloaded daily from PodcastIndex.
+- Uses feedparser to get episode-names, audiofiles, titles etc. from the rss-feeds for further parsing
+- Uses the original whisper AI to transcribe data
+- Then uses WhisperX to re-align the timestamps in accordance with the audio file (using the large [wav2vec](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-english) model.
+- Then finds the youtube video that fits to that audio file and updates the episode in the database.
+- Downloads the youtube video and finds the offset in seconds between the audio-podcast and video-podcast to save time and avoid having to re-transcribe audio from youtube video as well. This implementation uses [British Broadcasting Channel's](https://github.com/bbc/audio-offset-finder) own implementation. This value is then added or subtracted from the "start"-value that accompanies all segments.
+- If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
 
 ### General NGINX reverse proxy setup
     server {
@@ -72,16 +116,6 @@
       ],
    - ...and the server search was done with 3-n-grams + jaccard string comparison finding the max score, sorting them based on similarityScore and selecting the top 5. This has proved to be a good solution.
 
-### Transcriber-service of podcast audio to text
-- The transcriber is a python script that grabs a selection of podcast names from a json.
-- Queries a SqLite database downloaded daily from PodcastIndex.
-- Uses feedparser to get episode-names, audiofiles, titles etc. from the rss-feeds for further parsing
-- Uses the original whisper AI to transcribe data
-- Then uses WhisperX to re-align the timestamps in accordance with the audio file (using the large [wav2vec](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-english) model.
-- Then finds the youtube video that fits to that audio file and updates the episode in the database.
-- Downloads the youtube video and finds the offset in seconds between the audio-podcast and video-podcast to save time and avoid having to re-transcribe audio from youtube video as well. This implementation uses [British Broadcasting Channel's](https://github.com/bbc/audio-offset-finder) own implementation. This value is then added or subtracted from the "start"-value that accompanies all segments.
-- If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
-
 ### Current running nginx reverse proxies for easier usage and https-setup:
   - images.poddley.com => .../api/images/ endpoints
   - api.poddley.com => .../api/ endpoints (transcriptions/search-functionality)
@@ -103,21 +137,6 @@
 - All AI services run 24/7 on this machine=>![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a). I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
 
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
-
-### Realizations:
-- No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds. Most was futile. Finally decided to try Cloudflare, went straight to 1.2 seconds.
-- Unused CSS and third-party script/services can be a pain in the ass to deal with.
-- CDN's are awesome
-- Binary Search is awesome
-- Lazy-loading is king.
-
-### Optimizations:
-- Assets compression:
-  - Decided to use Brotli Compression to improve transfer time.
-    *Since Brotli was designed to compress streams on the fly, it is faster at both compressing content on the server and decompressing it in the browser than in gzip. In some cases the overall front-end decompression is up to 64% faster than gzip.* [Source](https://eu.siteground.com/blog/brotli-vs-gzip-compression/#:~:text=Since%20Brotli%20was%20designed%20to,to%2064%25%20faster%20than%20gzip.)
-  - Only using webp on website due to faster loading speed and better compression during transfer [Source](https://developers.google.com/speed/webp/docs/webp_study#:~:text=From%20the%20tables%20above%2C%20we%20can%20observe%20that%20WebP%20gives%20additional%2025%25%2D34%25%20compression%20gains%20compared%20to%20JPEG%20at%20equal%20or%20slightly%20better%20SSIM%20index.)
-  
-  
 
 ## Features planned adding:
 ### Do-es
