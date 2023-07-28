@@ -25,7 +25,7 @@ image 1, 2, 3, 4, 5, 6, ,7 ,8
   - Decided to use Brotli Compression to improve transfer time.
     *Since Brotli was designed to compress streams on the fly, it is faster at both compressing content on the server and decompressing it in the browser than in gzip. In some cases the overall front-end decompression is up to 64% faster than gzip.* [Source](https://eu.siteground.com/blog/brotli-vs-gzip-compression/#:~:text=Since%20Brotli%20was%20designed%20to,to%2064%25%20faster%20than%20gzip.)
   - Only using webp on website due to faster loading speed and better compression during transfer [Source](https://developers.google.com/speed/webp/docs/webp_study#:~:text=From%20the%20tables%20above%2C%20we%20can%20observe%20that%20WebP%20gives%20additional%2025%25%2D34%25%20compression%20gains%20compared%20to%20JPEG%20at%20equal%20or%20slightly%20better%20SSIM%20index.)
-  
+  - Also using gzip as they apparrntly arent mutually exclusive
 ## Frontend:
 - Nuxt 3 for client-stuff:
 	- SSR enabled
@@ -224,11 +224,10 @@ Has to be a live version auto
 - ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [ ] Skal kun blinke hvis man starter play
 - [ ] Slett konto
-    - [ ] Se lagrede podcasts/episodes/quotes
-    - [ ] Subscribe to podcasts to be notified on email when a new episode is out
-    - [ ] Upload picture/profile pic using r3
-    - [ ] Downvote/Upvote segments/podcasts/episodes
-    - [ ] Audio to text transformation search
+- [ ] En bruker skal kunne se en hiatorikk over podde historikken deres ala iPhone shazam, 
+- [ ] Se lagrede quotes
+- [ ] Uplod a picture/profile pic using r3
+- [ ] Audio to text transformation search
 - [ ] External API to sell.
 - [ ] Start opp transcriberen igjen
 - [ ] Create a blog post explaining the project?
@@ -237,3 +236,6 @@ Has to be a live version auto
 - [ ] Make MeiliSearch production probably.
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Download all podcats (should be)...
+- [ ] Fix device issue
+- [ ] The main goal of the website is to be the Shazam for podcast clips. Therefore we are not going to expand upon the search functionality beyond its main purpose.
+- [ ] Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra
