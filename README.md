@@ -1,4 +1,4 @@
-# Poddley - Search podcasts like text
+# Poddley - Shazam for podcasts
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
