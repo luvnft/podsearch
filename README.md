@@ -10,7 +10,7 @@
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
 ## Design timeline
-image 1, 2, 3, 4, 5, 6, ,7 ,8 
+image 1, 2, 3, 4, 5, 6
 
 ## Realizations
 - Don't optimize too early
