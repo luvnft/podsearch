@@ -25,6 +25,7 @@ const searchStore = useSearchStore();
 const { searchQuery } = storeToRefs(searchStore);
 
 //When mounted start the watcher to navigate if not on page etc.
+// This is the function that listens to the searchQuery and causes essentially the url to change each time it changes. We call it push, but it's more like some kind of url-change
 watch(searchQuery, () => {
   if (searchQuery) {
     navigateWithQuery();

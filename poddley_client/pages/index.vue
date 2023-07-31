@@ -36,6 +36,7 @@ onMounted(() => {
       switch (action) {
         case "searchCompleted":
           searchResults.value = payload;
+          console.log(payload)
           debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
@@ -62,10 +63,13 @@ async function makeSearch() {
     if (process.server) {
       try {
         const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
-        const parsedRouteBasedQuery: SearchQuery | null = routeBasedQuery ? JSON.parse(routeBasedQuery) : null;
-        const query: SearchQuery = parsedRouteBasedQuery ? parsedRouteBasedQuery : initialSearchQuery;
-        console.log("Searching with query: ", query.filter);
+        const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery)
+        console.log(decodedRouteBasedQuery)
+        const query: SearchQuery = decodedRouteBasedQuery ? decodedRouteBasedQuery as SearchQuery : initialSearchQuery;
+        console.log("Searching with query: ", query);
+        searchQuery.value = query
         searchResults.value = await transcriptionService.search(query);
+       
       } catch (e) {}
     }
   }
@@ -84,5 +88,7 @@ onServerPrefetch(async () => {
   await makeSearch();
 });
 
-watchDeep(searchQuery.value, debouncedSearch);
+watch(searchQuery, debouncedSearch, {
+  deep: true
+});
 </script>

@@ -6,6 +6,9 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchQuery: Ref<SearchQuery> = ref({
     searchString: "",
   });
+  const setSearchQuery = (query: SearchQuery) => {
+    searchQuery.value = query;
+  };
   const loading: Ref<boolean> = ref(false);
   const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
   const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);

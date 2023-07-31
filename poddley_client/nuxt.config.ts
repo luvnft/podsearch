@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
-    logLevel: 5
+    logLevel: 5,
   },
   pages: true,
   postcss: {
@@ -63,6 +63,9 @@ export default defineNuxtConfig({
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000/" : "poddley.com/",
     },
+  },
+  device: {
+    enabled: true,
   },
   app: {
     head: {
