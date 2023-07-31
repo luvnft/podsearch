@@ -71,6 +71,8 @@ class TranscriptionsService {
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
+      showMatchesPosition: true,
+      matchingStrategy: "all",
     };
     // If searchString, add it:
     if (this.searchQuery.filter) mainQuery.filter = searchQuery.filter;
@@ -80,7 +82,7 @@ class TranscriptionsService {
     if (this.searchQuery.page) mainQuery.page = searchQuery.page;
     if (this.searchQuery.searchString) mainQuery.q = this.searchQuery.searchString;
 
-    // Search results => Perform it. 
+    // Search results => Perform it.
     let initialSearchResponse: any = await this.segmentsIndex.search(undefined, mainQuery);
     console.log(initialSearchResponse);
 
@@ -89,7 +91,7 @@ class TranscriptionsService {
     const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
     const podcastsMap: Map<string, PodcastHit> = new Map(podcasts.hits.map((podcast) => [podcast.podcastGuid, podcast]));
     const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
- 
+
     // Merged results
     let segmentHits: SegmentHit[] = initialSearchResponse.hits;
 
