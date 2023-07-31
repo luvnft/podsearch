@@ -1,52 +1,63 @@
-import { Request } from "express";
+import { exec } from "child_process";
 import fs from "fs";
-import moment, { Moment } from "moment";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
+import util from "util";
 
 class AudioService {
-  // Unsure if we should support stream, seems like a gag to implement and error-handle
-  public async processAudioStream(req: Request) {
-    return new Promise((resolve, reject) => {
-      const writeStream = fs.createWriteStream("uploads/audio-stream.wav");
-      const start: Moment = moment();
-
-      req.pipe(writeStream);
-
-      req.on("data", () => {
-        if (moment().diff(start, "seconds") > 10) {
-          writeStream.end();
-          reject(new Error("Stream is too long. Limit is 10 seconds"));
-        }
-      });
-
-      req.on("end", resolve);
-      req.on("error", reject);
-    });
-  }
-
   public async processAudioFile(file: Express.Multer.File): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      // Generate a unique file name
-      const uniqueFileName = uuidv4() + path.extname(file.originalname);
+    const execPromisified = util.promisify(exec);
+    const unlinkPromisified = util.promisify(fs.unlink);
 
-      // Move the file to a new location with the unique file name
-      fs.rename(file.path, path.join("uploads", uniqueFileName), async (err) => {
-        if (err) {
-          reject("Error processing file");
-        } else {
-          // Process the file here
-          // After processing the file, delete it
-          fs.unlink(path.join("uploads", uniqueFileName), (err) => {
-            if (err) {
-              reject("Error deleting file");
-            } else {
-              resolve("File processed and deleted successfully");
-            }
-          });
-        } 
-      }); 
-    });
+    // Define the name and path of the output file
+    const outputFilePath = `${file.path}.wav`;
+
+    // Command to convert the input file to 16bit .wav format
+    const convertCommand = `ffmpeg -i ${file.path} -ar 16000 -ac 1 -c:a pcm_s16le ${outputFilePath}`;
+
+    try {
+      // Convert the file
+      const { stdout: convertStdout, stderr: convertStderr } = await execPromisified(convertCommand);
+
+      if (convertStderr) {
+        console.error(`Error converting file: ${convertStderr}`);
+        throw new Error("Error converting file");
+      }
+
+      console.log(`Output of file conversion: ${convertStdout}`);
+
+      // Run the main command on the converted file
+      const mainCommand = `../whisper.cpp/main -m ../whisper.cpp/models/ggml-base.en.bin ${outputFilePath} -oj`;
+      const { stdout: mainStdout, stderr: mainStderr } = await execPromisified(mainCommand);
+
+      if (mainStderr) {
+        console.error(`Error: ${mainStderr}`);
+        throw new Error("Error processing file");
+      }
+
+      console.log(`Output: ${mainStdout}`);
+
+      // Parse the output as JSON.
+      let outputJson;
+      try {
+        outputJson = JSON.parse(mainStdout);
+      } catch (error) {
+        console.error("Error parsing JSON output:", error); 
+        throw new Error("Error parsing JSON output");
+      }
+
+      console.log("Parsed JSON:", outputJson);
+
+      // Delete the original and converted files
+      await Promise.all([
+        unlinkPromisified(file.path),
+        unlinkPromisified(outputFilePath)
+      ]);
+
+      return "File processed and deleted successfully";
+
+    } catch (error: any) {
+      console.error(`Error: ${error}`);
+      throw new Error(error.message);
+    }
   }
 }
 

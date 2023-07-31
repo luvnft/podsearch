@@ -31,12 +31,13 @@ app.use(helmet());
 app.use(cors());
 
 //Enabling body
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 //Use the routes
 app.use("/transcriptions", transcriptionsRouter);
 app.use("/audio", fileUploadLimiter, audioServiceRouter);
+
 // Apply the rate limiting middleware to all requests
 app.use(apiCallLimiter);
 
