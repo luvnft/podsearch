@@ -43,8 +43,8 @@
               <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
             </div>
           </div>
-          <div class="tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5">
-            <p class="tw-mb-0 tw-mt-1.5">
+          <div class="tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5 tw-my-1">
+            <p class="tw-m-0">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
