@@ -76,7 +76,7 @@ async function makeSearch() {
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 200, {
+const debouncedSearch = _Debounce(makeSearch, 300, {
   leading: true,
   trailing: true,
 });

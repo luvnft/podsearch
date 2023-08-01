@@ -39,11 +39,17 @@
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment tw-mb-1.5 tw-mt-1 tw-rounded-lg">
-              <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
+            <div class="segment tw-mb-1.5 tw-mt-1 tw-flex tw-rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+              <div class="loader" v-if="subtitlesActivated">
+                <span></span>
+                &nbsp;
+              </div>
+              <div class="animate__animated animate__flipInX animate__faster">
+                <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
+              </div>
             </div>
           </div>
-          <div class="tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5 tw-my-1">
+          <div class="tw-my-1 tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5">
             <p class="tw-m-0">
               <b>Time-location:</b>
               &nbsp;
@@ -74,6 +80,8 @@ import { useSearchStore } from "../../store/searchStore";
 import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
+import "animate.css";
+
 const searchStore = useSearchStore();
 const { hitCache } = storeToRefs(searchStore);
 
@@ -108,12 +116,6 @@ async function search(searchQuery: SearchQuery) {
   return searchResponse;
 }
 
-const debouncedSegmentSearcher = _Debounce(search, 1000, {
-  leading: true,
-  trailing: true,
-  maxWait: 1000,
-});
-
 const removeDuplicateHits = (hits: Hit[]) => {
   const hitsIds: Set<string> = new Set();
   const uniqueHits: Hit[] = [];
@@ -134,6 +136,7 @@ const removeDuplicateHits = (hits: Hit[]) => {
 };
 
 const handleTimeUpdate = async (currentTime: number) => {
+  currentTime = currentTime - 0.1;
   if (!subtitlesActivated.value) return;
   else {
     let episodeGuid = props.searchEntry.episodeGuid;
@@ -164,18 +167,23 @@ const handleTimeUpdate = async (currentTime: number) => {
         const newlyAddedFoundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
         currentPlayingSegment.value = newlyAddedFoundHit ? newlyAddedFoundHit : currentPlayingSegment.value;
         // }
-      }
-      else{
-        console.log("Mamma mia!")
+      } else {
+        console.log("Mamma mia!");
       }
     }
   }
 };
 
-const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 1000, {
-  trailing: true,
+const debouncedSegmentSearcher = _Debounce(search, 300, {
   leading: true,
-  maxWait: 1000,
+  trailing: true,
+  maxWait: 300,
+});
+
+const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
+  leading: true,
+  trailing: true,
+  maxWait: 300,
 });
 </script>
 
