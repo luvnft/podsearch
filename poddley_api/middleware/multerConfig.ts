@@ -19,9 +19,7 @@ const audioMimeTypes = ["audio/mpeg", "audio/wav", "audio/aac", "wav", "mp3", "a
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    console.log(file);
     const fileType: string = file?.originalname.split(".")[-1] || "";
-    console.log("Hello: ", fileType);
     if (audioMimeTypes.includes(file.mimetype) || audioMimeTypes.includes(fileType)) {
       // check file type to be audio
       cb(null, true);
