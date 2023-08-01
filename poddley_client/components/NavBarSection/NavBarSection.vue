@@ -8,7 +8,7 @@
               <div class="tw-flex tw-h-full tw-w-full tw-flex-nowrap tw-items-center tw-justify-between">
                 <div class="tw-flex tw-h-12 tw-w-full">
                   <BurgerMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
-                  <ButtonsDonateButton class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
+                  <MicrophoneButton class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <NavTitle class="col-4 tw-flex tw-h-full tw-items-center tw-justify-center" />
                   <SearchBox class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center tw-p-0" @click="toggleSearchSection" :openSearchSection="openSearchSection" />
                   <ProfileMenu class="col-2 tw-flex tw-h-full tw-items-center tw-justify-center" />
