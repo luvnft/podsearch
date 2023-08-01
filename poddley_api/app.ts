@@ -25,7 +25,7 @@ const app: Express = express();
 const port: number = 3000;
 
 // Use helmet
-app.use(helmet());
+app.use(helmet()); 
 
 //Enable CORS for front-end use
 app.use(cors());
@@ -39,7 +39,7 @@ app.use("/transcriptions", transcriptionsRouter);
 app.use("/audio", fileUploadLimiter, audioServiceRouter);
 
 // Apply the rate limiting middleware to all requests
-app.use(apiCallLimiter);
+// app.use(apiCallLimiter);
 
 //Listen on port
 app.listen(port, () => {

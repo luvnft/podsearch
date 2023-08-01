@@ -1,64 +1,46 @@
-import { exec } from "child_process";
+import ffmpeg from "fluent-ffmpeg";
 import fs from "fs";
 import util from "util";
+import { exec } from "child_process";
+import { WhisperCppTranscriptionType, WhisperCppTranscription } from "../types/WhisperCppTranscriptionType";
+
+const unlinkPromisified = util.promisify(fs.unlink);
+const execPromisified = util.promisify(exec);
 
 class AudioService {
   public async processAudioFile(file: Express.Multer.File): Promise<string> {
-    const execPromisified = util.promisify(exec);
-    const unlinkPromisified = util.promisify(fs.unlink);
-
     // Define the name and path of the output file
     const outputFilePath = `${file.path}.wav`;
 
-    // Command to convert the input file to 16bit .wav format
-    const convertCommand = `ffmpeg -i ${file.path} -ar 16000 -ac 1 -c:a pcm_s16le ${outputFilePath}`;
-
     try {
       // Convert the file
-      const { stdout: convertStdout, stderr: convertStderr } = await execPromisified(convertCommand);
-
-      if (convertStderr) {
-        console.error(`Error converting file: ${convertStderr}`);
-        throw new Error("Error converting file");
-      }
-
-      console.log(`Output of file conversion: ${convertStdout}`);
+      await this.convertAudio(file.path, outputFilePath);
 
       // Run the main command on the converted file
       const mainCommand = `../whisper.cpp/main -m ../whisper.cpp/models/ggml-base.en.bin ${outputFilePath} -oj`;
-      const { stdout: mainStdout, stderr: mainStderr } = await execPromisified(mainCommand);
+      await execPromisified(mainCommand);
 
-      if (mainStderr) {
-        console.error(`Error: ${mainStderr}`);
-        throw new Error("Error processing file");
-      }
-
-      console.log(`Output: ${mainStdout}`);
-
-      // Parse the output as JSON.
-      let outputJson;
-      try {
-        outputJson = JSON.parse(mainStdout);
-      } catch (error) {
-        console.error("Error parsing JSON output:", error); 
-        throw new Error("Error parsing JSON output");
-      }
-
-      console.log("Parsed JSON:", outputJson);
+      const jsonData = fs.readFileSync(outputFilePath + ".json", "utf-8");
+      const whisperCppTranscriptionType: WhisperCppTranscriptionType = JSON.parse(jsonData);
 
       // Delete the original and converted files
-      await Promise.all([
-        unlinkPromisified(file.path),
-        unlinkPromisified(outputFilePath)
-      ]);
+      await Promise.all([unlinkPromisified(file.path), unlinkPromisified(outputFilePath)]);
 
-      return "File processed and deleted successfully";
-
+      return this.extractTranscriptionText(whisperCppTranscriptionType);
     } catch (error: any) {
-      console.error(`Error: ${error}`);
       throw new Error(error.message);
     }
   }
-}
+
+  private async convertAudio(inputPath: string, outputPath: string): Promise<void> {
+    await new Promise((resolve, reject) => {
+      ffmpeg(inputPath).outputOptions("-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le").save(outputPath).on("end", resolve).on("error", reject);
+    });
+  } 
+
+  private extractTranscriptionText(transcriptionType: WhisperCppTranscriptionType): string {
+    return transcriptionType.transcription.map((transcription: WhisperCppTranscription) => transcription.text).join(" ").trim() || "";
+  }
+}  
 
 export default AudioService;
