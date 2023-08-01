@@ -1,5 +1,5 @@
 <template>
-  <div :class="`tw-w-full tw-rounded-lg ${!isIos || !isApple || isSafari ? 'customShadow tw-shadow-gray-400' : ''}`">
+  <div :class="`tw-w-full tw-rounded-lg ${!isIos || !isApple || !isSafari ? 'customShadow tw-shadow-gray-400' : ''}`">
     <div>
       <audio
         :key="props.timeLocation"
@@ -39,7 +39,6 @@ const emit = defineEmits<{
 }>();
 
 const { isIos, isSafari, isApple }: Device = useDevice();
-if (process.client) alert(isIos);
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
