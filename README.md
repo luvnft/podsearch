@@ -222,7 +222,7 @@ Has to be a live version auto
 - [x] Set logo to be nuxtlink not href
 - ~~[ ] Move navbar to bottom~~ (bad idea, so no)
 - ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
-- [ ] Skal kun blinke hvis man starter play
+- [x] Skal kun blinke hvis man starter play
 - [ ] Slett konto
 - [ ] En bruker skal kunne se en hiatorikk over podde historikken deres ala iPhone shazam, 
 - [ ] Se lagrede quotes
@@ -236,7 +236,7 @@ Has to be a live version auto
 - [ ] Make MeiliSearch production probably.
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Download all podcats (should be)...
-- [ ] Fix device issue
+- [x] Fix device issue
 - [ ] The main goal of the website is to be the Shazam for podcast clips. Therefore we are not going to expand upon the search functionality beyond its main purpose.
 - [ ] Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra
 - [ ] Record knappen skal være der doneringsknappen er nå
