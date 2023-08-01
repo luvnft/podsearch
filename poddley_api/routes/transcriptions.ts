@@ -1,14 +1,14 @@
 import express from "express";
-import TranscriptionsController from "../controllers/TranscriptionsController"
-
-//Initialize controller
-const transcriptionsController: TranscriptionsController = new TranscriptionsController();
+import TranscriptionsController from "../controllers/TranscriptionsController";
 
 //Router
 const transcriptionsRouter: express.Router = express.Router();
 
-//Get Routes
+//Initialize controller
+const transcriptionsController: TranscriptionsController = new TranscriptionsController();
+
+//Routes
 transcriptionsRouter.post("/search", transcriptionsController.search);
- 
+
 //Export it
-export default transcriptionsRouter;  
+export default transcriptionsRouter;
