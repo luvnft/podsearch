@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   delayHydration: {
-    mode: "manual",
+    mode: "mount",
   },
   modules: [
     "@nuxtjs/tailwindcss",

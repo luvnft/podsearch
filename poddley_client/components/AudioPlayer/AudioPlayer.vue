@@ -39,7 +39,7 @@ const emit = defineEmits<{
 }>();
 
 const { isIos, isSafari, isApple }: Device = useDevice();
-console.log();
+if (process.client) alert(isIos);
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
