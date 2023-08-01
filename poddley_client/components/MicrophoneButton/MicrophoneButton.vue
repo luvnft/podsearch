@@ -6,21 +6,21 @@
         @click="recordAudio"
       >
         <div class="tw-flex tw-h-full tw-w-full tw-flex-row tw-items-center tw-justify-center">
-          <div class="tw-h-full tw-w-full">
-            <svg-icon
-              name="microphone"
-              :class="` tw-block tw-h-full tw-w-full tw-scale-[0.85]  tw-stroke-1 tw-text-gray-400 group-hover:tw-fill-gray-500 ${loading ? 'tw-animate-pulse' : ''}`"
-              aria-hidden="true"
-            />
+          <div class="tw-h-full tw-w-full" v-if="!loading">
+            <svg-icon name="microphone" class="tw-block tw-h-full tw-w-full tw-scale-[0.85] tw-text-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
           </div>
-          <div class="tw-h-6 tw-w-7">
-            <div class="tw-radial-progress tw-flex tw-items-center tw-justify-center tw-text-gray-400 after:tw-hidden" :style="`--value: ${percentageAudioPazamed}; --thickness: 0.13rem; --size: 1.5rem`">
-              <p class="tw-m-0 tw-mr-0.5 tw-flex tw-items-center tw-justify-center tw-p-0 tw-text-center tw-text-xs">{{ percentageAudioPazamed }}</p>
+          <div class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center" v-if="loading">
+            <div
+              class="tw-radial-progress tw-flex tw-items-center tw-justify-center tw-text-gray-400 after:tw-hidden"
+              :style="`--value: ${percentageAudioPazamed}; --thickness: 0.13rem; --size: 2rem`"
+            >
+              <div class="tw-h-full tw-w-full" v-if="loading">
+                <svg-icon name="microphone" class="tw-block tw-h-full tw-w-full tw-scale-[0.55] tw-animate-colorPulse tw-text-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
+              </div>
             </div>
           </div>
         </div>
       </button>
-      <a :href="audioURL" download="recording.wav" v-if="audioURL">Download Recording</a>
     </div>
   </div>
 </template>
@@ -34,7 +34,6 @@ const loading: Ref<boolean> = ref(false);
 const percentageAudioPazamed: Ref<number> = ref(0);
 let mediaRecorder: MediaRecorder | null = null;
 let chunks: BlobPart[] = [];
-let audioURL = ref(""); // Added a new ref to store the audio URL
 
 const recordAudio = async () => {
   if (!window.MediaRecorder) {
@@ -42,7 +41,7 @@ const recordAudio = async () => {
     return;
   }
 
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true, preferCurrentTab: false });
   mediaRecorder = new MediaRecorder(stream, options);
   mediaRecorder.start();
   loading.value = true;
@@ -74,9 +73,6 @@ const sendData = async () => {
   const blob = new Blob(chunks, { type: "audio/wav" });
   const formData = new FormData();
   formData.append("audio", blob);
-
-  // Generate a URL for the blob
-  audioURL.value = URL.createObjectURL(blob);
 
   try {
     const response = await audioTranscriptionService.uploadAudioFile(formData);

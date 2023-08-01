@@ -25,7 +25,7 @@ module.exports = {
       keyframes: {
         colorPulse: {
           "0%, 100%": { filter: "brightness(100%)" },
-          "50%": { filter: "brightness(50%)" },
+          "50%": { filter: "brightness(70%)" },
         },
       },
       animation: {
