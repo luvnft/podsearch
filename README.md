@@ -242,3 +242,4 @@ Has to be a live version auto
 - [ ] Record knappen skal være der doneringsknappen er nå
 - [x] Fix home button not reflecting same behaviour as home button
 - [ ] The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented
+- [x] Added animate to the text changing section
