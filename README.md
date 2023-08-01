@@ -230,10 +230,8 @@ Has to be a live version auto
 - [ ] Audio to text transformation search
 - [ ] External API to sell.
 - [ ] Start opp transcriberen igjen
-- [ ] Create a blog post explaining the project?
 - [ ] Add dark mode... toggle button + functionality.
 - [ ] Finish the rest of the desktop design and shit
-- [ ] Make MeiliSearch production probably.
 - [ ] Add word, by, word, highlighting during playback
 - [ ] Download all podcats (should be)...
 - [x] Fix device issue
@@ -243,3 +241,7 @@ Has to be a live version auto
 - [x] Fix home button not reflecting same behaviour as home button
 - [ ] The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented
 - [x] Added animate to the text changing section
+
+**After completion:**
+- [ ] Make MeiliSearch production probably.
+- [ ] Create a blog post explaining the project?
