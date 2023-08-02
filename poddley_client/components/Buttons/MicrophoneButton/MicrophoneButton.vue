@@ -31,7 +31,7 @@ import { useSearchStore } from "../../../store/searchStore";
 import { storeToRefs } from "pinia";
 const searchStore = useSearchStore();
 const { searchQuery } = storeToRefs(searchStore);
-
+const recording: Ref<boolean> = ref(false);
 let RecordRTC: any = null;
 let recorder: any = null;
 let options: any = null;
@@ -50,38 +50,50 @@ const percentageAudioPazamed: Ref<number> = ref(0);
 let chunks: BlobPart[] = [];
 
 async function recordAudio() {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  if (RecordRTC) {
-    recorder = new RecordRTC(stream, options);
-  }
-
-  if (!recorder) return;
-  recorder.startRecording();
-  loading.value = true;
-  let duration = 4000; // Duration of the recording in milliseconds
-
-  let startTime = Date.now(); // Get the current time
-
-  let intervalId = setInterval(() => {
-    let elapsed = Date.now() - startTime; // Time elapsed in milliseconds
-    let percentage = (elapsed / duration) * 100;
-    percentageAudioPazamed.value = Math.floor(percentage);
-  }, 100);
-
-  setTimeout(async () => {
-    if (recorder) {
-      recorder.stopRecording(async () => {
-        let blob = recorder?.getBlob();
-        if (blob) {
-          chunks.push(blob);
-          await sendData();
-        }
-      });
+  if (!recording.value) {
+    recording.value = true;
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (RecordRTC) {
+      recorder = new RecordRTC(stream, options);
     }
-    clearInterval(intervalId);
-    percentageAudioPazamed.value = 100;
-    loading.value = false;
-  }, duration);
+
+    async function stopRecording() {
+      if (recorder) {
+        recorder.stopRecording(async () => {
+          let blob = recorder?.getBlob();
+          if (blob) {
+            chunks.push(blob);
+            await sendData();
+          }
+          // Stop all tracks in the stream
+          if (stream) {
+            stream.getTracks().forEach((track) => track.stop());
+          }
+        });
+      }
+    }
+
+    if (!recorder) return;
+    recorder.startRecording();
+    loading.value = true;
+    let duration = 4000; // Duration of the recording in milliseconds
+
+    let startTime = Date.now(); // Get the current time
+
+    let intervalId = setInterval(() => {
+      let elapsed = Date.now() - startTime; // Time elapsed in milliseconds
+      let percentage = (elapsed / duration) * 100;
+      percentageAudioPazamed.value = Math.floor(percentage);
+    }, 100);
+
+    setTimeout(async () => {
+      await stopRecording();
+      clearInterval(intervalId);
+      percentageAudioPazamed.value = 100;
+      loading.value = false;
+      recording.value = false;
+    }, duration);
+  }
 }
 
 const sendData = async () => {
