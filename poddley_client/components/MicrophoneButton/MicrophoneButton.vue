@@ -27,25 +27,33 @@
 
 <script setup lang="ts">
 import AudioTranscriptionService from "../../utils/services/AudioTranscriptionService";
+let RecordRTC: any = null;
+let recorder: any = null;
+let options: any = null;
+
+onMounted(async () => {
+  if (process.client) {
+    const ImportedRTC = await import("recordrtc");
+    RecordRTC = ImportedRTC.default;
+    options = { audioBitsPerSecond: 128000, mimeType: "audio/webm" };
+  }
+});
 
 const audioTranscriptionService: AudioTranscriptionService = new AudioTranscriptionService();
-const options = { audioBitsPerSecond: 128000, mimeType: "audio/webm" };
 const loading: Ref<boolean> = ref(false);
 const percentageAudioPazamed: Ref<number> = ref(0);
-let mediaRecorder: MediaRecorder | null = null;
 let chunks: BlobPart[] = [];
 
-const recordAudio = async () => {
-  if (!window.MediaRecorder) {
-    alert("MediaRecorder not supported on your browser, please use Firefox or Chrome.");
-    return;
+async function recordAudio() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  if (RecordRTC) {
+    recorder = new RecordRTC(stream, options);
   }
 
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true, preferCurrentTab: false });
-  mediaRecorder = new MediaRecorder(stream, options);
-  mediaRecorder.start();
+  if (!recorder) return;
+  recorder.startRecording();
   loading.value = true;
-  let duration = 7000; // Duration of the recording in milliseconds
+  let duration = 5000; // Duration of the recording in milliseconds
 
   let startTime = Date.now(); // Get the current time
 
@@ -55,19 +63,21 @@ const recordAudio = async () => {
     percentageAudioPazamed.value = Math.floor(percentage);
   }, 100);
 
-  setTimeout(() => {
-    if (mediaRecorder) mediaRecorder.stop();
+  setTimeout(async () => {
+    if (recorder) {
+      recorder.stopRecording(async () => {
+        let blob = recorder?.getBlob();
+        if (blob) {
+          chunks.push(blob);
+          await sendData();
+        }
+      });
+    }
     clearInterval(intervalId);
     percentageAudioPazamed.value = 100;
     loading.value = false;
   }, duration);
-
-  mediaRecorder.ondataavailable = (event) => {
-    chunks.push(event.data);
-  };
-
-  mediaRecorder.onstop = sendData;
-};
+}
 
 const sendData = async () => {
   const blob = new Blob(chunks, { type: "audio/wav" });
