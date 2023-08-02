@@ -2,7 +2,7 @@
   <HeadlessMenu as="div" class="tw-relative tw-inline-block tw-text-left">
     <div>
       <HeadlessMenuButton
-        class="tw-bg-gray-0 tw-flex tw-items-center tw-rounded-full tw-text-gray-400 hover:tw-text-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2 focus:tw-ring-offset-gray-100"
+        class="dark:tw-text-white dark:tw-bg-blue-600 dark:hover:tw-bg-blue-700 dark:tw-focus:ring-blue-800 tw-bg-gray-0 tw-flex tw-items-center tw-rounded-full tw-text-gray-400 hover:tw-text-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2 focus:tw-ring-offset-gray-100"
       >
         <span class="tw-sr-only">Open options</span>
         <EllipsisVerticalIcon class="tw-h-5 tw-w-5" aria-hidden="true" />
@@ -20,11 +20,11 @@
       <HeadlessMenuItems
         class="tw-absolute tw-right-0 tw-z-10 tw-mt-2 tw-w-56 tw-origin-top-right tw-rounded-md tw-bg-white tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
       >
-        <div class="tw-w-full tw-py-1">
+        <div class="tw-w-full tw-py-1 dark:tw-bg-gray-700 tw-bg-white">
           <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
             <a
               :href="props.searchEntry.link"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
+              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
             >
               Go to podcast homepage
               <svg-icon name="link" class="tw-h-5 tw-w-4 tw-p-0.5" />
@@ -33,7 +33,7 @@
           <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
             <a
               :href="props.searchEntry.url"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
+              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
             >
               Podcast RSS-feed
               <svg-icon name="rss" class="tw-h-5 tw-w-4 tw-p-0.5" />
@@ -42,7 +42,7 @@
           <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
             <button
               :href="props.searchEntry.id"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-w-full tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
+              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-w-full tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
               @click="copySegmentLink"
             >
               Copy link to segment
@@ -52,7 +52,7 @@
           <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
             <a
               :href="props.searchEntry.episodeLinkToEpisode"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm']"
+              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
             >
               Go to episode
               <svg-icon name="link" class="tw-h-5 tw-w-4 tw-p-0.5" />
