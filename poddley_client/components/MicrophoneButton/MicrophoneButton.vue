@@ -35,7 +35,7 @@ onMounted(async () => {
   if (process.client) {
     const ImportedRTC = await import("recordrtc");
     RecordRTC = ImportedRTC.default;
-    options = { audioBitsPerSecond: 128000, mimeType: "audio/webm" };
+    options = { audioBitsPerSecond: 128000, mimeType: "audio/wav" };
   }
 });
 
@@ -85,8 +85,8 @@ const sendData = async () => {
   formData.append("audio", blob);
 
   try {
-    const response = await audioTranscriptionService.uploadAudioFile(formData);
-    console.log(response);
+    const response: any = await audioTranscriptionService.uploadAudioFile(formData);
+    alert(response.message);
   } catch (error) {
     console.error("Error: ", error);
   }
