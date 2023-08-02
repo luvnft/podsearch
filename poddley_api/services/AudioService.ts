@@ -20,7 +20,7 @@ class AudioService {
       const mainCommand = `../whisper.cpp/main -m ../whisper.cpp/models/ggml-base.en.bin ${outputFilePath} -oj`;
       await execPromisified(mainCommand);
 
-      const jsonData = fs.readFileSync(outputFilePath + ".json", "utf-8");
+      const jsonData: string = fs.readFileSync(outputFilePath + ".json", "utf-8");
       const whisperCppTranscriptionType: WhisperCppTranscriptionType = JSON.parse(jsonData);
 
       // Delete the original and converted files
@@ -36,11 +36,16 @@ class AudioService {
     await new Promise((resolve, reject) => {
       ffmpeg(inputPath).outputOptions("-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le").save(outputPath).on("end", resolve).on("error", reject);
     });
-  } 
+  }
 
   private extractTranscriptionText(transcriptionType: WhisperCppTranscriptionType): string {
-    return transcriptionType.transcription.map((transcription: WhisperCppTranscription) => transcription.text).join(" ").trim() || "";
+    return (
+      transcriptionType.transcription
+        .map((transcription: WhisperCppTranscription) => transcription.text)
+        .join(" ")
+        .trim() || ""
+    );
   }
-}  
+}
 
 export default AudioService;
