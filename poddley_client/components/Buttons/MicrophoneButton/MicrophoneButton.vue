@@ -58,7 +58,7 @@ async function recordAudio() {
   if (!recorder) return;
   recorder.startRecording();
   loading.value = true;
-  let duration = 5000; // Duration of the recording in milliseconds
+  let duration = 4000; // Duration of the recording in milliseconds
 
   let startTime = Date.now(); // Get the current time
 
