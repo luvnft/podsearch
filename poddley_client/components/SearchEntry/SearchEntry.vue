@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-mx-0 tw-flex tw-flex-col tw-items-center tw-justify-center tw-border-b tw-border-gray-300 tw-bg-white tw-p-0 tw-shadow-sm md:tw-gap-y-0">
+  <div class="tw-mx-0 tw-flex tw-flex-col tw-items-center tw-justify-center tw-border-b tw-border-gray-300 tw-bg-white tw-p-0 tw-shadow-sm md:tw-gap-y-0 dark:tw-bg-gray-800 dark:tw-border-gray-700">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex tw-m-0 tw-flex tw-flex-col tw-items-start tw-justify-center tw-px-0 tw-pb-1.5">
       <div class="tw-min-h-full tw-min-w-full tw-max-w-full">
         <div v-if="props.searchEntry.youtubeVideoLink">
@@ -33,13 +33,13 @@
       <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
         <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
           <div class="tw-mb-2 tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-justify-between tw-pr-1">
-            <p class="tw-mb-0 tw-font-bold">
+            <p class="tw-mb-0 tw-font-bold dark:tw-text-white">
               {{ props.searchEntry.episodeTitle }}
             </p>
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment tw-mb-1.5 tw-mt-1 tw-flex tw-rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="segment tw-mb-1.5 tw-mt-1 tw-flex tw-rounded-lg dark:tw-bg-gray-600 dark:tw-text-gray-300" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div class="loader" v-if="subtitlesActivated">
                 <span></span>
                 &nbsp;
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="tw-my-1 tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5">
-            <p class="tw-m-0">
+            <p class="tw-m-0 dark:tw-text-white">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
