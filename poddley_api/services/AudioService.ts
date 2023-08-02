@@ -44,8 +44,8 @@ class AudioService {
         .map((transcription: WhisperCppTranscription) => transcription.text)
         .join(" ")
         .trim()
-        .replace(/[^a-zA-Z0-9.,\s]/gi, "") || ""
-    ); 
+        .replace(/[^a-zA-Z0-9.,\s]|([A-Z]{2,})/gi, '') || ""
+        );
   }
 }
 
