@@ -1,4 +1,4 @@
-<template>
+x<template>
   <div class="wrapper">
     <NuxtLayout>
       <NuxtLoadingIndicator />

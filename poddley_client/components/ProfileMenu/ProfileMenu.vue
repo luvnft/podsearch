@@ -2,7 +2,7 @@
   <div class="tw-h-full">
     <HeadlessMenu as="div" class="tw-inset-y-0 tw-right-0 tw-flex tw-h-full tw-w-full tw-origin-top-left tw-items-center sm:tw-hidden" v-slot="{ open, close }">
       <HeadlessMenuButton
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
+        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-400 dark:focus:tw-ring-gray-600"
       >
         <span class="tw-sr-only">Open main menu</span>
         <UserCircleIcon v-if="!open" class="tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
@@ -21,7 +21,7 @@
           @click="close"
         >
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="login" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Login/Signup</NuxtLink>
+            <NuxtLink to="login" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white dark:tw-bg-gray-700']">Login/Signup</NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" v-if="user">
             <button @click="logout" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline']">Logout</button>
