@@ -1,5 +1,8 @@
 # Poddley - Shazam for podcasts
 
+## Main Goal:
+The main goal of the website/service is to be the Shazam for podcast clips. Therefore we are not going to expand upon this and its search search functionality beyond its main purpose.
+
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
 
@@ -223,25 +226,33 @@ Has to be a live version auto
 - ~~[ ] Move navbar to bottom~~ (bad idea, so no)
 - ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [x] Skal kun blinke hvis man starter play
-- [ ] Slett konto
-- [ ] En bruker skal kunne se en hiatorikk over podde historikken deres ala iPhone shazam, 
-- [ ] Se lagrede quotes
-- [ ] Uplod a picture/profile pic using r3
-- [ ] Audio to text transformation search
+- [x] Audio to text transformation search
 - [ ] External API to sell.
 - [ ] Start opp transcriberen igjen
-- [ ] Add dark mode... toggle button + functionality.
+- [x] Add dark mode... toggle button + functionality.
 - [ ] Finish the rest of the desktop design and shit
-- [ ] Add word, by, word, highlighting during playback
+- [ ] Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented
 - [ ] Download all podcats (should be)...
 - [x] Fix device issue
-- [ ] The main goal of the website is to be the Shazam for podcast clips. Therefore we are not going to expand upon the search functionality beyond its main purpose.
 - [ ] Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra
-- [ ] Record knappen skal være der doneringsknappen er nå
+- ~~[x] Record knappen skal være der doneringsknappen er nå~~
 - [x] Fix home button not reflecting same behaviour as home button
-- [ ] The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented
 - [x] Added animate to the text changing section
+- [x] Fjern overflødig respons fra API-et
+- [x] Fullfør respons
+- [ ] Push tekst lenger ned
+- [ ] Add dark mode icon to the button
+- [ ] Improve dark mode colors
+- [x] Fiks svart bakgrunn
+- [x] Fjern overflødig møkkatekst fra responsen
+- [x] Fjern profile of push mikroen dit
 
 **After completion:**
 - [ ] Make MeiliSearch production probably.
 - [ ] Create a blog post explaining the project?
+
+**Later**:
+- [ ] En bruker skal kunne se en hiatorikk over podde historikken deres ala iPhone shazam, 
+- [ ] Slett konto
+- [ ] Se lagrede quotes
+- [ ] Upload a picture/profile pic using r3
