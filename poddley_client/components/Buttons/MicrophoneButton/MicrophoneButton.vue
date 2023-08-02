@@ -26,7 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import AudioTranscriptionService from "../../utils/services/AudioTranscriptionService";
+import AudioTranscriptionService from "../../../utils/services/AudioTranscriptionService";
+import { useSearchStore } from "../../../store/searchStore";
+import { storeToRefs } from "pinia";
+const searchStore = useSearchStore();
+const { searchQuery } = storeToRefs(searchStore);
+
 let RecordRTC: any = null;
 let recorder: any = null;
 let options: any = null;
@@ -86,7 +91,13 @@ const sendData = async () => {
 
   try {
     const response: any = await audioTranscriptionService.uploadAudioFile(formData);
-    alert(response.message);
+    console.log(response.message);
+    if (response?.message) {
+      searchQuery.value = {
+        ...searchQuery.value,
+        searchString: response.message,
+      };
+    }
   } catch (error) {
     console.error("Error: ", error);
   }
