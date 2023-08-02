@@ -1,10 +1,10 @@
 <template>
-  <div class="tw-mt-3 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center">
+  <div class="tw-mt-3 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-text-gray-900 dark:tw-text-white">
     <h1>About</h1>
     {{ 
       $colorMode.value
     }}
-    <p class="tw-text-gray-80 dark:tw-text-blue-800">We like podcasts</p>
+    <p>We like podcasts</p>
   </div>
 </template>
 
