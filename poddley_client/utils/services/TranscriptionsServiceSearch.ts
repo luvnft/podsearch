@@ -1,4 +1,3 @@
-import { SearchResponse } from "~~/types/SearchResponse";
 import axios, { AxiosResponse } from "axios";
 import { SearchQuery } from "types/SearchQuery";
 
