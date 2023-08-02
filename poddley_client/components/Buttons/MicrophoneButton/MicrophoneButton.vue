@@ -103,7 +103,7 @@ const sendData = async () => {
 
   try {
     const response: any = await audioTranscriptionService.uploadAudioFile(formData);
-    console.log(response.message);
+    alert(response.message);
     if (response?.message) {
       searchQuery.value = {
         ...searchQuery.value,
