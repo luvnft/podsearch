@@ -44,7 +44,7 @@
                 <span></span>
                 &nbsp;
               </div>
-              <div class="animate__animated animate__flipInX animate__faster">
+              <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''}`">
                 <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
               </div>
             </div>
