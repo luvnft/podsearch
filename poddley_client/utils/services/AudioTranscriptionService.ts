@@ -10,6 +10,7 @@ export default class AudioTranscriptionService extends ApiService {
       method: "POST",
       baseURL: this.BASE_URL,
       body: formData,
+      immediate: true,
     });
     const data: any = res.data.value;
     return data;
