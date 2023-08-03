@@ -11,6 +11,7 @@ export default class AudioTranscriptionService extends ApiService {
       baseURL: this.BASE_URL,
       body: formData,
       immediate: true,
+      mode: "no-cors",
     });
     const data: any = res.data.value;
     return data;
