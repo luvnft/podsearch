@@ -40,7 +40,7 @@ onMounted(async () => {
   if (process.client) {
     const ImportedRTC = await import("recordrtc");
     RecordRTC = ImportedRTC.default;
-    options = { type: "audio", mimeType: "audio/mpeg" };
+    options = { type: "audio", mimeType: "audio/webm;codecs=pcm" };
   }
 });
 
