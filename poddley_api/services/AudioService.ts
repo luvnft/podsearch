@@ -4,7 +4,7 @@ import util from "util";
 import { exec } from "child_process";
 import { WhisperCppTranscriptionType, WhisperCppTranscription } from "../types/WhisperCppTranscriptionType";
 
-const unlinkPromisified = util.promisify(fs.unlink);
+// const unlinkPromisified = util.promisify(fs.unlink);
 const execPromisified = util.promisify(exec);
 
 class AudioService {
@@ -24,7 +24,7 @@ class AudioService {
       const whisperCppTranscriptionType: WhisperCppTranscriptionType = JSON.parse(jsonData);
 
       // Delete the original and converted files
-      await Promise.all([unlinkPromisified(file.path), unlinkPromisified(outputFilePath)]);
+      // await Promise.all([unlinkPromisified(file.path), unlinkPromisified(outputFilePath)]);
 
       return this.extractTranscriptionText(whisperCppTranscriptionType);
     } catch (error: any) {
@@ -39,13 +39,14 @@ class AudioService {
   }
 
   private extractTranscriptionText(transcriptionType: WhisperCppTranscriptionType): string {
-    return (
-      transcriptionType.transcription
-        .map((transcription: WhisperCppTranscription) => transcription.text)
-        .join(" ")
-        .trim()
-        .replace(/[^a-zA-Z0-9.,\s]/gi, "") || ""
-    ); 
+    let d = transcriptionType.transcription.map((transcription: WhisperCppTranscription) => transcription.text).join(" ");
+
+    d = d
+      .trim()
+      .replace(/[^a-zA-Z0-9.,\s]/gi, "")
+      .replace(/[A-Z]{2,}/g, "")
+      .replace(/\s{2,}/g, " "); 
+    return d;
   }
 }
 
