@@ -40,7 +40,7 @@ onMounted(async () => {
   if (process.client) {
     const ImportedRTC = await import("recordrtc");
     RecordRTC = ImportedRTC.default;
-    options = { audioBitsPerSecond: 128000, mimeType: "audio/wav" };
+    options = { audioBitsPerSecond: 256000, mimeType: "audio/webm" };
   }
 });
 
@@ -76,7 +76,7 @@ async function recordAudio() {
     if (!recorder) return;
     recorder.startRecording();
     loading.value = true;
-    let duration = 4000; // Duration of the recording in milliseconds
+    let duration = 8000; // Duration of the recording in milliseconds
 
     let startTime = Date.now(); // Get the current time
 
