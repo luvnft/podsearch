@@ -40,7 +40,7 @@ onMounted(async () => {
   if (process.client) {
     const ImportedRTC = await import("recordrtc");
     RecordRTC = ImportedRTC.default;
-    options = { audioBitsPerSecond: 256000, mimeType: "audio/webm" };
+    options = { audioBitsPerSecond: 256000, mimeType: "audio/wav", type: "audio" };
   }
 });
 
@@ -104,6 +104,7 @@ const sendData = async () => {
   try {
     const response: any = await audioTranscriptionService.uploadAudioFile(formData);
     alert(response.message);
+    console.log(searchQuery.value);
     if (response?.message) {
       searchQuery.value = {
         ...searchQuery.value,
