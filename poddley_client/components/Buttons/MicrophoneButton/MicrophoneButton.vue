@@ -87,6 +87,16 @@ async function startRecordingOtherBrowsers() {
 async function stopRecordingSafariIos(mediaRecorder: MediaRecorder) {
   mediaRecorder.stop();
   stream.getTracks().forEach((track) => track.stop());
+
+  let blob = recorder?.getBlob();
+  if (blob) {
+    chunks.push(blob);
+    await sendData();
+  }
+  // Stop all tracks in the stream
+  if (stream) {
+    stream.getTracks().forEach((track) => track.stop());
+  }
 }
 
 async function stopRecordingOtherBrowsers() {
@@ -109,7 +119,7 @@ async function recordAudio() {
   if (!recording.value) {
     recording.value = true;
     loading.value = true;
-    let duration = 8000;
+    let duration = 4000;
     let startTime = Date.now();
     let intervalId = setInterval(() => {
       let elapsed = Date.now() - startTime;
