@@ -84,7 +84,6 @@ class TranscriptionsService {
 
     // Search results => Perform it.
     let initialSearchResponse: any = await this.segmentsIndex.search(undefined, mainQuery);
-    console.log(initialSearchResponse);
 
     const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
     const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
@@ -275,7 +274,7 @@ class TranscriptionsService {
 
     const finalResponse: SearchResponse = {
       hits: [],
-      query: "",
+      query: "", 
       processingTimeMs: 0,
       limit: undefined,
       offset: undefined,
