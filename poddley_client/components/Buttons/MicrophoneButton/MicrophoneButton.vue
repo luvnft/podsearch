@@ -29,140 +29,14 @@
 import AudioTranscriptionService from "../../../utils/services/AudioTranscriptionService";
 import { useSearchStore } from "../../../store/searchStore";
 import { storeToRefs } from "pinia";
-const { isSafari } = useDevice();
 const searchStore = useSearchStore();
+const { isSafari } = useDevice();
 const { searchQuery } = storeToRefs(searchStore);
 const recording: Ref<boolean> = ref(false);
-let RecordRTC: any = null;
-let recorder: any = null;
-let options: any = null;
-let chunks: BlobPart[] = [];
-
-onMounted(async () => {
-  if (process.client) {
-    const ImportedRTC = await import("recordrtc");
-    RecordRTC = ImportedRTC.default;
-    options = { type: "audio", mimeType: "audio/mpeg" };
-  }
-});
-
 const audioTranscriptionService: AudioTranscriptionService = new AudioTranscriptionService();
 const loading: Ref<boolean> = ref(false);
 const percentageAudioPazamed: Ref<number> = ref(0);
 let stream: MediaStream;
-
-async function startRecordingSafariIos() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const mediaRecorder = new MediaRecorder(stream);
-
-    mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-
-    mediaRecorder.onstop = async () => {
-      chunks = [];
-      await sendData();
-    };
-
-    mediaRecorder.start();
-    return mediaRecorder;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function startRecordingOtherBrowsers() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    if (RecordRTC) {
-      recorder = new RecordRTC(stream, options);
-    }
-    console.log("Starting recording...");
-    recorder.startRecording();
-    return recorder;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function stopRecordingSafariIos(mediaRecorder: MediaRecorder) {
-  mediaRecorder.stop();
-  stream.getTracks().forEach((track) => track.stop());
-
-  let blob = recorder?.getBlob();
-  if (blob) {
-    chunks.push(blob);
-    await sendData();
-  }
-  // Stop all tracks in the stream
-  if (stream) {
-    stream.getTracks().forEach((track) => track.stop());
-  }
-}
-
-async function stopRecordingOtherBrowsers() {
-  if (recorder) {
-    recorder.stopRecording(async () => {
-      let blob = recorder?.getBlob();
-      if (blob) {
-        chunks.push(blob);
-        await sendData();
-      }
-      // Stop all tracks in the stream
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    });
-  }
-}
-
-async function recordAudio() {
-  if (!recording.value) {
-    recording.value = true;
-    loading.value = true;
-    let duration = 4000;
-    let startTime = Date.now();
-    let intervalId = setInterval(() => {
-      let elapsed = Date.now() - startTime;
-      let percentage = (elapsed / duration) * 100;
-      percentageAudioPazamed.value = Math.floor(percentage);
-    }, 100);
-
-    // Determine the browser and start recording
-    console.log("IsSafari: ", isSafari);
-    const mediaRecorder = isSafari ? await startRecordingSafariIos() : await startRecordingOtherBrowsers();
-
-    setTimeout(async () => {
-      if (isSafari) {
-        await stopRecordingSafariIos(mediaRecorder);
-      } else {
-        await stopRecordingOtherBrowsers();
-      }
-      clearInterval(intervalId);
-      percentageAudioPazamed.value = 100;
-      loading.value = false;
-      recording.value = false;
-    }, duration);
-  }
-}
-
-const sendData = async () => {
-  const blob = new Blob(chunks, { type: "audio/wav" });
-  const formData = new FormData();
-  formData.append("audio", blob);
-
-  try {
-    console.log("Sending audioFile");
-    const response: any = await audioTranscriptionService.uploadAudioFile(formData);
-    alert(response.message);
-    console.log(searchQuery.value);
-    if (response?.message) {
-      searchQuery.value = {
-        ...searchQuery.value,
-        searchString: response.message,
-      };
-    }
-  } catch (error) {
-    console.error("Error: ", error);
-  }
-};
+let options: any = null;
+let chunks: BlobPart[] = [];
 </script>
