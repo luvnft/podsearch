@@ -240,12 +240,12 @@ Has to be a live version auto
 - [x] Added animate to the text changing section
 - [x] Fjern overflødig respons fra API-et
 - [x] Fullfør respons
-- [ ] Push tekst lenger ned
 - [ ] Add dark mode icon to the button
 - [ ] Improve dark mode colors
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
 - [x] Fjern profile of push mikroen dit
+- [ ] Disable animation button
 
 **After completion:**
 - [ ] Make MeiliSearch production probably.
