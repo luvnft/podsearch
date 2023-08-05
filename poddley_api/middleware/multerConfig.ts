@@ -13,14 +13,11 @@ const storage = multer.diskStorage({
   },
 });
 
-const audioMimeTypes = ["audio/mpeg", "audio/wav", "audio/aac", "wav", "mp3", "audio/wave"];
-
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    const fileType: string = file?.originalname.split(".")[-1] || "";
-    if (audioMimeTypes.includes(file.mimetype) || audioMimeTypes.includes(fileType)) {
-      // check file type to be audio
+    if (/(audio)/gi.test(file.mimetype)) {
+      // check if file type is audio (I guess this could technically be spoofed by modifying the mimetype "I think at least")
       cb(null, true);
     } else {
       cb(null, false); // reject the file, no error
