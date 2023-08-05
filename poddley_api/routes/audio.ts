@@ -1,6 +1,5 @@
 import express from "express";
 import AudioController from "../controllers/AudioController";
-import { Request, Response } from "express";
 import upload from "../middleware/multerConfig";
 
 //Router
@@ -14,3 +13,4 @@ audioServiceRouter.post("/uploadAudio", upload.single("audio"), audioController.
 
 //Export it
 export default audioServiceRouter;
+ 
