@@ -54,7 +54,6 @@ function searchViaWorker() {
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-  console.log("HUH?=?");
   // Send a message to the worker to perform the search
   if (worker) {
     searchViaWorker();
