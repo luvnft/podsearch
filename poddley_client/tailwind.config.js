@@ -20,6 +20,19 @@ module.exports = {
   prefix: "",
   important: true,
   theme: {
+    nightwind: {
+      colors: {
+        white: "gray.800",
+        black: "gray.50",
+        red: {
+          100: "#1E3A8A", // or 'blue.900'
+          500: "#3B82F6", // or 'blue.500'
+          900: "#DBEAFE", // or 'blue.100'
+        },
+        primary: "var(--secondary)",
+        secondary: "var(--primary)",
+      },
+    },
     extend: {
       keyframes: {
         colorPulse: {
