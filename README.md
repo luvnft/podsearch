@@ -227,25 +227,25 @@ Has to be a live version auto
 - ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [x] Skal kun blinke hvis man starter play
 - [x] Audio to text transformation search
-- [ ] External API to sell.
-- [ ] Start opp transcriberen igjen
 - [x] Add dark mode... toggle button + functionality.
-- [ ] Finish the rest of the desktop design and shit
-- [ ] Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented
-- [ ] Download all podcats (should be)...
 - [x] Fix device issue
-- [ ] Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra
 - ~~[x] Record knappen skal være der doneringsknappen er nå~~
 - [x] Fix home button not reflecting same behaviour as home button
 - [x] Added animate to the text changing section
 - [x] Fjern overflødig respons fra API-et
 - [x] Fullfør respons
-- [ ] Add dark mode icon to the button
-- [ ] Improve dark mode colors
+-  ~~[ ] Add dark mode icon to the button~~
+- [x] Improve dark mode colors
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
 - [x] Fjern profile of push mikroen dit
-- [ ] Disable animation button
+- ~~[ ] Disable animation button~~ (nah)
+- [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
+- ~~[ ] Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
+- [ ] ~~Download all podcats (should be)...~~
+- [ ] Start opp transcriberen igjen
+- [ ] Finish the rest of the desktop design and shit
+- [ ] Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive
 
 **After completion:**
 - [ ] Make MeiliSearch production probably.
@@ -256,3 +256,4 @@ Has to be a live version auto
 - [ ] Slett konto
 - [ ] Se lagrede quotes
 - [ ] Upload a picture/profile pic using r3
+- [ ] External API to sell.
