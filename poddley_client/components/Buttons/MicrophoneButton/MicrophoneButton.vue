@@ -41,16 +41,15 @@ const loading: Ref<boolean> = ref(false);
 const percentageAudioPazamed: Ref<number> = ref(0);
 
 // Data
-const enableEchoCancellation = ref(true);
 const recordings: Ref<any> = ref([]);
-const cleanupWhenFinished = ref(true);
 let recorderService: RecorderService;
 
 onMounted(async () => {
   recorderService = new RecorderService();
-  recorderService.config.enableEchoCancellation = enableEchoCancellation.value;
-  recorderService.config.stopTracksAndCloseCtxWhenFinished = cleanupWhenFinished.value;
+  recorderService.config.enableEchoCancellation = false;
   recorderService.setMicGain(3);
+  recorderService.config.createDynamicsCompressorNode = false;
+  recorderService.config.stopTracksAndCloseCtxWhenFinished = true;
 
   // Start eventlistener for this:
   recorderService.em.addEventListener("recording", (event: any) => onNewRecording(event));
