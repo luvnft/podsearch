@@ -22,15 +22,15 @@ module.exports = {
   theme: {
     nightwind: {
       colors: {
-        white: "gray.800",
+        white: "gray.900",
         black: "gray.50",
-        red: {
-          100: "#1E3A8A", // or 'blue.900'
-          500: "#3B82F6", // or 'blue.500'
-          900: "#DBEAFE", // or 'blue.100'
+        neutral: {
+          50: "gray.700",
+          300: "gray.600",
+          500: "gray.500",
+          700: "gray.400",
+          900: "gray.300",
         },
-        primary: "var(--secondary)",
-        secondary: "var(--primary)",
       },
     },
     extend: {
