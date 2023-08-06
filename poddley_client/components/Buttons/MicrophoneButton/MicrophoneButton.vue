@@ -50,6 +50,7 @@ onMounted(async () => {
   recorderService = new RecorderService();
   recorderService.config.enableEchoCancellation = enableEchoCancellation.value;
   recorderService.config.stopTracksAndCloseCtxWhenFinished = cleanupWhenFinished.value;
+  recorderService.setMicGain(2);
 
   // Start eventlistener for this:
   recorderService.em.addEventListener("recording", (event: any) => onNewRecording(event));
