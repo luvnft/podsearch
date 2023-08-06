@@ -29,9 +29,6 @@
           <HeadlessMenuItem v-slot="{ active }">
             <NuxtLink to="developer" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">For developers</NuxtLink>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']" @click="toggleColorMode">{{ isDark ? "Dark" : "Light" }} mode</NuxtLink>
-          </HeadlessMenuItem>
         </HeadlessMenuItems>
       </transition>
     </HeadlessMenu>
@@ -42,11 +39,4 @@
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 
 const donateLink: Ref<string> = ref("https://www.buymeacoffee.com/poddley");
-
-const colorMode = useColorMode();
-const isDark = computed(() => colorMode.value === "dark");
-const toggleColorMode = () => {
-  colorMode.value = isDark.value ? "light" : "dark";
-  console.log("Mode is: ", colorMode.value);
-};
 </script>
