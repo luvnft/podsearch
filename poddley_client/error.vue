@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-min-w-screen tw-flex tw-min-h-screen tw-items-center tw-justify-center">
+  <div class="min-w-screen flex min-h-screen items-center justify-center">
     <NuxtLink to="/">
       (404) Error occurred. Click here to go back
     </NuxtLink>

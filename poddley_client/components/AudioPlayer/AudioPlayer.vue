@@ -1,12 +1,12 @@
 <template>
-  <div :class="`tw-w-full tw-rounded-lg ${!isIos || !isApple || !isSafari ? 'customShadow tw-shadow-gray-400' : ''}`">
+  <div :class="`w-full rounded-lg ${!isIos || !isApple || !isSafari ? 'shadow-xs shadow-gray-400' : ''}`">
     <div>
       <audio
         :key="props.timeLocation"
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
-        class="tw-m-0 tw-w-full tw-rounded-lg tw-p-0 tw-shadow-none"
+        class="m-0 w-full rounded-lg p-0 shadow-none bg-white"
         ref="audioPlayerRef"
         :preload="'none'"
         :title="props.episodeTitle"
@@ -69,7 +69,7 @@ const onStartedPlay = () => {
 
 <style scoped>
 #custom-audio {
-  background-color: #ffff;
+  background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0;
 }
@@ -104,8 +104,8 @@ const onStartedPlay = () => {
 }
 
 .customShadow {
-  --tw-shadow: 0 0 2px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4) !important;
-  --tw-shadow-colored: 0 3px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+  --shadow: 0 0 2px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4) !important;
+  --shadow-colored: 0 3px 3px 0 var(--shadow-color), 0 1px 2px -1px var(--shadow-color) !important;
+  box-shadow: var(--ring-offset-shadow, 0 0 #0000), var(--ring-shadow, 0 0 #0000), var(--shadow) !important;
 }
 </style>

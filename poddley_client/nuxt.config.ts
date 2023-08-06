@@ -20,11 +20,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  colorMode: {
-    classSuffix: "",
-    classPrefix: "tw-",
-    globalName: "dark",
-  },
   vueuse: {
     ssrHandlers: true,
     autoImports: true,
@@ -35,19 +30,7 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
-  modules: [
-    "@nuxtjs/tailwindcss",
-    "@nuxtjs/device",
-    "@vueuse/nuxt",
-    "@pinia/nuxt",
-    "@nuxt/image",
-    "@nuxtjs/supabase",
-    "nuxt-lodash",
-    "nuxt-headlessui",
-    "@nuxtjs/svg-sprite",
-    "nuxt-delay-hydration",
-    "@nuxtjs/color-mode",
-  ],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
     prefix: "_",
   },

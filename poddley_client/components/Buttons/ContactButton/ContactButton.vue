@@ -1,10 +1,10 @@
 <template>
   <a
     :href="`mailto:${contactEmail}`"
-    class="tw-group tw-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-font-medium tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm"
+    class="group flex items-center justify-center rounded-md border border-gray-200 bg-gray-50 fill-gray-400 p-2 font-medium shadow hover:bg-gray-100 active:shadow-sm"
   >
     <button type="button" title="contactButton">
-      <svg-icon name="contact" class="tw-h-6 tw-w-6 tw-scale-90 tw-text-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
+      <svg-icon name="contact" class="h-6 w-6 scale-90 text-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
     </button>
   </a>
 </template>

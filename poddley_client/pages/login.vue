@@ -1,12 +1,12 @@
 <template>
-  <div class="tw-flex tw-min-h-screen tw-flex-col tw-items-center tw-justify-center tw-py-12 sm:tw-px-6 lg:tw-px-8">
-    <h2 class="tw-u-text-white tw-my-6 tw-text-center tw-text-3xl tw-font-extrabold">Sign in to continue to Poddley</h2>
-    <div class="tw-mt-4 tw-w-1/3">
-      <button class="tw-w-full tw-rounded-lg tw-border tw-border-gray-300 tw-bg-white tw-py-2.5 tw-text-sm tw-font-medium tw-text-gray-900 tw-shadow-sm hover:tw-bg-gray-50">
+  <div class="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
+    <h2 class="u-text-white my-6 text-center text-3xl font-extrabold">Sign in to continue to Poddley</h2>
+    <div class="mt-4 w-1/3">
+      <button class="w-full rounded-lg border border-gray-300 bg-white py-2.5 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50">
         Log in with Google
       </button>
-      <button class="tw-mt-3 tw-w-full tw-rounded-lg tw-bg-black tw-py-2.5 tw-text-sm tw-font-medium tw-text-white tw-shadow-sm hover:tw-bg-gray-700">Log in with ....</button>
-      <button  class="tw-mt-3 tw-w-full tw-rounded-lg tw-bg-gray-900 tw-py-2.5 tw-text-sm tw-font-medium tw-text-white tw-shadow-sm hover:tw-bg-gray-800">
+      <button class="mt-3 w-full rounded-lg bg-black py-2.5 text-sm font-medium text-white shadow-sm hover:bg-gray-700">Log in with ....</button>
+      <button  class="mt-3 w-full rounded-lg bg-gray-900 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-gray-800">
         Log in with GitHub
       </button>
     </div>

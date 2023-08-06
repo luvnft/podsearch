@@ -1,6 +1,6 @@
 <template>
-  <ul class="row tw-m-0 tw-flex tw-justify-center tw-gap-y-5 tw-p-0">
-    <li class="col-12 tw-max-w-md tw-p-0 md:tw-p-2" v-for="(searchEntry, index) in props.searchEntries">
+  <ul class="row m-0 flex justify-center gap-y-5 p-0">
+    <li class="col-12 max-w-md p-0 md:p-2" v-for="(searchEntry, index) in props.searchEntries">
       <SearchEntry :searchEntry="searchEntry" :key="searchEntry.id" />
     </li>
   </ul>

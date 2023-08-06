@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center">
-    <svg-icon name="copylink" class="tw-h-5 tw-w-5" />
+  <div class="flex h-6 w-6 items-center justify-center">
+    <svg-icon name="copylink" class="h-5 w-5" />
   </div>
 </template>

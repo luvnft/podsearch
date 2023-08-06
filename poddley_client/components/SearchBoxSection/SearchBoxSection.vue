@@ -1,11 +1,11 @@
 <template>
-  <div class="tw-relative tw-mb-1 tw-mt-1 tw-flex tw-flex-grow tw-items-stretch tw-bg-transparent tw-ring-0 focus-within:tw-z-10">
+  <div class="relative mb-1 mt-1 flex flex-grow items-stretch bg-transparent ring-0 focus-within:z-10">
     <input
       type="text"
       name="search"
       id="search"
       placeholder="Search for a quote in a podcast here"
-      class="tw-outline-none tw-block tw-h-full tw-w-full tw-justify-center tw-rounded-md tw-border-gray-300 tw-pl-0 tw-pr-8 tw-text-center tw-text-base focus:tw-border-gray-500 focus:tw-ring-gray-500 dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white dark:tw-bg-gray-700"
+      class="outline-none block h-full w-full justify-center rounded-md border-gray-300 pl-0 pr-8 text-center text-base focus:border-gray-500 focus:ring-gray-500 bg-white"
       autofocus
       v-model="searchQuery.searchString"
       @input="navigateWithQuery"
