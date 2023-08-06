@@ -187,7 +187,7 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
 
 <style scoped>
 :deep(.highlight) {
-  background: rgb(255, 255, 134) !important;
+  @apply text-red-500
 }
 
 .loader {
