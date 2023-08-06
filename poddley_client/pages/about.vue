@@ -4,9 +4,3 @@
     <p>We like podcasts</p>
   </div>
 </template>
-
-<script setup lang = "ts">
-definePageMeta({
-  colorMode: 'dark',
-})
-</script>

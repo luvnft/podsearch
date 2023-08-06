@@ -2,12 +2,11 @@
   <div>
     <div class="flex h-full w-full items-center justify-center overflow-hidden sm:hidden">
       <button
-          class="flex h-full w-full items-center justify-center rounded-md p-0 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 "
-          @click="toggleColorMode"
+        class="text-gray-400 flex h-full w-full items-center justify-center rounded-md p-0 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+        @click="toggleColorMode"
       >
-        <svg-icon v-if="isDark" name="sun" class="min-h-6 mt-1.5 h-8 max-h-7 w-4/6 " />
-        <svg-icon v-else name="moon" class="min-h-6 mt-1.5 h-8 max-h-7 w-4/6 " />
-
+        <svg-icon v-if="isDark" name="sun" class="min-h-7 mt-0 h-5 max-h-7 w-4/6" />
+        <svg-icon v-else name="moon" class="mt-0 h-5 max-h-7 w-4/6" />
       </button>
     </div>
   </div>
@@ -25,5 +24,3 @@ const toggleColorMode = () => {
   colorMode.value = isDark.value ? "light" : "dark";
 };
 </script>
-
-
