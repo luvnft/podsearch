@@ -8,7 +8,7 @@
               <div class="flex h-full w-full flex-nowrap items-center justify-between">
                 <div class="flex h-12 w-full">
                   <BurgerMenu class="col-2 flex h-full items-center justify-center" />
-                  <ButtonsDonateButton class="col-2 flex h-full items-center justify-center" />
+                  <DarkMode class="col-2 flex h-full items-center justify-center" />
                   <NavTitle class="col-4 flex h-full items-center justify-center" />
                   <SearchBox class="col-2 flex h-full items-center justify-center p-0" @click="toggleSearchSection" :openSearchSection="openSearchSection" />
                   <ButtonsMicrophoneButton class="col-2 flex h-full items-center justify-center" />
