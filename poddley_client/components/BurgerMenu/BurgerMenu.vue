@@ -1,41 +1,36 @@
 <template>
-  <div class="tw-h-full">
-    <HeadlessMenu as="div" class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-origin-top-left tw-items-center sm:tw-hidden" v-slot="{ open, close }">
+  <div class="h-full">
+    <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-full w-full origin-top-left items-center sm:hidden" v-slot="{ open, close }">
       <HeadlessMenuButton
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-400 dark:focus:tw-ring-gray-600"
+        class="text-gray-400 flex h-full w-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
       >
-        <span class="tw-sr-only">Open main menu</span>
-        <Bars3Icon v-if="!open" class="tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
-        <XMarkIcon v-else class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
+        <span class="sr-only">Open main menu</span>
+        <Bars3Icon v-if="!open" class="h-full w-full scale-90" aria-hidden="true" />
+        <XMarkIcon v-else class="block h-full w-full scale-90" aria-hidden="true" />
       </HeadlessMenuButton>
       <transition
-        enter-active-class="tw-transition tw-duration-100 tw-ease-out"
-        enter-from-class="tw-transform tw-scale-95 tw-opacity-0"
-        enter-to-class="tw-transform tw-scale-100 tw-opacity-100"
-        leave-active-class="tw-transition tw-duration-75 tw-ease-in"
-        leave-from-class="tw-transform tw-scale-100 tw-opacity-100"
-        leave-to-class="tw-transform tw-scale-95 tw-opacity-0"
+        enter-active-class="transition duration-100 ease-out"
+        enter-from-class="transform scale-95 opacity-0"
+        enter-to-class="transform scale-100 opacity-100"
+        leave-active-class="transition duration-75 ease-in"
+        leave-from-class="transform scale-100 opacity-100"
+        leave-to-class="transform scale-95 opacity-0"
       >
-        <HeadlessMenuItems
-            :class="['tw-absolute tw-left-0 tw-top-12 tw-z-40 tw-w-40 tw-origin-top-left tw-rounded-md tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none dark:tw-bg-gray-700 tw-bg-white']"
-          @click="close"
-        >
+        <HeadlessMenuItems :class="['bg-white absolute left-0 top-12 z-40 w-40 origin-top-left rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5  focus:outline-none']" @click="close">
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="about" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">About</NuxtLink>
+            <NuxtLink to="about" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">About</NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="contact" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">Contact</NuxtLink>
+            <NuxtLink to="contact" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">Contact</NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }">
-            <a :href="donateLink" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">Donate</a>
+            <a :href="donateLink" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">Donate</a>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="developer" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">For developers</NuxtLink>
+            <NuxtLink to="developer" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">For developers</NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']" @click="toggleColorMode">
-              {{ isDark ? "Dark" : "Light" }} mode
-            </NuxtLink>
+            <NuxtLink :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']" @click="toggleColorMode">{{ isDark ? "Dark" : "Light" }} mode</NuxtLink>
           </HeadlessMenuItem>
         </HeadlessMenuItems>
       </transition>

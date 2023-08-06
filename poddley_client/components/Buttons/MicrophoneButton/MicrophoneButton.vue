@@ -1,21 +1,21 @@
 <template>
-  <div class="tw-h-full">
-    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-items-center sm:tw-hidden">
+  <div class="h-full">
+    <div class="inset-y-0 left-0 flex h-full w-full items-center sm:hidden">
       <button
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-fill-gray-400 tw-p-2 hover:tw-bg-gray-100 hover:tw-fill-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500"
+        class="flex h-full w-full items-center justify-center rounded-md fill-gray-400 p-2 hover:bg-gray-100 hover:fill-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
         @click="startRecording"
       >
-        <div class="tw-flex tw-h-full tw-w-full tw-flex-row tw-items-center tw-justify-center">
-          <div class="tw-h-full tw-w-full" v-if="!loading">
-            <svg-icon name="microphone" class="tw-block tw-h-full tw-w-full tw-scale-[0.85] tw-text-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
+        <div class="flex h-full w-full flex-row items-center justify-center">
+          <div class="h-full w-full" v-if="!loading">
+            <svg-icon name="microphone" class="block h-full w-full scale-[0.85] text-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
           </div>
-          <div class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center" v-if="loading">
+          <div class="flex h-full w-full items-center justify-center" v-if="loading">
             <div
-              class="tw-radial-progress tw-flex tw-items-center tw-justify-center tw-text-gray-400 after:tw-hidden"
+              class="radial-progress flex items-center justify-center text-gray-400 after:hidden"
               :style="`--value: ${percentageAudioPazamed}; --thickness: 0.13rem; --size: 2rem`"
             >
-              <div class="tw-h-full tw-w-full" v-if="loading">
-                <svg-icon name="microphone" class="tw-block tw-h-full tw-w-full tw-scale-[0.55] tw-animate-colorPulse tw-text-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
+              <div class="h-full w-full" v-if="loading">
+                <svg-icon name="microphone" class="block h-full w-full scale-[0.55] animate-colorPulse text-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
               </div>
             </div>
           </div>

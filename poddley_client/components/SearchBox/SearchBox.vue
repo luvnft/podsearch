@@ -1,12 +1,12 @@
 <template>
-  <div class="tw-h-full">
-    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-items-center sm:tw-hidden">
+  <div class="h-full">
+    <div class="inset-y-0 left-0 flex h-full w-full items-center sm:hidden">
       <button
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-border-none hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-400 dark:focus:tw-ring-gray-600"
+        class="flex h-full w-full items-center justify-center rounded-md p-2 text-gray-400 hover:border-none hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
       >
-        <span class="tw-sr-only">Open search field</span>
-        <svg-icon name="magnifyingglass" v-if="!props.openSearchSection" class="tw-block tw-h-full tw-w-full tw-scale-[0.85] tw-fill-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
-        <XMarkIcon v-else class="tw-block tw-h-full tw-w-full tw-scale-90 tw-fill-gray-400 group-hover:tw-fill-gray-500" aria-hidden="true" />
+        <span class="sr-only">Open search field</span>
+        <svg-icon name="magnifyingglass" v-if="!props.openSearchSection" class="block h-full w-full scale-[0.85] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+        <XMarkIcon v-else class="block h-full w-full scale-90 fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
       </button>
     </div>
   </div>

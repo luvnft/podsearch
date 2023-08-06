@@ -1,13 +1,13 @@
 <template>
   <NuxtLink
     type="button"
-    :class="`items-center font-medium tw-group tw-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200  ${
-      $route.name !== route ? 'tw-bg-gray-50' : 'tw-border-gray-400 tw-bg-gray-100'
-    } tw-fill-gray-400 tw-p-2 tw-text-gray-400 tw-no-underline tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm`"
+    :class="`items-center font-medium group flex items-center justify-center rounded-md border border-gray-200  ${
+      $route.name !== route ? 'bg-gray-50' : 'border-gray-400 bg-gray-100'
+    } fill-gray-400 p-2 text-gray-400 no-underline shadow hover:bg-gray-100 active:shadow-sm`"
     :to="route"
   >
-    <span class="tw-text-center tw-text-gray-500 group-hover:tw-text-gray-600 group-active:tw-text-gray-600" v-if="!props.loading">Trending podcasts</span>
-    <svg-icon name="spinner" class="tw-h-6 tw-w-6 tw-text-gray-400" v-if="props.loading" />
+    <span class="text-center text-gray-500 group-hover:text-gray-600 group-active:text-gray-600" v-if="!props.loading">Trending podcasts</span>
+    <svg-icon name="spinner" class="h-6 w-6 text-gray-400" v-if="props.loading" />
   </NuxtLink>
 </template>
 

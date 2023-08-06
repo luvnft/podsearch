@@ -1,11 +1,11 @@
 <template>
-  <NuxtLink :to="props.link" class="tw-flex tw-h-full tw-w-full tw-flex-col tw-justify-center tw-gap-1 tw-text-gray-600 tw-no-underline">
+  <NuxtLink :to="props.link" class="flex h-full w-full flex-col justify-center gap-1 text-gray-600 no-underline">
     <button
       type="button"
       title="homeButton"
-      class="items-center font-medium tw-group tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm"
+      class="items-center font-medium group flex flex-col items-center justify-center rounded-md border border-gray-200 bg-gray-50 fill-gray-400 p-2 shadow hover:bg-gray-100 active:shadow-sm"
     >
-      <svg-icon name="copylink" class="tw-h-6 tw-w-6 tw-gap-1 tw-text-gray-400 group-hover:tw-stroke-gray-500" aria-hidden="true" />
+      <svg-icon name="copylink" class="h-6 w-6 gap-1 text-gray-400 group-hover:stroke-gray-500" aria-hidden="true" />
     </button>
   </NuxtLink>
 </template>

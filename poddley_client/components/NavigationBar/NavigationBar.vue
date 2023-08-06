@@ -1,7 +1,7 @@
 <template>
-  <div class="tw-flex tw-h-20 tw-w-full tw-gap-2 tw-pb-4 tw-text-base tw-text-gray-500">
-    <ButtonsNewButton class="tw-w-1/2 tw-border tw-border-solid tw-border-gray-300" :loading="props.loading && $route.name === 'new'" route="/new" />
-    <ButtonsTrendingButton class="tw-w-1/2 tw-border tw-border-solid tw-border-gray-300" :loading="props.loading && $route.name === 'trending'" route="/trending" />
+  <div class="flex h-20 w-full gap-2 pb-4 text-base text-gray-500">
+    <ButtonsNewButton class="w-1/2 border border-solid border-gray-300" :loading="props.loading && $route.name === 'new'" route="/new" />
+    <ButtonsTrendingButton class="w-1/2 border border-solid border-gray-300" :loading="props.loading && $route.name === 'trending'" route="/trending" />
   </div>
 </template>
 

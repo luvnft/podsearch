@@ -1,61 +1,61 @@
 <template>
-  <HeadlessMenu as="div" class="tw-relative tw-inline-block tw-text-left">
+  <HeadlessMenu as="div" class="relative inline-block text-left">
     <div>
       <HeadlessMenuButton
-        class="dark:tw-text-white dark:tw-bg-blue-600 dark:hover:tw-bg-blue-700 dark:tw-focus:ring-blue-800 tw-bg-gray-0 tw-flex tw-items-center tw-rounded-full tw-text-gray-400 hover:tw-text-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500 focus:tw-ring-offset-2 focus:tw-ring-offset-gray-100"
+        class="bg-gray-0 flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-100"
       >
-        <span class="tw-sr-only">Open options</span>
-        <EllipsisVerticalIcon class="tw-h-5 tw-w-5" aria-hidden="true" />
+        <span class="sr-only">Open options</span>
+        <EllipsisVerticalIcon class="h-5 w-5" aria-hidden="true" />
       </HeadlessMenuButton>
     </div>
 
     <transition
-      enter-active-class="tw-transition tw-ease-out tw-duration-100"
-      enter-from-class="tw-transform tw-opacity-0 tw-scale-95"
-      enter-to-class="tw-transform tw-opacity-100 tw-scale-100"
-      leave-active-class="tw-transition tw-ease-in tw-duration-75"
-      leave-from-class="tw-transform tw-opacity-100 tw-scale-100"
-      leave-to-class="tw-transform tw-opacity-0 tw-scale-95"
+      enter-active-class="transition ease-out duration-100"
+      enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100"
+      leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100"
+      leave-to-class="transform opacity-0 scale-95"
     >
       <HeadlessMenuItems
-        class="tw-absolute tw-right-0 tw-z-10 tw-mt-2 tw-w-56 tw-origin-top-right tw-rounded-md tw-bg-white tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none"
+        class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       >
-        <div class="tw-w-full tw-py-1 dark:tw-bg-gray-700 tw-bg-white">
-          <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
+        <div class="w-full py-1 bg-white rounded-xl">
+          <HeadlessMenuItem v-slot="{ active }" class="flex flex-row flex-nowrap items-center no-underline">
             <a
               :href="props.searchEntry.link"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
+              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex gap-x-1 px-4 py-2 text-sm ']"
             >
               Go to podcast homepage
-              <svg-icon name="link" class="tw-h-5 tw-w-4 tw-p-0.5" />
+              <svg-icon name="link" class="h-5 w-4 p-0.5" />
             </a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="flex flex-row flex-nowrap items-center no-underline">
             <a
               :href="props.searchEntry.url"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
+              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex gap-x-1 px-4 py-2 text-sm ']"
             >
               Podcast RSS-feed
-              <svg-icon name="rss" class="tw-h-5 tw-w-4 tw-p-0.5" />
+              <svg-icon name="rss" class="h-5 w-4 p-0.5" />
             </a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="flex flex-row flex-nowrap items-center no-underline">
             <button
               :href="props.searchEntry.id"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-w-full tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
+              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex w-full gap-x-1 px-4 py-2 text-sm ']"
               @click="copySegmentLink"
             >
               Copy link to segment
-              <svg-icon name="copylink" class="tw-h-5 tw-w-4 tw-p-0.5" />
+              <svg-icon name="copylink" class="h-5 w-4 p-0.5" />
             </button>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="flex w-full flex-row flex-nowrap items-center no-underline">
             <a
               :href="props.searchEntry.episodeLinkToEpisode"
-              :class="[active ? 'tw-bg-gray-100 tw-fill-gray-900 tw-text-gray-900' : 'tw-fill-gray-500 tw-text-gray-700', 'tw-flex tw-gap-x-1 tw-px-4 tw-py-2 tw-text-sm dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']"
+              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex gap-x-1 px-4 py-2 text-sm ']"
             >
               Go to episode
-              <svg-icon name="link" class="tw-h-5 tw-w-4 tw-p-0.5" />
+              <svg-icon name="link" class="h-5 w-4 p-0.5" />
             </a>
           </HeadlessMenuItem>
         </div>

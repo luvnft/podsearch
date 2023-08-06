@@ -7,7 +7,7 @@ module.exports = {
       backgroundColor: ["group-hover"],
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("nightwind")],
   daisyui: {
     themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     base: false, // applies background color and foreground color for root element by default
@@ -17,7 +17,7 @@ module.exports = {
     prefix: "", // prefix for daisyUI classnames (components, modifiers and responsive class names. Not colors)
     logs: false, // Shows info about daisyUI version and used config in the console when building your CSS
   },
-  prefix: "tw-",
+  prefix: "",
   important: true,
   theme: {
     extend: {
@@ -29,6 +29,9 @@ module.exports = {
       },
       animation: {
         colorPulse: "colorPulse 2s infinite",
+      },
+      boxShadow: {
+        xs: "0 0 2px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4)",
       },
     },
     fontFamily: {},

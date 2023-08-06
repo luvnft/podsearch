@@ -1,18 +1,14 @@
 x
 <template>
   <div class="wrapper">
-    <interpolator :dark="true" :watch-system="false">
-      <NuxtLayout>
-        <NuxtLoadingIndicator />
-        <NuxtPage />
-      </NuxtLayout>
-    </interpolator>
+    <NuxtLayout>
+      <NuxtLoadingIndicator />
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
-import interpolator from "vue-apply-darkmode";
-
 onMounted(() => {
   const handleSpacebarClick = (event) => {
     if (event.code === "Space" && (event.target.tagName === "BUTTON" || event.target.tagName === "A")) {

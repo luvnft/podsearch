@@ -1,23 +1,23 @@
 <template>
-  <div class="tw-flex tw-flex-col tw-items-center">
+  <div class="flex flex-col items-center">
     <!-- Show off iFrame -->
-    <div class="video-container tw-flex tw-w-full" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
-        <div class="channelIcon tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full before:tw-h-10 before:tw-w-10">
-          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
+    <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
+      <div class="topbackground text-white absolute z-10 flex w-full flex-row gap-2 rounded-none px-4 pt-3 md:rounded-xl">
+        <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-10 before:w-10">
+          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75" loading="lazy" />
         </div>
-        <div class="tw-flex tw-min-w-0 tw-items-center">
-          <p class="tw-m-0 tw-w-full tw-flex-row tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
+        <div class="flex min-w-0 items-center">
+          <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base" style="color: rgb(246, 246, 246)">
             {{ props.videoTitle }}
           </p>
         </div>
       </div>
       <button id="playButton" class="centered-button" />
 
-      <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
+      <button class="image-with-vignette h-full w-full min-w-full rounded-none after:rounded-none md:rounded-xl md:after:rounded-xl">
         <img
           loading="lazy"
-          class="tw-aspect-video tw-w-full tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          class="aspect-video w-full rounded-none bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
           style="object-fit: cover; object-position: center"
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
           alt="Description of Image"
@@ -27,8 +27,8 @@
     </div>
 
     <!-- Actual iFrame -->
-    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-none tw-border' : ''}`">
-      <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
+    <div v-if="showiFrame" :class="`bg-gray-8 m-0 mb-1.5 flex aspect-video w-full items-center justify-center p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
+      <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
         <IconsSpinnerIcon />
       </div>
 
@@ -38,7 +38,7 @@
         frameborder="0"
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
         :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-        class="tw-aspect-video tw-w-full tw-rounded-none"
+        class="aspect-video w-full rounded-none"
         v-show="!loading"
         @load="iFrameLoaded()"
       />
