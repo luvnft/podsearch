@@ -69,14 +69,11 @@ const onStartedPlay = () => {
 
 <style scoped>
 #custom-audio {
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0;
 }
 
 #custom-audio::-webkit-media-controls-panel,
 #custom-audio::-webkit-media-controls {
-  background-color: #fff;
   border-radius: 0;
 }
 
