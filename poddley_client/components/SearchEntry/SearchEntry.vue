@@ -40,10 +40,10 @@
             <div class="segment bg-neutral-50 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div class="loader" v-if="subtitlesActivated">
                 <span></span>
-                &nbsp;
+                &nbsp; 
               </div>
               <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
-                <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
+                <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class = "ml-0 my-0 mr-0" />
               </div>
             </div>
           </div>
@@ -187,7 +187,7 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
 
 <style scoped>
 :deep(.highlight) {
-  @apply text-red-500
+  @apply text-red-500;
 }
 
 .loader {

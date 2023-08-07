@@ -1,6 +1,6 @@
 <template>
   <div class="px-0.5 py-0.5" v-on-click-outside="closeMenus">
-    <nav class="z-40 bg-white pb-0 pt-0 shadow-none">
+    <nav class="bg-white z-40 pb-0 pt-0 shadow-none">
       <div class="mx-auto h-full w-full max-w-7xl px-0 sm:px-6 lg:px-8">
         <div class="relative flex h-full w-full justify-between">
           <div class="my-0 flex h-full w-full flex-1 items-center justify-between sm:items-stretch sm:justify-start">
