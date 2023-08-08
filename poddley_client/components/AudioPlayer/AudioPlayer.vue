@@ -1,12 +1,12 @@
 <template>
-  <div :class="`w-full rounded-lg ${!isIos || !isApple || !isSafari ? 'shadow-xs shadow-gray-400' : ''}`">
+  <div class="w-full">
     <div>
       <audio
         :key="props.timeLocation"
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
-        class="m-0 w-full rounded-lg p-0 shadow-none bg-white"
+        class="bg-white m-0 w-full rounded-lg p-0 shadow-none"
         ref="audioPlayerRef"
         :preload="'none'"
         :title="props.episodeTitle"
@@ -98,11 +98,5 @@ const onStartedPlay = () => {
 
 .loading::-webkit-media-controls-play-button {
   visibility: hidden;
-}
-
-.customShadow {
-  --shadow: 0 0 2px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4) !important;
-  --shadow-colored: 0 3px 3px 0 var(--shadow-color), 0 1px 2px -1px var(--shadow-color) !important;
-  box-shadow: var(--ring-offset-shadow, 0 0 #0000), var(--ring-shadow, 0 0 #0000), var(--shadow) !important;
 }
 </style>
