@@ -22,7 +22,8 @@ module.exports = {
   important: true,
   theme: {
     nightwind: {
-      typography: true,
+      
+      transitionDuration: 300,
       transitionClasses: "full", // default ['text, 'bg', 'border']
       colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder", "bg", "text", "border", "hover"],
       colorScale: "reduced",
@@ -39,8 +40,9 @@ module.exports = {
           600: "gray.500",
           700: "gray.400",
           800: "gray.400",
-          900: "gray.300"
+          900: "gray.300",
         },
+        gray: "neutral",
       },
     },
     extend: {
