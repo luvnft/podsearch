@@ -14,19 +14,19 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node: [16] # change the Node.js version to 16 here
+        os: [ ubuntu-latest ]
+        node: [ 16 ]  # change the Node.js version to 16 here
 
     steps:
-      - uses: actions/setup-node@v3 # update this action to use v3
+      - uses: actions/setup-node@v3  # update this action to use v3
         with:
           node-version: ${{ matrix.node }}
 
       - name: Checkout
-        uses: actions/checkout@v2 # it's a good idea to use the latest stable version of checkout action too
+        uses: actions/checkout@v2  # it's a good idea to use the latest stable version of checkout action too
 
       - name: Cache node_modules
-        uses: actions/cache@v3 # assuming v3 is the latest stable version, if not adjust to the latest stable version
+        uses: actions/cache@v3  # assuming v3 is the latest stable version, if not adjust to the latest stable version
         with:
           path: node_modules
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
@@ -41,12 +41,11 @@ jobs:
         run: |
           cd poddley_client
           yarn build
-        env:
+        env: 
           NITRO_PRESET: cloudflare
-          NODE_OPTIONS: "--max-old-space-size=8192 --optimize-for-size --max-executable-size=8192"
-
+          NODE_OPTIONS: "--max_old_space_size=4096"
       - name: Publish to Cloudflare
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          command: "deploy ./poddley_client/.output/server/index.mjs --keep-vars"
+          command: 'deploy ./poddley_client/.output/server/index.mjs --keep-vars'
