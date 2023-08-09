@@ -6,7 +6,7 @@ module.exports = {
     extend: {
       backgroundColor: ["group-hover"],
     },
-    nightwind: ["group-hover"], // Add any Tailwind variant
+    nightwind: ["group-hover", "focus"], // Add any Tailwind variant
   },
   plugins: [require("daisyui"), require("nightwind")],
   daisyui: {
@@ -22,15 +22,14 @@ module.exports = {
   important: true,
   theme: {
     nightwind: {
-      transitionClasses: "full",
       colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
       colorScale: "reduced",
       colors: {
         white: "gray.900",
         black: "gray.50",
         neutral: {
-          50: "gray.900",
-          100: "gray.800",
+          50: "gray.700",
+          100: "gray.700",
           200: "gray.700",
           300: "gray.600",
           400: "gray.600",
