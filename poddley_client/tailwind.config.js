@@ -22,25 +22,25 @@ module.exports = {
   important: true,
   theme: {
     nightwind: {
-      // transitionClasses: "full",
-      // colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
-      // colorScale: "reduced",
-      // colors: {
-      //   white: "gray.900",
-      //   black: "gray.50",
-      //   neutral: {
-      //     50: "gray.900",
-      //     100: "gray.800",
-      //     200: "gray.700",
-      //     300: "gray.600",
-      //     400: "gray.600",
-      //     500: "gray.500",
-      //     600: "gray.500",
-      //     700: "gray.400",
-      //     800: "gray.400",
-      //     900: "gray.300",
-      //   },
-      // },
+      transitionClasses: "full",
+      colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
+      colorScale: "reduced",
+      colors: {
+        white: "gray.900",
+        black: "gray.50",
+        neutral: {
+          50: "gray.900",
+          100: "gray.800",
+          200: "gray.700",
+          300: "gray.600",
+          400: "gray.600",
+          500: "gray.500",
+          600: "gray.500",
+          700: "gray.400",
+          800: "gray.400",
+          900: "gray.300",
+        },
+      },
     },
     extend: {
       keyframes: {
