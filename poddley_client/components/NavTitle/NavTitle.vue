@@ -9,7 +9,7 @@
         <svg-icon name="logo" class="min-h-6 mt-1.5 block h-8 max-h-7 w-4/6" aria-hidden="true" />
       </button>
       <IconsSpinnerIcon v-if="loading" />
-    </div>
+    </div>  
   </div>
 </template>
 
