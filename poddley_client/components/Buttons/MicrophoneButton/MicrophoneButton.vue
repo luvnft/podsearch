@@ -7,7 +7,7 @@
       >
         <div class="flex h-full w-full flex-row items-center justify-center">
           <div class="h-full w-full" v-if="!loading">
-            <svg-icon name="microphone" v-if="!props.openSearchSection" class="block h-full w-full scale-[0.85] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+            <svg-icon name="microphone" class="block h-full w-full scale-[0.85] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
           </div>
           <div class="flex h-full w-full items-center justify-center" v-if="loading">
             <div class="radial-progress text-gray-400 flex items-center justify-center after:hidden" :style="`--value: ${percentageAudioPazamed}; --thickness: 0.13rem; --size: 2rem`">
