@@ -2,9 +2,9 @@
   "private": true,
   "prettier": "../prettier.config.js",
   "scripts": {
-    "build": "nuxt build --modern=server",
-    "dev": "nuxt dev --modern=server",
-    "generate": "nuxt generate --modern=server",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
     "preview": "nuxt build && npx wrangler dev .output/server/index.mjs --site .output/public/",
     "postinstall": "nuxt prepare"
   },
