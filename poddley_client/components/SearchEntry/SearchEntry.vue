@@ -37,7 +37,7 @@
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment bg-neutral-50 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="segment bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div class="loader" v-if="subtitlesActivated">
                 <span></span>
                 &nbsp; 
