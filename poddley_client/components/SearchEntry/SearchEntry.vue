@@ -201,6 +201,7 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
 
 .loader span:after {
   content: "›";
+  @apply text-gray-500;
 }
 
 .loader span:nth-child(1) {
