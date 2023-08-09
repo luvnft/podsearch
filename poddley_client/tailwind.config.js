@@ -22,17 +22,15 @@ module.exports = {
   important: true,
   theme: {
     nightwind: {
-      
-      transitionDuration: 300,
-      transitionClasses: "full", // default ['text, 'bg', 'border']
-      colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder", "bg", "text", "border", "hover"],
+      transitionClasses: "full",
+      colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
       colorScale: "reduced",
       colors: {
         white: "gray.900",
         black: "gray.50",
         neutral: {
-          50: "gray.700",
-          100: "gray.700",
+          50: "gray.900",
+          100: "gray.800",
           200: "gray.700",
           300: "gray.600",
           400: "gray.600",
@@ -42,7 +40,6 @@ module.exports = {
           800: "gray.400",
           900: "gray.300",
         },
-        gray: "neutral",
       },
     },
     extend: {
