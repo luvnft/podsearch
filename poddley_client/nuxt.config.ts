@@ -11,6 +11,15 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
+    sourceMap: false,
+  },
+  tailwindcss: {
+    disableHmrHotfix: true,
+  },
+  vite: {
+    build: {
+      sourcemap: false,
+    },
   },
   pages: true,
   postcss: {
