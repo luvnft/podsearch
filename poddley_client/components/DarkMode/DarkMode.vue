@@ -10,7 +10,7 @@
           <svg-icon name="sun" class="block h-full w-full scale-[0.5] fill-gray-400 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" aria-hidden="true" />
         </div>
         <div v-show="!isDark">
-          <svg-icon name="moon" class="block h-full w-full scale-[0.33] fill-gray-500 group-hover:fill-gray-400" aria-hidden="true" />
+          <svg-icon name="moon" class="block h-full w-full scale-[0.30] fill-gray-500 group-hover:fill-gray-400" aria-hidden="true" />
         </div>
       </button>
     </div>
