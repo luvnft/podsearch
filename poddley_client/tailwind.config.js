@@ -8,10 +8,6 @@ module.exports = {
     },
     nightwind: ["group-hover", "focus"], // Add any Tailwind variant
   },
-  experimental: {
-    optimizeUniversalDefaults: true,
-    matchVariant: "true"
-  },
   plugins: [require("daisyui"), require("nightwind")],
   daisyui: {
     themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
@@ -28,6 +24,7 @@ module.exports = {
     nightwind: {
       colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
       colorScale: "reduced",
+      transitionDuration: false, // default '300ms'
       colors: {
         white: "gray.900",
         black: "gray.50",
