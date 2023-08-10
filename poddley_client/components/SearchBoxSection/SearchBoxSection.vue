@@ -5,7 +5,7 @@
       name="search"
       id="search"
       placeholder="Search for a quote in a podcast here"
-      class="outline-none block h-full w-full justify-center rounded-md border-gray-300 pl-0 pr-8 text-center text-base focus:border-gray-500 focus:ring-gray-500 bg-white text-black"
+      class="outline-none block h-full w-full justify-center rounded-md border-gray-300 pl-0 pr-8 text-center text-base focus:border-gray-500 focus:ring-gray-500 bg-white text-gray-800"
       autofocus
       v-model="searchQuery.searchString"
       @input="navigateWithQuery"
