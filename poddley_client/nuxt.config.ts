@@ -13,9 +13,6 @@ export default defineNuxtConfig({
     preset: "cloudflare",
     sourceMap: false,
   },
-  tailwindcss: {
-    disableHmrHotfix: true,
-  },
   vite: {
     build: {
       sourcemap: false,
@@ -36,7 +33,7 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   delayHydration: {
-    mode: "mount",
+    mode: "manual",
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
