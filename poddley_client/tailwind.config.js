@@ -8,6 +8,10 @@ module.exports = {
     },
     nightwind: ["group-hover", "focus"], // Add any Tailwind variant
   },
+  experimental: {
+    optimizeUniversalDefaults: true,
+    matchVariant: "true"
+  },
   plugins: [require("daisyui"), require("nightwind")],
   daisyui: {
     themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]

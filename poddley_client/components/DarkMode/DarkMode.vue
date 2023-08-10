@@ -2,16 +2,16 @@
   <div>
     <div class="flex h-full w-full items-center justify-center overflow-hidden sm:hidden">
       <button
-        class="group text-gray-400 flex h-full w-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-100 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
+        class="group flex h-full w-full items-center justify-center rounded-md p-2 text-gray-400 hover:border-none hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
         @click="toggleColorMode"
         aria-hidden="true"
       >
-        <div v-show="isDark">
-          <svg-icon name="sun" class="block h-full w-full scale-[0.5] fill-gray-400 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" aria-hidden="true" />
-        </div>
-        <div v-show="!isDark">
-          <svg-icon name="moon" class="block h-full w-full scale-[0.30] fill-gray-500 group-hover:fill-gray-400" aria-hidden="true" />
-        </div>
+        <keep-alive>
+          <svg-icon v-if="isDark" name="sun" class="block h-full w-full scale-[0.67] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+        </keep-alive>
+        <keep-alive>
+          <svg-icon v-if="!isDark" name="moon" class="block h-full w-full scale-[0.67] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+        </keep-alive>
       </button>
     </div>
   </div>
