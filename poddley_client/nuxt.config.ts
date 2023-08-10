@@ -2,7 +2,6 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  logLevel: "verbose",
   css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
@@ -11,12 +10,6 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
-    sourceMap: false,
-  },
-  vite: {
-    build: {
-      sourcemap: false,
-    },
   },
   pages: true,
   postcss: {
@@ -33,7 +26,7 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   delayHydration: {
-    mode: "manual",
+    mode: "mount",
   },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
