@@ -17,7 +17,6 @@ export default defineNuxtConfig({
         treeShaking: true,
       },
     },
-    node: true,
   },
   pages: true,
   postcss: {
