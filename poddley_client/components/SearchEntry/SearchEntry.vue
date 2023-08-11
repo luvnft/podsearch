@@ -37,10 +37,14 @@
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="block segment bg-neutral-100 mb-1.5 mt-1 rounded-lg
+" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div class="loader" v-if="subtitlesActivated">
                 <span></span>
-                &nbsp; 
+                &nbsp;
+              </div>
+              <div class="flex flex-row float-right p-1	items-center justify-between pr-0.5">
+                <svg-icon @click="openMoreTextModal()" name="expand" class="w-2 h-2 fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
               </div>
               <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class = "ml-0 my-0 mr-0" />
@@ -132,6 +136,11 @@ const removeDuplicateHits = (hits: Hit[]) => {
   // return
   return uniqueHits;
 };
+
+const openMoreTextModal = () => {
+  console.log("Opening more text modal");
+};
+
 
 const handleTimeUpdate = async (currentTime: number) => {
   currentTime = currentTime - 0.1;
