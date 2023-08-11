@@ -2,7 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
+  css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -10,6 +10,14 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
+    sourceMap: false,
+    esbuild: {
+      options: {
+        minify: true,
+        treeShaking: true,
+      },
+    },
+    node: true,
   },
   pages: true,
   postcss: {
@@ -17,6 +25,10 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  sourcemap: {
+    client: false,
+    server: false,
   },
   vueuse: {
     ssrHandlers: true,
@@ -29,10 +41,56 @@ export default defineNuxtConfig({
   lodash: {
     prefix: "_",
   },
+  typescript: {
+    builder: "vite",
+  },
+  experimental: {
+    clientFallback: true,
+    componentIslands: true,
+    inlineSSRStyles: true,
+    viewTransition: true,
+    crossOriginPrefetch: true,
+    externalVue: true,
+    treeshakeClientOnly: false,
+    asyncEntry: true,
+    typescriptBundlerResolution: true,
+  },
   image: {
     provider: "cloudflare",
     cloudflare: {
       baseURL: "",
+    },
+  },
+  delayHydration: {
+    mode: "init",
+  },
+  vite: {
+    build: {
+      ssr: true,
+      cssMinify: true,
+      minify: true,
+      sourcemap: false,
+    },
+    experimental: {
+      hmrPartialAccept: true,
+    },
+    css: {
+      devSourcemap: false,
+      lightningcss: {
+        // Individually enable various drafts
+        drafts: {
+          // Enable css nesting (default: undefined)
+          nesting: true,
+        },
+      },
+    },
+    appType: "custom",
+    clearScreen: true,
+    worker: {
+      format: "es",
+    },
+    ssr: {
+      target: "node",
     },
   },
   runtimeConfig: {
