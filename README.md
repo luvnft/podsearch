@@ -432,9 +432,9 @@ Has to be a live version auto
 
 ## Features planned adding:
 ### Do-es
-- ~~[ ] Covert search to multiseach to speed up search time~~
-- ~~[ ] Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
-- ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
+- [ ] ~~Covert search to multiseach to speed up search time~~
+- [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
+- [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
 - [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
 - [x] ~~Joe Rogan Recorder~~(illegal)
 - [x] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
@@ -442,20 +442,20 @@ Has to be a live version auto
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
 - [x] ~~Create spotify recorder~~ (it's illegal)
-- ~~[ ] Native app?~~
-- ~~[ ] Add faceting for episode and podcast (route for episode og podcast)~~
-- ~~[ ] Make the types shared between backend and client~~
-- ~~[x] We need 3 tabs that show at the top like the buttons:~~
-  ~~- New episodes~~
-  ~~- Trending episodes~~
-  ~~- Info~~
+- [ ] ~~ Native app?~~
+- [ ] ~~Add faceting for episode and podcast (route for episode og podcast)~~
+- [ ] ~~Make the types shared between backend and client~~
+- [x] ~~We need 3 tabs that show at the top like the buttons:~~
+      - [ ] ~~New episodes~~
+      - [ ] ~~Trending episodes~~
+      - [ ] ~~Info~~
 - [x] ~~Add embedded YouTube to episode-area??? Mulig i det hele tatt, skal den være også tidsbasert?~~
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
-- ~~[ ] Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
-- ~~[ ] Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
-- ~~[x] Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
+- [ ] ~~Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
+- [ ] ~~Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
+- [x] ~~Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -494,20 +494,20 @@ Has to be a live version auto
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [x] Don't have debouncing on client side, but do have throttling + cancellable promises
 - [x] Add helmet and add rate-limiting
-- ~~[ ] Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
+- [ ] ~~Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
 - [x] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [x] Fix the buttons
 - [x] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
-- ~~[ ] Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
+- [ ] ~~Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
 - [x] Search button index redirect
 - [x] Time location needs to update if livesubs are enabled.
 - [x] Livesubs button is needed
-- ~~[ ] Binary tree subs cache object needs to be available~~ (unnecessary)
+- [ ] ~~Binary tree subs cache object needs to be available~~ (unnecessary)
 - [x] Drop usage of hq720
 - [x] Start delayed hydratipn again
-- ~~[ ] Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
+- [ ] ~~Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
 - [x] Fix donation page
 - [x] Fix nav buttons
 - [x] Fix the layout shitfs on the image downloading time…
@@ -515,30 +515,31 @@ Has to be a live version auto
 - [x] Use vueUse instead of vlickoutside
 - [x] Øk margin på search oxen og marginBottom
 - [x] Set logo to be nuxtlink not href
-- ~~[ ] Move navbar to bottom~~ (bad idea, so no)
-- ~~[ ] Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
+- [ ] ~~Move navbar to bottom~~ (bad idea, so no)
+- [ ] ~~Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [x] Skal kun blinke hvis man starter play
 - [x] Audio to text transformation search
 - [x] Add dark mode... toggle button + functionality.
 - [x] Fix device issue
-- ~~[x] Record knappen skal være der doneringsknappen er nå~~
+- [x] ~~Record knappen skal være der doneringsknappen er nå~~
 - [x] Fix home button not reflecting same behaviour as home button
 - [x] Added animate to the text changing section
 - [x] Fjern overflødig respons fra API-et
 - [x] Fullfør respons
--  ~~[ ] Add dark mode icon to the button~~
+- [ ] ~~Add dark mode icon to the button~~
 - [x] Improve dark mode colors
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
 - [x] Fjern profile of push mikroen dit
-- ~~[ ] Disable animation button~~ (nah)
+- [ ] - [x] ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
+- [ ] ~~Disable animation button~~ (nah)
 - [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
-- ~~[ ] Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
+- [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
 - [ ] ~~Download all podcats (should be)...~~
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
-- ~~[x] Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
 - [ ] Make MeiliSearch production probably.
+- [ ] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h
 
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
