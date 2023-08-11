@@ -8,7 +8,7 @@ module.exports = {
     },
     nightwind: ["group-hover", "focus"], // Add any Tailwind variant
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("nightwind")],
   daisyui: {
     themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     base: false, // applies background color and foreground color for root element by default
