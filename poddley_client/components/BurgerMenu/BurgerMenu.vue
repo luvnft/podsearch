@@ -26,9 +26,9 @@
           <HeadlessMenuItem v-slot="{ active }">
             <a :href="donateLink" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">Donate</a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }">
+<!--          <HeadlessMenuItem v-slot="{ active }">
             <NuxtLink to="developer" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-4 py-2 text-sm no-underline ']">For developers</NuxtLink>
-          </HeadlessMenuItem>
+          </HeadlessMenuItem>-->
         </HeadlessMenuItems>
       </transition>
     </HeadlessMenu>
