@@ -1,7 +1,7 @@
 # Poddley - Shazam for podcasts
 
 ## Main Goal:
-The main goal of the website/service is to be the Shazam for podcast clips. Therefore we are not going to expand upon this and its search search functionality beyond its main purpose.
+The main goal of the website/service is to be the Shazam for podcasts. Therefore we are not going to expand upon this further than its search search functionality and beyond its main purpose.
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
@@ -9,17 +9,14 @@ The main goal of the website/service is to be the Shazam for podcast clips. Ther
 ## Demo
 [Demo Link](https://poddley.com)
 
-## Showcase
+## Design timeline
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
-## Design timeline
-image 1, 2, 3, 4, 5, 6
-
 ## Realizations
+- Safari/iOS sucks (forcing you to make apps, fuck em). Android at least has workarounds.
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
-- Always rate-limit API-calls on backend
 - No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds. Most was futile. Finally decided to try Cloudflare, went straight to 1.2 seconds.
 - Unused CSS and third-party script/services can be a pain in the ass to deal with.
 - CDN's are awesome
@@ -66,8 +63,282 @@ The services are running primarily as pm2-processes. With daemon-autorestart on 
 Contunously fetches from database and pushing in new transcriptions to Meilisearch instance.
 
 ### Meilisearch instance
-A meilisearch instance running with the following settings:
-...
+A meilisearch instance running with the following settings (all indexes use the default settings), besides what's specified in the backend scripts.
+##### Indexes
+```
+
+// 20230811100148
+// https://meilisearch.poddley.com/indexes
+
+{
+  "results": [
+    {
+      "uid": "episodes",
+      "createdAt": "2023-07-16T09:34:08.17973422Z",
+      "updatedAt": "2023-07-16T16:08:47.711337274Z",
+      "primaryKey": "id"
+    },
+    {
+      "uid": "podcasts",
+      "createdAt": "2023-07-16T09:34:08.151876845Z",
+      "updatedAt": "2023-07-16T16:08:46.805978082Z",
+      "primaryKey": "id"
+    },
+    {
+      "uid": "segments",
+      "createdAt": "2023-07-16T09:34:08.099810144Z",
+      "updatedAt": "2023-07-16T16:25:23.740301301Z",
+      "primaryKey": "id"
+    },
+    {
+      "uid": "transcriptions",
+      "createdAt": "2023-07-16T09:34:08.05460293Z",
+      "updatedAt": "2023-07-16T16:10:23.650756332Z",
+      "primaryKey": "id"
+    }
+  ],
+  "offset": 0,
+  "limit": 20,
+  "total": 4
+}
+```
+##### Episodes:
+```
+{
+  "uid": "episodes",
+  "createdAt": "2023-07-16T09:34:08.17973422Z",
+  "updatedAt": "2023-07-16T16:08:47.711337274Z",
+  "primaryKey": "id"
+}
+
+{
+  "displayedAttributes": [
+    "*"
+  ],
+  "searchableAttributes": [
+    "*"
+  ],
+  "filterableAttributes": [
+    "episodeGuid"
+  ],
+  "sortableAttributes": [
+    "addedDate"
+  ],
+  "rankingRules": [
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness"
+  ],
+  "stopWords": [
+    
+  ],
+  "synonyms": {
+    
+  },
+  "distinctAttribute": null,
+  "typoTolerance": {
+    "enabled": true,
+    "minWordSizeForTypos": {
+      "oneTypo": 5,
+      "twoTypos": 9
+    },
+    "disableOnWords": [
+      
+    ],
+    "disableOnAttributes": [
+      
+    ]
+  },
+  "faceting": {
+    "maxValuesPerFacet": 100
+  },
+  "pagination": {
+    "maxTotalHits": 1000
+  }
+}
+
+```
+##### Transcriptions:
+```
+{
+  "uid": "transcriptions",
+  "createdAt": "2023-07-16T09:34:08.05460293Z",
+  "updatedAt": "2023-07-16T16:10:23.650756332Z",
+  "primaryKey": "id"
+}
+
+{
+  "displayedAttributes": [
+    "*"
+  ],
+  "searchableAttributes": [
+    "transcription"
+  ],
+  "filterableAttributes": [
+    
+  ],
+  "sortableAttributes": [
+    
+  ],
+  "rankingRules": [
+    "exactness",
+    "proximity",
+    "typo",
+    "words"
+  ],
+  "stopWords": [
+    
+  ],
+  "synonyms": {
+    
+  },
+  "distinctAttribute": null,
+  "typoTolerance": {
+    "enabled": true,
+    "minWordSizeForTypos": {
+      "oneTypo": 5,
+      "twoTypos": 9
+    },
+    "disableOnWords": [
+      
+    ],
+    "disableOnAttributes": [
+      
+    ]
+  },
+  "faceting": {
+    "maxValuesPerFacet": 100
+  },
+  "pagination": {
+    "maxTotalHits": 1000
+  }
+}
+```
+
+##### Segments:
+```
+{
+  "uid": "segments",
+  "createdAt": "2023-07-16T09:34:08.099810144Z",
+  "updatedAt": "2023-07-16T16:25:23.740301301Z",
+  "primaryKey": "id"
+}
+
+{
+  "displayedAttributes": [
+    "*"
+  ],
+  "searchableAttributes": [
+    "text"
+  ],
+  "filterableAttributes": [
+    "belongsToEpisodeGuid",
+    "belongsToPodcastGuid",
+    "belongsToTranscriptGuid",
+    "end",
+    "id",
+    "start"
+  ],
+  "sortableAttributes": [
+    "start"
+  ],
+  "rankingRules": [
+    "exactness",
+    "sort",
+    "proximity",
+    "typo",
+    "words"
+  ],
+  "stopWords": [
+    
+  ],
+  "synonyms": {
+    
+  },
+  "distinctAttribute": null,
+  "typoTolerance": {
+    "enabled": true,
+    "minWordSizeForTypos": {
+      "oneTypo": 5,
+      "twoTypos": 9
+    },
+    "disableOnWords": [
+      
+    ],
+    "disableOnAttributes": [
+      
+    ]
+  },
+  "faceting": {
+    "maxValuesPerFacet": 100
+  },
+  "pagination": {
+    "maxTotalHits": 1000
+  }
+}
+```
+
+##### Podcasts:
+```
+{
+  "uid": "podcasts",
+  "createdAt": "2023-07-16T09:34:08.151876845Z",
+  "updatedAt": "2023-07-16T16:08:46.805978082Z",
+  "primaryKey": "id"
+}
+
+{
+  "displayedAttributes": [
+    "*"
+  ],
+  "searchableAttributes": [
+    "*"
+  ],
+  "filterableAttributes": [
+    "podcastGuid"
+  ],
+  "sortableAttributes": [
+    
+  ],
+  "rankingRules": [
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness"
+  ],
+  "stopWords": [
+    
+  ],
+  "synonyms": {
+    
+  },
+  "distinctAttribute": null,
+  "typoTolerance": {
+    "enabled": true,
+    "minWordSizeForTypos": {
+      "oneTypo": 5,
+      "twoTypos": 9
+    },
+    "disableOnWords": [
+      
+    ],
+    "disableOnAttributes": [
+      
+    ]
+  },
+  "faceting": {
+    "maxValuesPerFacet": 100
+  },
+  "pagination": {
+    "maxTotalHits": 1000
+  }
+}
+```
 
 ### Transcriber/Re-alignment-service
 - The transcriber is a python script that grabs a selection of podcast names from a json.
@@ -82,13 +353,16 @@ A meilisearch instance running with the following settings:
   - Negative means the youtube video needs the addition of time
 - If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
 
-### General NGINX reverse proxy setup
-    server {
+# For meilisearch.poddley.com
+´´´
+server {
     listen 80;
-    server_name api.poddley.com;
+    listen [::]:80;
+
+    server_name meilisearch.poddley.com;
 
     location / {
-        proxy_pass http://localhost:7700/;
+        proxy_pass http://localhost:7700;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -96,7 +370,24 @@ A meilisearch instance running with the following settings:
         proxy_cache_bypass $http_upgrade;
     }
 
-    location /api/ {
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/meilisearch.poddley.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/meilisearch.poddley.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}
+
+# For all other routes (default server)
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name api.poddley.com;
+
+    # Add this line to increase max upload size
+    client_max_body_size 30M;
+
+    location / {
         proxy_pass http://localhost:3000/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -104,15 +395,16 @@ A meilisearch instance running with the following settings:
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
-    
-    listen 443 ssl;
-    ssl_certificate /etc/letsencrypt/live/api.poddley.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/api.poddley.com/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-    }
 
-### Full-text searching
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/api.poddley.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.poddley.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}
+´´´
+
+### Full-text searching (this idea was dumped due to it ruining backend functionality and making further id-implementations gunk)
 - Rust based full-text search engine called Meilisearch is used to create fast full-text search of transcription data indexed from the MySQL database.
 - Due to limitations on meilisearch and non-existant phrase-searching with typo-tolerance, custom solution was made.
   - Custom solution consisted of the following search-ranking score:
@@ -245,14 +537,11 @@ Has to be a live version auto
 - [ ] ~~Download all podcats (should be)...~~
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
-- [ ] Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive
-
-**After completion:**
+- ~~[x] Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
 - [ ] Make MeiliSearch production probably.
-- [ ] Create a blog post explaining the project?
 
 **Later**:
-- [ ] En bruker skal kunne se en hiatorikk over podde historikken deres ala iPhone shazam, 
+- [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
 - [ ] Slett konto
 - [ ] Se lagrede quotes
 - [ ] Upload a picture/profile pic using r3
