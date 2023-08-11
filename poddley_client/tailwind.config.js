@@ -25,7 +25,6 @@ module.exports = {
     nightwind: {
       colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
       colorScale: "reduced",
-      transitionDuration: false, // default '300ms'
       colors: {
         white: "gray.900",
         black: "gray.50",
