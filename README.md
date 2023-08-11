@@ -442,7 +442,6 @@ Has to be a live version auto
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
 - [x] ~~Create spotify recorder~~ (it's illegal)
-- [ ] ~~ Native app?~~
 - [ ] ~~Add faceting for episode and podcast (route for episode og podcast)~~
 - [ ] ~~Make the types shared between backend and client~~
 - [x] ~~We need 3 tabs that show at the top like the buttons:~~
