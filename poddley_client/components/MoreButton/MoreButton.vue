@@ -2,7 +2,7 @@
   <HeadlessMenu as="div" class="relative inline-block text-left">
     <div>
       <HeadlessMenuButton
-        class="bg-gray-0 flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+        class="bg-gray-0 text-gray-400 flex items-center rounded-full hover:text-gray-600 focus:ring-gray-500 focus:ring-offset-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
       >
         <span class="sr-only">Open options</span>
         <EllipsisVerticalIcon class="h-5 w-5" aria-hidden="true" />
@@ -17,45 +17,34 @@
       leave-from-class="transform opacity-100 scale-100"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <HeadlessMenuItems
-        class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-      >
-        <div class="w-full py-1 bg-white rounded-xl">
-          <HeadlessMenuItem v-slot="{ active }" class="flex flex-row flex-nowrap items-center no-underline">
-            <a
-              :href="props.searchEntry.link"
-              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex gap-x-1 px-4 py-2 text-sm ']"
-            >
+      <HeadlessMenuItems class="bg-white ring-black absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+        <div class="bg-white w-full rounded-xl py-1">
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <a :href="props.searchEntry.link" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']">
               Go to podcast homepage
-              <svg-icon name="link" class="h-5 w-4 p-0.5" />
+              <svg-icon name="link" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="flex flex-row flex-nowrap items-center no-underline">
-            <a
-              :href="props.searchEntry.url"
-              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex gap-x-1 px-4 py-2 text-sm ']"
-            >
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <a :href="props.searchEntry.url" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']">
               Podcast RSS-feed
-              <svg-icon name="rss" class="h-5 w-4 p-0.5" />
+              <svg-icon name="rss" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="flex flex-row flex-nowrap items-center no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
             <button
               :href="props.searchEntry.id"
-              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex w-full gap-x-1 px-4 py-2 text-sm ']"
+              :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']"
               @click="copySegmentLink"
             >
               Copy link to segment
-              <svg-icon name="copylink" class="h-5 w-4 p-0.5" />
+              <svg-icon name="copylink" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </button>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="flex w-full flex-row flex-nowrap items-center no-underline">
-            <a
-              :href="props.searchEntry.episodeLinkToEpisode"
-              :class="[active ? 'bg-gray-100 fill-gray-900 text-gray-900' : 'fill-gray-500 text-gray-700', 'flex gap-x-1 px-4 py-2 text-sm ']"
-            >
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <a :href="props.searchEntry.episodeLinkToEpisode" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']">
               Go to episode
-              <svg-icon name="link" class="h-5 w-4 p-0.5" />
+              <svg-icon name="link" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
         </div>
