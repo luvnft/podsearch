@@ -58,15 +58,32 @@ export default defineNuxtConfig({
     mode: "init",
   },
   vite: {
+    build: {
+      ssr: true,
+      cssMinify: true,
+      minify: true,
+      sourcemap: false,
+    },
+    experimental: {
+      hmrPartialAccept: true,
+    },
     css: {
       devSourcemap: false,
       lightningcss: {
         // Individually enable various drafts
         drafts: {
           // Enable css nesting (default: undefined)
-          nesting: false,
+          nesting: true,
         },
       },
+    },
+    appType: "custom",
+    clearScreen: true,
+    worker: {
+      format: "es",
+    },
+    ssr: {
+      target: "node",
     },
   },
   runtimeConfig: {
