@@ -355,7 +355,7 @@ A meilisearch instance running with the following settings (all indexes use the 
 
 # For meilisearch.poddley.com
 
-´´´
+```
 server {
     listen 80;
     listen [::]:80;
@@ -377,10 +377,10 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
-´´´
+```
 # For all other routes (default server)
 
-´´´
+```
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -406,7 +406,7 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
 
-´´´
+```
 
 ### Full-text searching (this idea was dumped due to it ruining backend functionality and making further id-implementations gunk)
 - Rust based full-text search engine called Meilisearch is used to create fast full-text search of transcription data indexed from the MySQL database.
@@ -544,7 +544,8 @@ Has to be a live version auto
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
-- [ ] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h
+- [x] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h (was possible to implement)
+- [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
 
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
