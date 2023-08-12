@@ -24,9 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-import { Device } from "@nuxtjs/device/dist/runtime/types";
-import { useElementVisibility } from "@vueuse/core";
-
 const props = defineProps<{
   audioLink: string;
   timeLocation: number;
@@ -34,29 +31,12 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
   (event: "timeupdate", currentTime: number): void;
-  (event: "isVisible", isVisible: boolean);
   (event: "onStartedPlay", startedPlay: boolean);
 }>();
 
-const { isIos, isSafari, isApple }: Device = useDevice();
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
-const isVisible = useElementVisibility(audioPlayerRef);
-
-let unwatch = watch(isVisible, function (state) {
-  if (audioPlayerRef.value && state === true) {
-    audioPlayerRef.value.currentTime = props.timeLocation;
-  }
-  // stop watching after the first time
-  unwatch();
-});
-
-onMounted(() => {
-  if (audioPlayerRef.value) {
-    audioPlayerRef.value.currentTime = props.timeLocation;
-  }
-});
 
 const onTimeUpdate = (event: Event) => {
   emit("timeupdate", (event.target as HTMLAudioElement).currentTime);
