@@ -1,5 +1,4 @@
 require("dotenv").config({ path: "../.env" });
-import lightningcss from "vite-plugin-lightningcss";
 
 export default defineNuxtConfig({
   ssr: true,
@@ -22,7 +21,7 @@ export default defineNuxtConfig({
     server: false,
   },
   vueuse: {
-    ssrHandlers: true,
+    ssrHandlers: false,
     autoImports: true,
   },
   headlessui: {
