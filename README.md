@@ -536,6 +536,7 @@ Has to be a live version auto
 - [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
 - [ ] ~~Download all podcats (should be)...~~
 - [x] Fix extreme build time due to tailwind
+- [ ] Fix SSR dark mode not being preloaded
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
