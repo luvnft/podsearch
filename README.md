@@ -354,6 +354,7 @@ A meilisearch instance running with the following settings (all indexes use the 
 - If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
 
 # For meilisearch.poddley.com
+
 ´´´
 server {
     listen 80;
@@ -376,8 +377,10 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
-
+´´´
 # For all other routes (default server)
+
+´´´
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -402,6 +405,7 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
+
 ´´´
 
 ### Full-text searching (this idea was dumped due to it ruining backend functionality and making further id-implementations gunk)
