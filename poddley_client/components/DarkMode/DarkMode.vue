@@ -25,7 +25,7 @@ const toggleColorMode = () => {
 console.log(colorMode);
 </script>
 
-<style>
+<style scoped>
 .light .sun {
   display: none !important;
 }
