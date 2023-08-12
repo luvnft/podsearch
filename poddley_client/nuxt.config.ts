@@ -5,10 +5,10 @@ export default defineNuxtConfig({
   css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
-      brotli: true,
-      gzip: true,
+      brotli: false,
+      gzip: false,
     },
-    minify: true,
+    minify: false,
     preset: "cloudflare",
     sourceMap: false,
   },
@@ -34,20 +34,6 @@ export default defineNuxtConfig({
   lodash: {
     prefix: "_",
   },
-  typescript: {
-    builder: "vite",
-  },
-  experimental: {
-    clientFallback: true,
-    componentIslands: true,
-    inlineSSRStyles: true,
-    viewTransition: true,
-    crossOriginPrefetch: true,
-    externalVue: true,
-    treeshakeClientOnly: false,
-    asyncEntry: true,
-    typescriptBundlerResolution: true,
-  },
   image: {
     provider: "cloudflare",
     cloudflare: {
@@ -58,26 +44,18 @@ export default defineNuxtConfig({
     mode: "init",
   },
   vite: {
-    experimental: {
-      hmrPartialAccept: true,
-    },
     css: {
       devSourcemap: false,
       lightningcss: {
         // Individually enable various drafts
         drafts: {
           // Enable css nesting (default: undefined)
-          nesting: true,
+          nesting: false,
+        },
+        nonStandard: {
+          deepSelectorCombinator: true,
         },
       },
-    },
-    appType: "custom",
-    clearScreen: true,
-    worker: {
-      format: "es",
-    },
-    ssr: {
-      target: "node",
     },
   },
   runtimeConfig: {
