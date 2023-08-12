@@ -58,12 +58,6 @@ export default defineNuxtConfig({
     mode: "init",
   },
   vite: {
-    build: {
-      ssr: true,
-      cssMinify: true,
-      minify: true,
-      sourcemap: false,
-    },
     experimental: {
       hmrPartialAccept: true,
     },
