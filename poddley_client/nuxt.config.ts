@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     rollupConfig: {
-      treeshake: false,
+      treeshake: true,
     },
     compressPublicAssets: {
       brotli: true,
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["nuxt-windicss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
     prefix: "_",
   },
@@ -40,17 +40,29 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
+  experimental: {
+    clientFallback: true,
+    componentIslands: true,
+    inlineSSRStyles: true,
+    viewTransition: true,
+    crossOriginPrefetch: true,
+    externalVue: true,
+    treeshakeClientOnly: false,
+    asyncEntry: true,
+    typescriptBundlerResolution: true,
+  },
   vite: {
+    build:{
+      cssMinify: true,
+      rollupOptions:{
+        treeshake: false
+      }
+    },
     css: {
       devSourcemap: false,
       lightningcss: {
-        // Individually enable various drafts
         drafts: {
-          // Enable css nesting (default: undefined)
-          nesting: undefined,
-        },
-        nonStandard: {
-          deepSelectorCombinator: true,
+          nesting: true,
         },
       },
     },

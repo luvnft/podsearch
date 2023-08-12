@@ -1,5 +1,3 @@
-const { transform } = require("windicss/helpers");
-
 module.exports = {
   content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
   darkMode: "class",
@@ -9,7 +7,7 @@ module.exports = {
     },
     nightwind: ["group-hover", "focus"], // Add any Tailwind variant
   },
-  plugins: [transform("daisyui"), transform("nightwind")],
+  plugins: [require("daisyui"), require("nightwind")],
   daisyui: {
     themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     base: false, // applies background color and foreground color for root element by default
