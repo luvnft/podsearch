@@ -44,7 +44,7 @@
                 &nbsp;
               </div>
               <div class="flex flex-row float-right p-1	items-center justify-between pr-0.5">
-                <svg-icon @click="openMoreTextModal()" name="expand" class="w-2 h-2 fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+                <svg-icon @click="openMoreTextModal()" name="expand" class="w-2 h-2 fill-gray-400 group-hover:fill-gray-500 cursor-pointer" aria-hidden="true" />
               </div>
               <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class = "ml-0 my-0 mr-0" />
@@ -58,6 +58,9 @@
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
             </p>
             <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
+          </div>
+            <div v-if="moreTextModalOpen">
+              <MoreTextCard :close-dialog="openMoreTextModal" :podcast-test="props.searchEntry._formatted.text.trim()" :podcast-name="props.searchEntry.episodeTitle"/>
           </div>
         </div>
         <div class="col-12 mt-0 flex w-full flex-col items-center justify-center border-none px-0 pb-0 pb-2 pt-0">
@@ -137,8 +140,10 @@ const removeDuplicateHits = (hits: Hit[]) => {
   return uniqueHits;
 };
 
+const moreTextModalOpen = ref(false)
+
 const openMoreTextModal = () => {
-  console.log("Opening more text modal");
+  moreTextModalOpen.value = !moreTextModalOpen.value;
 };
 
 
