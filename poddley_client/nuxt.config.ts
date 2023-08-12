@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "../.env" });
+import lightningcss from "vite-plugin-lightningcss";
 
 export default defineNuxtConfig({
   ssr: true,
@@ -52,19 +53,16 @@ export default defineNuxtConfig({
     typescriptBundlerResolution: true,
   },
   vite: {
-    build:{
+    build: {
+      minify: true,
+      sourcemap: false,
       cssMinify: true,
-      rollupOptions:{
-        treeshake: false
-      }
+      rollupOptions: {
+        treeshake: true,
+      },
     },
     css: {
       devSourcemap: false,
-      lightningcss: {
-        drafts: {
-          nesting: true,
-        },
-      },
     },
   },
   runtimeConfig: {
