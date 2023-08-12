@@ -534,19 +534,24 @@ Has to be a live version auto
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
 - [x] Fjern profile of push mikroen dit
-- [ ] - [x] ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
+- [ ]  ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
 - [ ] ~~Disable animation button~~ (nah)
 - [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
 - [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
 - [ ] ~~Download all podcats (should be)...~~
 - [x] Fix extreme build time due to tailwind
-- [ ] Fix SSR dark mode not being preloaded
+- [x] Fix SSR dark mode not being preloaded => (found a hack, contribute to the repo?)
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
 - [ ] Make MeiliSearch production probably.
 - [x] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h (was possible to implement)
 - [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
-
+- [ ] Finish text expanding logic
+- [ ] Fix the favicons to look good
+- [ ] Remove useDevice as we have no use for it on the web-version
+- [ ] Se over about og contact siden
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
+- [ ] 
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
 - [ ] Slett konto
