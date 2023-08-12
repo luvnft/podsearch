@@ -1,6 +1,5 @@
 module.exports = {
   content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
-  darkMode: "class",
   variants: {
     extend: {
       backgroundColor: ["group-hover"],
@@ -9,6 +8,7 @@ module.exports = {
   },
   plugins: [require("nightwind")],
   prefix: "",
+  darkMode: "class",
   important: true,
   theme: {
     nightwind: {

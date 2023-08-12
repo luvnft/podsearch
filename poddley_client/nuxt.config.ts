@@ -2,6 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
+  logLevel: "verbose",
   css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     rollupConfig: {
@@ -15,6 +16,12 @@ export default defineNuxtConfig({
     preset: "cloudflare",
     sourceMap: false,
   },
+  colorMode: {
+    preference: "system", // default value of $colorMode.preference
+    fallback: "light", // fallback value if not system preference found
+    classPrefix: "",
+    classSuffix: "",
+  },
   pages: true,
   sourcemap: {
     client: false,
@@ -27,7 +34,19 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
+    "@nuxtjs/device",
+    "@vueuse/nuxt",
+    "@pinia/nuxt",
+    "@nuxt/image",
+    "@nuxtjs/supabase",
+    "nuxt-lodash",
+    "nuxt-headlessui",
+    "@nuxtjs/svg-sprite",
+    "nuxt-delay-hydration",
+  ],
   lodash: {
     prefix: "_",
   },
