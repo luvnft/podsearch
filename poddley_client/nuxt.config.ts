@@ -4,21 +4,18 @@ export default defineNuxtConfig({
   ssr: true,
   css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
-    compressPublicAssets: {
-      brotli: false,
-      gzip: false,
+    rollupConfig: {
+      treeshake: false,
     },
-    minify: false,
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true,
+    },
+    minify: true,
     preset: "cloudflare",
     sourceMap: false,
   },
   pages: true,
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
   sourcemap: {
     client: false,
     server: false,
@@ -30,7 +27,7 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
+  modules: ["nuxt-windicss", "@nuxtjs/device", "@vueuse/nuxt", "@pinia/nuxt", "@nuxt/image", "@nuxtjs/supabase", "nuxt-lodash", "nuxt-headlessui", "@nuxtjs/svg-sprite", "nuxt-delay-hydration"],
   lodash: {
     prefix: "_",
   },
@@ -41,7 +38,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   vite: {
     css: {
@@ -50,7 +47,7 @@ export default defineNuxtConfig({
         // Individually enable various drafts
         drafts: {
           // Enable css nesting (default: undefined)
-          nesting: false,
+          nesting: undefined,
         },
         nonStandard: {
           deepSelectorCombinator: true,
