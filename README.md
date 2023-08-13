@@ -548,10 +548,13 @@ Has to be a live version auto
 - [x] Make emails
 - [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
 - [ ] Finish text expanding logic
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
+
+After finish:
 - [ ] Make MeiliSearch production probably.
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
+- [ ] Markedsfør
 
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
