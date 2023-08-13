@@ -98,8 +98,7 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
-          hid: "description",
-          name: "Poddley - Search podcasts like text",
+          name: "description",
           content: "Search podcast transcriptions like text. It would functionalliy be like shazam, but for podcast transcriptions I suppose.",
         },
         { name: "msapplication-TileColor", content: "#2d89ef" },
