@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3 flex w-full flex-col items-center justify-center text-gray-900">
     <div class="max-w-3xl mx-auto p-6">
-      <h1 class="text-3xl font-bold mb-4">About Us - Poddley Podcast App</h1>
+      <h1 class="text-3xl font-bold mb-4">About Poddley</h1>
       <p class="mb-6">Welcome to Poddley, your ultimate destination for exploring the spoken world of podcasts like never before. Founded by the dynamic duo of Igor Momcilovic and Luka Momcilovic, Poddley is the culmination of our passion for technology, curiosity, and the power of human expression.</p>
 
       <div class="mb-6">
