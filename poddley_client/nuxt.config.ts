@@ -37,7 +37,6 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
-    "@nuxtjs/device",
     "@vueuse/nuxt",
     "@pinia/nuxt",
     "@nuxt/image",
