@@ -41,7 +41,7 @@ onKeyUp("Escape", () => {
 const closeMenus = () => {
   openBurgerMenu.value = false;
   openProfileMenu.value = false;
-  openSearchSection.value = false;
+  // openSearchSection.value = false;
 };
 
 const toggleSearchSection = () => {
