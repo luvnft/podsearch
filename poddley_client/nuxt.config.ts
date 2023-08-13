@@ -102,7 +102,7 @@ export default defineNuxtConfig({
           name: "Poddley - Search podcasts like text",
           content: "Search podcast transcriptions like text. It would functionalliy be like shazam, but for podcast transcriptions I suppose.",
         },
-        { name: "msapplication-TileColor", content: "#da532c" },
+        { name: "msapplication-TileColor", content: "#2d89ef" },
         { name: "theme-color", content: "#ffffff" },
       ],
       link: [
@@ -111,7 +111,7 @@ export default defineNuxtConfig({
         { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
         { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
         { rel: "manifest", href: "/site.webmanifest" },
-        { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#373737" },
+        { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#454545" },
       ],
     },
   },
