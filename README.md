@@ -542,7 +542,7 @@ Has to be a live version auto
 - [x] Fix extreme build time due to tailwind
 - [x] Fix SSR dark mode not being preloaded => (found a hack, contribute to the repo?)
 - [x] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h (was possible to implement)
-- [x] Fix the favicons to look good
+- [x] Fix the favicons to look good, and to support darkmode
 - [x] Remove useDevice as we have no use for it on the web-version
 - [x] Se over about og contact siden
 - [x] Make emails
@@ -551,6 +551,7 @@ Has to be a live version auto
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
 - [x] Fix darkMode doubleClick bug
+- [x] Fix issue with description meta-tag on poddley
 
 After finish:
 - [ ] Make MeiliSearch production probably.
