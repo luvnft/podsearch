@@ -541,17 +541,24 @@ Has to be a live version auto
 - [ ] ~~Download all podcats (should be)...~~
 - [x] Fix extreme build time due to tailwind
 - [x] Fix SSR dark mode not being preloaded => (found a hack, contribute to the repo?)
-- [ ] Start opp transcriberen igjen
-- [ ] Finish the rest of the desktop design and shit
-- [ ] Make MeiliSearch production probably.
 - [x] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h (was possible to implement)
-- [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
-- [ ] Finish text expanding logic
-- [ ] Fix the favicons to look good
+- [x] Fix the favicons to look good
 - [x] Remove useDevice as we have no use for it on the web-version
 - [x] Se over about og contact siden
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
 - [x] Make emails
+- [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
+- [ ] Finish text expanding logic
+- [ ] Start opp transcriberen igjen
+- [ ] Finish the rest of the desktop design and shit
+- [x] Fix darkMode doubleClick bug
+
+After finish:
+- [ ] Make MeiliSearch production probably.
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
+- [ ] Markedsfør
+- [ ] Finskriv githuben
+- [ ] Skriv et bogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
+- [ ] Start en egen IT blogg
 
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
