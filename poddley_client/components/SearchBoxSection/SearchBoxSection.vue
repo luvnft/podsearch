@@ -14,7 +14,7 @@
     <button
       v-if="searchQuery.searchString"
       @click="cleanSearchString"
-      class="text-gray-400 flex aspect-square h-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-100 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
+      class="text-gray-400 flex aspect-square mr-1 h-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-100 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
     >
       <XMarkIcon class="block h-full w-full scale-90 fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
     </button>
