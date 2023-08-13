@@ -550,11 +550,15 @@ Has to be a live version auto
 - [ ] Finish text expanding logic
 - [ ] Start opp transcriberen igjen
 - [ ] Finish the rest of the desktop design and shit
+- [x] Fix darkMode doubleClick bug
 
 After finish:
 - [ ] Make MeiliSearch production probably.
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
 - [ ] Markedsfør
+- [ ] Finskriv githuben
+- [ ] Skriv et bogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
+- [ ] Start en egen IT blogg
 
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
