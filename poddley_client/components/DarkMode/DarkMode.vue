@@ -18,14 +18,20 @@
 </template>
 <script setup lang="ts">
 const colorMode = useColorMode();
-const isDark = computed(() => colorMode.value === "dark");
+
 const toggleColorMode = () => {
-  colorMode.preference = colorMode.preference === "dark" ? "light" : "dark";
+  if (colorMode.unknown === false) {
+    if (colorMode.preference === "system") {
+      colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+    } else {
+      colorMode.preference = colorMode.preference === "dark" ? "light" : "dark";
+    }
+  }
 };
-console.log(colorMode);
 </script>
 
 <style scoped>
+/* This allows instant beforeRender iconSwitch 😎 */
 .light .sun {
   display: none !important;
 }
