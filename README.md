@@ -552,6 +552,7 @@ Has to be a live version auto
 - [x] Se over about og contact siden
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
 - [x] Make emails
+
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
 - [ ] Slett konto
