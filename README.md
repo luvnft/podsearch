@@ -548,10 +548,11 @@ Has to be a live version auto
 - [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
 - [ ] Finish text expanding logic
 - [ ] Fix the favicons to look good
-- [ ] Remove useDevice as we have no use for it on the web-version
-- [ ] Se over about og contact siden
+- [x] Remove useDevice as we have no use for it on the web-version
+- [x] Se over about og contact siden
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] 
+- [x] Make emails
+
 **Later**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
 - [ ] Slett konto
