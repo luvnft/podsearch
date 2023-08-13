@@ -88,9 +88,6 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000/" : "poddley.com/",
     },
   },
-  device: {
-    enabled: true,
-  },
   app: {
     head: {
       htmlAttrs: {
