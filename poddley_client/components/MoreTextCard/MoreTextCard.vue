@@ -35,7 +35,7 @@
 
 const props = defineProps<{
   closeDialog: () => void;
-  podcastTest: string;
+  podcastTest: any;
   podcastName: string;
 }>();
 

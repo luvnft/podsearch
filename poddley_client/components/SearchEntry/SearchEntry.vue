@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border-gray-300 mx-0 flex flex-col items-center justify-center border-b p-0 shadow-sm md:gap-y-0">
+  <div class="bg-white border-gray-300 mx-0 flex flex-col items-center justify-center border-b p-0 shadow-sm dark:border-none dark:shadow-none md:gap-y-0">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 m-0 flex flex-col items-start justify-center px-0 pb-1.5">
       <div class="min-h-full min-w-full max-w-full">
         <div v-if="props.searchEntry.youtubeVideoLink">
@@ -37,17 +37,16 @@
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="block segment bg-neutral-100 mb-1.5 mt-1 rounded-lg
-" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="segment bg-neutral-100 mb-1.5 mt-1 block rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div class="loader" v-if="subtitlesActivated">
                 <span></span>
                 &nbsp;
               </div>
-              <div class="flex flex-row float-right p-1	items-center justify-between pr-0.5">
-                <svg-icon @click="openMoreTextModal()" name="expand" class="w-2 h-2 fill-gray-400 group-hover:fill-gray-500 cursor-pointer" aria-hidden="true" />
+              <div class="float-right flex flex-row items-center justify-between p-1 pr-0.5">
+                <svg-icon @click="openMoreTextModal()" name="expand" class="h-2 w-2 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
               </div>
               <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
-                <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class = "ml-0 my-0 mr-0" />
+                <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
               </div>
             </div>
           </div>
@@ -59,8 +58,12 @@
             </p>
             <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
           </div>
-            <div v-if="moreTextModalOpen">
-              <MoreTextCard :close-dialog="openMoreTextModal" :podcast-test="props.searchEntry._formatted.text.trim()" :podcast-name="props.searchEntry.episodeTitle"/>
+          <div v-if="moreTextModalOpen">
+            <MoreTextCard
+              :close-dialog="openMoreTextModal"
+              :podcast-test="hitCache[props.searchEntry.episodeGuid].hits.map((hit: any) => hit.text).join('') || []"
+              :podcast-name="props.searchEntry.episodeTitle"
+            />
           </div>
         </div>
         <div class="col-12 mt-0 flex w-full flex-col items-center justify-center border-none px-0 pb-0 pb-2 pt-0">
@@ -140,16 +143,17 @@ const removeDuplicateHits = (hits: Hit[]) => {
   return uniqueHits;
 };
 
-const moreTextModalOpen = ref(false)
+const moreTextModalOpen = ref(false);
 
 const openMoreTextModal = () => {
   moreTextModalOpen.value = !moreTextModalOpen.value;
-};
 
+  handleTimeUpdate(parseFloat(currentPlayingSegment.value.start.toString()) || parseFloat(props.searchEntry.start.toString()));
+};
 
 const handleTimeUpdate = async (currentTime: number) => {
   currentTime = currentTime - 0.1;
-  if (!subtitlesActivated.value) return;
+  if (subtitlesActivated.value === false && moreTextModalOpen.value === false) return;
   else {
     let episodeGuid = props.searchEntry.episodeGuid;
     // The reason for doing currentTime - 2 when it kinda should just be (currentTime) is purely because MeiliSearch is kinds shait at comparing decimals, probably a bug trollolo
