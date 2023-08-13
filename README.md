@@ -553,6 +553,7 @@ Has to be a live version auto
 - [x] Fix darkMode doubleClick bug
 - [x] Fix issue with description meta-tag on poddley
 - [x] Add "x"-cleanSearchString functionality like google: ![image](https://github.com/lukamo1996/poddley/assets/52632596/5150ce19-f768-4d9f-8fbf-39e476951210)
+- [ ] Make own audioPlayer component vue3/Nuxt3.
 
 After finish:
 - [ ] Make MeiliSearch production probably.
