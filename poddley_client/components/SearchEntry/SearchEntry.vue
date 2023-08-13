@@ -43,7 +43,7 @@
                 &nbsp;
               </div>
               <div class="float-right flex flex-row items-center justify-between p-1 pr-0.5">
-                <svg-icon @click="openMoreTextModal()" name="expand" class="h-2 w-2 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+                <svg-icon @click="openMoreTextModal()" name="expand" class="h-4 w-4 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
               </div>
               <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
@@ -147,7 +147,6 @@ const moreTextModalOpen = ref(false);
 
 const openMoreTextModal = () => {
   moreTextModalOpen.value = !moreTextModalOpen.value;
-
   handleTimeUpdate(parseFloat(currentPlayingSegment.value.start.toString()) || parseFloat(props.searchEntry.start.toString()));
 };
 
