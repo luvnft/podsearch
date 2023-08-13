@@ -6,7 +6,7 @@
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
-        class="bg-white m-0 w-full rounded-lg p-0 shadow-none"
+        class="m-0 w-full rounded-lg p-0 shadow-none"
         ref="audioPlayerRef"
         :preload="'none'"
         :title="props.episodeTitle"
