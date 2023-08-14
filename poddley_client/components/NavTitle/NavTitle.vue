@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="flex h-full w-full items-center justify-center overflow-hidden sm:hidden">
+    <div class="flex h-full w-full items-center justify-center overflow-hidden">
       <button
         v-if="!loading"
-        class="text-gray-400 fill-gray-700 dark:fill-neutral-300 flex h-full w-full items-center justify-center rounded-md p-0 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+        class="text-gray-400 fill-gray-600 dark:fill-neutral-300 flex h-full w-full items-center justify-center rounded-md p-0 hover:text-gray-500 hover:fill-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
         @click="toHomeClick"
       >
         <svg-icon name="logo" class="min-h-6 mt-1.5 block h-8 max-h-7 w-4/6" aria-hidden="true" />
