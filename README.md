@@ -355,7 +355,8 @@ A meilisearch instance running with the following settings (all indexes use the 
 - DeviationCalculator:
   - Positive means the youtube video needs reduction in the time
   - Negative means the youtube video needs the addition of time
-- ~~If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.~~ We upload the images directly to cloudflare images which does all the resizing and it does it dynamically and on the go in accordance to the image size on all devices.
+- ~~If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.~~
+- We upload the images directly to cloudflare images which does all the resizing and it does it dynamically and on the go in accordance to the image size on all devices.
 
 # For meilisearch.poddley.com
 
@@ -434,7 +435,10 @@ server {
 Has to be a live version auto
 
 ### AI services
-- All AI services run 24/7 on this machine=>![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a). I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
+- All AI services run 24/7 on this machine:
+![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a)
+
+- I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
 
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
