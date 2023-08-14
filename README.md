@@ -342,16 +342,16 @@ A meilisearch instance running with the following settings (all indexes use the 
 
 ### Transcriber/Re-alignment-service
 - The transcriber is a python script that grabs a selection of podcast names from a json.
-- Queries a SqLite database downloaded daily from PodcastIndex.
+- Queries a SQLite database downloaded daily from PodcastIndex.
 - Uses feedparser to get episode-names, audiofiles, titles etc. from the rss-feeds for further parsing
-- Uses the original whisper AI to transcribe data
+- ~~Uses the original whisper AI to transcribe data~~ Uses WhispherX to transcribe and align the segments. This implementation is better than the original Whisper due to it using faster-whisper under the hood which supports batching among other performance-improvements.
 - Then uses WhisperX to re-align the timestamps in accordance with the audio file (using the large [wav2vec](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-english) model.
 - Then finds the youtube video that fits to that audio file and updates the episode in the database.
 - Downloads the youtube video and finds the offset in seconds between the audio-podcast and video-podcast to save time and avoid having to re-transcribe audio from youtube video as well. This implementation uses [British Broadcasting Channel's](https://github.com/bbc/audio-offset-finder) own implementation. This value is then added or subtracted from the "start"-value that accompanies all segments.
 - DeviationCalculator:
   - Positive means the youtube video needs reduction in the time
   - Negative means the youtube video needs the addition of time
-- If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.
+- ~~If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.~~ We upload the images directly to cloudflare images which does all the resizing and it does it dynamically and on the go in accordance to the image size on all devices.
 
 # For meilisearch.poddley.com
 
@@ -568,7 +568,7 @@ After finish:
 - [ ] Skriv et bogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
 
-**Later**:
+**Later maybe**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
 - [ ] Slett konto
 - [ ] Se lagrede quotes
