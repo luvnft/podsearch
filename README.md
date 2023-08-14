@@ -566,6 +566,7 @@ Has to be a live version auto
 - [ ] Make Android design
 - [ ] Make animation for Shazam functionality
 - [ ] Make recording work on iOS and Android
+- [ ] Fix spinner wiggle bug
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
