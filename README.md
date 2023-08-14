@@ -9,6 +9,10 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 ## Demo
 [Demo Link](https://poddley.com)
 
+## Apps
+- iOS:
+- Android:
+
 ## Design timeline
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
