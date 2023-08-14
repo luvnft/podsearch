@@ -1,5 +1,37 @@
 <template>
-  <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
+  <!-- For Phones-->
+  <div>
+    <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" class="sm:hidden" />
+  </div>
+  <!-- For Desktop-->
+  <div class="mx-auto max-w-2xl px-4 py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="max-w-xl">
+      <h1 id="order-history-heading" class="text-gray-900 text-3xl font-bold tracking-tight">Order history</h1>
+      <p class="text-gray-500 mt-2 text-sm">Check the status of recent orders, manage returns, and discover similar products.</p>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+      <div v-for="order in orders" :key="order.id" class="group relative">
+        <div class="aspect-w-1 aspect-h-1 bg-gray-200 overflow-hidden rounded-md group-hover:opacity-75">
+          <img :src="order.imageSrc" :alt="order.imageAlt" class="object-cover object-center" />
+        </div>
+        <h3 class="text-gray-500 mt-4 text-sm">
+          <a :href="order.href">
+            <span class="absolute inset-0" />
+            {{ order.productName }}
+          </a>
+        </h3>
+        <p class="mt-1 text-lg font-medium">
+          <span v-if="order.status === 'delivered'" class="text-gray-900">
+            Delivered on
+            <time :datetime="order.datetime">{{ order.date }}</time>
+          </span>
+          <span v-else-if="order.status === 'out-for-delivery'" class="text-indigo-600">Out for delivery</span>
+          <span v-else-if="order.status === 'cancelled'" class="text-gray-500">Cancelled</span>
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 <script lang="ts" setup>
 //Imports
@@ -36,7 +68,7 @@ onMounted(() => {
       switch (action) {
         case "searchCompleted":
           searchResults.value = payload;
-          console.log(payload)
+          console.log(payload);
           debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
@@ -62,13 +94,12 @@ async function makeSearch() {
     if (process.server) {
       try {
         const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
-        const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery)
-        console.log(decodedRouteBasedQuery)
-        const query: SearchQuery = decodedRouteBasedQuery ? decodedRouteBasedQuery as SearchQuery : initialSearchQuery;
+        const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
+        console.log(decodedRouteBasedQuery);
+        const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
         console.log("Searching with query: ", query);
-        searchQuery.value = query
+        searchQuery.value = query;
         searchResults.value = await transcriptionService.search(query);
-       
       } catch (e) {}
     }
   }
@@ -88,6 +119,6 @@ onServerPrefetch(async () => {
 });
 
 watch(searchQuery, debouncedSearch, {
-  deep: true
+  deep: true,
 });
 </script>

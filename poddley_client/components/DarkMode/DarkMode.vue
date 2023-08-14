@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="flex h-full w-full items-center justify-center overflow-hidden sm:hidden">
+    <div class="flex h-full w-full items-center justify-center overflow-hidden">
       <button
-        class="group text-gray-400 flex h-full w-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-100 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
+        class="group text-gray-400 flex h-full w-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-transparent focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
         @click="toggleColorMode"
         aria-hidden="true"
       >

@@ -1,6 +1,6 @@
 <template>
   <div class="h-full">
-    <div class="inset-y-0 left-0 flex h-full w-full items-center sm:hidden">
+    <div class="inset-y-0 left-0 flex h-full w-full items-center">
       <a
         class="flex h-full w-full items-center justify-center rounded-md fill-gray-400 p-2 hover:bg-gray-100 hover:fill-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
         :href="donateLink"

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border-gray-300 mx-0 flex flex-col items-center justify-center border-b p-0 shadow-sm dark:border-none dark:shadow-none md:gap-y-0">
+  <div class="mx-0 flex flex-col items-center justify-center p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 m-0 flex flex-col items-start justify-center px-0 pb-1.5">
       <div class="min-h-full min-w-full max-w-full">
         <div v-if="props.searchEntry.youtubeVideoLink">
