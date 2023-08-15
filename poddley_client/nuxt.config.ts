@@ -41,7 +41,22 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@nuxtjs/svg-sprite",
     "nuxt-delay-hydration",
+    "@nuxtjs/google-fonts",
   ],
+  googleFonts: {
+    families: {
+      Inter: true,
+      Raleway: true,
+    },
+    download: true,
+    base64: true,
+    inject: true,
+    overwriting: true,
+    fontsDir: "assets/fonts",
+    display: "swap", // 'auto' | 'block' | 'swap' | 'fallback' | 'optional',
+    preload: true,
+    useStylesheet: true,
+  },
   lodash: {
     prefix: "_",
   },

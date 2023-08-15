@@ -1,20 +1,20 @@
 <template>
-  <Disclosure as="nav" class="bg-white z-40 pb-0 py-2">
-    <div class="mx-auto h-full w-full px-0 sm:px-6 lg:px-8">
-      <div class="relative flex h-full w-full justify-between">
-        <div class="my-0 flex h-full w-full flex-1 items-center justify-between sm:items-stretch sm:justify-start">
-          <div class="h-full w-full flex-shrink-0 items-center justify-between p-0 m-0 ">
-            <div class="row flex h-full w-full flex-nowrap items-center justify-between m-0">
-              <div class="flex h-12 w-full sm:hidden justify-center">
-                <BurgerMenu class="col-2 flex h-full items-center justify-center" />
-                <DarkMode class="col-2 flex h-full items-center justify-center" />
-                <NavTitle class="col-4 flex h-full items-center justify-center" />
-                <SearchBox class="col-2 flex h-full items-center justify-center p-0" @click="toggleSearchSection" :openSearchSection="openSearchSection" />
-                <ButtonsMicrophoneButton class="col-2 flex h-full items-center justify-center" />
+  <nav class="container-fluid bg-white z-40 px-3 sm:px-10">
+    <div class="mx-auto h-full w-full px-0 sm:px-6 lg:px-8 ">
+      <div class="relative flex h-full w-full justify-center">
+        <div class="my-0 flex h-full w-full items-center justify-between sm:items-stretch sm:justify-start lg:max-w-screen-xl">
+          <div class="m-0 h-full w-full flex-shrink-0 items-center justify-between p-0">
+            <div class="m-0 h-full w-full flex-nowrap items-center justify-between">
+              <div class="row m-0 flex h-12 w-full flex-col items-center justify-center sm:hidden">
+                <div class="flex w-full justify-between p-0">
+                  <BurgerMenu class="col-2" />
+                  <DarkMode class="col-2" />
+                  <NavTitle class="col-4" />
+                  <ButtonsMicrophoneButton class="col-2" />
+                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2" />
+                </div>
               </div>
-              <div class="hidden h-12 w-full sm:flex justify-evenly ">
-                <DesktopNavBar class="h-full w-full m-0 justify-evenly" />
-              </div>
+              <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly sm:flex py-2" />
             </div>
           </div>
         </div>
@@ -23,13 +23,12 @@
     <div v-show="openSearchSection">
       <SearchBoxSection class="flex h-12 items-center justify-center" />
     </div>
-  </Disclosure>
+  </nav>
 </template>
 
 <script setup lang="ts">
 import { onKeyUp } from "@vueuse/core";
 import { vOnClickOutside } from "@vueuse/components";
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 
 const openSearchSection: Ref<boolean> = ref(false);
 const openBurgerMenu: Ref<boolean> = ref(false);

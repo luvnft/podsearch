@@ -4,7 +4,7 @@
     <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" class="sm:hidden" />
   </div>
   <!-- For Desktop-->
-  <div class="mx-auto max-w-2xl px-4 py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+  <!-- <div class="mx-auto max-w-2xl px-4 py-24 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="max-w-xl">
       <h1 id="order-history-heading" class="text-gray-900 text-3xl font-bold tracking-tight">Order history</h1>
       <p class="text-gray-500 mt-2 text-sm">Check the status of recent orders, manage returns, and discover similar products.</p>
@@ -31,7 +31,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 <script lang="ts" setup>
 //Imports

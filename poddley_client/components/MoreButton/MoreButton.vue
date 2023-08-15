@@ -1,5 +1,5 @@
 <template>
-  <HeadlessMenu as="div" class="relative inline-block text-left">
+  <!-- <HeadlessMenu as="div" class="relative inline-block text-left">
     <div>
       <HeadlessMenuButton
         class="bg-gray-0 text-gray-400 flex items-center rounded-full hover:text-gray-600 focus:ring-gray-500 focus:ring-offset-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
@@ -25,13 +25,13 @@
               <svg-icon name="link" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <a :href="props.searchEntry.url" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']">
               Podcast RSS-feed
               <svg-icon name="rss" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <button
               :href="props.searchEntry.id"
               :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']"
@@ -41,7 +41,7 @@
               <svg-icon name="copylink" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </button>
           </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <a :href="props.searchEntry.episodeLinkToEpisode" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex gap-x-1 px-4 py-2 text-sm ']">
               Go to episode
               <svg-icon name="link" class="h-5 w-4 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
@@ -50,7 +50,7 @@
         </div>
       </HeadlessMenuItems>
     </transition>
-  </HeadlessMenu>
+  </HeadlessMenu> -->
 </template>
 
 <script setup lang="ts">
