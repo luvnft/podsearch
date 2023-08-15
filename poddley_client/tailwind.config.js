@@ -6,11 +6,18 @@ module.exports = {
     },
     nightwind: ["group-hover", "focus"], // Add any Tailwind variant
   },
+  important: true,
   plugins: [require("nightwind")],
   prefix: "",
   darkMode: "class",
-  important: true,
   theme: {
+    screens: {
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px",
+      "2xl": "1400px",
+    },
     nightwind: {
       colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
       colorScale: "reduced",
