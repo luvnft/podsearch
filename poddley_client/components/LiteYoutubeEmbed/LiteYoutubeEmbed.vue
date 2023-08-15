@@ -3,7 +3,7 @@
     <!-- Show off iFrame -->
     <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
       <div class="topbackground text-white absolute z-10 flex w-full flex-row gap-2 rounded-none px-4 pt-3 md:rounded-xl">
-        <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-10 before:w-10">
+        <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
           <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75" loading="lazy" />
         </div>
         <div class="flex min-w-0 items-center">

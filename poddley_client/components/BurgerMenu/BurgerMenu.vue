@@ -1,5 +1,5 @@
 <template>
-  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-10 w-10 origin-top-left items-center text-left p-0" v-slot="{ open, close }">
+  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-12 w-12 origin-top-left items-center text-left p-0" v-slot="{ open, close }">
     <HeadlessMenuButton
       class="hover:bg-gray-transparent text-gray-400 flex h-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset"
     >
