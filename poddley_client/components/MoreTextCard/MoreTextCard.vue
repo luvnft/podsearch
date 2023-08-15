@@ -16,7 +16,7 @@
           </button>
         </div>
         <!-- Modal body -->
-        <div class="p-6 space-y-6 max-h-[calc(100vh-10rem)] overflow-y-auto">
+        <div class="p-6 space-y-6 max-h-[calc(100vh-12rem)] overflow-y-auto">
           <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <p v-html="podcastTest.trim()" class = "ml-0 my-0 mr-0" />
           </p>

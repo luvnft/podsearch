@@ -1,10 +1,10 @@
 <template>
-  <GenericButton @click="toggleColorMode" class="h-10 w-10 aspect-square">
-    <div class="flex h-10 w-10 items-center justify-center aspect-square">
-      <div class="sun flex h-full w-10 items-center justify-center aspect-square">
+  <GenericButton @click="toggleColorMode" class="h-12 w-12 aspect-square">
+    <div class="flex h-12 w-12 items-center justify-center aspect-square">
+      <div class="sun flex h-full w-12 items-center justify-center aspect-square">
         <svg-icon name="sun" class="sun block h-full scale-[0.5] fill-gray-500 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
       </div>
-      <div class="moon flex h-full w-10 items-center justify-center aspect-square">
+      <div class="moon flex h-full w-12 items-center justify-center aspect-square">
         <svg-icon name="moon" class="moon block h-full scale-[0.5] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
       </div>
     </div>

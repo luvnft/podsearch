@@ -1,6 +1,6 @@
 <template>
   <GenericButton
-    class="text-gray-400 flex h-10 w-[80px] sm:w-24 items-center justify-center rounded-md fill-gray-600 p-0 hover:text-gray-500 focus:ring-gray-500 hover:fill-gray-700 focus:outline-none focus:ring-2 focus:ring-inset dark:fill-neutral-400 dark:hover:fill-gray-300"
+    class="text-gray-400 flex h-12 w-28 sm:w-24 items-center justify-center rounded-md fill-gray-600 p-0 hover:text-gray-500 focus:ring-gray-500 hover:fill-gray-700 focus:outline-none focus:ring-2 focus:ring-inset dark:fill-neutral-400 dark:hover:fill-gray-300"
   >
     <div :class="`flex items-center justify-center ${!loading || 'hidden'}`">
       <svg-icon name="logo" class="min-h-6 mt-1 block max-h-7 w-4/6" aria-hidden="true" />
