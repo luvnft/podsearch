@@ -1,37 +1,58 @@
 <template>
-  <!-- For Phones-->
   <div>
-    <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" class="sm:hidden" />
-  </div>
-  <!-- For Desktop-->
-  <!-- <div class="mx-auto max-w-2xl px-4 py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="max-w-xl">
-      <h1 id="order-history-heading" class="text-gray-900 text-3xl font-bold tracking-tight">Order history</h1>
-      <p class="text-gray-500 mt-2 text-sm">Check the status of recent orders, manage returns, and discover similar products.</p>
+    <!-- For Phones-->
+    <div class="block sm:hidden">
+      <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" class="sm:hidden" />
     </div>
-
-    <div class="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-      <div v-for="order in orders" :key="order.id" class="group relative">
-        <div class="aspect-w-1 aspect-h-1 bg-gray-200 overflow-hidden rounded-md group-hover:opacity-75">
-          <img :src="order.imageSrc" :alt="order.imageAlt" class="object-cover object-center" />
+    <!-- For Desktop-->
+    <div class="mx-auto flex flex-col gap-y-2 p-3 sm:px-14 sm:pb-5">
+      <form class="flex items-center">
+        <label for="voice-search" class="sr-only">Search</label>
+        <div class="relative w-full">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <svg class="text-gray-500 h-4 w-4 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11.15 5.6h.01m3.337 1.913h.01m-6.979 0h.01M5.541 11h.01M15 15h2.706a1.957 1.957 0 0 0 1.883-1.325A9 9 0 1 0 2.043 11.89 9.1 9.1 0 0 0 7.2 19.1a8.62 8.62 0 0 0 3.769.9A2.013 2.013 0 0 0 13 18v-.857A2.034 2.034 0 0 1 15 15Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="voice-search"
+            class="text-gray-900 bg-gray-50 border-gray-300 block w-full rounded-lg border p-2.5 pl-10 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            placeholder="Search Mockups, Logos, Design Templates..."
+            required
+          />
+          <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <svg class="text-gray-500 h-4 w-4 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 20">
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 7v3a5.006 5.006 0 0 1-5 5H6a5.006 5.006 0 0 1-5-5V7m7 9v3m-3 0h6M7 1h2a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3Z"
+              />
+            </svg>
+          </button>
         </div>
-        <h3 class="text-gray-500 mt-4 text-sm">
-          <a :href="order.href">
-            <span class="absolute inset-0" />
-            {{ order.productName }}
-          </a>
-        </h3>
-        <p class="mt-1 text-lg font-medium">
-          <span v-if="order.status === 'delivered'" class="text-gray-900">
-            Delivered on
-            <time :datetime="order.datetime">{{ order.date }}</time>
-          </span>
-          <span v-else-if="order.status === 'out-for-delivery'" class="text-indigo-600">Out for delivery</span>
-          <span v-else-if="order.status === 'cancelled'" class="text-gray-500">Cancelled</span>
-        </p>
-      </div>
+        <button
+          type="submit"
+          class="text-white bg-blue-700 border-blue-700 ml-2 inline-flex items-center rounded-lg border px-3 py-2.5 text-sm font-medium hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 focus:outline-none focus:ring-4"
+        >
+          <svg class="mr-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+          </svg>
+          Search
+        </button>
+      </form>
+
+      <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
     </div>
-  </div> -->
+  </div>
 </template>
 <script lang="ts" setup>
 //Imports

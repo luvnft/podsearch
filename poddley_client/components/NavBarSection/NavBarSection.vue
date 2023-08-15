@@ -1,20 +1,24 @@
 <template>
-  <nav class="container-fluid bg-white z-40 px-3 sm:px-10">
-    <div class="mx-auto h-full w-full px-0 sm:px-6 lg:px-8 ">
+  <nav class="container-fluid bg-white z-40 px-1 py-0 sm:px-10">
+    <div class="mx-auto h-full w-full px-0 sm:px-0 lg:px-8">
       <div class="relative flex h-full w-full justify-center">
         <div class="my-0 flex h-full w-full items-center justify-between sm:items-stretch sm:justify-start lg:max-w-screen-xl">
           <div class="m-0 h-full w-full flex-shrink-0 items-center justify-between p-0">
             <div class="m-0 h-full w-full flex-nowrap items-center justify-between">
-              <div class="row m-0 flex h-12 w-full flex-col items-center justify-center sm:hidden">
-                <div class="flex w-full justify-between p-0">
-                  <BurgerMenu class="col-2" />
-                  <DarkMode class="col-2" />
-                  <NavTitle class="col-4" />
-                  <ButtonsMicrophoneButton class="col-2" />
-                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2" />
+              <div class="flex items-center justify-between p-0 py-1 sm:hidden">
+                <div class="flex flex-row items-center justify-center">
+                  <BurgerMenu class="col-2 flex items-center justify-center" />
+                  <DarkMode class="col-2 flex items-center justify-center" />
+                </div>
+                <NavTitle class="col-4 flex items-center justify-center" />
+                <div class="flex flex-row items-center justify-center">
+                  <ButtonsMicrophoneButton class="col-2 flex items-center justify-center" />
+                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 flex items-center justify-center" />
                 </div>
               </div>
-              <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly sm:flex py-2" />
+              <div class="hidden sm:flex">
+                <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly py-2 sm:flex" />
+              </div>
             </div>
           </div>
         </div>

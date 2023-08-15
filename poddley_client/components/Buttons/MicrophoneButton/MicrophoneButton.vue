@@ -1,23 +1,18 @@
 <template>
-  <GenericButton >
+  <GenericButton @click="startRecording">
     <div class="inset-y-0 left-0 flex h-full w-full items-center">
-      <button
-        class="text-gray-400 flex h-full w-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 hover:border-none hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-inset"
-        @click="startRecording"
-      >
-        <div class="flex h-full w-full flex-row items-center justify-center">
-          <div class="h-full w-full" v-if="!loading">
-            <svg-icon name="microphone" class="block h-full w-full scale-95 fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
-          </div>
-          <div class="flex h-full w-full items-center justify-center" v-if="loading">
-            <div class="radial-progress text-gray-400 flex items-center justify-center after:hidden" :style="`--value: ${percentageAudioPazamed}; --thickness: 0.13rem; --size: 2rem`">
-              <div class="h-full w-full" v-if="loading">
-                <svg-icon name="microphone" class="text-gray-400 block h-full w-full scale-[0.55] animate-colorPulse group-hover:fill-gray-500" aria-hidden="true" />
-              </div>
+      <div class="flex h-full w-full flex-row items-center justify-center">
+        <div class="h-full w-full" v-if="!loading">
+          <svg-icon name="microphone" class="block h-full w-full scale-[0.6] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+        </div>
+        <div class="flex h-full w-full items-center justify-center" v-if="loading">
+          <div class="radial-progress text-gray-400 flex items-center justify-center after:hidden" :style="`--value: ${percentageAudioPazamed}; --thickness: 0.13rem; --size: 2rem`">
+            <div class="h-full w-full" v-if="loading">
+              <svg-icon name="microphone" class="text-gray-400 block h-full w-full scale-[0.55] animate-colorPulse group-hover:fill-gray-500" aria-hidden="true" />
             </div>
           </div>
         </div>
-      </button>
+      </div>
     </div>
     <div>
       <audio v-for="recording in recordings" :src="recording.blobUrl" :type="recording.mimeType" controls="true" autoplay />
