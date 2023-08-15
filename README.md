@@ -10,6 +10,7 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 [Demo Link](https://poddley.com)
 
 ## Apps
+Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastlanes the process of developing a native app for both ecosystems. Below is a link to them on the respective stores.
 - iOS:
 - Android:
 
@@ -50,6 +51,8 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 	- Lodash module (for _Debounce-function)
 	- Device module (for iPhone-device detection)
 	- Pinia Nuxt Module (for global storage across components)
+ 	- NuxtJS Ionic module (for fast Android/iOS development)
+  	- Nightwind Tailwind plugin (for deep automatic nightmode)
 
 ## Backend:
 ### Services:
