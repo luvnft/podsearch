@@ -37,16 +37,17 @@
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment bg-neutral-100 mb-1.5 mt-1 block rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-              <div class="loader" v-if="subtitlesActivated">
+            <div class="segment bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+              <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                 <span></span>
                 &nbsp;
               </div>
-              <div class="float-right flex flex-row items-center justify-between p-1 pr-0.5">
-                <svg-icon @click="openMoreTextModal()" name="expand" class="h-4 w-4 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
-              </div>
-              <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
+
+              <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
+              </div>
+              <div class="relative right-0 top-0 items-center justify-between p-1 pr-0.5">
+                <svg-icon @click="openMoreTextModal()" name="expand" class="h-4 w-4 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
               </div>
             </div>
           </div>
@@ -74,6 +75,7 @@
             :key="props.searchEntry.text"
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
             @timeupdate="handleTimeUpdateDebounced"
+            @playing="handlePlaying"
           />
         </div>
       </div>
@@ -93,10 +95,25 @@ import "animate.css";
 const searchStore = useSearchStore();
 const { hitCache } = storeToRefs(searchStore);
 
+const subtitlesActivatedToast = () => {
+  ElNotification({
+    title: "Subtitles enabled",
+    type: "success",
+    duration: 1000,
+  });
+};
+
+const subtitlesDeactivatedToast = () => {
+  ElNotification({
+    title: "Subtitles disabled",
+    type: "error",
+    duration: 1000,
+  });
+};
+
 const props = defineProps<{
   searchEntry: Hit;
 }>();
-
 const subtitlesActivated: Ref<boolean> = ref(false);
 const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
@@ -107,8 +124,20 @@ hitCache.value[props.searchEntry.episodeGuid] = {
   numberOfPages: undefined,
 };
 
+const playing: Ref<boolean> = ref(false);
+const handlePlaying = (playingState: boolean) => {
+  playing.value = playingState;
+  console.log("PlayingState: ", playingState, " and playing is: ", playing);
+};
+
 const toggleSubtitles = () => {
   subtitlesActivated.value = !subtitlesActivated.value;
+
+  if (subtitlesActivated.value) {
+    subtitlesActivatedToast();
+  } else {
+    subtitlesDeactivatedToast();
+  }
 };
 
 const computedStartTime = computed(() => {
@@ -208,7 +237,7 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
 }
 
 .loader {
-  display: inline-flex;
+  display: inline;
 }
 
 .loader span {

@@ -13,7 +13,8 @@
         :src="props.audioLink"
         type="audio/mpeg"
         @timeupdate="onTimeUpdate"
-        @playing="onStartedPlay"
+        @play="playing"
+        @pause="playing"
       />
 
       <div ref="audioPlayerSpinnerRef" class="spinner" v-if="isLoading">
@@ -31,7 +32,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
   (event: "timeupdate", currentTime: number): void;
-  (event: "onStartedPlay", startedPlay: boolean);
+  (event: "playing", playing: boolean);
 }>();
 
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
@@ -42,9 +43,11 @@ const onTimeUpdate = (event: Event) => {
   emit("timeupdate", (event.target as HTMLAudioElement).currentTime);
 };
 
-const onStartedPlay = () => {
-  emit("onStartedPlay", true);
+const playing = (event: Event) => {
+  if(event.type === "play") emit("playing", true);
+  if(event.type === "pause") emit("playing", false);
 };
+
 </script>
 
 <style scoped>

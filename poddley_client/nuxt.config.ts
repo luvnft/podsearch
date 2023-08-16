@@ -42,6 +42,7 @@ export default defineNuxtConfig({
     "@nuxtjs/svg-sprite",
     "nuxt-delay-hydration",
     "@nuxtjs/google-fonts",
+    "@element-plus/nuxt",
   ],
   googleFonts: {
     families: {
