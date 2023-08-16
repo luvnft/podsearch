@@ -571,6 +571,9 @@ Has to be a live version auto
 - [ ] Make recording work on iOS and Android
 - [ ] Fix spinner wiggle bug
 - [ ] Subtitles toast enabled/disabled
+- [ ] Youtube DarkMode button
+- [ ] Align RemoveButtons
+- [ ] Logo color?
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
