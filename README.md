@@ -557,23 +557,19 @@ Has to be a live version auto
 - [x] Remove useDevice as we have no use for it on the web-version
 - [x] Se over about og contact siden
 - [x] Make emails
+- [ ] ~~Logo color?~~
+- [x] Fix darkMode doubleClick bug
+- [x] Fix issue with description meta-tag on poddley
+- [x] Add "x"-cleanSearchString functionality like google: ![image](https://github.com/lukamo1996/poddley/assets/52632596/5150ce19-f768-4d9f-8fbf-39e476951210)
+- [ ] Subtitles toast enabled/disabled
+- [x] Fix spinner wiggle bug
+- [x] Youtube DarkMode button
+- [x] Align RemoveButtons
 - [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
 - [ ] Finish text expanding logic
 - [ ] Start opp transcriberen igjen
 - [ ] Start indexereren
 - [ ] Finish the rest of the desktop design and shit
-- [x] Fix darkMode doubleClick bug
-- [x] Fix issue with description meta-tag on poddley
-- [x] Add "x"-cleanSearchString functionality like google: ![image](https://github.com/lukamo1996/poddley/assets/52632596/5150ce19-f768-4d9f-8fbf-39e476951210)
-- [ ] Make iOS design
-- [ ] Make Android design
-- [ ] Make animation for Shazam functionality
-- [ ] Make recording work on iOS and Android
-- [ ] Fix spinner wiggle bug
-- [ ] Subtitles toast enabled/disabled
-- [ ] Youtube DarkMode button
-- [ ] Align RemoveButtons
-- [ ] Logo color?
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
