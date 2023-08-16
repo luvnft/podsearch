@@ -3,7 +3,7 @@
     <div class="flex h-full w-full items-center justify-between">
       <!-- Linker -->
       <div class="col-5 m-0 flex h-full items-center gap-x-5 px-3">
-        <GenericLink v-for="page in navigation" :link="page.href" class="text-gray-500 m-0 flex items-center justify-center font-normal text-center text-sm hover:text-gray-600">
+        <GenericLink v-for="page in navigation" :link="page.href" class="text-gray-500 m-0 flex items-center justify-center font-normal text-center text-base hover:text-gray-600">
           {{ page.name }}
         </GenericLink>
       </div>
