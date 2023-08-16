@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mb-1 mt-1 flex flex-grow items-center bg-transparent ring-0">
+  <div class="relative mb-1 mt-1 flex flex-grow items-center bg-transparent ring-0 outline-none border-[3px] border-gray-400 rounded-lg">
     <input
       type="text"
       name="search"
@@ -14,7 +14,7 @@
     <button
       v-if="searchQuery.searchString"
       @click="cleanSearchString"
-      class="text-gray-400 mr-0 flex aspect-square h-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-transparent focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
+      class="text-gray-400 mr-0 flex aspect-square h-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-transparent ring-0 border-0 outline-none focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
     >
       <XMarkIcon class="block h-full w-full scale-90 fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
     </button>
