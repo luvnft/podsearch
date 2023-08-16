@@ -1,12 +1,12 @@
 <template>
   <div class="w-full">
-    <div>
+    <div class="text-white mt-1.5">
       <audio
         :key="props.timeLocation"
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
-        class="bg-neutral-100 border-gray-300 m-0 w-full rounded-lg border p-0 dark:bg-gray-800 dark:border-none dark:brightness-[0.85] dark:invert"
+        class="bg-neutral-100 border-gray-300 m-0 w-full rounded-lg border p-0 dark:bg-gray-300 dark:border-none"
         ref="audioPlayerRef"
         :preload="'metadata'"
         :title="props.episodeTitle"
@@ -44,31 +44,12 @@ const onTimeUpdate = (event: Event) => {
 };
 
 const playing = (event: Event) => {
-  if(event.type === "play") emit("playing", true);
-  if(event.type === "pause") emit("playing", false);
+  if (event.type === "play") emit("playing", true);
+  if (event.type === "pause") emit("playing", false);
 };
-
 </script>
 
 <style scoped>
-#custom-audio {
-  border-radius: 0;
-}
-
-#custom-audio::-webkit-media-controls-panel,
-#custom-audio::-webkit-media-controls {
-  border-radius: 0;
-}
-
-#custom-audio::-webkit-media-controls-play-button,
-#custom-audio::-webkit-media-controls-volume-slider-container,
-#custom-audio::-webkit-media-controls-timeline-container,
-#custom-audio::-webkit-media-controls-mute-button,
-#custom-audio::-webkit-media-controls-timeline,
-#custom-audio::-webkit-media-controls-current-time-display {
-  color: #282828;
-}
-
 .spinner {
   position: absolute;
   top: 30%;
@@ -81,5 +62,31 @@ const playing = (event: Event) => {
 
 .loading::-webkit-media-controls-play-button {
   visibility: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  #custom-audio {
+    border-radius: 0;
+    @apply bg-gray-200;
+  }
+
+  #custom-audio::-webkit-media-controls-panel,
+  #custom-audio::-webkit-media-controls {
+    @apply bg-gray-200;
+    border-radius: 0;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  #custom-audio {
+    @apply bg-neutral-500;
+    border-radius: 0;
+  }
+
+  #custom-audio::-webkit-media-controls-panel,
+  #custom-audio::-webkit-media-controls {
+    @apply bg-neutral-500;
+    border-radius: 0;
+  }
 }
 </style>

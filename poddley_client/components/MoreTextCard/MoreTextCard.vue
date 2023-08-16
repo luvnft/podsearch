@@ -1,8 +1,8 @@
 <template>
-  <TransitionRoot as="template" :show="open">
-    <Dialog as="div" class="relative z-10 h-full w-full" @close="open = false">
+  <TransitionRoot as="template" :show="moreTextModalOpen">
+    <Dialog as="div" class="fixed z-10 h-full w-full " @close="toggleMoreTextModal">
       <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
-        <div class="bg-gray-800 fixed inset-0 bg-opacity-90 transition-opacity" />
+        <div class="bg-gray-800 dark:bg-gray-100 fixed inset-0 bg-opacity-90 transition-opacity" />
       </TransitionChild>
 
       <div class="fixed inset-0 z-10 overflow-y-auto">
@@ -32,7 +32,7 @@
                 <button
                   type="button"
                   class="text-white bg-indigo-600 inline-flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium shadow-sm hover:bg-indigo-700 focus:ring-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm"
-                  @click="() => (open = false)"
+                  @click="toggleMoreTextModal"
                 >
                   Go back
                 </button>
@@ -48,8 +48,9 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/vue/24/outline";
-const open = ref(true);
 const props = defineProps<{
+  toggleMoreTextModal: () => void;
+  moreTextModalOpen: boolean;
   podcastTest: any;
   podcastName: string;
 }>();
