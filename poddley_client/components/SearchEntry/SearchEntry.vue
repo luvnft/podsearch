@@ -59,13 +59,12 @@
             </p>
             <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
           </div>
-          <div v-if="moreTextModalOpen">
-            <MoreTextCard
-              :close-dialog="openMoreTextModal"
-              :podcast-test="hitCache[props.searchEntry.episodeGuid].hits.map((hit: any) => hit.text).join('') || []"
-              :podcast-name="props.searchEntry.episodeTitle"
-            />
-          </div>
+          <MoreTextCard
+            :moreTextModalOpen="moreTextModalOpen"
+            :toggleMoreTextModal="toggleMoreTextModal"
+            :podcast-test="hitCache[props.searchEntry.episodeGuid].hits.map((hit: any) => hit.text).join('') || []"
+            :podcast-name="props.searchEntry.episodeTitle"
+          />
         </div>
         <div class="col-12 mt-0 flex w-full flex-col items-center justify-center border-none px-0 pb-0 pt-0">
           <AudioPlayer
@@ -174,8 +173,12 @@ const removeDuplicateHits = (hits: Hit[]) => {
 
 const moreTextModalOpen = ref(false);
 
-const openMoreTextModal = () => {
+const toggleMoreTextModal = () => {
   moreTextModalOpen.value = !moreTextModalOpen.value;
+};
+
+const openMoreTextModal = () => {
+  toggleMoreTextModal();
   handleTimeUpdate(parseFloat(currentPlayingSegment.value.start.toString()) || parseFloat(props.searchEntry.start.toString()));
 };
 
