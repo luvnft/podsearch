@@ -30,6 +30,9 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
+  elementPlus: {
+    themes: ["dark"],
+  },
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",

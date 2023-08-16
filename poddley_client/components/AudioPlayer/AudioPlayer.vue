@@ -6,7 +6,7 @@
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
-        class="bg-neutral-100 border-gray-300 m-0 w-full rounded-lg border p-0 dark:bg-gray-800 dark:border-none dark:brightness-90 dark:invert"
+        class="bg-neutral-100 border-gray-300 m-0 w-full rounded-lg border p-0 dark:bg-gray-800 dark:border-none dark:brightness-[0.85] dark:invert"
         ref="audioPlayerRef"
         :preload="'metadata'"
         :title="props.episodeTitle"

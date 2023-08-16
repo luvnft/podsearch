@@ -29,7 +29,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex min-h-full flex-col items-center justify-center px-3 py-1 leading-normal">
       <div class="row flex-grow-1 flex h-full w-full">
-        <div class="col-12 flex flex-col gap-y-0 px-0 pb-2 pt-0">
+        <div class="col-12 flex flex-col gap-y-0 px-0 pb-1.5 pt-0">
           <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-1">
             <p class="text-gray-800 mb-0 font-bold">
               {{ props.searchEntry.episodeTitle }}
