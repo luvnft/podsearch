@@ -4,7 +4,7 @@
     @click="toHomeClick"
   >
     <div :class="`flex items-center justify-center ${!loading || 'hidden'}`">
-      <svg-icon name="logo" class="min-h-6 mt-1 block max-h-7 w-4/6 fill-gray-500 brightness-90 dark:fill-neutral-300" aria-hidden="true" />
+      <svg-icon name="logo" class="min-h-6 mt-1 block max-h-7 w-4/6 fill-gray-500 brightness-90 dark:fill-neutral-200" aria-hidden="true" />
     </div>
     <IconsSpinnerIcon v-show="loading === true" />
   </GenericButton>
