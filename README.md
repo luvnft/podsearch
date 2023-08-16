@@ -570,7 +570,7 @@ Has to be a live version auto
 - [ ] Make animation for Shazam functionality
 - [ ] Make recording work on iOS and Android
 - [ ] Fix spinner wiggle bug
-- [ ] Lag design draft av dagens diskusjoner for desktop
+- [ ] Subtitles toast enabled/disabled
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
@@ -578,7 +578,7 @@ After finish:
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
 - [ ] Markedsfør
 - [ ] Finskriv githuben
-- [ ] Skriv et bogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
+- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
 
 **Later maybe**:
