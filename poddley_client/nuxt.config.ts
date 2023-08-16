@@ -46,7 +46,6 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Inter: true,
-      Raleway: true,
     },
     download: true,
     base64: true,

@@ -43,7 +43,7 @@
       </div>
 
       <p class="mt-6">Thank you for embarking on this exciting adventure with us. Welcome to Poddley – where every word spoken is a discovery waiting to happen.</p>
-      <p class="text-bl text-gray-700 mt-8">
+      <p class="text-gray-700 mt-8">
         <span class="text-blue-500">Stay curious,</span>
         <br />
         Igor Momcilovic & Luka Momcilovic

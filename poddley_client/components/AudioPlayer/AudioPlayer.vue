@@ -6,9 +6,9 @@
         controls
         id="custom-audio"
         :class="{ loading: isLoading }"
-        class="m-0 w-full rounded-lg p-0 shadow-none"
+        class="bg-neutral-100 border-gray-300 m-0 w-full rounded-lg border p-0 dark:bg-gray-800 dark:border-none dark:brightness-90 dark:invert"
         ref="audioPlayerRef"
-        :preload="'none'"
+        :preload="'metadata'"
         :title="props.episodeTitle"
         :src="props.audioLink"
         type="audio/mpeg"
