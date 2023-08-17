@@ -587,6 +587,8 @@ Has to be a live version auto
 - [ ] Start en egen IT blogg
 - [ ] Hr bug about
 - [ ] Gray-100 text sb
+- [ ] Fix darkmode issue on audioplayer
+- [ ] Fix size issue on triple dot menu
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
