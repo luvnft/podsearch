@@ -37,7 +37,7 @@
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="segment relative bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                 <span></span>
                 &nbsp;
@@ -46,7 +46,7 @@
               <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
               </div>
-              <div class="relative right-0 top-0 items-center justify-between p-1 pr-0.5">
+              <div class="absolute right-0 top-0 mt-1.5 mr-1.5 items-center justify-between p-1 pr-0.5">
                 <svg-icon @click="openMoreTextModal()" name="expand" class="h-4 w-4 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
               </div>
             </div>

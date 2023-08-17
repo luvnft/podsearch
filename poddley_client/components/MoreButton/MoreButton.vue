@@ -1,5 +1,5 @@
 <template>
-  <!-- <HeadlessMenu as="div" class="relative inline-block text-left">
+  <HeadlessMenu as="div" class="relative inline-block text-left">
     <div>
       <HeadlessMenuButton
         class="bg-gray-0 text-gray-400 flex items-center rounded-full hover:text-gray-600 focus:ring-gray-500 focus:ring-offset-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
@@ -50,7 +50,7 @@
         </div>
       </HeadlessMenuItems>
     </transition>
-  </HeadlessMenu> -->
+  </HeadlessMenu>
 </template>
 
 <script setup lang="ts">
