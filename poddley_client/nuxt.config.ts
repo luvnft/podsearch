@@ -72,17 +72,6 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
-  experimental: {
-    clientFallback: true,
-    componentIslands: true,
-    inlineSSRStyles: true,
-    viewTransition: true,
-    crossOriginPrefetch: true,
-    externalVue: true,
-    treeshakeClientOnly: false,
-    asyncEntry: true,
-    typescriptBundlerResolution: true,
-  },
   vite: {
     build: {
       minify: true,
