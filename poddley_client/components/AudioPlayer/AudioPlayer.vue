@@ -5,7 +5,7 @@
         :key="props.timeLocation"
         controls
         id="custom-audio"
-        :class="`w-full ${isSafari || isIos ? 'text-black bg-gray-100 rounded-lg dark:bg-gray-800 dark:brightness-75 dark:invert' : ''}`"
+        :class="`w-full ${!isIos ? 'text-black bg-gray-100 rounded-lg dark:bg-gray-800 dark:brightness-75 dark:invert' : ''}`"
         ref="audioPlayerRef"
         :preload="'metadata'"
         :title="props.episodeTitle"
