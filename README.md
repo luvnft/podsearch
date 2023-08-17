@@ -570,6 +570,21 @@ Has to be a live version auto
 - [ ] Start opp transcriberen igjen
 - [ ] Start indexereren
 - [ ] Finish the rest of the desktop design and shit
+- [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
+- [x] Remove shade and border on audioPlayer on iPhones
+- [x] Move expand more text all the way to the right even when text is short
+- [x] MoreLinks buttonen har forsvunnet fiks det
+- [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
+- [ ] We need nicer readMoreModal
+- [ ] Fix hover fill on rss icon
+- [ ] Add share buttons to moreLink
+- [ ] Make own audioPlayer component vue3/Nuxt3.
+- [ ] Make MeiliSearch production probably.
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
+- [ ] Markedsfør
+- [ ] Finskriv githuben
+- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
+- [ ] Start en egen IT blogg
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
