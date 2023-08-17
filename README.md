@@ -585,6 +585,8 @@ Has to be a live version auto
 - [ ] Finskriv githuben
 - [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
+- [ ] Hr bug about
+- [ ] Gray-100 text sb
 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
@@ -594,7 +596,6 @@ After finish:
 - [ ] Finskriv githuben
 - [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
-- [ ] Hr bug about
 
 **Later maybe**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
