@@ -5,8 +5,7 @@
         :key="props.timeLocation"
         controls
         id="custom-audio"
-        :class="{ loading: isLoading }"
-        class="bg-neutral-100 border-gray-300 m-0 w-full rounded-lg border p-0 dark:bg-gray-300 dark:border-none"
+        class="w-full bg-gray-100 dark:brightness-75 dark:bg-gray-800 text-black dark:invert rounded-lg"
         ref="audioPlayerRef"
         :preload="'metadata'"
         :title="props.episodeTitle"
@@ -60,33 +59,4 @@ const playing = (event: Event) => {
   justify-content: center;
 }
 
-.loading::-webkit-media-controls-play-button {
-  visibility: hidden;
-}
-
-@media (prefers-color-scheme: dark) {
-  #custom-audio {
-    border-radius: 0;
-    @apply bg-gray-200;
-  }
-
-  #custom-audio::-webkit-media-controls-panel,
-  #custom-audio::-webkit-media-controls {
-    @apply bg-neutral-200;
-    border-radius: 0;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  #custom-audio {
-    @apply bg-neutral-200;
-    border-radius: 0;
-  }
-
-  #custom-audio::-webkit-media-controls-panel,
-  #custom-audio::-webkit-media-controls {
-    @apply bg-neutral-500;
-    border-radius: 0;
-  }
-}
 </style>
