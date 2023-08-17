@@ -30,10 +30,8 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  elementPlus: {
-    themes: ["dark"],
-  },
   modules: [
+    "@nuxtjs/svg-sprite",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
@@ -42,10 +40,9 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "nuxt-lodash",
     "nuxt-headlessui",
-    "@nuxtjs/svg-sprite",
     "nuxt-delay-hydration",
     "@nuxtjs/google-fonts",
-    "@element-plus/nuxt",
+    "@tailvue/nuxt",
   ],
   googleFonts: {
     families: {
@@ -72,7 +69,30 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
-  
+  experimental: {
+    clientFallback: true,
+    componentIslands: true,
+    inlineSSRStyles: true,
+    viewTransition: true,
+    crossOriginPrefetch: true,
+    externalVue: true,
+    treeshakeClientOnly: false,
+    asyncEntry: true,
+    typescriptBundlerResolution: true,
+  },
+  vite: {
+    build: {
+      minify: true,
+      sourcemap: false,
+      cssMinify: true,
+      rollupOptions: {
+        treeshake: true,
+      },
+    },
+    css: {
+      devSourcemap: false,
+    },
+  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,

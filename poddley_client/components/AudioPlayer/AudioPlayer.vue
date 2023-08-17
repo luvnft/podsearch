@@ -72,14 +72,14 @@ const playing = (event: Event) => {
 
   #custom-audio::-webkit-media-controls-panel,
   #custom-audio::-webkit-media-controls {
-    @apply bg-gray-200;
+    @apply bg-neutral-200;
     border-radius: 0;
   }
 }
 
 @media (prefers-color-scheme: light) {
   #custom-audio {
-    @apply bg-neutral-500;
+    @apply bg-neutral-200;
     border-radius: 0;
   }
 
