@@ -560,7 +560,7 @@ Has to be a live version auto
 - [ ] ~~Logo color?~~
 - [x] Fix darkMode doubleClick bug
 - [x] Fix issue with description meta-tag on poddley
-- [x] Add "x"-cleanSearchString functionality like google: ![image](https://github.com/lukamo1996/poddley/assets/52632596/5150ce19-f768-4d9f-8fbf-39e476951210)
+- [x] Add "x"-cleanSearchString functionality like google
 - [x] Subtitles toast enabled/disabled
 - [x] Fix spinner wiggle bug
 - [x] Youtube DarkMode button
