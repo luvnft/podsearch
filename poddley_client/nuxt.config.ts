@@ -43,7 +43,12 @@ export default defineNuxtConfig({
     "nuxt-delay-hydration",
     "@nuxtjs/google-fonts",
     "@tailvue/nuxt",
+    "@nuxtjs/device",
+    "@element-plus/nuxt",
   ],
+  elementPlus: {
+    themes: ["dark"],
+  },
   googleFonts: {
     families: {
       Inter: true,

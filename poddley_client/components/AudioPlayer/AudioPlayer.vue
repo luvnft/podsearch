@@ -5,7 +5,7 @@
         :key="props.timeLocation"
         controls
         id="custom-audio"
-        class="w-full bg-gray-100 dark:brightness-75 dark:bg-gray-800 text-black dark:invert rounded-lg"
+        :class="`w-full ${isSafari || isIos ? 'text-black bg-gray-100 rounded-lg dark:bg-gray-800 dark:brightness-75 dark:invert' : ''}`"
         ref="audioPlayerRef"
         :preload="'metadata'"
         :title="props.episodeTitle"
@@ -37,7 +37,7 @@ const emit = defineEmits<{
 const audioPlayerRef: Ref<HTMLAudioElement | null> = ref(null);
 const audioPlayerSpinnerRef: Ref<HTMLDivElement | null> = ref(null);
 const isLoading: Ref<Boolean> = ref(false);
-
+const { isSafari, isIos } = useDevice();
 const onTimeUpdate = (event: Event) => {
   emit("timeupdate", (event.target as HTMLAudioElement).currentTime);
 };
@@ -58,5 +58,4 @@ const playing = (event: Event) => {
   align-items: center;
   justify-content: center;
 }
-
 </style>
