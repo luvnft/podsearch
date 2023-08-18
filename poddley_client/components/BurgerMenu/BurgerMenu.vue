@@ -1,5 +1,5 @@
 <template>
-  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-12 w-12 origin-top-left items-center text-left p-0" v-slot="{ open, close }">
+  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-12 w-12 origin-top-left items-center p-0 text-left" v-slot="{ open, close }">
     <HeadlessMenuButton
       class="hover:bg-gray-transparent text-gray-400 flex h-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset"
     >
@@ -14,23 +14,37 @@
       leave-from-class="transform scale-100 opacity-100"
       leave-to-class="transform scale-95 opacity-0"
     >
-      <HeadlessMenuItems :class="['bg-white ring-black absolute left-0 top-full z-40 w-40 origin-top-left rounded-md py-1 shadow-lg ring-1 ring-opacity-5  focus:outline-none']" @click="close">
-        <HeadlessMenuItem v-slot="{ active }">
-          <NuxtLink to="/" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-3 py-2 text-sm no-underline ']">Home</NuxtLink>
-        </HeadlessMenuItem>
-        <HeadlessMenuItem v-slot="{ active }">
-          <NuxtLink to="about" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-3 py-2 text-sm no-underline ']">About</NuxtLink>
-        </HeadlessMenuItem>
-        <HeadlessMenuItem v-slot="{ active }">
-          <NuxtLink to="contact" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-3 py-2 text-sm no-underline ']">Contact</NuxtLink>
-        </HeadlessMenuItem>
-        <HeadlessMenuItem v-slot="{ active }">
-          <a :href="donateLink" :class="[active ? 'bg-gray-100' : '', 'text-gray-700 block px-3 py-2 text-sm no-underline ']">Donate</a>
-        </HeadlessMenuItem>
+      <HeadlessMenuItems class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+        <div class="bg-white w-full rounded-xl px-0 py-1">
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <NuxtLink to="/" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900  font-bold' : 'text-gray-700 fill-gray-500', ' flex justify-between gap-x-0 px-3 py-2 text-sm ']">
+              Home
+              <svg-icon name="home" class="text-gray-500 h-4 w-4 p-0 dark:group-hover:text-gray-700" />
+            </NuxtLink>
+          </HeadlessMenuItem>
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <NuxtLink to="about" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-sm  ']">
+              About
+              <svg-icon name="info" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+            </NuxtLink>
+          </HeadlessMenuItem>
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <NuxtLink to="contact" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-sm  ']">
+              Contact
+              <svg-icon name="contact" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+            </NuxtLink>
+          </HeadlessMenuItem>
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <a :href="donateLink" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-sm  ']">
+              Donate
+              <svg-icon name="donate" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+            </a>
+          </HeadlessMenuItem>
+        </div>
       </HeadlessMenuItems>
     </transition>
   </HeadlessMenu>
-</template> 
+</template>
 
 <script setup lang="ts">
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";

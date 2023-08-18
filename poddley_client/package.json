@@ -46,6 +46,7 @@
     "recordrtc": "^5.6.2",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.0",
+    "sharer.js": "^0.5.1",
     "vue-apply-darkmode": "^1.0.2",
     "workerize-loader": "^2.0.2"
   },
