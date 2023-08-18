@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <!-- Show off iFrame -->
     <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="text-white bg-zinc-950 bg-opacity-20 absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-xl">
+      <div class="text-white absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-xl">
         <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
           <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75" loading="lazy" />
         </div>
@@ -15,7 +15,7 @@
       <div>
         <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
       </div>
-      <button class="image-with-vignette h-full w-full min-w-full rounded-none after:rounded-none md:rounded-xl md:after:rounded-xl">
+      <button class="image-with-vignette h-full w-full min-w-full rounded after:rounded-none md:rounded-xl md:after:rounded-xl">
         <img
           loading="lazy"
           class="aspect-video w-full rounded-none bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
