@@ -576,7 +576,8 @@ Has to be a live version auto
 - [x] MoreLinks buttonen har forsvunnet fiks det
 - [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
 - [ ] We need nicer readMoreModal
-- [ ] Fix hover fill on rss icon
+- [x] Fix hover fill on rss icon
+- [ ] Add icons to burgerMenu
 - [ ] Add share buttons to moreLink
 - [ ] Make own audioPlayer component vue3/Nuxt3.
 - [ ] Make MeiliSearch production probably.
@@ -585,11 +586,14 @@ Has to be a live version auto
 - [ ] Finskriv githuben
 - [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
-- [ ] Hr bug about
-- [ ] Gray-100 text sb
-- [ ] Fix darkmode issue on audioplayer
-- [ ] Fix size issue on triple dot menu
-
+- [x] Hr bug about
+- [x] Gray-100 text sb
+- [x] Fix darkmode issue on audioplayer
+- [x] Fix wrong reload thing on navlogo
+- [x] Fix size issue on triple dot menu
+- [ ] Rewrite transcriber properly
+- [x] Expand icon padding
+ 
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
 - [ ] Make MeiliSearch production probably.
