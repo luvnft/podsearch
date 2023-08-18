@@ -1,81 +1,87 @@
 import mimetypes
 import requests
 import os
-from prisma import Prisma
-from prisma.models import Transcription, Segment
 import json
 import re
 import insertJsonFilesToDb
 import time
-import whisperx
 import pandas as pd
 import subprocess
+
+batch_size = 16 # reduce if low on GPU mem
 
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     command = f"ffmpeg -i {video_filename} -vn -acodec copy {audio_filename}"
     subprocess.call(command, shell=True)
 
 async def transcribeAndDumpIt(episode, model):
-    prisma = Prisma()
-    await prisma.connect()
-    
-    # Loop over the rows of episodes gathered
+    # Convert episode to dictionary
     episode = dict(episode)
     url = episode["episodeEnclosure"]
-    audioFile = None
-    transcriptionData = None
-    extension = None
-    content_type = None
+    audioFileName = ""
+
+    print("Processing the episode with mp3-url:", url)
     
-    print("Doing the episode:", url)
-    
-    # Delete any file that begins with audio. in the folder 
-    for file in os.listdir(): 
-        if file.startswith('audio.'): 
-            print("Deleted last audio.-file")
+    # Delete any file that begins with 'audio' in the folder to avoid retranscribing
+    for file in os.listdir():
+        if file.startswith('audio'):
+            print("Deleted the last 'audio' prefixed file")
             os.remove(file)
-            
+    
+    # Download the podcast
     try:
         audioFile = requests.get(url)
     except Exception as e:
+        print(f"Error downloading the file: {e}")
         return
-        
+    
+    # Determine the content type based on the headers from the response
     try:
         content_type = audioFile.headers['content-type']
         extension = mimetypes.guess_extension(content_type)
     except Exception as e:
-        print("Probably this error: ", e)
+        print("Error determining content type:", e)
         
+    # If it's a video, we need to convert it to audio first
     if "video" in content_type:
-        # Convert the video to audio using ffmpeg
-        audio_filename = "audio.wav"  # You can choose your desired audio format
-        convert_video_to_audio_ffmpeg(filename, audio_filename)
-
-        # Replace the original filename with the audio filename
-        filename = audio_filename
-    else:
-        filename = "audio" + extension
-    
-    # Save the file as the file
-    with open(filename, 'wb') as f:
-        f.write(audioFile.content)
+        video_filename = "temp_video_file"  # You can modify this to fit a suitable naming convention
+        audio_filename = "audio.wav"
         
-    # If no extension, fuck it.
-    if extension == None:
+        with open(video_filename, 'wb') as f:
+            f.write(audioFile.content)
+
+        # Convert video to audio
+        convert_video_to_audio_ffmpeg(video_filename, audio_filename)
+
+        # Optionally, delete the temporary video file
+        os.remove(video_filename)
+    else:
+        audioFileName = "audio.wav"
+
+        # Save the audio file
+        with open(audioFileName, 'wb') as f:
+            f.write(audioFile.content)
+        
+    # If there's no extension, exit the function
+    if not extension:
+        print("No extension found, exiting.")
         return
                 
-    # Transcribe it bitch
-    print("The title of the episode is:", episode["episodeTitle"])
-    print("Transcribing url:", url)
-    print("The file name is:", filename)
+    # Transcribe the episode
+    print("Transcribing the episode with title:", episode["episodeTitle"])
+
     try:
         transcriptionData = {}
         segments = None
         startTime = time.time()
-        # transcriptionData = model.transcribe(filename, language="en")
-        segments, _ = model.transcribe(filename, beam_size=5, language="en")
-        segments = list(segments)  # The transcription will actually run here.
-        segments = [segment._asdict() for segment in segments]
+        
+        # Loading audio
+        print("Loading audio")
+        audio = model.load_audio(audioFileName)
+
+        # Transcribing...
+        print("Transcribing started...")
+        result = model.transcribe(audio, batch_size=batch_size)
 
         # Define a minimum duration (in seconds)
         min_duration = 0.1
@@ -91,13 +97,12 @@ async def transcribeAndDumpIt(episode, model):
         # Replace the original segments list with the filtered one
         segments = filtered_segments
 
-        model_a, metadata = whisperx.load_align_model(language_code="en", device="cuda", model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english")
-        result_aligned = whisperx.align(segments, model_a, metadata, filename, "cuda")
+        model_a, metadata = model.load_align_model(language_code="en", device="cuda", model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english")
+        result_aligned = model.align(segments, model_a, metadata, audioFileName, "cuda")
         df = pd.DataFrame(result_aligned["segments"])
         jsonData = json.loads(df.to_json(orient = "records"))
-        endTime = time.time()
-        elapsedTime = endTime - startTime
-        print("Time elapsed in seconds: ", elapsedTime)
+        print("Time elapsed in seconds: ", time.time() - startTime)
+        
         # Save it
         transcriptionData["segments"] = jsonData
         
@@ -138,6 +143,6 @@ async def transcribeAndDumpIt(episode, model):
     except Exception as e:
         print("Error with saving transcriptionData:", e)
 
-    print("------Inserting json files--------")
+    print("<<<------Inserting json files-------->>>")
     
     await insertJsonFilesToDb.insertJsonFilesToDb(episode)
