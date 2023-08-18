@@ -5,7 +5,7 @@
       name="search"
       id="search"
       placeholder="Search for a quote in a podcast here"
-      class="text-gray-800 bg-white border-gray-300 block h-full w-full justify-center rounded-md pl-2 pr-1 text-center text-base outline-none focus:border-gray-500 focus:ring-gray-500"
+      class="justify-center block w-full h-full pl-2 pr-1 text-base text-center text-gray-800 bg-white border-gray-300 rounded-md outline-none dark:placeholder:text-gray-200 placeholder:text-neutral-300 focus:border-gray-500 focus:ring-gray-500"
       autofocus
       v-model="searchQuery.searchString"
       @input="navigateWithQuery"
@@ -14,9 +14,9 @@
     <button
       v-if="searchQuery.searchString"
       @click="cleanSearchString"
-      class="text-gray-400 mr-0 flex aspect-square h-full items-center justify-center rounded-md p-2 hover:text-gray-500 hover:bg-gray-transparent ring-0 border-0 outline-none focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
+      class="flex items-center justify-center h-full p-2 mr-0 text-gray-400 border-0 rounded-md outline-none aspect-square hover:text-gray-500 hover:bg-gray-transparent ring-0 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset"
     >
-      <XMarkIcon class="block h-full w-full scale-90 fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
+      <XMarkIcon class="block w-full h-full scale-90 fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
     </button>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
-  <div class="text-gray-900 bg-white mt-3 flex w-full flex-col items-center justify-center">
-    <div class="mx-auto max-w-3xl p-6">
+  <div class="flex flex-col items-center justify-center w-full mt-3 text-gray-900 bg-white">
+    <div class="max-w-3xl p-6 mx-auto">
       <h1 class="mb-4 text-3xl font-bold">About Poddley</h1>
       <p class="mb-6">
         Welcome to Poddley, your ultimate destination for exploring the spoken world of podcasts like never before. Founded by the dynamic duo of Igor Momcilovic and Luka Momcilovic, Poddley is the
@@ -34,16 +34,16 @@
         </p>
       </div>
 
-      <div class="border-gray-200 mb-6 border-b">
+      <div class="mb-3 border-b border-gray-200">
         <h2 class="mb-2 text-xl font-semibold">Join Us on the Journey</h2>
-        <p class="mb-2">
+        <p class="mb-3">
           Poddley isn't just an app; it's an evolving journey, and we invite you to be a part of it. Whether you're a podcast aficionado looking to relive your favorite moments or a researcher seeking
           valuable insights, Poddley opens doors to a new world of auditory exploration. Join us as we continue to enhance and revolutionize the way we interact with spoken content.
         </p>
       </div>
 
-      <p class="mt-6">Thank you for embarking on this exciting adventure with us. Welcome to Poddley – where every word spoken is a discovery waiting to happen.</p>
-      <p class="text-gray-700 mt-8">
+      <p class="mt-0">Thank you for embarking on this exciting adventure with us. Welcome to Poddley – where every word spoken is a discovery waiting to happen.</p>
+      <p class="mt-4 text-gray-700">
         <span class="text-blue-500">Stay curious,</span>
         <br />
         Igor Momcilovic & Luka Momcilovic
