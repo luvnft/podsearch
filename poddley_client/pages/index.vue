@@ -23,7 +23,7 @@
           <input
             type="text"
             id="voice-search"
-            class="text-gray-900 bg-gray-50 border-gray-300 block w-full rounded-lg border p-2.5 pl-10 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            class="text-gray-900 bg-gray-50 border-gray-300 block w-full rounded-lg border p-2.5 pl-10 text-base focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
             placeholder="Search Mockups, Logos, Design Templates..."
             required
           />
@@ -41,7 +41,7 @@
         </div>
         <button
           type="submit"
-          class="text-white bg-blue-700 border-blue-700 ml-2 inline-flex items-center rounded-lg border px-3 py-2.5 text-sm font-medium hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 focus:outline-none focus:ring-4"
+          class="text-white bg-blue-700 border-blue-700 ml-2 inline-flex items-center rounded-lg border px-3 py-2.5 text-base font-medium hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 focus:outline-none focus:ring-4"
         >
           <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
