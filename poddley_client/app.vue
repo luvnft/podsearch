@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper flex-column flex">
+    <!-- <Notification /> -->
     <NuxtLayout>
       <NuxtLoadingIndicator />
       <NuxtPage />
     </NuxtLayout>
-    <UNotifications />
   </div>
 </template>
 

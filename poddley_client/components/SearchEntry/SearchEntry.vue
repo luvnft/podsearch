@@ -31,7 +31,7 @@
       <div class="row flex-grow-1 flex h-full w-full">
         <div class="col-12 flex flex-col gap-y-0 px-0 pb-1.5 pt-0">
           <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
-            <p class="text-gray-800 mb-0 font-bold py-1 pr-2">
+            <p class="text-gray-800 mb-0 py-1 pr-2 font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
             <MoreButton :searchEntry="searchEntry" />
@@ -95,22 +95,7 @@ import "animate.css";
 
 const searchStore = useSearchStore();
 const { hitCache } = storeToRefs(searchStore);
-
-const subtitlesActivatedToast = () => {
-  ElNotification({
-    title: "Subtitles enabled",
-    type: "success",
-    duration: 1000,
-  });
-};
-
-const subtitlesDeactivatedToast = () => {
-  ElNotification({
-    title: "Subtitles disabled",
-    type: "error",
-    duration: 1000,
-  });
-};
+import { useToast, useModal } from "tailvue";
 
 const props = defineProps<{
   searchEntry: Hit;
@@ -135,10 +120,11 @@ const toggleSubtitles = () => {
   subtitlesActivated.value = !subtitlesActivated.value;
 
   if (subtitlesActivated.value) {
-    subtitlesActivatedToast();
-  } else {
-    subtitlesDeactivatedToast();
+    // subtitlesActivatedToast.show();
   }
+  //  else {
+  //   subtitlesDeactivatedToast();
+  // }
 };
 
 const computedStartTime = computed(() => {

@@ -1,7 +1,7 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
+  content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}", "node_modules/tailvue/dist/tailvue.es.js"],
   variants: {
     extend: {
       backgroundColor: ["group-hover"],
