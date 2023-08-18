@@ -32,23 +32,19 @@ export default defineNuxtConfig({
   },
   modules: [
     "@nuxtjs/svg-sprite",
-    "@element-plus/nuxt",
-    "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
-    "@pinia/nuxt",
     "@nuxt/image",
-    "@nuxtjs/supabase",
     "nuxt-lodash",
-    "nuxt-headlessui",
     "nuxt-delay-hydration",
     "@nuxtjs/google-fonts",
-    "@tailvue/nuxt",
     "@nuxtjs/device",
+    "@pinia/nuxt",
+
+    "@nuxtjs/tailwindcss",
+    "nuxt-headlessui",
+    // "@nuxtjs/supabase",
   ],
-  elementPlus: {
-    themes: ["dark"],
-  },
   googleFonts: {
     families: {
       Inter: true,

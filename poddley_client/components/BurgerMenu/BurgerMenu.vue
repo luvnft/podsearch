@@ -1,5 +1,5 @@
 <template>
-  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-12 w-12 origin-top-left items-center p-0 text-left" v-slot="{ open }">
+  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-12 w-12 origin-top-left items-center p-0 text-left" v-slot="{ open, close }">
     <HeadlessMenuButton
       class="hover:bg-gray-transparent text-gray-400 flex h-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset"
     >
@@ -14,8 +14,8 @@
       leave-from-class="transform scale-100 opacity-100"
       leave-to-class="transform scale-95 opacity-0"
     >
-      <HeadlessMenuItems class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
-        <div class="bg-white w-full rounded-xl px-0 py-1">
+      <HeadlessMenuItems @click="close" class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+        <div class="text-gray-700 bg-white w-full rounded-xl px-0 py-1">
           <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline hover:bg-gray-300">
             <NuxtLink exact to="/" :class="`flex justify-between gap-x-0 px-3 py-2 text-base`">
               Home
@@ -60,7 +60,7 @@ const donateLink: Ref<string> = ref("https://www.buymeacoffee.com/poddley");
     @apply text-gray-700;
   }
   .router-link-exact-active svg {
-    @apply dark:fill-gray-200 !important;
+    @apply dark:fill-gray-300 !important;
   }
 }
 
@@ -72,6 +72,6 @@ const donateLink: Ref<string> = ref("https://www.buymeacoffee.com/poddley");
 }
 
 .router-link-exact-active svg {
-  @apply fill-gray-500 !important;
+  @apply fill-gray-700 !important;
 }
 </style>
