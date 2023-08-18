@@ -5,7 +5,7 @@
         :key="props.timeLocation"
         controls
         id="custom-audio"
-        :class="`w-full ${!isIos ? '' : ''}`"
+        :class="`w-full rounded-lg ${!isIos ? '' : ''}`"
         ref="audioPlayerRef"
         :preload="'none'"
         :title="props.episodeTitle"
