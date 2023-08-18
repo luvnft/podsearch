@@ -47,9 +47,9 @@
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
               </div>
 
-              <button class="static right-0 top-0 mr-0.5 mt-1 flex items-start justify-start p-0 pr-0.5">
+              <!-- <button class="static right-0 top-0 mr-0.5 mt-1 flex items-start justify-start p-0 pr-0.5">
                 <svg-icon @click="openMoreTextModal()" name="expand" class="h-5 w-5 cursor-nesw-resize fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
-              </button>
+              </button> -->
             </div>
           </div>
           <div class="my-1 flex flex-row items-center justify-between pr-0.5">

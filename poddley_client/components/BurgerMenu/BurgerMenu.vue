@@ -29,13 +29,13 @@
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <NuxtLink to="contact" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
+            <NuxtLink to="contact" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base']">
               Contact
               <svg-icon name="contact" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <a :href="donateLink" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
+            <a :href="donateLink" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base']">
               Donate
               <svg-icon name="donate" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
@@ -64,11 +64,11 @@ const donateLink: Ref<string> = ref("https://www.buymeacoffee.com/poddley");
     svg {
       @apply fill-neutral-200 !important;
     }
-  };
+  }
   @media (prefers-color-scheme: light) {
     svg {
       @apply fill-gray-500 !important;
     }
-  };
+  }
 }
 </style>
