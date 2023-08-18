@@ -17,25 +17,25 @@
       <HeadlessMenuItems class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
         <div class="bg-white w-full rounded-xl px-0 py-1">
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <NuxtLink to="/" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900  font-bold' : 'text-gray-700 fill-gray-500', ' flex justify-between gap-x-0 px-3 py-2 text-sm ']">
+            <NuxtLink exact to="/" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold ' : 'text-gray-700 fill-gray-500', ' flex justify-between gap-x-0 px-3 py-2 text-base']">
               Home
               <svg-icon name="home" class="text-gray-500 h-4 w-4 p-0 dark:group-hover:text-gray-700" />
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <NuxtLink to="about" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-sm  ']">
+            <NuxtLink exact to="about" :class="`${active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500'} text flex justify-between gap-x-0 px-3 py-2 text-base`">
               About
               <svg-icon name="info" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <NuxtLink to="contact" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-sm  ']">
+            <NuxtLink to="contact" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Contact
               <svg-icon name="contact" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <a :href="donateLink" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-sm  ']">
+            <a :href="donateLink" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900 font-bold' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Donate
               <svg-icon name="donate" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
@@ -50,3 +50,25 @@
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 const donateLink: Ref<string> = ref("https://www.buymeacoffee.com/poddley");
 </script>
+
+<style scoped>
+.router-link-exact-active {
+  @apply border-l-2;
+  @apply border-gray-700;
+  @apply bg-neutral-100;
+  @apply font-bold;
+  @apply fill-gray-700 !important;
+  @apply text-gray-700;
+
+  @media (prefers-color-scheme: dark) {
+    svg {
+      @apply fill-neutral-200 !important;
+    }
+  };
+  @media (prefers-color-scheme: light) {
+    svg {
+      @apply fill-gray-500 !important;
+    }
+  };
+}
+</style>
