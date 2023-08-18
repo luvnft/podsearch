@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <!-- Show off iFrame -->
     <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground text-white absolute z-10 flex w-full flex-row gap-2 rounded-none px-4 pt-3 md:rounded-xl">
+      <div class="text-white bg-zinc-950 bg-opacity-20 absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-xl">
         <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
           <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75" loading="lazy" />
         </div>
@@ -21,7 +21,7 @@
           class="aspect-video w-full rounded-none bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
           style="object-fit: cover; object-position: center"
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-          alt="Description of Image"
+          alt="Image of the youtube video associated with the podcast logo"
           @click="toggleiFrame()"
         />
       </button>
