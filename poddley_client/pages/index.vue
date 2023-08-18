@@ -5,12 +5,12 @@
       <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" class="sm:hidden" />
     </div>
     <!-- For Desktop-->
-    <div class="mx-auto flex flex-col gap-y-2 p-3 sm:px-14 sm:pb-5">
+    <div class="flex flex-col p-3 mx-auto gap-y-2 sm:px-14 sm:pb-5">
       <form class="flex items-center">
         <label for="voice-search" class="sr-only">Search</label>
         <div class="relative w-full">
-          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg class="text-gray-500 h-4 w-4 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
               <path
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -28,7 +28,7 @@
             required
           />
           <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
-            <svg class="text-gray-500 h-4 w-4 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 20">
+            <svg class="w-4 h-4 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 20">
               <path
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -43,7 +43,7 @@
           type="submit"
           class="text-white bg-blue-700 border-blue-700 ml-2 inline-flex items-center rounded-lg border px-3 py-2.5 text-sm font-medium hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 focus:outline-none focus:ring-4"
         >
-          <svg class="mr-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
           </svg>
           Search
@@ -132,7 +132,10 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
   trailing: true,
 });
 
-const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300);
+const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300, {
+  leading: true,
+  trailing: true,
+});
 
 // Make initial search (this probably runs as useServerPrefetch)
 onServerPrefetch(async () => {

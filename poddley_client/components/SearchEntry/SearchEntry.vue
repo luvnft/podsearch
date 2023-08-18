@@ -30,14 +30,14 @@
     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex min-h-full flex-col items-center justify-center px-3 py-1 leading-normal">
       <div class="row flex-grow-1 flex h-full w-full">
         <div class="col-12 flex flex-col gap-y-0 px-0 pb-1.5 pt-0">
-          <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-1">
+          <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
             <p class="text-gray-800 mb-0 font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
             <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment relative bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="segment bg-neutral-100 relative mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                 <span></span>
                 &nbsp;
@@ -46,9 +46,10 @@
               <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
               </div>
-              <div class="absolute right-0 top-0 mt-1.5 mr-1.5 items-center justify-between p-1 pr-0.5">
-                <svg-icon @click="openMoreTextModal()" name="expand" class="h-4 w-4 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
-              </div>
+
+              <button class="static right-0 top-0 mr-0.5 mt-1 flex items-start justify-start p-0 pr-0.5">
+                <svg-icon @click="openMoreTextModal()" name="expand" class="h-5 w-5 cursor-nesw-resize fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+              </button>
             </div>
           </div>
           <div class="my-1 flex flex-row items-center justify-between pr-0.5">

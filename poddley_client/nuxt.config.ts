@@ -32,6 +32,7 @@ export default defineNuxtConfig({
   },
   modules: [
     "@nuxtjs/svg-sprite",
+    "@element-plus/nuxt",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
@@ -44,7 +45,6 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@tailvue/nuxt",
     "@nuxtjs/device",
-    "@element-plus/nuxt",
   ],
   elementPlus: {
     themes: ["dark"],

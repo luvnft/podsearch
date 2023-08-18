@@ -5,9 +5,9 @@
         :key="props.timeLocation"
         controls
         id="custom-audio"
-        :class="`w-full ${!isIos ? 'text-black bg-gray-100 rounded-lg dark:bg-gray-800 dark:brightness-75 dark:invert' : ''}`"
+        :class="`w-full ${!isIos ? '' : ''}`"
         ref="audioPlayerRef"
-        :preload="'metadata'"
+        :preload="'none'"
         :title="props.episodeTitle"
         :src="props.audioLink"
         type="audio/mpeg"
