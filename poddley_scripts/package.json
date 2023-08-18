@@ -1,0 +1,39 @@
+{
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.0.0",
+    "@gonetone/get-youtube-id-by-url": "^1.0.0",
+    "@prisma/client": "^4.16.2",
+    "@yimura/scraper": "^1.2.4",
+    "axios": "^1.4.0",
+    "base-64": "^1.0.0",
+    "dotenv": "^16.0.3",
+    "fluent-ffmpeg": "^2.1.2",
+    "form-data": "^4.0.0",
+    "googleapis": "^118.0.0",
+    "https-proxy-agent": "^6.2.0",
+    "meilisearch": "^0.33.0",
+    "node-fetch": "^3.3.1",
+    "pm2": "^5.3.0",
+    "sharp": "^0.32.1",
+    "string-similarity": "^4.0.4",
+    "typescript": "^5.0.4",
+    "usetube": "^2.2.7",
+    "uuid": "^9.0.0",
+    "youtube-channel-videos": "^1.0.0",
+    "youtube-search-without-api-key": "^1.1.0",
+    "yt-channel-info": "^3.2.1",
+    "yt-search": "^2.10.4",
+    "ytdl-core": "^4.11.4",
+    "ytdl-mp3": "^3.1.0",
+    "ytube": "^1.5.5"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/base-64": "^1.0.0",
+    "@types/node": "^20.1.1",
+    "@types/string-similarity": "^4.0.0",
+    "@types/usetube": "^2.1.0",
+    "prisma": "^4.16.2"
+  }
+}
