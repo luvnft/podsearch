@@ -30,7 +30,7 @@
       </HeadlessMenuItems>
     </transition>
   </HeadlessMenu>
-</template>
+</template> 
 
 <script setup lang="ts">
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
