@@ -577,8 +577,8 @@ Has to be a live version auto
 - [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
 - [ ] We need nicer readMoreModal
 - [x] Fix hover fill on rss icon
-- [ ] Add icons to burgerMenu
-- [ ] Add share buttons to moreLink
+- [x] Add icons to burgerMenu
+- [ ] ~~Add share buttons to moreLink~~
 - [ ] Make own audioPlayer component vue3/Nuxt3.
 - [ ] Make MeiliSearch production probably.
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
