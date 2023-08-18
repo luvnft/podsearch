@@ -5,7 +5,7 @@
         class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 items-center justify-center rounded-lg border fill-neutral-400 p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm"
       >
         <span class="sr-only">Open options</span>
-        <EllipsisVerticalIcon class="group-hover:fill-gray-300 h-[65%] w-[65%]" aria-hidden="true" />
+        <EllipsisVerticalIcon class="group-hover:fill-gray-500 dark:group-hover:fill-gray-300 h-[65%] w-[65%]" aria-hidden="true" />
       </HeadlessMenuButton>
     </div>
 
