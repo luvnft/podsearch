@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   },
   vueuse: {
     ssrHandlers: false,
-    autoImports: true,
+    autoImports: true, 
   },
   headlessui: {
     prefix: "Headless",
