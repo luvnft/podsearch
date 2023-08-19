@@ -31,8 +31,10 @@ export default defineNuxtConfig({
     prefix: "Headless",
   },
   modules: [
-    "@nuxtjs/svg-sprite",
     "@nuxtjs/color-mode",
+    "@nuxtjs/tailwindcss",
+    "nuxt-headlessui",
+    "@nuxtjs/svg-sprite",
     "@vueuse/nuxt",
     "@nuxt/image",
     "nuxt-lodash",
@@ -40,10 +42,6 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxtjs/device",
     "@pinia/nuxt",
-
-    "@nuxtjs/tailwindcss",
-    "nuxt-headlessui",
-    // "@nuxtjs/supabase",
   ],
   googleFonts: {
     families: {

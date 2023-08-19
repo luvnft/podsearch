@@ -91,11 +91,12 @@ import { useSearchStore } from "../../store/searchStore";
 import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
+import { showToast as shoeToastType } from "../../utils/toastService/useToast";
 import "animate.css";
 
+const showToast = inject("showToast") as typeof shoeToastType;
 const searchStore = useSearchStore();
 const { hitCache } = storeToRefs(searchStore);
-import { useToast, useModal } from "tailvue";
 
 const props = defineProps<{
   searchEntry: Hit;
@@ -120,11 +121,11 @@ const toggleSubtitles = () => {
   subtitlesActivated.value = !subtitlesActivated.value;
 
   if (subtitlesActivated.value) {
-    // subtitlesActivatedToast.show();
+    showToast("Subtitles enabled", "success", 1300, 1000);
   }
-  //  else {
-  //   subtitlesDeactivatedToast();
-  // }
+   else {
+    showToast("Subtitles disabled", "error", 1300, 1000);
+  }
 };
 
 const computedStartTime = computed(() => {
