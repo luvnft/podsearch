@@ -20,7 +20,7 @@ const toHomeClick = () => {
   console.log("Clicked!");
   searchQuery.value = {
     ...searchQuery.value,
-    searchString: "",
+    searchString: undefined,
   };
   console.log("SearchQuery", searchQuery.value);
 };
