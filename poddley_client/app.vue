@@ -2,7 +2,6 @@
   <div class="wrapper flex-column flex">
     <!-- <Notification /> -->
     <Notification v-for="toast in toasts" :key="toast.id" :toast="toast" />
-
     <!-- Rest -->
     <NuxtLayout>
       <NuxtLoadingIndicator />

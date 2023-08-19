@@ -92,7 +92,6 @@ import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
 import { showToast as shoeToastType } from "../../utils/toastService/useToast";
-import "animate.css";
 
 const showToast = inject("showToast") as typeof shoeToastType;
 const searchStore = useSearchStore();
@@ -118,14 +117,12 @@ const handlePlaying = (playingState: boolean) => {
 };
 
 const toggleSubtitles = () => {
-  subtitlesActivated.value = !subtitlesActivated.value;
-
   if (subtitlesActivated.value) {
-    showToast("Subtitles enabled", "success", 1300, 1000);
+    showToast("Subtitles enabled", "success", 1000, 500);
+  } else {
+    showToast("Subtitles disabled", "error", 1000, 500);
   }
-   else {
-    showToast("Subtitles disabled", "error", 1300, 1000);
-  }
+  subtitlesActivated.value = !subtitlesActivated.value;
 };
 
 const computedStartTime = computed(() => {
