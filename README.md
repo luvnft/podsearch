@@ -592,7 +592,8 @@ Has to be a live version auto
 - [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
 - [ ] Returner 3 ascending fra query pick last npt full fjern expand
 - [ ] Make MeiliSearch production probably.
- 
+- [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
+- [ ] Fullfør audioPlayeren
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
