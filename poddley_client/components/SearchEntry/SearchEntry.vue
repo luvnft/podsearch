@@ -72,7 +72,7 @@
           </div>
         </div>
         <div class="col-12 mt-0 flex w-full flex-col items-center justify-center border-none px-0 pb-0 pt-0">
-          <AudioPlayer
+          <!-- <AudioPlayer
             :audioLink="props.searchEntry.episodeEnclosure"
             :timeLocation="props.searchEntry.start"
             :episodeTitle="props.searchEntry.episodeTitle"
@@ -80,7 +80,7 @@
             :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
             @timeupdate="handleTimeUpdateDebounced"
             @playing="handlePlaying"
-          />
+          /> -->
         </div>
       </div>
     </div>
