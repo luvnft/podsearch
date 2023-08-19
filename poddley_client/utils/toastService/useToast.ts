@@ -19,8 +19,9 @@ function showToast(message: string, type = "success", timeout: number = 3000, an
     type,
     timeout,
   };
+  console.log("Added: ", toasts.value);
   toasts.value.push(toast);
-
+  console.log("here");
   setTimeout(() => {
     // Mark the toast as being removed, this allows for the transition to occur
     const index = toasts.value.findIndex((t) => t.id === toast.id);
