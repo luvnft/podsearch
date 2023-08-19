@@ -1,7 +1,7 @@
 <template>
   <div
     aria-live="assertive"
-    :class="`animatecss animatecss-fast ${
+    :class="`animatecss animatecss-faster ${
       !props.toast.removing ? 'animatecss-slideInRight' : 'animatecss-fadeOut'
     } pointer-events-none fixed inset-0 z-50 flex items-start justify-center px-4 py-6 sm:items-start sm:p-6`"
     v-if="show"

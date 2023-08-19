@@ -118,9 +118,9 @@ const handlePlaying = (playingState: boolean) => {
 
 const toggleSubtitles = () => {
   if (subtitlesActivated.value) {
-    showToast("Subtitles enabled", "success", 1000, 500);
+    showToast("Subtitles enabled", "success", 1500, 500);
   } else {
-    showToast("Subtitles disabled", "error", 1000, 500);
+    showToast("Subtitles disabled", "error", 1500, 500);
   }
   subtitlesActivated.value = !subtitlesActivated.value;
 };
