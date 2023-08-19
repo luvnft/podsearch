@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white border-gray-200 fixed bottom-0 left-0 z-50 grid h-24 w-full grid-cols-1 border-t px-8 md:grid-cols-3">
     <div class="text-gray-500 mr-auto hidden items-center justify-center md:flex">
-      <img class="mr-3 h-8 rounded" src="/docs/images/misc/flowbite-yt-screenshot.png" alt="Video preview" />
+      <img class="mr-3 h-8 rounded" src="" alt="Video preview" />
       <span class="text-sm">Flowbite Crash Course</span>
     </div>
     <div class="flex w-full items-center">
