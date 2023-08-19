@@ -1,5 +1,5 @@
 <template>
-  <ul class="row m-0 flex justify-center gap-y-5 gap-x-0 w-full p-0" v-if="searchEntries.length > 0">
+  <ul class="row  flex justify-center gap-y-1 gap-x-0 w-full p-0 mb-20 mx-0 mt-0" v-if="searchEntries.length > 0">
     <li class="col-12 max-w-lg p-0 w-full" v-for="(searchEntry, index) in props.searchEntries">
       <SearchEntry :searchEntry="searchEntry" :key="searchEntry.id" />
     </li>
