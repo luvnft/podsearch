@@ -1,7 +1,7 @@
 <template>
-  <div class="mx-0 flex h-full flex-row items-start justify-start p-0 px-2 shadow-none dark:border-none dark:shadow-none md:gap-y-0 dark:bg-neutral-0 rounded-2xl">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex h-full min-h-full flex-col items-center justify-between px-2.5 py-1 leading-normal">
-      <div class="min-h-full min-w-full max-w-full">
+  <div class="dark:bg-neutral-0 mx-0 flex h-full sm:flex-row items-start justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0 row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between p-0 py-1 leading-normal rounded-xl">
+      <div class="min-h-full min-w-full max-w-full rounded-xl">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -20,16 +20,16 @@
         <img
           v-else
           loading="lazy"
-          class="aspect-video h-full w-full rounded-none bg-cover bg-top md:rounded-xl"
+          class="aspect-video h-full w-full rounded-none bg-cover bg-top sm:rounded-xl"
           style="object-fit: cover; object-position: top"
           :src="props.searchEntry.imageUrl"
           alt="Description of Image"
         />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex h-full min-h-full flex-col items-center justify-between px-2.5 py-1 leading-normal">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between px-2.5 py-1 leading-normal">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
-        <div class="col-12 flex flex-col gap-y-0 px-0 pb-0 pt-0">
+        <div class="flex flex-col gap-y-0 px-1">
           <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
             <p class="text-gray-800 mb-0 py-1 pr-2 font-bold">
               {{ props.searchEntry.episodeTitle }}
@@ -47,13 +47,13 @@
               </div>
             </div>
           </div>
-          <div class="my-1 flex flex-row items-center justify-between pr-0.5 mt-auto">
+          <div class="my-1 mt-auto flex flex-row items-center justify-between pr-0.5">
             <p class="text-gray-800 m-0">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
             </p>
-            <div class="flex flex-row items-center gap-x-4">
+            <div class="flex flex-row items-center gap-x-3">
               <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
               <MoreButton :searchEntry="searchEntry" />
               <PlayButton :searchEntry="searchEntry" />

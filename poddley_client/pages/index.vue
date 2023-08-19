@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Desktop Search Bar-->
-    <div class="mx-auto hidden flex-col gap-y-2 p-3 sm:flex sm:px-14 sm:pb-5">
+    <div class="mx-auto hidden flex-col gap-y-2 py-3 md:px-3 sm:flex sm:pb-5">
       <form class="flex items-center">
         <label for="voice-search" class="sr-only">Search</label>
         <div class="relative w-full">
