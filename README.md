@@ -579,15 +579,28 @@ Has to be a live version auto
 - [ ] We need nicer readMoreModal
 - [x] Fix hover fill on rss icon
 - [x] Add icons to burgerMenu
-- [ ] Make MeiliSearch production probably.
 
 - [x] Hr bug about
 - [x] Gray-100 text sb
 - [x] Fix darkmode issue on audioplayer
 - [x] Fix wrong reload thing on navlogo
 - [x] Fix size issue on triple dot menu
-- [ ] Rewrite transcriber properly
 - [x] Expand icon padding
+- [ ] Bytt audioPlayer til howler.js til deaignet som er ønsket
+- [ ] Flytt subsene inn i den modda spilleren
+- [ ] Start transcriberen bruk large?
+- [ ] Start indexeren
+- [ ] Grab transcriptionsne til anthony for lex for å spare tid
+- [ ] Refaktorerer transcriberen
+- [ ] Make meilisearch productionmode
+- [ ] Lag desktop moden
+- [ ] Lag iPhone moden
+- [ ] Lag Android moden
+- [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
+- [ ] Returner 3 ascending fra query pick last npt full fjern expand
+- [ ] Medlemskap: API usage, full transcript downloads, no ads,
+- [x] Legg til custom tailwindUI toast-engine/service
+
  
 After finish:
 - [ ] Make own audioPlayer component vue3/Nuxt3.
