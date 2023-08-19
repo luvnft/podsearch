@@ -565,6 +565,7 @@ Has to be a live version auto
 - [x] Fix spinner wiggle bug
 - [x] Youtube DarkMode button
 - [x] Align RemoveButtons
+- [ ] ~~Add share buttons to moreLink~~
 - [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
 - [ ] Finish text expanding logic
 - [ ] Start opp transcriberen igjen
@@ -578,14 +579,8 @@ Has to be a live version auto
 - [ ] We need nicer readMoreModal
 - [x] Fix hover fill on rss icon
 - [x] Add icons to burgerMenu
-- [ ] ~~Add share buttons to moreLink~~
-- [ ] Make own audioPlayer component vue3/Nuxt3.
 - [ ] Make MeiliSearch production probably.
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] Markedsfør
-- [ ] Finskriv githuben
-- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
-- [ ] Start en egen IT blogg
+
 - [x] Hr bug about
 - [x] Gray-100 text sb
 - [x] Fix darkmode issue on audioplayer
@@ -602,6 +597,12 @@ After finish:
 - [ ] Finskriv githuben
 - [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
+- [ ] Make own audioPlayer component vue3/Nuxt3.
+- [ ] Start en egen IT blogg
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
+- [ ] Markedsfør
+- [ ] Finskriv githuben
+- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 
 **Later maybe**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
