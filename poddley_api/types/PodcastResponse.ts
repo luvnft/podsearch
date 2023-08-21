@@ -44,7 +44,7 @@ export interface PodcastResponse {
     newestEnclosureDuration: number
     priority: number
     updateFrequency: number
-    createdOn: string
+    createdAt: string
     youtubeChannel: string
     indexed: boolean
   }
