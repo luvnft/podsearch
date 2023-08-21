@@ -1,0 +1,12 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "123",
+            "group": "123",
+            "database": "${workspaceFolder:poddley_transcriber}/database/podcasts.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
