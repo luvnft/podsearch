@@ -1,7 +1,7 @@
 <template>
-  <div class="mx-0 flex flex-col items-center justify-center p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 m-0 flex flex-col items-start justify-center px-0 pb-1.5">
-      <div class="min-h-full min-w-full max-w-full">
+  <div class="dark:bg-neutral-0 mx-0 flex h-full sm:flex-row items-start justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0 row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between p-0 py-1 leading-normal rounded-xl">
+      <div class="min-h-full min-w-full max-w-full rounded-xl">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -20,24 +20,23 @@
         <img
           v-else
           loading="lazy"
-          class="aspect-video h-full w-full rounded-none bg-cover bg-top md:rounded-xl"
+          class="aspect-video h-full w-full rounded-none bg-cover bg-top sm:rounded-xl"
           style="object-fit: cover; object-position: top"
           :src="props.searchEntry.imageUrl"
           alt="Description of Image"
         />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex min-h-full flex-col items-center justify-center px-3 py-1 leading-normal">
-      <div class="row flex-grow-1 flex h-full w-full">
-        <div class="col-12 flex flex-col gap-y-0 px-0 pb-1.5 pt-0">
-          <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-1">
-            <p class="text-gray-800 mb-0 font-bold">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between px-2.5 py-1 leading-normal">
+      <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
+        <div class="flex flex-col gap-y-0 px-1">
+          <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
+            <p class="text-gray-800 mb-0 py-1 pr-2 font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
-            <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment relative bg-neutral-100 mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+            <div class="segment bg-neutral-100 relative mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
               <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                 <span></span>
                 &nbsp;
@@ -46,18 +45,19 @@
               <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
                 <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
               </div>
-              <div class="absolute right-0 top-0 mt-1.5 mr-1.5 items-center justify-between p-1 pr-0.5">
-                <svg-icon @click="openMoreTextModal()" name="expand" class="h-4 w-4 cursor-pointer fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
-              </div>
             </div>
           </div>
-          <div class="my-1 flex flex-row items-center justify-between pr-0.5">
+          <div class="my-1 mt-auto flex flex-row items-center justify-between pr-0.5">
             <p class="text-gray-800 m-0">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
             </p>
-            <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
+            <div class="flex flex-row items-center gap-x-3">
+              <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
+              <MoreButton :searchEntry="searchEntry" />
+              <PlayButton :searchEntry="searchEntry" />
+            </div>
           </div>
           <div v-if="moreTextModalOpen">
             <MoreTextCard
@@ -66,17 +66,6 @@
               :podcast-name="props.searchEntry.episodeTitle"
             />
           </div>
-        </div>
-        <div class="col-12 mt-0 flex w-full flex-col items-center justify-center border-none px-0 pb-0 pt-0">
-          <AudioPlayer
-            :audioLink="props.searchEntry.episodeEnclosure"
-            :timeLocation="props.searchEntry.start"
-            :episodeTitle="props.searchEntry.episodeTitle"
-            :key="props.searchEntry.text"
-            :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
-            @timeupdate="handleTimeUpdateDebounced"
-            @playing="handlePlaying"
-          />
         </div>
       </div>
     </div>
@@ -90,26 +79,11 @@ import { useSearchStore } from "../../store/searchStore";
 import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
-import "animate.css";
+import { showToast as shoeToastType } from "../../utils/toastService/useToast";
 
+const showToast = inject("showToast") as typeof shoeToastType;
 const searchStore = useSearchStore();
 const { hitCache } = storeToRefs(searchStore);
-
-const subtitlesActivatedToast = () => {
-  ElNotification({
-    title: "Subtitles enabled",
-    type: "success",
-    duration: 1000,
-  });
-};
-
-const subtitlesDeactivatedToast = () => {
-  ElNotification({
-    title: "Subtitles disabled",
-    type: "error",
-    duration: 1000,
-  });
-};
 
 const props = defineProps<{
   searchEntry: Hit;
@@ -131,13 +105,12 @@ const handlePlaying = (playingState: boolean) => {
 };
 
 const toggleSubtitles = () => {
-  subtitlesActivated.value = !subtitlesActivated.value;
-
   if (subtitlesActivated.value) {
-    subtitlesActivatedToast();
+    showToast("Subtitles enabled", "success", 1500, 500);
   } else {
-    subtitlesDeactivatedToast();
+    showToast("Subtitles disabled", "error", 1500, 500);
   }
+  subtitlesActivated.value = !subtitlesActivated.value;
 };
 
 const computedStartTime = computed(() => {

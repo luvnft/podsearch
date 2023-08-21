@@ -2,9 +2,9 @@
   <div class="flex flex-col items-center">
     <!-- Show off iFrame -->
     <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground text-white absolute z-10 flex w-full flex-row gap-2 rounded-none px-4 pt-3 md:rounded-xl">
+      <div class="text-white absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-xl">
         <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
-          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75" loading="lazy" />
+          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette after:rounded-lg h-full rounded-full brightness-75" loading="lazy" />
         </div>
         <div class="flex min-w-0 items-center">
           <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base" style="color: rgb(246, 246, 246)">
@@ -15,20 +15,20 @@
       <div>
         <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
       </div>
-      <button class="image-with-vignette h-full w-full min-w-full rounded-none after:rounded-none md:rounded-xl md:after:rounded-xl">
+      <button class="image-with-vignette h-full w-full min-w-full rounded after:rounded-xl md:rounded-xl md:after:rounded-xl">
         <img
           loading="lazy"
-          class="aspect-video w-full rounded-none bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
+          class="aspect-video w-full rounded-none sm:rounded-xl bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
           style="object-fit: cover; object-position: center"
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-          alt="Description of Image"
+          alt="Image of the youtube video associated with the podcast logo"
           @click="toggleiFrame()"
         />
       </button>
     </div>
 
     <!-- Actual iFrame -->
-    <div v-if="showiFrame" :class="`bg-gray-8 m-0 mb-1.5 flex aspect-video w-full items-center justify-center p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
+    <div v-if="showiFrame" :class="`bg-gray-8  m-0 mb-1.5 flex aspect-video w-full items-center justify-center p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
       <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
         <IconsSpinnerIcon />
       </div>
@@ -39,7 +39,7 @@
         frameborder="0"
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
         :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-        class="aspect-video w-full rounded-none"
+        class="aspect-video w-full sm:rounded-xl"
         v-show="!loading"
         @load="iFrameLoaded()"
       />
