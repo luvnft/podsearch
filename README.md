@@ -565,37 +565,42 @@ Has to be a live version auto
 - [x] Fix spinner wiggle bug
 - [x] Youtube DarkMode button
 - [x] Align RemoveButtons
-- [ ] Implement iOS and Android app (2 repoes, 1 each due to significant UI differences, pretty straight forward, but cant be merged with this repo)
-- [ ] Finish text expanding logic
-- [ ] Start opp transcriberen igjen
-- [ ] Start indexereren
-- [ ] Finish the rest of the desktop design and shit
+- [ ] ~~Add share buttons to moreLink~~
 - [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [x] Remove shade and border on audioPlayer on iPhones
 - [x] Move expand more text all the way to the right even when text is short
 - [x] MoreLinks buttonen har forsvunnet fiks det
 - [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
-- [ ] We need nicer readMoreModal
-- [ ] Fix hover fill on rss icon
-- [ ] Add share buttons to moreLink
-- [ ] Make own audioPlayer component vue3/Nuxt3.
+- [x] Fix hover fill on rss icon
+- [x] Add icons to burgerMenu
+- [x] Hr bug about
+- [x] Gray-100 text sb
+- [x] Fix darkmode issue on audioplayer
+- [x] Fix wrong reload thing on navlogo
+- [x] Fix size issue on triple dot menu
+- [x] Expand icon padding
+- [x] Fix toast-issues
+- [x] Legg til custom tailwindUI toast-engine/service
+- [ ] Bytt audioPlayer til howler.js til designet som er ønsket
+- [ ] Flytt subsene inn i den modda spilleren
+- [ ] Start transcriberen bruk large?
+- [ ] Grab transcriptionsne til anthony for lex for å spare tid
+- [ ] Refaktorerer transcriberen
+- [ ] Lag desktop moden
+- [ ] Lag iPhone moden
+- [ ] Lag Android moden
+- [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
+- [ ] Returner 3 ascending fra query pick last npt full fjern expand
 - [ ] Make MeiliSearch production probably.
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] Markedsfør
-- [ ] Finskriv githuben
-- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
-- [ ] Start en egen IT blogg
-- [ ] Hr bug about
-- [ ] Gray-100 text sb
-
+- [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
+- [ ] Fullfør audioPlayeren
 After finish:
-- [ ] Make own audioPlayer component vue3/Nuxt3.
-- [ ] Make MeiliSearch production probably.
+- [ ] Medlemskap: API usage, full transcript downloads, no ads,
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] Markedsfør
-- [ ] Finskriv githuben
 - [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
 - [ ] Start en egen IT blogg
+- [ ] Markedsfør
+- [ ] Finskriv githuben
 
 **Later maybe**:
 - [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 

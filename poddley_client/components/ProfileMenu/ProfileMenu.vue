@@ -21,10 +21,10 @@
           @click="close"
         >
           <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="login" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 no-underline']">Login/Signup</NuxtLink>
+            <NuxtLink to="login" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-base text-gray-700 no-underline']">Login/Signup</NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" v-if="user">
-            <button @click="logout" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 no-underline']">Logout</button>
+            <button @click="logout" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-base text-gray-700 no-underline']">Logout</button>
           </HeadlessMenuItem>
         </HeadlessMenuItems>
       </transition>

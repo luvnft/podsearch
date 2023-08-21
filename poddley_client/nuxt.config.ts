@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   },
   colorMode: {
     preference: "system", // default value of $colorMode.preference
-    fallback: "light", // fallback value if not system preference found
+    fallback: "dark", // fallback value if not system preference found
     classPrefix: "",
     classSuffix: "",
   },
@@ -25,30 +25,24 @@ export default defineNuxtConfig({
   },
   vueuse: {
     ssrHandlers: false,
-    autoImports: true,
+    autoImports: true, 
   },
   headlessui: {
     prefix: "Headless",
   },
   modules: [
-    "@nuxtjs/svg-sprite",
-    "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
-    "@vueuse/nuxt",
-    "@pinia/nuxt",
-    "@nuxt/image",
-    "@nuxtjs/supabase",
-    "nuxt-lodash",
+    "@nuxtjs/tailwindcss",
     "nuxt-headlessui",
+    "@nuxtjs/svg-sprite",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+    "nuxt-lodash",
     "nuxt-delay-hydration",
     "@nuxtjs/google-fonts",
-    "@tailvue/nuxt",
     "@nuxtjs/device",
-    "@element-plus/nuxt",
+    "@pinia/nuxt",
   ],
-  elementPlus: {
-    themes: ["dark"],
-  },
   googleFonts: {
     families: {
       Inter: true,
