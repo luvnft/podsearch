@@ -79,13 +79,13 @@ async function insertPodcastsAndUpdate(objectsToInsert: any[], prisma: PrismaCli
       await prisma.podcast.create({ data: object });
     } catch (e: any) {
       console.log("ERROR: ", e.message);
-      console.log("Trying to update");
-      await prisma.podcast.update({
-        data: object,
-        where: {
-          podcastGuid: object.podcastGuid,
-        },
-      });
+      // console.log("Trying to update");
+      // await prisma.podcast.update({
+      //   data: object,
+      //   where: {
+      //     podcastGuid: object.podcastGuid,
+      //   },
+      // });
     }
   }
 }
