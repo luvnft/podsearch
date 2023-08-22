@@ -8,20 +8,16 @@ import time
 import pandas as pd
 import subprocess
 
-batch_size = 16 # reduce if low on GPU mem
-
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     command = f"ffmpeg -i {video_filename} -vn -acodec copy {audio_filename}"
     subprocess.call(command, shell=True)
 
-async def transcribeAndDumpIt(episode, model):
+async def transcribeAndDumpIt(episode, model, batch_size, device):
     # Convert episode to dictionary
     episode = dict(episode)
     url = episode["episodeEnclosure"]
     audioFileName = ""
 
-    print("Processing the episode with mp3-url:", url)
-    
     # Delete any file that begins with 'audio' in the folder to avoid retranscribing
     for file in os.listdir():
         if file.startswith('audio'):
@@ -42,6 +38,11 @@ async def transcribeAndDumpIt(episode, model):
     except Exception as e:
         print("Error determining content type:", e)
         
+    # If there's no extension, exit the function
+    if not extension:
+        print("No extension found, exiting.")
+        return
+          
     # If it's a video, we need to convert it to audio first
     if "video" in content_type:
         video_filename = "temp_video_file"  # You can modify this to fit a suitable naming convention
@@ -55,25 +56,22 @@ async def transcribeAndDumpIt(episode, model):
 
         # Optionally, delete the temporary video file
         os.remove(video_filename)
+    # It's not a video just save the audiofile
     else:
+        # Name of the audioFileName
         audioFileName = "audio.wav"
 
         # Save the audio file
         with open(audioFileName, 'wb') as f:
             f.write(audioFile.content)
-        
-    # If there's no extension, exit the function
-    if not extension:
-        print("No extension found, exiting.")
-        return
-                
+      
     # Transcribe the episode
     print("Transcribing the episode with title:", episode["episodeTitle"])
 
     try:
+        startTime = time.time()
         transcriptionData = {}
         segments = None
-        startTime = time.time()
         
         # Loading audio
         print("Loading audio")
@@ -82,7 +80,8 @@ async def transcribeAndDumpIt(episode, model):
         # Transcribing...
         print("Transcribing started...")
         result = model.transcribe(audio, batch_size=batch_size)
-
+        segments = result["segments"]
+        
         # Define a minimum duration (in seconds)
         min_duration = 0.1
 
@@ -97,8 +96,8 @@ async def transcribeAndDumpIt(episode, model):
         # Replace the original segments list with the filtered one
         segments = filtered_segments
 
-        model_a, metadata = model.load_align_model(language_code="en", device="cuda", model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english")
-        result_aligned = model.align(segments, model_a, metadata, audioFileName, "cuda")
+        model_a, metadata = model.load_align_model(language_code="en", device=device, model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english")
+        result_aligned = model.align(segments, model_a, metadata, audioFileName, device=device, return_char_alignments=False)
         df = pd.DataFrame(result_aligned["segments"])
         jsonData = json.loads(df.to_json(orient = "records"))
         print("Time elapsed in seconds: ", time.time() - startTime)
@@ -106,8 +105,10 @@ async def transcribeAndDumpIt(episode, model):
         # Save it
         transcriptionData["segments"] = jsonData
         
+    # Error return
     except Exception as e:
         print("Error with transcribing:", e)
+        return
     
     # If no transcriptionData, fuck it
     if transcriptionData == None: 
