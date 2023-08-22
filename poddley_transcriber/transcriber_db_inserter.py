@@ -42,13 +42,11 @@ async def insertJsonFilesToDb(episode):
                 }
             )
             if episodeAgain.updatedAt != episode["updatedAt"]:
-                # Set the beingTranscribed back to false
                 await prisma.episode.update(
                     where = {
                         "id": episode["id"]
                     },
                     data = {
-                        "beingTranscribed": False,
                         "isTranscribed": True,
                     }
                 )
@@ -114,7 +112,6 @@ async def insertJsonFilesToDb(episode):
                     },
                     data={
                         "isTranscribed": True,
-                        "beingTranscribed": False,
                     }
                 )
             except Exception as e:
