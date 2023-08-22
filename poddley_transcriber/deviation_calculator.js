@@ -177,32 +177,21 @@ async function calculateDeviationForEpisode(foundVideoLink, episode) {
 async function main() {
   const prisma = new PrismaClient();
 
-  const deviationsNeededToMake = await prisma.episode.count({
-    where: {
-      isRead: false,
-    }
-  });
-  console.log("DeviationsNeeded: ", deviationsNeededToMake);
   while (true) {
     deleteAudioFiles();
     const startTime = new Date().getTime();
 
     try {
       //Get a random episode
-      console.log("Looking...")
-
       const episode = await prisma.episode.findFirst({
         where: {
           isRead: false,
         },
       });
-      console.log("Done...olokiing")
-      console.log(episode)
       if (!episode) {
         console.log("No episode, quitting.");
         return;
       }
-      console.log("EpisodeGuid: ", episode.episodeGuid);
       const recentEpisode = await prisma.episode.findUnique({
         where: {
           episodeGuid: episode.episodeGuid,
@@ -228,6 +217,7 @@ async function main() {
       const deviationTime = await calculateDeviationForEpisode(foundVideoLink, episode);
       const endTime = new Date().getTime()
       console.log((endTime - startTime) / 1000);
+      
       //Updating episode values
       console.log("Updating episode with values")
       console.log(episode.episodeTitle)
