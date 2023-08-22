@@ -57,9 +57,13 @@ Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastla
 ## Backend:
 ### Services:
 The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
-- API
-- Indexer (runs continuously every 5 minutes)
-- Meilisearch instance
+- Express-API: Does the full-text search functionality as an API querying the Meilisearch-instance
+- Indexer: Pushes the segments, transcription, episode and podcast data to the meilisearch-instance
+- Transcriber:
+  - Transcriber_main: Does pessimistic locking of rows and sends them to the transcriber
+  - Transcriber_transcribe: Does the transcribing using WhispherX and saves it like a json + does the deviationCalculation and Youtube-information-getting
+  - Transcriber_dbinserter: Does the inserting of the json to the db
+- Meilisearch-instance: Does the full-text search functionality
 
 ### API:
 - Route-Controller-Service architecture for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
