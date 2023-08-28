@@ -1,5 +1,5 @@
 <template>
   <div>
-    <svg-icon name="spinner" class="tw-h-6 tw-w-6 tw-animate-spin" />
+    <svg-icon name="spinner" class="h-6 w-6 animate-spin fill-gray-400" />
   </div>
 </template>

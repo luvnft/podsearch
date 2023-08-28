@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="items-center font-medium tw-group tw-flex tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm"
+    class="items-center font-medium group flex items-center justify-center rounded-md border border-gray-200 bg-gray-50 fill-gray-400 p-2 shadow hover:bg-gray-100 active:shadow-sm"
     title="aboutButton"
   >
     <IconsAboutIcon />

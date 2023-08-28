@@ -1,15 +1,13 @@
 <template>
-  <div class="tw-h-full">
-    <div class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-items-center sm:tw-hidden">
-      <a
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-fill-gray-400 tw-p-2 hover:tw-bg-gray-100 hover:tw-fill-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-400 dark:focus:tw-ring-gray-600"
-        :href="donateLink"
-      >
-        <span class="tw-sr-only">Donate button</span>
-        <svg-icon name="donate" class="tw-block tw-h-full tw-w-full tw-scale-[0.79] tw-fill-gray-400 tw-p-[1px] group-hover:tw-fill-gray-500" aria-hidden="true" />
-      </a>
+  <GenericLink
+    class="hover:bg-gray-transparent group flex h-12 w-12 items-center justify-center rounded-md p-0 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset"
+    :link="donateLink"
+  >
+    <div class="flex h-12 w-12 items-center justify-center">
+      <span class="sr-only">Donate button</span>
+      <svg-icon name="donate" class="block h-full w-12 scale-[0.55] dark:fill-gray-500 fill-gray-400 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
     </div>
-  </div>
+  </GenericLink>
 </template>
 
 <script setup lang="ts">

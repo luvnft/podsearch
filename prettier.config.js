@@ -1,7 +1,7 @@
 module.exports = {
-  tabWidth: 2,
+  tabWidth: 4,
   singleQuote: false,
   htmlWhitespaceSensitivity: "ignore",
   bracketSameLine: false,
-  printWidth: 200,
+  printWidth: 1000,
 };

@@ -1,12 +1,12 @@
 <template>
-  <div class="tw-flex tw-h-full tw-w-full tw-flex-col tw-justify-center tw-gap-1 tw-text-gray-600 tw-no-underline">
+  <div class="text-gray-600 flex h-full w-full flex-col justify-center gap-1 no-underline">
     <button
       @click="handleCopyClick"
       type="button"
       title="copyLinkButton"
-      class="items-center font-medium tw-group tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-text-gray-400 tw-no-underline tw-shadow hover:tw-bg-gray-100 active:tw-shadow-sm"
+      class="group text-gray-400 bg-gray-50 border-gray-200 flex flex-col items-center justify-center rounded-md border fill-gray-400 p-2 font-medium no-underline shadow hover:bg-gray-100 active:shadow-sm"
     >
-      <IconsCopyLinkIcon class="tw-h-6 tw-w-6 group-hover:tw-fill-gray-500 group-hover:tw-text-gray-600" aria-hidden="true" />
+      <svg-icon name="copylink" class="h-5 w-5 fill-gray-400 p-0.5 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" aria-hidden="true" />
     </button>
   </div>
 </template>

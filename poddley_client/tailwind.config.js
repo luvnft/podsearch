@@ -1,25 +1,45 @@
-/** @type {import('tailwindcss').Config} */
+const colors = require("tailwindcss/colors");
+
 module.exports = {
-  content: ["./app.vue", "./components/**/*.{js,vue,ts}", "./layouts/**/*.vue", "./pages/**/*.vue", "./plugins/**/*.{js,ts}", "./nuxt.config.{js,ts}"],
-  darkMode: "class",
+  content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
   variants: {
     extend: {
       backgroundColor: ["group-hover"],
     },
+    nightwind: ["group-hover", "focus"],
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
-    base: false, // applies background color and foreground color for root element by default
-    styled: true, // include daisyUI colors and design decisions for all components
-    utils: true, // adds responsive and modifier utility classes
-    rtl: false, // rotate style direction from left-to-right to right-to-left. You also need to add dir="rtl" to your html tag and install `tailwindcss-flip` plugin for Tailwind CSS.
-    prefix: "", // prefix for daisyUI classnames (components, modifiers and responsive class names. Not colors)
-    logs: false, // Shows info about daisyUI version and used config in the console when building your CSS
-  },
-  prefix: "tw-",
   important: true,
+  plugins: [require("nightwind"), require("tailwind-animatecss")],
+  prefix: "",
+  darkMode: "class",
   theme: {
+    screens: {
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px",
+      "2xl": "1400px",
+    },
+    nightwind: {
+      colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],
+      colorScale: "reduced",
+      colors: {
+        white: "gray.900",
+        black: "gray.50",
+        neutral: {
+          50: "gray.900",
+          100: "gray.800",
+          200: "gray.700",
+          300: "gray.700",
+          400: "gray.700",
+          500: "gray.400",
+          600: "gray.300",
+          700: "gray.200",
+          800: "gray.100",
+          900: "gray.300",
+        },
+      },
+    },
     extend: {
       keyframes: {
         colorPulse: {
@@ -29,6 +49,9 @@ module.exports = {
       },
       animation: {
         colorPulse: "colorPulse 2s infinite",
+      },
+      boxShadow: {
+        xs: "0 0 2px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4)",
       },
     },
     fontFamily: {},

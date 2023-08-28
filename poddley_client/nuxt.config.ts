@@ -2,8 +2,7 @@ require("dotenv").config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  logLevel: "verbose",
-  css: ["~/assets/css/imports/tailwind.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
+  css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -11,43 +10,52 @@ export default defineNuxtConfig({
     },
     minify: true,
     preset: "cloudflare",
-    logLevel: 5,
-  },
-  pages: true,
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
+    sourceMap: false,
   },
   colorMode: {
+    preference: "system", // default value of $colorMode.preference
+    fallback: "dark", // fallback value if not system preference found
+    classPrefix: "",
     classSuffix: "",
-    classPrefix: "tw-",
-    globalName: "dark",
+  },
+  pages: true,
+  sourcemap: {
+    client: false,
+    server: false,
   },
   vueuse: {
-    ssrHandlers: true,
-    autoImports: true,
+    ssrHandlers: false,
+    autoImports: true, 
   },
   headlessui: {
     prefix: "Headless",
   },
-  delayHydration: {
-    mode: "mount",
-  },
   modules: [
+    "@nuxtjs/color-mode",
     "@nuxtjs/tailwindcss",
-    "@nuxtjs/device",
-    "@vueuse/nuxt",
-    "@pinia/nuxt",
-    "@nuxt/image",
-    "@nuxtjs/supabase",
-    "nuxt-lodash",
     "nuxt-headlessui",
     "@nuxtjs/svg-sprite",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+    "nuxt-lodash",
     "nuxt-delay-hydration",
-    "@nuxtjs/color-mode",
+    "@nuxtjs/google-fonts",
+    "@nuxtjs/device",
+    "@pinia/nuxt",
   ],
+  googleFonts: {
+    families: {
+      Inter: true,
+    },
+    download: true,
+    base64: true,
+    inject: true,
+    overwriting: true,
+    fontsDir: "assets/fonts",
+    display: "swap", // 'auto' | 'block' | 'swap' | 'fallback' | 'optional',
+    preload: true,
+    useStylesheet: true,
+  },
   lodash: {
     prefix: "_",
   },
@@ -57,14 +65,38 @@ export default defineNuxtConfig({
       baseURL: "",
     },
   },
+  delayHydration: {
+    mode: "mount",
+  },
+  experimental: {
+    clientFallback: true,
+    componentIslands: true,
+    inlineSSRStyles: true,
+    viewTransition: true,
+    crossOriginPrefetch: true,
+    externalVue: true,
+    treeshakeClientOnly: false,
+    asyncEntry: true,
+    typescriptBundlerResolution: true,
+  },
+  vite: {
+    build: {
+      minify: true,
+      sourcemap: false,
+      cssMinify: true,
+      rollupOptions: {
+        treeshake: true,
+      },
+    },
+    css: {
+      devSourcemap: false,
+    },
+  },
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === "development" ? process.env.NUXT_API_BASE_URL_DEV : process.env.NUXT_API_BASE_URL,
       HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000/" : "poddley.com/",
     },
-  },
-  device: {
-    enabled: true,
   },
   app: {
     head: {
@@ -76,20 +108,21 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
-          hid: "description",
-          name: "Poddley - Search podcasts like text",
+          name: "description",
           content: "Search podcast transcriptions like text. It would functionalliy be like shazam, but for podcast transcriptions I suppose.",
         },
-        { name: "msapplication-TileColor", content: "#da532c" },
+        { name: "msapplication-TileColor", content: "#2d89ef" },
         { name: "theme-color", content: "#ffffff" },
       ],
       link: [
-        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-        { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
-        { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
-        { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
-        { rel: "manifest", href: "/site.webmanifest" },
-        { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#373737" },
+        { rel: "icon", type: "image/x-icon", href: "favicon.ico" },
+        { rel: "apple-touch-icon", sizes: "180x180", href: "apple-touch-icon.png" },
+        { rel: "icon", type: "image/png", sizes: "32x32", href: "favicon-32x32.png" },
+        { rel: "icon", type: "image/png", sizes: "16x16", href: "favicon-16x16.png" },
+        { rel: "manifest", href: "site.webmanifest" },
+        { rel: "mask-icon", href: "safari-pinned-tab.svg", color: "#454545" },
+        { rel: "icon", type: "image/svg+xml", href: "favicon.svg" },
+        { rel: "icon", type: "image/png", href: "favicon.png" },
       ],
     },
   },

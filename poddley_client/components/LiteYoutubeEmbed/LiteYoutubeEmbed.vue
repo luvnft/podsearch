@@ -1,34 +1,35 @@
 <template>
-  <div class="tw-flex tw-flex-col tw-items-center">
+  <div class="flex flex-col items-center">
     <!-- Show off iFrame -->
-    <div class="video-container tw-flex tw-w-full" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="topbackground tw-absolute tw-z-10 tw-flex tw-w-full tw-flex-row tw-gap-2 tw-rounded-none tw-px-4 tw-pt-3 tw-text-white md:tw-rounded-xl">
-        <div class="channelIcon tw- tw-flex tw-aspect-video tw-h-12 tw-w-12 tw-items-center tw-justify-center tw-rounded-full before:tw-h-10 before:tw-w-10">
-          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette tw-h-full tw-rounded-full tw-brightness-75" loading="lazy" />
+    <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
+      <div class="text-white absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-xl">
+        <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
+          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette after:rounded-lg h-full rounded-full brightness-75" loading="lazy" />
         </div>
-        <div class="tw-flex tw-min-w-0 tw-items-center">
-          <p class="tw-m-0 tw-w-full tw-flex-row tw-items-center tw-justify-start tw-overflow-hidden tw-overflow-ellipsis tw-whitespace-nowrap tw-p-0 tw-text-base">
+        <div class="flex min-w-0 items-center">
+          <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base" style="color: rgb(246, 246, 246)">
             {{ props.videoTitle }}
           </p>
         </div>
       </div>
-      <button id="playButton" class="centered-button" />
-
-      <button class="image-with-vignette tw-h-full tw-w-full tw-min-w-full tw-rounded-none after:tw-rounded-none md:tw-rounded-xl md:after:tw-rounded-xl">
+      <div>
+        <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
+      </div>
+      <button class="image-with-vignette h-full w-full min-w-full rounded after:rounded-xl md:rounded-xl md:after:rounded-xl">
         <img
           loading="lazy"
-          class="tw-aspect-video tw-w-full tw-rounded-none tw-bg-cover tw-bg-center tw-bg-blend-darken tw-shadow-black md:tw-rounded-xl"
+          class="aspect-video w-full rounded-none sm:rounded-xl bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
           style="object-fit: cover; object-position: center"
           :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-          alt="Description of Image"
+          alt="Image of the youtube video associated with the podcast logo"
           @click="toggleiFrame()"
         />
       </button>
     </div>
 
     <!-- Actual iFrame -->
-    <div v-if="showiFrame" :class="`tw-bg-gray-8 tw-m-0 tw-mb-1.5 tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0 tw-pb-0 ${loading ? 'tw-rounded-none tw-border' : ''}`">
-      <div class="tw-flex tw-aspect-video tw-w-full tw-items-center tw-justify-center tw-p-0" v-if="loading">
+    <div v-if="showiFrame" :class="`bg-gray-8  m-0 mb-1.5 flex aspect-video w-full items-center justify-center p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
+      <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
         <IconsSpinnerIcon />
       </div>
 
@@ -38,7 +39,7 @@
         frameborder="0"
         :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
         :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-        class="tw-aspect-video tw-w-full tw-rounded-none"
+        class="aspect-video w-full sm:rounded-xl"
         v-show="!loading"
         @load="iFrameLoaded()"
       />
@@ -135,6 +136,7 @@ const props = defineProps({
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24 27 14v20" fill="white"/></svg>');
   background-repeat: no-repeat;
   z-index: 5;
+  stroke: black !important;
 }
 
 .image-with-vignette {

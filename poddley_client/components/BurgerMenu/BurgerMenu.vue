@@ -1,57 +1,77 @@
 <template>
-  <div class="tw-h-full">
-    <HeadlessMenu as="div" class="tw-inset-y-0 tw-left-0 tw-flex tw-h-full tw-w-full tw-origin-top-left tw-items-center sm:tw-hidden" v-slot="{ open, close }">
-      <HeadlessMenuButton
-        class="tw-flex tw-h-full tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-p-2 tw-text-gray-400 hover:tw-bg-gray-100 hover:tw-text-gray-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-inset focus:tw-ring-gray-500 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-400 dark:focus:tw-ring-gray-600"
-      >
-        <span class="tw-sr-only">Open main menu</span>
-        <Bars3Icon v-if="!open" class="tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
-        <XMarkIcon v-else class="tw-block tw-h-full tw-w-full tw-scale-90" aria-hidden="true" />
-      </HeadlessMenuButton>
-      <transition
-        enter-active-class="tw-transition tw-duration-100 tw-ease-out"
-        enter-from-class="tw-transform tw-scale-95 tw-opacity-0"
-        enter-to-class="tw-transform tw-scale-100 tw-opacity-100"
-        leave-active-class="tw-transition tw-duration-75 tw-ease-in"
-        leave-from-class="tw-transform tw-scale-100 tw-opacity-100"
-        leave-to-class="tw-transform tw-scale-95 tw-opacity-0"
-      >
-        <HeadlessMenuItems
-            :class="['tw-absolute tw-left-0 tw-top-12 tw-z-40 tw-w-40 tw-origin-top-left tw-rounded-md tw-py-1 tw-shadow-lg tw-ring-1 tw-ring-black tw-ring-opacity-5 focus:tw-outline-none dark:tw-bg-gray-700 tw-bg-white']"
-          @click="close"
-        >
-          <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="about" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">About</NuxtLink>
-          </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="contact" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">Contact</NuxtLink>
-          </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }">
-            <a :href="donateLink" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">Donate</a>
-          </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink to="developer" :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']">For developers</NuxtLink>
-          </HeadlessMenuItem>
-          <HeadlessMenuItem v-slot="{ active }">
-            <NuxtLink :class="[active ? 'tw-bg-gray-100' : '', 'tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 tw-no-underline dark:tw-text-gray-400 dark:hover:tw-bg-gray-600 dark:hover:tw-text-white']" @click="toggleColorMode">
-              {{ isDark ? "Dark" : "Light" }} mode
+  <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-12 w-12 origin-top-left items-center p-0 text-left" v-slot="{ open, close }">
+    <HeadlessMenuButton
+      class="hover:bg-gray-transparent text-gray-400 flex h-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset"
+    >
+      <Bars3Icon v-if="!open" class="h-full w-full scale-95" aria-hidden="true" />
+      <XMarkIcon v-else class="block h-full w-full scale-95" aria-hidden="true" />
+    </HeadlessMenuButton>
+    <transition
+      enter-active-class="transition duration-100 ease-out"
+      enter-from-class="transform scale-95 opacity-0"
+      enter-to-class="transform scale-100 opacity-100"
+      leave-active-class="transition duration-75 ease-in"
+      leave-from-class="transform scale-100 opacity-100"
+      leave-to-class="transform scale-95 opacity-0"
+    >
+      <HeadlessMenuItems @click="close" class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+        <div class="text-gray-700 bg-white w-full rounded-xl px-0 py-1">
+          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline hover:bg-gray-300">
+            <NuxtLink exact to="/" :class="`flex justify-between gap-x-0 px-3 py-2 text-base`">
+              Home
+              <svg-icon name="home" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
-        </HeadlessMenuItems>
-      </transition>
-    </HeadlessMenu>
-  </div>
+          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <NuxtLink exact to="/about" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
+              About
+              <svg-icon name="circleinfo" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
+            </NuxtLink>
+          </HeadlessMenuItem>
+          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <NuxtLink exact to="/contact" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
+              Contact
+              <svg-icon name="contact" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
+            </NuxtLink>
+          </HeadlessMenuItem>
+          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
+            <a :href="donateLink" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
+              Donate
+              <svg-icon name="donate" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
+            </a>
+          </HeadlessMenuItem>
+        </div>
+      </HeadlessMenuItems>
+    </transition>
+  </HeadlessMenu>
 </template>
 
 <script setup lang="ts">
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
-
 const donateLink: Ref<string> = ref("https://www.buymeacoffee.com/poddley");
-
-const colorMode = useColorMode();
-const isDark = computed(() => colorMode.value === "dark");
-const toggleColorMode = () => {
-  colorMode.value = isDark.value ? "light" : "dark";
-  console.log("Mode is: ", colorMode.value);
-};
 </script>
+
+<style scoped>
+@media (prefers-color-scheme: dark) {
+  .router-link-exact-active {
+    @apply border-l-2;
+    @apply border-gray-700;
+    @apply bg-neutral-100;
+    @apply text-gray-700;
+  }
+  .router-link-exact-active svg {
+    @apply dark:fill-gray-300 !important;
+  }
+}
+
+.router-link-exact-active {
+  @apply border-l-2;
+  @apply border-gray-700;
+  @apply bg-neutral-100;
+  @apply text-gray-700;
+}
+
+.router-link-exact-active svg {
+  @apply fill-gray-700 !important;
+}
+</style>
