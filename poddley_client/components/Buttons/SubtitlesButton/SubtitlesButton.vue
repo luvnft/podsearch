@@ -1,10 +1,10 @@
 <template>
   <button
-    :class="`items-center font-medium } tw-group tw-flex tw-h-6 tw-h-8 tw-w-6 tw-w-8 tw-items-center tw-justify-center tw-rounded-md
-    tw-border tw-border-gray-300 tw-bg-gray-100 tw-fill-gray-400 tw-p-0 tw-text-gray-400 tw-no-underline tw-shadow tw-ring-gray-400 hover:tw-bg-gray-100 active:tw-shadow-sm`"
+    :class="`group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 
+    items-center justify-center rounded-lg border p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 active:shadow-sm`"
   >
-    <svg-icon name="subtitlesOn" class="tw-h-4 tw-text-gray-400" v-show="props.activated" />
-    <svg-icon name="subtitlesOff" class="tw-h-4 tw-text-gray-400" v-show="!props.activated" />
+    <svg-icon name="subtitlesOn" class="h-[18px] fill-gray-400" v-show="props.activated" />
+    <svg-icon name="subtitlesOff" class="h-[18px] fill-gray-400 group-hover:text-gray-500" v-show="!props.activated" />
   </button>
 </template>
 

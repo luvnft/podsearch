@@ -1,7 +1,7 @@
 <template>
-  <div class="tw-mx-0 tw-flex tw-flex-col tw-items-center tw-justify-center tw-border-b tw-border-gray-300 tw-bg-white tw-p-0 tw-shadow-sm md:tw-gap-y-0 dark:tw-bg-gray-800 dark:tw-border-gray-700">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex tw-m-0 tw-flex tw-flex-col tw-items-start tw-justify-center tw-px-0 tw-pb-1.5">
-      <div class="tw-min-h-full tw-min-w-full tw-max-w-full">
+  <div class="dark:bg-neutral-0 mx-0 flex h-full sm:flex-row items-start justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0 row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between p-0 py-1 leading-normal rounded-xl">
+      <div class="min-h-full min-w-full max-w-full rounded-xl">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
             :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
@@ -20,53 +20,52 @@
         <img
           v-else
           loading="lazy"
-          class="tw-aspect-video tw-h-full tw-w-full tw-rounded-none tw-bg-cover tw-bg-top md:tw-rounded-xl"
+          class="aspect-video h-full w-full rounded-none bg-cover bg-top sm:rounded-xl"
           style="object-fit: cover; object-position: top"
           :src="props.searchEntry.imageUrl"
           alt="Description of Image"
         />
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col justify-between leading-normal tw-flex tw-min-h-full tw-flex-col tw-items-center tw-justify-center tw-px-3 tw-py-1"
-    >
-      <div class="row flex-grow-1 tw-flex tw-h-full tw-w-full">
-        <div class="col-12 tw-flex tw-flex-col tw-gap-y-0 tw-px-0 tw-pb-2 tw-pt-0">
-          <div class="tw-mb-2 tw-flex tw-w-full tw-flex-row tw-flex-nowrap tw-items-center tw-justify-between tw-pr-1">
-            <p class="tw-mb-0 tw-font-bold dark:tw-text-white">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between px-2.5 py-1 leading-normal">
+      <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
+        <div class="flex flex-col gap-y-0 px-1">
+          <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
+            <p class="text-gray-800 mb-0 py-1 pr-2 font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
-            <MoreButton :searchEntry="searchEntry" />
           </div>
           <div>
-            <div class="segment tw-mb-1.5 tw-mt-1 tw-flex tw-rounded-lg dark:tw-bg-gray-600 dark:tw-text-gray-300" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-              <div class="loader" v-if="subtitlesActivated">
+            <div class="segment bg-neutral-100 relative mb-1.5 mt-1 flex rounded-lg" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+              <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                 <span></span>
                 &nbsp;
               </div>
-              <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''}`">
-                <span v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
+
+              <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
+                <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
               </div>
             </div>
           </div>
-          <div class="tw-my-1 tw-flex tw-flex-row tw-items-center tw-justify-between tw-pr-0.5">
-            <p class="tw-m-0 dark:tw-text-white">
+          <div class="my-1 mt-auto flex flex-row items-center justify-between pr-0.5">
+            <p class="text-gray-800 m-0">
               <b>Time-location:</b>
               &nbsp;
               <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
             </p>
-            <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
+            <div class="flex flex-row items-center gap-x-3">
+              <ButtonsSubtitlesButton :activated="subtitlesActivated" @click="toggleSubtitles" />
+              <MoreButton :searchEntry="searchEntry" />
+              <PlayButton :searchEntry="searchEntry" />
+            </div>
           </div>
-        </div>
-        <div class="col-12 mt-0 pb-2 tw-flex tw-w-full tw-flex-col tw-items-center tw-justify-center tw-border-none tw-px-0 tw-pb-0 tw-pt-0">
-          <AudioPlayer
-            :audioLink="props.searchEntry.episodeEnclosure"
-            :timeLocation="props.searchEntry.start"
-            :episodeTitle="props.searchEntry.episodeTitle"
-            :key="props.searchEntry.text"
-            :startTime="parseFloat(`${Math.floor(parseFloat(props.searchEntry.start.toString()))}`)"
-            @timeupdate="handleTimeUpdateDebounced"
-          />
+          <div v-if="moreTextModalOpen">
+            <MoreTextCard
+              :close-dialog="openMoreTextModal"
+              :podcast-test="hitCache[props.searchEntry.episodeGuid].hits.map((hit: any) => hit.text).join('') || []"
+              :podcast-name="props.searchEntry.episodeTitle"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -80,15 +79,15 @@ import { useSearchStore } from "../../store/searchStore";
 import { Hit, SearchResponse } from "~~/types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
-import "animate.css";
+import { showToast as shoeToastType } from "../../utils/toastService/useToast";
 
+const showToast = inject("showToast") as typeof shoeToastType;
 const searchStore = useSearchStore();
 const { hitCache } = storeToRefs(searchStore);
 
 const props = defineProps<{
   searchEntry: Hit;
 }>();
-
 const subtitlesActivated: Ref<boolean> = ref(false);
 const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
@@ -99,7 +98,18 @@ hitCache.value[props.searchEntry.episodeGuid] = {
   numberOfPages: undefined,
 };
 
+const playing: Ref<boolean> = ref(false);
+const handlePlaying = (playingState: boolean) => {
+  playing.value = playingState;
+  console.log("PlayingState: ", playingState, " and playing is: ", playing);
+};
+
 const toggleSubtitles = () => {
+  if (subtitlesActivated.value) {
+    showToast("Subtitles enabled", "success", 1500, 500);
+  } else {
+    showToast("Subtitles disabled", "error", 1500, 500);
+  }
   subtitlesActivated.value = !subtitlesActivated.value;
 };
 
@@ -135,9 +145,16 @@ const removeDuplicateHits = (hits: Hit[]) => {
   return uniqueHits;
 };
 
+const moreTextModalOpen = ref(false);
+
+const openMoreTextModal = () => {
+  moreTextModalOpen.value = !moreTextModalOpen.value;
+  handleTimeUpdate(parseFloat(currentPlayingSegment.value.start.toString()) || parseFloat(props.searchEntry.start.toString()));
+};
+
 const handleTimeUpdate = async (currentTime: number) => {
   currentTime = currentTime - 0.1;
-  if (!subtitlesActivated.value) return;
+  if (subtitlesActivated.value === false && moreTextModalOpen.value === false) return;
   else {
     let episodeGuid = props.searchEntry.episodeGuid;
     // The reason for doing currentTime - 2 when it kinda should just be (currentTime) is purely because MeiliSearch is kinds shait at comparing decimals, probably a bug trollolo
@@ -189,11 +206,11 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
 
 <style scoped>
 :deep(.highlight) {
-  background: rgb(255, 255, 134) !important;
+  @apply text-red-500;
 }
 
 .loader {
-  display: inline-flex;
+  display: inline;
 }
 
 .loader span {
@@ -203,6 +220,7 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
 
 .loader span:after {
   content: "›";
+  @apply text-gray-500;
 }
 
 .loader span:nth-child(1) {
@@ -232,7 +250,6 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
   padding-right: 7px;
   padding-top: 7px;
   padding-bottom: 7px;
-  background-color: white;
   padding-left: 7px;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
 }

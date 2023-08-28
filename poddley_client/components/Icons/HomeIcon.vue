@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center">
+  <div class="flex h-6 w-6 items-center justify-center">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
       <path
         stroke-linecap="round"

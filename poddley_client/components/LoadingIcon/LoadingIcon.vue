@@ -1,7 +1,7 @@
 <template>
   <div
-    class="items-center items-center font-medium tw-group tw-flex tw-w-12 tw-items-center tw-justify-center tw-rounded-md tw-border tw-border-gray-200 tw-bg-gray-50 tw-fill-gray-400 tw-p-2 tw-shadow"
+    class="items-center items-center font-medium group flex w-12 items-center justify-center rounded-md border border-gray-200 bg-gray-50 fill-gray-400 p-2 shadow"
   >
-    <svg-icon name="spinner" class="tw-h-6 tw-w-6 tw-text-gray-400 tw-animate-spin" aria-hidden="true" />
+    <svg-icon name="spinner" class="h-6 w-6 text-gray-400 animate-spin" aria-hidden="true" />
   </div>
 </template>
