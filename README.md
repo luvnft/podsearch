@@ -589,15 +589,14 @@ Has to be a live version auto
 - [ ] Flytt subsene inn i den modda spilleren
 - [ ] Start transcriberen bruk large?
 - [ ] Grab transcriptionsne til anthony for lex for å spare tid
-- [ ] Refaktorerer transcriberen
+- [x] Refaktorerer transcriberen
 - [ ] Lag desktop moden
 - [ ] Lag iPhone moden
 - [ ] Lag Android moden
 - [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
-- [ ] Returner 3 ascending fra query pick last npt full fjern expand
+- [x] Returner 3 ascending fra query pick last npt full fjern expand
 - [ ] Make MeiliSearch production probably.
 - [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
-- [ ] Fullfør audioPlayeren
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
