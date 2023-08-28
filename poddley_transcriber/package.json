@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@prisma/client": "^5.1.1",
     "@types/language-tags": "^1.0.1",
     "axios": "^1.4.0",
     "better-sqlite3": "^8.5.1",
