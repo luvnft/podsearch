@@ -1,6 +1,6 @@
 <template>
-  <div class="dark:bg-neutral-0 mx-0 flex h-full sm:flex-row items-start justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0 row">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between p-0 py-1 leading-normal rounded-xl">
+  <div class="dark:bg-neutral-0 row max-h-92 mx-0 flex h-full items-start justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-1 flex flex-col items-center justify-between rounded-xl p-0 leading-normal">
       <div class="min-h-full min-w-full max-w-full rounded-xl">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed
@@ -61,6 +61,7 @@
           </div>
           <div v-if="moreTextModalOpen">
             <MoreTextCard
+              class="max-h-32"
               :close-dialog="openMoreTextModal"
               :podcast-test="hitCache[props.searchEntry.episodeGuid].hits.map((hit: any) => hit.text).join('') || []"
               :podcast-name="props.searchEntry.episodeTitle"
