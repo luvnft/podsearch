@@ -33,4 +33,6 @@ export interface Formatted {
   belongsToTranscriptId: string;
   indexed: boolean;
   segmentWordEntries: any;
+  createdAt: Date;
+  updatedAt: Date;
 }

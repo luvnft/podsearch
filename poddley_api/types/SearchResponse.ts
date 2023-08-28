@@ -31,7 +31,27 @@ export interface SearchResponseHit {
   youtubeVideoLink: string;
   deviationTime: number;
   imageUrl: string;
-  _formatted: any;
+  _formatted?: Formatted;
+  _matchesPosition?: MatchesPosition;
+}
+
+export interface MatchesPosition {
+  text: Text[];
+}
+
+export interface Formatted {
+  text: string;
+  id: string;
+  start: string;
+  end: string;
+  language: string;
+  belongsToPodcastGuid: string;
+  belongsToEpisodeGuid: string;
+  belongsToTranscriptId: string;
+  indexed: boolean;
+  segmentWordEntries: null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Formatted {
