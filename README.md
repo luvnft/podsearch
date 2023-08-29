@@ -57,9 +57,13 @@ Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastla
 ## Backend:
 ### Services:
 The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
-- API
-- Indexer (runs continuously every 5 minutes)
-- Meilisearch instance
+- Express-API: Does the full-text search functionality as an API querying the Meilisearch-instance
+- Indexer: Pushes the segments, transcription, episode and podcast data to the meilisearch-instance
+- Transcriber:
+  - Transcriber_main: Does pessimistic locking of rows and sends them to the transcriber
+  - Transcriber_transcribe: Does the transcribing using WhispherX and saves it like a json + does the deviationCalculation and Youtube-information-getting
+  - Transcriber_dbinserter: Does the inserting of the json to the db
+- Meilisearch-instance: Does the full-text search functionality
 
 ### API:
 - Route-Controller-Service architecture for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
@@ -470,6 +474,26 @@ Has to be a live version auto
 - [ ] ~~Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
 - [ ] ~~Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
 - [x] ~~Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
+- [ ] ~~Lag desktop moden~~
+- [ ] ~~Lag iPhone moden~~
+- [ ] ~~Lag Android moden~~
+- [ ]  ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
+- [ ] ~~Disable animation button~~ (nah)
+- [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
+- [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
+- [ ] ~~Download all podcats (should be)...~~
+- [ ] ~~Move navbar to bottom~~ (bad idea, so no)
+- [ ] ~~Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
+- [ ] ~~Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
+- [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
+- [ ] ~~Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
+- [ ] ~~Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
+- [ ] ~~Binary tree subs cache object needs to be available~~ (unnecessary)
+- [x] ~~Record knappen skal være der doneringsknappen er nå~~
+- [ ] ~~Add dark mode icon to the button~~
+- [ ] ~~Logo color?~~
+- [ ] ~~Add share buttons to moreLink~~
+- [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -508,20 +532,16 @@ Has to be a live version auto
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [x] Don't have debouncing on client side, but do have throttling + cancellable promises
 - [x] Add helmet and add rate-limiting
-- [ ] ~~Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
 - [x] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [x] Fix the buttons
 - [x] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
-- [ ] ~~Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
 - [x] Search button index redirect
 - [x] Time location needs to update if livesubs are enabled.
 - [x] Livesubs button is needed
-- [ ] ~~Binary tree subs cache object needs to be available~~ (unnecessary)
 - [x] Drop usage of hq720
 - [x] Start delayed hydratipn again
-- [ ] ~~Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
 - [x] Fix donation page
 - [x] Fix nav buttons
 - [x] Fix the layout shitfs on the image downloading time…
@@ -529,27 +549,18 @@ Has to be a live version auto
 - [x] Use vueUse instead of vlickoutside
 - [x] Øk margin på search oxen og marginBottom
 - [x] Set logo to be nuxtlink not href
-- [ ] ~~Move navbar to bottom~~ (bad idea, so no)
-- [ ] ~~Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [x] Skal kun blinke hvis man starter play
 - [x] Audio to text transformation search
 - [x] Add dark mode... toggle button + functionality.
 - [x] Fix device issue
-- [x] ~~Record knappen skal være der doneringsknappen er nå~~
 - [x] Fix home button not reflecting same behaviour as home button
 - [x] Added animate to the text changing section
 - [x] Fjern overflødig respons fra API-et
 - [x] Fullfør respons
-- [ ] ~~Add dark mode icon to the button~~
 - [x] Improve dark mode colors
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
 - [x] Fjern profile of push mikroen dit
-- [ ]  ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
-- [ ] ~~Disable animation button~~ (nah)
-- [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
-- [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
-- [ ] ~~Download all podcats (should be)...~~
 - [x] Fix extreme build time due to tailwind
 - [x] Fix SSR dark mode not being preloaded => (found a hack, contribute to the repo?)
 - [x] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h (was possible to implement)
@@ -557,7 +568,6 @@ Has to be a live version auto
 - [x] Remove useDevice as we have no use for it on the web-version
 - [x] Se over about og contact siden
 - [x] Make emails
-- [ ] ~~Logo color?~~
 - [x] Fix darkMode doubleClick bug
 - [x] Fix issue with description meta-tag on poddley
 - [x] Add "x"-cleanSearchString functionality like google
@@ -565,12 +575,9 @@ Has to be a live version auto
 - [x] Fix spinner wiggle bug
 - [x] Youtube DarkMode button
 - [x] Align RemoveButtons
-- [ ] ~~Add share buttons to moreLink~~
-- [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [x] Remove shade and border on audioPlayer on iPhones
 - [x] Move expand more text all the way to the right even when text is short
 - [x] MoreLinks buttonen har forsvunnet fiks det
-- [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
 - [x] Fix hover fill on rss icon
 - [x] Add icons to burgerMenu
 - [x] Hr bug about
@@ -580,20 +587,20 @@ Has to be a live version auto
 - [x] Fix size issue on triple dot menu
 - [x] Expand icon padding
 - [x] Fix toast-issues
+- [x] Returner 3 ascending fra query pick last npt full fjern expand
 - [x] Legg til custom tailwindUI toast-engine/service
+- [x] Refaktorerer transcriberen
+
 - [ ] Bytt audioPlayer til howler.js til designet som er ønsket
 - [ ] Flytt subsene inn i den modda spilleren
 - [ ] Start transcriberen bruk large?
 - [ ] Grab transcriptionsne til anthony for lex for å spare tid
-- [ ] Refaktorerer transcriberen
-- [ ] Lag desktop moden
-- [ ] Lag iPhone moden
-- [ ] Lag Android moden
 - [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
-- [ ] Returner 3 ascending fra query pick last npt full fjern expand
 - [ ] Make MeiliSearch production probably.
 - [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
-- [ ] Fullfør audioPlayeren
+- [ ] Fiks desktop searchbar
+- [ ] We will only use webApp audioRecording for now
+
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok

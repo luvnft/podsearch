@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <nav class="container-fluid bg-white z-40 px-1.5 py-0 sm:px-5">
         <div class="container-fluid mx-auto h-full w-full max-w-screen-xl px-0 sm:px-0 lg:px-8">
             <div class="relative flex h-full w-full justify-center">
@@ -22,15 +23,44 @@
                         </div>
                     </div>
                 </div>
+=======
+  <nav class="container-fluid bg-white z-40 px-1.5 py-0 sm:px-5">
+    <div class="mx-auto h-full w-full px-0 sm:px-0 lg:px-8 lg:max-w-screen-xl">
+      <div class="relative flex h-full w-full justify-center">
+        <div class="my-0 flex h-full w-full items-center justify-between sm:items-stretch sm:justify-start lg:max-w-screen-xl">
+          <div class="m-0 h-full w-full flex-shrink-0 items-center justify-between p-0">
+            <div class="m-0 h-full w-full flex-nowrap items-center justify-between">
+              <div class="flex items-center justify-between p-0 py-1 sm:hidden">
+                <div class="flex flex-row items-center justify-center gap-x-4">
+                  <BurgerMenu class="col-2 flex items-center justify-center" />
+                  <ButtonsMicrophoneButton class="col-2 flex items-center justify-center" />
+                </div>
+                <NavTitle class="col-4 flex items-center justify-center" />
+                <div class="flex flex-row items-center justify-center gap-x-4">
+                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 flex items-center justify-center" />
+                  <DarkMode class="col-2 flex items-center justify-center" />
+                </div>
+              </div>
+              <div class="hidden sm:flex">
+                <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly py-2 sm:flex" />
+              </div>
+>>>>>>> af45d2e263e49c42d67c771cc48a9b8856ec0355
             </div>
             <SearchBoxSection class="flex h-15 items-center justify-center" :openSearchSection="openSearchSection" />
         </div>
+<<<<<<< HEAD
     </nav>
+=======
+      </div>
+    <SearchBoxSection :openSearchSection="openSearchSection" class="flex h-12 items-center justify-center" />
+
+    </div>
+  </nav>
+>>>>>>> af45d2e263e49c42d67c771cc48a9b8856ec0355
 </template>
 
 <script setup lang="ts">
 import { onKeyUp } from "@vueuse/core";
-import { vOnClickOutside } from "@vueuse/components";
 
 const openSearchSection: Ref<boolean> = ref(false);
 const openBurgerMenu: Ref<boolean> = ref(false);
