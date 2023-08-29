@@ -1,9 +1,15 @@
 <template>
+<<<<<<< HEAD
   <div>
     <!-- SearchResults -->
     <div class="block">
         <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
     </div>
+=======
+  <!-- SearchResults -->
+  <div class="block">
+    <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
+>>>>>>> af45d2e263e49c42d67c771cc48a9b8856ec0355
   </div>
 </template>
 <script lang="ts" setup>
