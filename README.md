@@ -474,6 +474,17 @@ Has to be a live version auto
 - [ ] ~~Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
 - [ ] ~~Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
 - [x] ~~Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
+- [ ] ~~Lag desktop moden~~
+- [ ] ~~Lag iPhone moden~~
+- [ ] ~~Lag Android moden~~
+- [ ]  ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
+- [ ] ~~Disable animation button~~ (nah)
+- [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
+- [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
+- [ ] ~~Download all podcats (should be)...~~
+- [ ] ~~Move navbar to bottom~~ (bad idea, so no)
+- [ ] ~~Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
+- [ ] ~~Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -518,7 +529,6 @@ Has to be a live version auto
 - [x] Fix the buttons
 - [x] Segments have to move
 - [x] Add segment search functionality route so it can be shared.
-- [ ] ~~Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
 - [x] Search button index redirect
 - [x] Time location needs to update if livesubs are enabled.
 - [x] Livesubs button is needed
@@ -533,8 +543,7 @@ Has to be a live version auto
 - [x] Use vueUse instead of vlickoutside
 - [x] Øk margin på search oxen og marginBottom
 - [x] Set logo to be nuxtlink not href
-- [ ] ~~Move navbar to bottom~~ (bad idea, so no)
-- [ ] ~~Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
+
 - [x] Skal kun blinke hvis man starter play
 - [x] Audio to text transformation search
 - [x] Add dark mode... toggle button + functionality.
@@ -549,11 +558,6 @@ Has to be a live version auto
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
 - [x] Fjern profile of push mikroen dit
-- [ ]  ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
-- [ ] ~~Disable animation button~~ (nah)
-- [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
-- [ ] ~~Add word, by, word, highlighting during playback. and ..The animate.css text shall be only one liners so it needs to be split but for this to work we need to get the word-token-times, which isn't yet implemented~~
-- [ ] ~~Download all podcats (should be)...~~
 - [x] Fix extreme build time due to tailwind
 - [x] Fix SSR dark mode not being preloaded => (found a hack, contribute to the repo?)
 - [x] Convert entire Nuxt3 app to an iOS/Android app using capacitor https://dev.to/daiquiri_team/how-to-create-android-and-ios-apps-from-the-nuxtjs-application-using-capacitorjs-134h (was possible to implement)
@@ -575,6 +579,7 @@ Has to be a live version auto
 - [x] Move expand more text all the way to the right even when text is short
 - [x] MoreLinks buttonen har forsvunnet fiks det
 - [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
+- [ ] 
 - [x] Fix hover fill on rss icon
 - [x] Add icons to burgerMenu
 - [x] Hr bug about
@@ -590,13 +595,13 @@ Has to be a live version auto
 - [ ] Start transcriberen bruk large?
 - [ ] Grab transcriptionsne til anthony for lex for å spare tid
 - [x] Refaktorerer transcriberen
-- [ ] Lag desktop moden
-- [ ] Lag iPhone moden
-- [ ] Lag Android moden
+
 - [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
 - [x] Returner 3 ascending fra query pick last npt full fjern expand
 - [ ] Make MeiliSearch production probably.
 - [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
+- [ ] Fiks desktop searchbar
+- [ ] We will only use webApp audioRecording for now
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
