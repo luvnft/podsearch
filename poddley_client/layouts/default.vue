@@ -1,6 +1,6 @@
 <template>
-  <NavBarSection />
-  <MainContainerSection>
-    <slot />
-  </MainContainerSection>
+    <NavBarSection />
+    <MainContainerSection>
+        <slot />
+    </MainContainerSection>
 </template>
