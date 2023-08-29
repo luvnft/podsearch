@@ -71,11 +71,11 @@ class TranscriptionsService {
 
       // Setting up a query for 5 segments up and 5 segments down using some reference (I'm using `start` for this example)
       let surroundingQuery: SearchQuery = {
-        filter: `start ${segmentHit.start - 30} TO ${segmentHit.start + 30} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
+        filter: `start ${segmentHit.start - 60} TO ${segmentHit.start + 60} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
         limit: 10,
         sort: ["start:asc"],
         searchString: undefined,
-      };
+      }; 
 
       // Hits around the current looped hit
       let surroundingHits: SegmentResponse = await this.searchSegments(surroundingQuery);
