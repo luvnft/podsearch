@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full mt-3 text-gray-900 bg-white">
-    <div class="max-w-3xl p-6 mx-auto">
+    <div class="p-6 mx-auto">
       <h1 class="mb-4 text-3xl font-bold">About Poddley</h1>
       <p class="mb-6">
         Welcome to Poddley, your ultimate destination for exploring the spoken world of podcasts like never before. Founded by the dynamic duo of Igor Momcilovic and Luka Momcilovic, Poddley is the

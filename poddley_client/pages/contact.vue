@@ -1,6 +1,6 @@
 <template>
   <div class="mt-3 flex w-full flex-col items-center justify-center text-gray-900">
-    <div class="max-w-3xl mx-auto p-6">
+    <div class="mx-auto p-6">
       <h1 class="text-3xl font-bold mb-4">Contact Us</h1>
       <p class="mb-6">We're excited to hear from you! If you have any questions, suggestions, or feedback, please feel free to reach out to us on the mail below. Your input is invaluable to us as we strive to create the best podcast searching experience for our users.</p>
 

@@ -1,5 +1,5 @@
 <template>
-  <HeadlessMenu as="div" class="relative inline-flex h-[34px] w-[34px] items-center justify-center text-left">
+  <HeadlessMenu as="div" class="relative inline-flex h-9 w-9 items-center justify-center text-left">
     <div class="h-9 w-9">
       <HeadlessMenuButton
         class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 items-center justify-center rounded-lg border fill-neutral-400 p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm"

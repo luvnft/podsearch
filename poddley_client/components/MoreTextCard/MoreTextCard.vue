@@ -1,6 +1,6 @@
 <template>
   <div id="defaultModalWrapper" class="fixed inset-0 flex items-center justify-center z-50 m-3">
-    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="relative w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700">
+    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="relative w-full max-h-full bg-white rounded-lg shadow dark:bg-gray-700">
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
         <!-- Modal header -->
