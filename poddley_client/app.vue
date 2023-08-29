@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper flex-column flex mb-24">
+  <div class="wrapper flex-column flex pb-24">
     <!-- <Notification /> -->
     <Notification v-for="toast in toasts" :key="toast.id" :toast="toast" />
     <!-- Rest -->
