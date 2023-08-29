@@ -8,7 +8,6 @@
     </div>
     <!-- Desktop Search Bar-->
     <div class="h-15 mx-auto hidden w-full flex-col items-center justify-center gap-y-2 pt-2.5 sm:flex sm:pb-0.5 md:px-0">
-        <form class="flex w-full items-center">
             <label for="voice-search" class="sr-only">Search</label>
             <div class="relative w-full">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -20,13 +19,6 @@
                     <XMarkIcon class="text-gray-500 h-4 w-4" />
                 </button>
             </div>
-            <button type="submit" class="text-neutral-500 bg-gray-100 border-gray-200 ml-2 inline-flex items-center rounded-lg border px-3 py-2.5 text-base font-medium hover:text-neutral-600 hover:bg-gray-100 focus:ring-gray-300 focus:outline-none focus:ring-4">
-                <svg class="mr-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                </svg>
-                Search
-            </button>
-        </form>
     </div>
 </template>
 
@@ -36,10 +28,6 @@ import { useSearchStore } from "../../store/searchStore";
 import { Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
 import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-
-const props = defineProps<{
-    openSearchSection: boolean;
-}>();
 
 const props = defineProps<{
   openSearchSection: boolean;

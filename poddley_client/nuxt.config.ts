@@ -103,7 +103,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "en",
       },
-      title: "Poddley - Search podcasts like text",
+      title: "Poddley - Search podcasts like books",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },

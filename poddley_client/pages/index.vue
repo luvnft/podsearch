@@ -85,8 +85,8 @@ const debouncedSearch = _Debounce(makeSearch, 300, {
     trailing: true,
 });
 
-const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 300, {
-    leading: true,
+const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 500, {
+    leading: false,
     trailing: true,
 });
 

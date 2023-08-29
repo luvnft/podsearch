@@ -17,18 +17,16 @@
                         </p>
                     </div>
                     <div>
-                        <div class="segment bg-neutral-100 relative mb-1.5 mt-1 flex rounded-lg max-h-60 min-h-60 h-60" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                        <div class="segment min-h-60 bg-neutral-100 relative mb-1.5 mt-1 flex h-60 max-h-60 rounded-lg pb-3" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
                             <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                                 <span></span>
                                 &nbsp;
                             </div>
 
-                            <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800`">
-                                <p v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" class="my-0 ml-0 mr-0" />
-                            </div>
+                            <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} min-h-60 h-58 vertical text-gray-800 ml-0 mr-0 line-clamp-[9] w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
                         </div>
                     </div>
-                    <div class="mb-2.5 mt-2 flex flex-row items-center justify-between pr-0.5 px-1.5">
+                    <div class="mb-2.5 mt-2 flex flex-row items-center justify-between px-1.5 pr-0.5">
                         <p class="text-gray-800 m-0">
                             <b>Time-location:</b>
                             &nbsp;
@@ -229,6 +227,7 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
     padding-bottom: 7px;
     padding-left: 7px;
     box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
+    -webkit-box-pack: end !important;
 }
 
 .image-aspect-ratio {
