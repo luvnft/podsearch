@@ -485,6 +485,15 @@ Has to be a live version auto
 - [ ] ~~Move navbar to bottom~~ (bad idea, so no)
 - [ ] ~~Brul en annen audio player kanskje som er bedre til å ferche metadata???~~
 - [ ] ~~Add the firefox colors as the nuxt progress bar bar color  and find out why loding indicator doesnt work~~ (This is meaningless as the NuxtLoadingIndicator is only present on SPAs not SSR apps.
+- [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
+- [ ] ~~Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
+- [ ] ~~Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
+- [ ] ~~Binary tree subs cache object needs to be available~~ (unnecessary)
+- [x] ~~Record knappen skal være der doneringsknappen er nå~~
+- [ ] ~~Add dark mode icon to the button~~
+- [ ] ~~Logo color?~~
+- [ ] ~~Add share buttons to moreLink~~
+- [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -523,7 +532,6 @@ Has to be a live version auto
 - [x] Setup up multisearch for the search-service on the backend. Should give some slight performance benefits
 - [x] Don't have debouncing on client side, but do have throttling + cancellable promises
 - [x] Add helmet and add rate-limiting
-- [ ] ~~Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
 - [x] Light refactoring of backend and frontend to support SeachQuery and filter/sort parameteres + refactor ServiceWorker + change all APIs to POST requests.
 - [x] Find out why worker is slow on new backend. Json parsing? Filter setting on the meilisearch api?
 - [x] Fix the buttons
@@ -532,10 +540,8 @@ Has to be a live version auto
 - [x] Search button index redirect
 - [x] Time location needs to update if livesubs are enabled.
 - [x] Livesubs button is needed
-- [ ] ~~Binary tree subs cache object needs to be available~~ (unnecessary)
 - [x] Drop usage of hq720
 - [x] Start delayed hydratipn again
-- [ ] ~~Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
 - [x] Fix donation page
 - [x] Fix nav buttons
 - [x] Fix the layout shitfs on the image downloading time…
@@ -543,17 +549,14 @@ Has to be a live version auto
 - [x] Use vueUse instead of vlickoutside
 - [x] Øk margin på search oxen og marginBottom
 - [x] Set logo to be nuxtlink not href
-
 - [x] Skal kun blinke hvis man starter play
 - [x] Audio to text transformation search
 - [x] Add dark mode... toggle button + functionality.
 - [x] Fix device issue
-- [x] ~~Record knappen skal være der doneringsknappen er nå~~
 - [x] Fix home button not reflecting same behaviour as home button
 - [x] Added animate to the text changing section
 - [x] Fjern overflødig respons fra API-et
 - [x] Fullfør respons
-- [ ] ~~Add dark mode icon to the button~~
 - [x] Improve dark mode colors
 - [x] Fiks svart bakgrunn
 - [x] Fjern overflødig møkkatekst fra responsen
@@ -565,7 +568,6 @@ Has to be a live version auto
 - [x] Remove useDevice as we have no use for it on the web-version
 - [x] Se over about og contact siden
 - [x] Make emails
-- [ ] ~~Logo color?~~
 - [x] Fix darkMode doubleClick bug
 - [x] Fix issue with description meta-tag on poddley
 - [x] Add "x"-cleanSearchString functionality like google
@@ -573,13 +575,9 @@ Has to be a live version auto
 - [x] Fix spinner wiggle bug
 - [x] Youtube DarkMode button
 - [x] Align RemoveButtons
-- [ ] ~~Add share buttons to moreLink~~
-- [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [x] Remove shade and border on audioPlayer on iPhones
 - [x] Move expand more text all the way to the right even when text is short
 - [x] MoreLinks buttonen har forsvunnet fiks det
-- [ ] ~~Fix so the home button doesn't wait for the api response but rather has same behaviour as NavLogo~~
-- [ ] 
 - [x] Fix hover fill on rss icon
 - [x] Add icons to burgerMenu
 - [x] Hr bug about
@@ -589,19 +587,20 @@ Has to be a live version auto
 - [x] Fix size issue on triple dot menu
 - [x] Expand icon padding
 - [x] Fix toast-issues
+- [x] Returner 3 ascending fra query pick last npt full fjern expand
 - [x] Legg til custom tailwindUI toast-engine/service
+- [x] Refaktorerer transcriberen
+
 - [ ] Bytt audioPlayer til howler.js til designet som er ønsket
 - [ ] Flytt subsene inn i den modda spilleren
 - [ ] Start transcriberen bruk large?
 - [ ] Grab transcriptionsne til anthony for lex for å spare tid
-- [x] Refaktorerer transcriberen
-
 - [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig
-- [x] Returner 3 ascending fra query pick last npt full fjern expand
 - [ ] Make MeiliSearch production probably.
 - [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
 - [ ] Fiks desktop searchbar
 - [ ] We will only use webApp audioRecording for now
+
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
