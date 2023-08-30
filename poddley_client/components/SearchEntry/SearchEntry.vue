@@ -5,10 +5,10 @@
                 <div v-if="props.searchEntry.youtubeVideoLink">
                     <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />
                 </div>
-                <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-cover bg-top sm:rounded-xl" style="object-fit: cover; object-position: top" :src="props.searchEntry.imageUrl" alt="Description of Image" />
+                <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-cover bg-top sm:rounded-xl" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between px-2.5 py-0.5 pt-2 leading-normal">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between px-2.5 pt-2 pb-1 leading-normal">
             <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
                 <div class="flex flex-col gap-y-0 px-1">
                     <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
@@ -17,18 +17,18 @@
                         </p>
                     </div>
                     <div>
-                        <div class="segment min-h-60 bg-neutral-100 relative mb-1.5 mt-1 flex h-60 max-h-60 rounded-lg pb-3" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                        <div class="segment min-h-[130px] bg-neutral-100 relative mb-1.5 mt-1 flex h-[130px] max-h-32 rounded-lg pb-3" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
                             <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                                 <span></span>
                                 &nbsp;
                             </div>
 
-                            <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} min-h-60 h-58 vertical text-gray-800 ml-0 mr-0 line-clamp-[9] w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+                            <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} h-[117px] vertical text-gray-800 ml-0 mr-0 line-clamp-5 w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
                         </div>
                     </div>
                     <div class="mb-2.5 mt-2 flex flex-row items-center justify-between px-1.5 pr-0.5">
                         <p class="text-gray-800 m-0">
-                            <b>Time-location:</b>
+                            <b>Time:</b>
                             &nbsp;
                             <u>{{ utils.convertSecondsToTime(currentPlayingSegment?.start || props.searchEntry.start) }}</u>
                         </p>
