@@ -593,18 +593,15 @@ Has to be a live version auto
 - [x] Legg til custom tailwindUI toast-engine/service
 - [x] Refaktorerer transcriberen
 - [x] Fiks desktop searchbar
+- [x] Microphone-functionality on phones will redirect to app to stimulate users + better audio-quality which is needed for the transcriptions.
 
 - [ ] Bytt audioPlayer til howler.js til designet som er ønsket
 - [ ] Start transcriberen bruk large?
-- [ ] Halve the amount of text returned and the height of the textField component
+- [x] Halve the amount of text returned and the height of the textField component
 - [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing
 - [ ] Make MeiliSearch production probably.
-- [ ] Bytt ut alle ikonene som du kan med heroicons istedenfor dine egne svg-er torr det går fortere da.
-- [ ] Microphone-functionality on phones will redirect to app to stimulate users + better audio-quality which is needed for the transcriptions.
 - [ ] The textBox-section shall show the currentChosenSearchedSegment first, but it should be able to scroll move further up/down, scrollable
-- [ ] Add shadow to the podcast image to make it levitate
-- [ ] Upvote/Downvote of podcast/segment
-- [ ] Convert play-button too say Play podcast
+- [x] Convert play-button too say Play podcast
 
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
