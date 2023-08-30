@@ -41,7 +41,7 @@ class TranscriptionsService {
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
       showMatchesPosition: true,
-      matchingStrategy: "last",
+      matchingStrategy: "all",
     };
     // If searchString, add it:
     if (this.searchQuery.filter) mainQuery.filter = searchQuery.filter;
@@ -227,13 +227,13 @@ class TranscriptionsService {
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
-      matchingStrategy: "last",
+      matchingStrategy: "all",
     };
     if (this.searchQuery.filter) mainQuery.filter = searchQuery.filter;
     if (this.searchQuery.sort) mainQuery.sort = searchQuery.sort;
     mainQuery.limit = searchQuery.limit === undefined ? 10 : searchQuery.limit <= 100 ? searchQuery.limit : 10;
     if (this.searchQuery.hitsPerPage) mainQuery.hitsPerPage = searchQuery.hitsPerPage;
-    if (this.searchQuery.page) mainQuery.page = searchQuery.page;
+    if (this.searchQuery.page) mainQuery.page = searchQuery.page; 
     if (this.searchQuery.searchString) mainQuery.q = this.searchQuery.searchString;
 
     // Search the index using the mainQuery and return the result
