@@ -1,5 +1,5 @@
 <template>
-    <div class="border-gray-400 relative mb-1 mt-1 flex h-12 w-full flex-grow items-center rounded-lg border-[3px] bg-transparent outline-none ring-0 sm:hidden" v-if="props.openSearchSection">
+    <div class="border-gray-400 relative mb-1 mt-0 flex h-12 w-full flex-grow items-center rounded-lg border-[3px] bg-transparent outline-none ring-0 sm:hidden" v-if="props.openSearchSection">
         <input type="text" name="search" id="search" placeholder="Search for a quote in a podcast here" class="bg-white text-gray-800 border-gray-300 block h-full w-full justify-center rounded-md pl-2 pr-1 text-center text-base outline-none placeholder:text-neutral-300 focus:border-gray-500 focus:ring-gray-500 dark:placeholder:text-gray-200" autofocus v-model="searchQuery.searchString" @input="navigateWithQuery" />
 
         <button v-if="searchQuery.searchString" @click="cleanSearchString" class="hover:bg-gray-transparent text-gray-400 mr-0 flex aspect-square h-full items-center justify-center rounded-md border-0 p-2 outline-none ring-0 hover:text-gray-500 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset">
