@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex h-52 flex-col items-center">
     <!-- Show off iFrame -->
-    <div class="video-container flex w-full" @click="toggleiFrame" v-if="!showiFrame">
+    <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
       <div class="text-white absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-xl">
         <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
-          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette after:rounded-lg h-full rounded-full brightness-75" loading="lazy" />
+          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" loading="lazy" />
         </div>
         <div class="flex min-w-0 items-center">
           <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base" style="color: rgb(246, 246, 246)">
@@ -15,34 +15,18 @@
       <div>
         <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
       </div>
-      <button class="image-with-vignette h-full w-full min-w-full rounded after:rounded-xl md:rounded-xl md:after:rounded-xl">
-        <img
-          loading="lazy"
-          class="aspect-video w-full rounded-none sm:rounded-xl bg-cover bg-center bg-blend-darken shadow-black md:rounded-xl"
-          style="object-fit: cover; object-position: center"
-          :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-          alt="Image of the youtube video associated with the podcast logo"
-          @click="toggleiFrame()"
-        />
+      <button class="h-52 w-full min-w-full rounded border-none shadow-none after:rounded-xl md:rounded-xl md:after:rounded-xl">
+        <img loading="lazy" class="aspect-video h-52 w-full rounded-xl border-none bg-cover bg-center pb-1 bg-blend-darken shadow-none sm:rounded-xl md:rounded-xl" style="object-fit: cover; object-position: center" :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" alt="Image of the youtube video associated with the podcast logo" @click="toggleiFrame()" />
       </button>
     </div>
 
     <!-- Actual iFrame -->
-    <div v-if="showiFrame" :class="`bg-gray-8  m-0 mb-1.5 flex aspect-video w-full items-center justify-center p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
+    <div v-if="showiFrame" :class="`bg-gray-8 m-0 mb-1.5 flex aspect-video h-52 w-full items-center justify-center rounded-xl p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
       <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
         <IconsSpinnerIcon />
       </div>
 
-      <iframe
-        :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
-        :title="props.videoTitle"
-        frameborder="0"
-        :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
-        :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-        class="aspect-video w-full sm:rounded-xl"
-        v-show="!loading"
-        @load="iFrameLoaded()"
-      />
+      <iframe :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`" :title="props.videoTitle" frameborder="0" :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`" :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null" class="aspect-video h-52 w-full pb-[3px] sm:rounded-xl" v-show="!loading" @load="iFrameLoaded()" />
     </div>
   </div>
 </template>
