@@ -15,8 +15,8 @@
       <div>
         <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
       </div>
-      <button class="h-52 w-full min-w-full rounded border-none shadow-none after:rounded-xl md:rounded-xl md:after:rounded-xl">
-        <img loading="lazy" class="aspect-video h-52 w-full rounded-xl border-none bg-cover bg-center pb-1 bg-blend-darken shadow-none sm:rounded-xl md:rounded-xl" style="object-fit: cover; object-position: center" :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" alt="Image of the youtube video associated with the podcast logo" @click="toggleiFrame()" />
+      <button class="h-full w-full min-w-full rounded border-none shadow-none after:rounded-xl md:rounded-xl md:after:rounded-xl flex items-center justify-center">
+        <img loading="lazy" class="aspect-video h-[200px] w-full rounded-xl border-none bg-cover bg-center pb-0 bg-blend-darken shadow-none sm:rounded-xl md:rounded-xl" style="object-fit: cover; object-position: center" :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" alt="Image of the youtube video associated with the podcast logo" @click="toggleiFrame()" />
       </button>
     </div>
 
