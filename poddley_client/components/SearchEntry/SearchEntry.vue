@@ -1,24 +1,24 @@
 <template>
     <div class="dark:bg-neutral-0 row mx-0 flex h-full items-start justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
-        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between rounded-xl p-0 leading-normal sm:py-1">
-            <div class="min-h-full min-w-full rounded-xl">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex flex-col items-center justify-between rounded-xl leading-normal sm:px-2 px-2 pt-1.5 ">
+            <div class="h-52 min-w-full rounded-xl border-2 border-neutral-300 shadow-sm">
                 <div v-if="props.searchEntry.youtubeVideoLink">
                     <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />
                 </div>
-                <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-cover bg-top sm:rounded-xl" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
+                <img v-else loading="lazy" class="aspect-video h-52 w-full rounded-none bg-cover bg-top sm:rounded-xl" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 py-sm-2 flex flex-col items-center justify-between px-2.5 pt-2 pb-1 leading-normal">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex flex-col items-center justify-between px-1 sm:px-2.5 pt-2.5 pb-1">
             <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
                 <div class="flex flex-col gap-y-0 px-1">
-                    <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0">
+                    <div class="mb-2 flex w-full flex-row flex-nowrap items-center justify-between pr-0 bg-neutral-100 px-2.5 py-1.5 rounded-lg border-neutral-300 border shadow-sm">
                         <p class="text-gray-800 mb-0 py-1 pr-2 font-bold">
                             {{ props.searchEntry.episodeTitle }}
                         </p>
                     </div>
                     <div>
-                        <div class="segment min-h-[130px] bg-neutral-100 relative mb-1.5 mt-1 flex h-[130px] max-h-32 rounded-lg pb-3" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                            <div :class="`loader flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
+                        <div class="border-neutral-300 border shadow-sm px-2 min-h-[130px] bg-neutral-100 relative mb-1.5 mt-1 flex h-[140px] max-h-36 rounded-lg py-2.5" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                            <div :class="`load|r flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
                                 <span></span>
                                 &nbsp;
                             </div>
