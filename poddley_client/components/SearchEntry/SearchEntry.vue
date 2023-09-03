@@ -1,14 +1,14 @@
 <template>
   <div class="dark:bg-neutral-0 row mx-0 flex h-full items-center justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex flex-col items-center justify-between rounded-xl px-2 py-0 leading-normal sm:px-2">
-      <div class="h-52 min-w-full rounded-xl border-4 shadow-lg dark:border-neutral-100">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-xl px-2 py-0 pb-0 leading-normal sm:px-2">
+      <div class="h-full min-w-full rounded-xl border-4 shadow-lg dark:border-neutral-100">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />
         </div>
-        <img v-else loading="lazy" class="aspect-video h-[201px] w-full rounded-none bg-top sm:rounded-lg" style="object-fit: fill; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
+        <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-top sm:rounded-lg" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 flex flex-col items-center justify-between px-1 pb-1 sm:px-2.5">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between px-1 pb-1 sm:px-2.5">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
         <div class="flex flex-col gap-y-0 px-1 py-0">
           <div class="bg-neutral-100 border-neutral-300 mb-2 flex w-full flex-row flex-nowrap items-center justify-between rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm">
