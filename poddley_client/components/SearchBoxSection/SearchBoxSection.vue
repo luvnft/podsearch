@@ -15,7 +15,7 @@
                 </div>
                 <input autofocus v-model="searchQuery.searchString" @input="navigateWithQuery" type="text" id="voice-search" class="text-gray-900 bg-gray-100 border-gray-200 block w-full rounded-lg border p-2.5 pl-10 text-base focus:border-gray-500 focus:ring-gray-500" placeholder="Search for podcasts, episodes and quotes from podcasts" required />
 
-                <button type="button" class="group absolute inset-y-0 right-0 flex items-center pr-3" v-if="searchQuery.searchString" @click="cleanSearchString">
+                <button type="button" class="group absolute inset-y-0 right-0 w-12 flex items-center justify-center" v-if="searchQuery.searchString" @click="cleanSearchString">
                     <XMarkIcon class="text-gray-500 h-4 w-4" />
                 </button>
             </div>
