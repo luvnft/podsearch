@@ -1,18 +1,18 @@
 <template>
   <div class="dark:bg-neutral-0 row mx-0 flex h-full items-center justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-xl px-2 py-0 pb-0 leading-normal sm:px-2">
-      <div class="h-full min-w-full rounded-xl border-4 shadow-lg dark:border-neutral-100">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-xl px-0 py-0 pb-0 leading-normal sm:px-2">
+      <div class="h-full min-w-full rounded-lg border-2 shadow-lg dark:border-neutral-100">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />
         </div>
         <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-top sm:rounded-lg" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between px-1 py-1.5 sm:px-2.5">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between px-0 py-1.5 sm:px-2.5">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
-        <div class="flex flex-col gap-y-0 px-1 py-0">
-          <div class="bg-neutral-100 border-neutral-300 mb-1 flex h-14 w-full flex-col flex-nowrap items-center justify-center rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm line-clamp-2 text-ellipsis">
-            <p class="text-gray-800 mb-0 h-14 py-1 pr-2 font-bold flex justify-center items-center">
+        <div class="flex flex-col gap-y-0 px-0 py-0">
+          <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-14 w-full flex-col flex-nowrap items-center justify-center text-ellipsis rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm">
+            <p class="text-gray-800 mb-0 flex h-14 items-center justify-center py-1 pr-2 font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
           </div>
