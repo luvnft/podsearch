@@ -8,11 +8,11 @@
         <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-top sm:rounded-lg" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between px-1 pb-1 sm:px-2.5">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between px-1 py-1.5 sm:px-2.5">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
         <div class="flex flex-col gap-y-0 px-1 py-0">
-          <div class="bg-neutral-100 border-neutral-300 mb-2 flex w-full flex-row flex-nowrap items-center justify-between rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm">
-            <p class="text-gray-800 mb-0 py-1 pr-2 font-bold">
+          <div class="bg-neutral-100 border-neutral-300 mb-1 flex h-14 w-full flex-col flex-nowrap items-center justify-center rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm line-clamp-2 text-ellipsis">
+            <p class="text-gray-800 mb-0 h-14 py-1 pr-2 font-bold flex justify-center items-center">
               {{ props.searchEntry.episodeTitle }}
             </p>
           </div>
