@@ -1,6 +1,6 @@
 <template>
-  <div class="dark:bg-neutral-0 row mx-0 flex h-full items-center justify-start rounded-2xl p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-xl px-0 py-0 pb-0 leading-normal sm:px-2">
+  <div class="dark:bg-neutral-0 row mx-0 flex h-full items-center justify-start rounded-lg p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-lg px-0 py-0 pb-0 leading-normal sm:px-2">
       <div class="h-full min-w-full rounded-lg border-2 shadow-lg dark:border-neutral-100">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />

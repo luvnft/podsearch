@@ -15,7 +15,7 @@
       leave-to-class="transform scale-95 opacity-0"
     >
       <HeadlessMenuItems @click="close" class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
-        <div class="text-gray-700 bg-white w-full rounded-xl px-0 py-1">
+        <div class="text-gray-700 bg-white w-full rounded-lg px-0 py-1">
           <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline hover:bg-gray-300">
             <NuxtLink exact to="/" :class="`flex justify-between gap-x-0 px-3 py-2 text-base`">
               Home
