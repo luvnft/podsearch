@@ -7,3 +7,9 @@ hr {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @apply bg-white;
+  }
+}
