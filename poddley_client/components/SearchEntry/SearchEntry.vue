@@ -6,7 +6,7 @@
           <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />
         </div>
         <div v-else class="aspect-video bg-cover bg-top bg-no-repeat" :style="`background: url(${props.searchEntry.imageUrl});`">
-          <img loading="lazy" class="h-full w-full rounded-none bg-top object-contain backdrop-blur-sm sm:rounded-lg" :src="props.searchEntry.imageUrl" alt="Description of Image" />
+          <img loading="lazy" class="h-full w-full rounded-none bg-top object-contain backdrop-blur sm:rounded-lg" :src="props.searchEntry.imageUrl" alt="Description of Image" />
         </div>
       </div>
     </div>
@@ -15,11 +15,11 @@
         <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
           <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
             <div class="z-50 flex h-full w-full items-start py-1">
-              <p class="multiline-ellipsis text-gray-800 mb-0 block w-11/12 items-center justify-center px-2 pb-1 pt-0 text-start font-bold">
+              <p class="multiline-ellipsis text-gray-800 mb-0 block w-10/12 items-center justify-center px-2 pb-1 pt-0 text-start font-bold">
                 {{ props.searchEntry.episodeTitle }}
               </p>
-              <div class="float-right">
-                <MoreButton :searchEntry="props.searchEntry" class="w-1/12" />
+              <div class="float-right w-2/12 flex items-start justify-end h-full">
+                <MoreButton :searchEntry="props.searchEntry" />
               </div>
             </div>
             <div class="flex w-full justify-center">
