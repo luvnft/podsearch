@@ -2,8 +2,8 @@
   <div class="flex h-full flex-col items-center">
     <!-- Show off iFrame -->
     <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="text-white absolute z-10 flex w-full flex-row items-center justify-start p-[11px] md:rounded-lg">
-        <div class="channelIcon flex aspect-video h-12 w-12 items-center justify-center rounded-full before:h-12 before:w-12">
+      <div class="nightwind-prevent text-white via-black from-black absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] md:rounded-lg">
+        <div class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
           <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" loading="lazy" />
         </div>
         <div class="flex min-w-0 items-center">
@@ -15,7 +15,7 @@
       <div>
         <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
       </div>
-      <button class="h-full w-full min-w-full rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg flex items-center justify-center">
+      <button class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
         <img loading="lazy" class="aspect-video h-full w-full rounded-lg border-none bg-cover bg-center pb-0 bg-blend-darken shadow-none sm:rounded-lg md:rounded-lg" style="object-fit: cover; object-position: center" :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`" alt="Image of the youtube video associated with the podcast logo" @click="toggleiFrame()" />
       </button>
     </div>
@@ -163,7 +163,7 @@ const props = defineProps({
 .channelIcon::before {
   content: "";
   position: absolute;
-  background-color: rgb(80, 80, 80);
+  background-color: rgb(9, 9, 9);
   border-radius: 100%;
   z-index: -1;
   animation: ripple 2s ease-out infinite;
@@ -171,5 +171,10 @@ const props = defineProps({
 
 .channelIcon {
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3), 0 0px 1px rgba(0, 0, 0, 0.4);
+}
+
+.bgbg {
+  background: rgb(0, 0, 0) !important;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 20%, rgba(255, 255, 255, 1) 100%) !important;
 }
 </style>
