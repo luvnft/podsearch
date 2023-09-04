@@ -23,8 +23,8 @@
               </div>
             </div>
             <div class="flex w-full justify-center">
-              <div class="mb-1.5 mt-1 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 line-clamp-5 h-28 w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+              <div class="mb-0 pb-1 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 h-full w-full overflow-hidden multiline-ellipsis line-clamp-4`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
           </div>
@@ -234,15 +234,8 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
   overflow: hidden !important;
   display: -webkit-box !important;
   -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: 2 !important;
+  -webkit-line-clamp: 2;
   white-space: pre-wrap !important;
 }
 
-/* <div class="overflow-hidden">
-            <p class=" text-gray-800 mb-0 px-2 pb-1 pt-0 text-start font-bold w-full multiline-ellipsis">
-              {{ props.searchEntry.episodeTitle }}
-            </p>
-            
-          </div>
-          */
 </style>
