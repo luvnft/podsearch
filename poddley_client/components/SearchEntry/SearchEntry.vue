@@ -9,12 +9,14 @@
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0.5 py-1.5">
-      <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
-        <div class="flex flex-col gap-y-0 px-0 py-0">
-          <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-center justify-center text-ellipsis rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm">
-            <p class="text-gray-800 mb-0 flex h-full items-center justify-center px-2 pb-1 pt-2 text-center font-bold">
-              {{ props.searchEntry.episodeTitle }}
-            </p>
+      <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
+        <div class="flex flex-col items-start justify-center gap-y-0 px-0 py-0">
+          <div class="overflow bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
+            <div class = "h-12 py-1 flex items-start">
+              <p class="multiline-ellipsis text-gray-800 mb-0 block items-center justify-center px-2 pb-1 pt-0 text-start font-bold">
+                {{ props.searchEntry.episodeTitle }}
+              </p>
+            </div>
             <div class="flex w-full justify-center">
               <div class="relative mb-1.5 mt-1 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
                 <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 line-clamp-5 h-[117px] w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
@@ -222,4 +224,20 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
   position: relative;
   box-shadow: 0 0 1px #5e5e5e, 0 0 1px #383838, 0 0 2px #141414;
 }
+
+.multiline-ellipsis {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  white-space: pre-wrap !important;
+}
+
+/* <div class="overflow-hidden">
+            <p class=" text-gray-800 mb-0 px-2 pb-1 pt-0 text-start font-bold w-full multiline-ellipsis">
+              {{ props.searchEntry.episodeTitle }}
+            </p>
+            
+          </div>
+          */
 </style>
