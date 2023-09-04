@@ -10,15 +10,18 @@
     </div>
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0.5 py-1.5">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
-        <div class="flex flex-col items-start justify-center gap-y-0 px-0 py-0">
-          <div class="overflow bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
-            <div class = "h-12 py-1 flex items-start">
-              <p class="multiline-ellipsis text-gray-800 mb-0 block items-center justify-center px-2 pb-1 pt-0 text-start font-bold">
+        <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
+          <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
+            <div class="z-50 flex h-full w-full items-start py-1">
+              <p class="multiline-ellipsis text-gray-800 mb-0 block items-center justify-center px-2 pb-1 pt-0 text-start font-bold w-11/12">
                 {{ props.searchEntry.episodeTitle }}
               </p>
+              <div class="float-right">
+                <MoreButton :searchEntry="props.searchEntry" class=" w-1/12" />
+              </div>
             </div>
             <div class="flex w-full justify-center">
-              <div class="relative mb-1.5 mt-1 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+              <div class="mb-1.5 mt-1 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
                 <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 line-clamp-5 h-[117px] w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
