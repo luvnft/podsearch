@@ -1,5 +1,5 @@
 <template>
-  <div class="dark:bg-neutral-0 row mx-0 flex h-full items-center justify-start rounded-lg p-0 shadow-none dark:border-none dark:shadow-none sm:flex-row md:gap-y-0">
+  <div class="dark:bg-neutral-0 row mx-0 flex h-full flex-col items-start justify-start rounded-lg p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-lg px-0 py-0 pb-0 leading-normal sm:px-2">
       <div class="h-full min-w-full rounded-lg border-2 shadow-lg dark:border-neutral-100">
         <div v-if="props.searchEntry.youtubeVideoLink">
@@ -8,22 +8,17 @@
         <img v-else loading="lazy" class="aspect-video h-full w-full rounded-none bg-top sm:rounded-lg" style="object-fit: cover; object-position: center" :src="props.searchEntry.imageUrl" alt="Description of Image" />
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between px-0 py-1.5 sm:px-2.5">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0.5 py-1.5">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-between">
         <div class="flex flex-col gap-y-0 px-0 py-0">
-          <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-14 w-full flex-col flex-nowrap items-center justify-center text-ellipsis rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm">
-            <p class="text-gray-800 mb-0 flex h-14 items-center justify-center py-1 pr-2 font-bold">
+          <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-center justify-center text-ellipsis rounded-lg border px-2.5 py-1.5 pr-0 shadow-sm">
+            <p class="text-gray-800 mb-0 flex h-full items-center justify-center px-2 pb-1 pt-2 text-center font-bold">
               {{ props.searchEntry.episodeTitle }}
             </p>
-          </div>
-          <div>
-            <div class="bg-neutral-100 border-neutral-300 relative mb-1.5 mt-1 flex h-[140px] max-h-36 min-h-[130px] rounded-lg border px-2 py-2.5 shadow-sm" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-              <div :class="`load|r flex-inline ${subtitlesActivated ? 'visible pr-1' : 'invisible'} pl-0 pr-0`">
-                <span></span>
-                &nbsp;
+            <div class="flex w-full justify-center">
+              <div class="relative mb-1.5 mt-1 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 line-clamp-5 h-[117px] w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
-
-              <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 line-clamp-5 h-[117px] w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
             </div>
           </div>
 
