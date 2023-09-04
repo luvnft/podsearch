@@ -34,6 +34,8 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Nunito: true,
+      Lato: true,
+      Inter: true,
     },
     download: true,
     base64: true,
