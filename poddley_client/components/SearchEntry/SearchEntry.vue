@@ -10,10 +10,10 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0.5 py-1.5">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0.5 py-1">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
         <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
-          <div class="bg-neutral-100 border-neutral-300 mb-1 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
+          <div class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
             <div class="z-50 flex h-full w-full items-start py-1">
               <p class="multiline-ellipsis text-gray-800 mb-0 block w-10/12 items-center justify-center px-2 pb-1 pt-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
