@@ -496,6 +496,9 @@ Has to be a live version auto
 - [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [ ] ~~Flytt subsene inn i den modda spilleren~~ (no subs)
 - [ ] ~~Grab transcriptionsne til anthony for lex for å spare tid~~ (no, he doesnt have the necessary info
+- [ ] ~~Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing~~
+- [x] ~~Convert play-button too say Play podcast~~
+- [ ] ~~Bytt audioPlayer til howler.js til designet som er ønsket~~
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -594,13 +597,9 @@ Has to be a live version auto
 - [x] Refaktorerer transcriberen
 - [x] Fiks desktop searchbar
 - [x] Microphone-functionality on phones will redirect to app to stimulate users + better audio-quality which is needed for the transcriptions.
-
-- [ ] ~~Bytt audioPlayer til howler.js til designet som er ønsket~~
-- [ ] Start transcriberen bruk large?
 - [x] Halve the amount of text returned and the height of the textField component
-- [ ] ~~Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing~~
+- [ ] Start transcriberen bruk large?
 - [ ] Make MeiliSearch production probably.
-- [x] ~~Convert play-button too say Play podcast~~
 
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
