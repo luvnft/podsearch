@@ -55,6 +55,7 @@ onMounted(() => {
 
 function searchViaWorker() {
     searchStore.setLoadingState(true);
+    console.log("SearchQuery: ", searchQuery.value)
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
