@@ -595,13 +595,12 @@ Has to be a live version auto
 - [x] Fiks desktop searchbar
 - [x] Microphone-functionality on phones will redirect to app to stimulate users + better audio-quality which is needed for the transcriptions.
 
-- [ ] Bytt audioPlayer til howler.js til designet som er ønsket
+- [ ] ~~Bytt audioPlayer til howler.js til designet som er ønsket~~
 - [ ] Start transcriberen bruk large?
 - [x] Halve the amount of text returned and the height of the textField component
-- [ ] Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing
+- [ ] ~~Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing~~
 - [ ] Make MeiliSearch production probably.
-- [ ] The textBox-section shall show the currentChosenSearchedSegment first, but it should be able to scroll move further up/down, scrollable
-- [x] Convert play-button too say Play podcast
+- [x] ~~Convert play-button too say Play podcast~~
 
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
