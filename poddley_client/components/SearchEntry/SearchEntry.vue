@@ -33,7 +33,7 @@
               </div>
             </div>
             <div :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">
-              <audio controls :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[190deg] dark:invert-[0.85] dark:saturate-[15] dark:filter' : ''}`">Your browser does not support the audio tag.</audio>
+              <audio controls :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`">Your browser does not support the audio tag.</audio>
             </div>
           </div>
         </div>
