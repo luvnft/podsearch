@@ -14,7 +14,7 @@
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
         <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
           <div class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
-            <div class="z-50 flex h-full w-full items-start justify-between py-0">
+            <div class="z-50 flex h-[52px] w-full items-start justify-between py-0">
               <p class="multiline-ellipsis text-gray-800 mb-0 block w-9/12 items-center justify-center px-0 pb-1 pt-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
               </p>
@@ -32,8 +32,8 @@
                 <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} vertical multiline-ellipsis text-gray-800 ml-0 mr-0 line-clamp-4 h-full w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
-            <div :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">
-              <audio controls :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`">Your browser does not support the audio tag.</audio>
+            <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">
+              <audio controls preload="auto" autoplay :key="props.searchEntry.start" :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`" type="audio/mpeg" :title="props.searchEntry.episodeTitle" :src="props.searchEntry.episodeEnclosure" />
             </div>
           </div>
         </div>
@@ -45,22 +45,19 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
-import { usePlayerStore } from "../../store/playerStore";
 import { Hit, SearchResponse } from "../../types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
 import { showToast as shoeToastType } from "../../utils/toastService/useToast";
-const { isFirefox, isSafari } = useDevice();
 
 const props = defineProps<{
   searchEntry: Hit;
 }>();
-
+const { isFirefox, isSafari } = useDevice();
+const playing: Ref<boolean> = ref(false);
 const showToast = inject("showToast") as typeof shoeToastType;
 const searchStore = useSearchStore();
-const playerStore = usePlayerStore();
 const { hitCache } = storeToRefs(searchStore);
-const { playing } = storeToRefs(playerStore);
 const subtitlesActivated: Ref<boolean> = ref(false);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
