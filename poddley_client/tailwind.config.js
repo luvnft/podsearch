@@ -9,7 +9,10 @@ module.exports = {
     nightwind: ["group-hover", "focus"],
   },
   important: true,
-  plugins: [require("nightwind"), require("tailwind-animatecss")],
+  plugins: [
+    require("nightwind"),
+    require("tailwind-animatecss"),
+  ],
   prefix: "",
   darkMode: "class",
   theme: {

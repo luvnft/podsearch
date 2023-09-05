@@ -1,9 +1,5 @@
 <template>
-  <div class="bg-white border-gray-200 fixed bottom-0 left-0 z-50 grid h-24 w-full grid-cols-1 border-t px-8 md:grid-cols-3">
-    <div class="text-gray-500 mr-auto hidden items-center justify-center md:flex">
-      <img class="mr-3 h-8 rounded" src="" alt="Video preview" />
-      <span class="text-sm">Flowbite Crash Course</span>
-    </div>
+  <div class="bg-white border-gray-200 fixed bottom-0 left-0 z-50  h-24 w-full border-t px-10 flex justify-around">
     <div class="flex w-full items-center">
       <div class="w-full">
         <div class="mx-auto mb-1 flex items-center justify-center">
@@ -100,15 +96,6 @@
       </div>
     </div>
     <div class="ml-auto hidden items-center justify-center md:flex">
-      <button data-tooltip-target="tooltip-playlist" type="button" class="group mr-1 rounded-full p-2.5 hover:bg-gray-100 focus:ring-gray-200 focus:outline-none focus:ring-4">
-        <svg class="text-gray-500 h-4 w-4 group-hover:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 16">
-          <path
-            d="M14.316.051A1 1 0 0 0 13 1v8.473A4.49 4.49 0 0 0 11 9c-2.206 0-4 1.525-4 3.4s1.794 3.4 4 3.4 4-1.526 4-3.4a2.945 2.945 0 0 0-.067-.566c.041-.107.064-.22.067-.334V2.763A2.974 2.974 0 0 1 16 5a1 1 0 0 0 2 0C18 1.322 14.467.1 14.316.051ZM10 3H1a1 1 0 0 1 0-2h9a1 1 0 1 1 0 2Z"
-          />
-          <path d="M10 7H1a1 1 0 0 1 0-2h9a1 1 0 1 1 0 2Zm-5 4H1a1 1 0 0 1 0-2h4a1 1 0 1 1 0 2Z" />
-        </svg>
-        <span class="sr-only">View playlist</span>
-      </button>
       <div
         id="tooltip-playlist"
         role="tooltip"
@@ -117,30 +104,6 @@
         View playlist
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
-      <button data-tooltip-target="tooltip-captions" type="button" class="group mr-1 rounded-full p-2.5 hover:bg-gray-100 focus:ring-gray-200 focus:outline-none focus:ring-4">
-        <svg class="text-gray-500 h-4 w-4 group-hover:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
-          <path
-            d="M18 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2ZM7.648 9.636c.25 0 .498-.064.717-.186a1 1 0 1 1 .979 1.745 3.475 3.475 0 1 1 .185-5.955 1 1 0 1 1-1.082 1.681 1.475 1.475 0 1 0-.799 2.715Zm6.186 0c.252 0 .5-.063.72-.187a1 1 0 1 1 .974 1.746 3.475 3.475 0 1 1 .188-5.955 1 1 0 0 1-1.084 1.681 1.475 1.475 0 1 0-.8 2.715h.002Z"
-          />
-        </svg>
-        <span class="sr-only">Captions</span>
-      </button>
-      <div
-        id="tooltip-captions"
-        role="tooltip"
-        class="tooltip text-white bg-gray-700 invisible absolute z-10 inline-block rounded-lg px-3 py-2 text-sm font-medium opacity-0 shadow-sm transition-opacity duration-300"
-      >
-        Toggle captions
-        <div class="tooltip-arrow" data-popper-arrow></div>
-      </div>
-      <button data-tooltip-target="tooltip-expand" type="button" class="group mr-1 rounded-full p-2.5 hover:bg-gray-100 focus:ring-gray-200 focus:outline-none focus:ring-4">
-        <svg class="text-gray-500 h-4 w-4 group-hover:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-          <path
-            d="M18 .989a1.016 1.016 0 0 0-.056-.277c-.011-.034-.009-.073-.023-.1a.786.786 0 0 0-.066-.1.979.979 0 0 0-.156-.224l-.007-.01a.873.873 0 0 0-.116-.073.985.985 0 0 0-.2-.128.959.959 0 0 0-.231-.047A.925.925 0 0 0 17 0h-4a1 1 0 1 0 0 2h1.664l-3.388 3.552a1 1 0 0 0 1.448 1.381L16 3.5V5a1 1 0 0 0 2 0V.989ZM17 12a1 1 0 0 0-1 1v1.586l-3.293-3.293a1 1 0 0 0-1.414 1.414L14.586 16H13a1 1 0 0 0 0 2h4a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1ZM3.414 2H5a1 1 0 0 0 0-2H1a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V3.414l3.536 3.535A1 1 0 0 0 6.95 5.535L3.414 2Zm2.139 9.276L2 14.665V13a1 1 0 1 0-2 0v4c.006.046.015.09.027.135.006.08.022.16.048.235a.954.954 0 0 0 .128.2.95.95 0 0 0 .073.117l.01.007A.983.983 0 0 0 1 18h4a1 1 0 0 0 0-2H3.5l3.436-3.276a1 1 0 0 0-1.38-1.448h-.003Z"
-          />
-        </svg>
-        <span class="sr-only">Expand</span>
-      </button>
       <div
         id="tooltip-expand"
         role="tooltip"
@@ -149,22 +112,7 @@
         Full screen
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
-      <button data-tooltip-target="tooltip-volume" type="button" class="group rounded-full p-2.5 hover:bg-gray-100 focus:ring-gray-200 focus:outline-none focus:ring-4">
-        <svg class="text-gray-500 h-4 w-4 group-hover:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-          <path
-            d="M10.836.357a1.978 1.978 0 0 0-2.138.3L3.63 5H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1.63l5.07 4.344a1.985 1.985 0 0 0 2.142.299A1.98 1.98 0 0 0 12 15.826V2.174A1.98 1.98 0 0 0 10.836.357Zm2.728 4.695a1.001 1.001 0 0 0-.29 1.385 4.887 4.887 0 0 1 0 5.126 1 1 0 0 0 1.674 1.095A6.645 6.645 0 0 0 16 9a6.65 6.65 0 0 0-1.052-3.658 1 1 0 0 0-1.384-.29Zm4.441-2.904a1 1 0 0 0-1.664 1.11A10.429 10.429 0 0 1 18 9a10.465 10.465 0 0 1-1.614 5.675 1 1 0 1 0 1.674 1.095A12.325 12.325 0 0 0 20 9a12.457 12.457 0 0 0-1.995-6.852Z"
-          />
-        </svg>
-        <span class="sr-only">Adjust volume</span>
-      </button>
-      <div
-        id="tooltip-volume"
-        role="tooltip"
-        class="tooltip text-white bg-gray-700 invisible absolute z-10 inline-block rounded-lg px-3 py-2 text-sm font-medium opacity-0 shadow-sm transition-opacity duration-300"
-      >
-        Adjust volume
-        <div class="tooltip-arrow" data-popper-arrow></div>
-      </div>
+      
     </div>
   </div>
 </template>
