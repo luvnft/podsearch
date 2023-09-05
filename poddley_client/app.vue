@@ -6,7 +6,6 @@
     <NuxtLayout>
       <NuxtLoadingIndicator />
       <NuxtPage />
-      <!-- <AudioPlayer /> -->
     </NuxtLayout>
   </div>
 </template>

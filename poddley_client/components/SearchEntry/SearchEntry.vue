@@ -1,11 +1,11 @@
 <template>
   <div class="dark:bg-neutral-0 row mx-0 flex h-full flex-col items-start justify-start rounded-lg p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-lg px-0 py-0 pb-0 leading-normal sm:px-2">
-      <div class="h-full min-w-full rounded-lg border-1 shadow-lg dark:border-neutral-100">
+      <div class="border-1 h-full min-w-full rounded-lg shadow-lg dark:border-neutral-100">
         <div v-if="props.searchEntry.youtubeVideoLink">
           <LiteYoutubeEmbed :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)" :startTime="computedStartTime" width="100%" height="auto" :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true" :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault" :searchEntry="props.searchEntry" />
         </div>
-        <div v-else class="aspect-video bg-cover bg-top bg-no-repeat" :style="`background: url(${props.searchEntry.imageUrl});`">
+        <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat" :style="`background: url(${props.searchEntry.imageUrl});`">
           <img loading="lazy" class="h-full w-full rounded-none bg-top object-contain backdrop-blur sm:rounded-lg" :src="props.searchEntry.imageUrl" alt="Description of Image" />
         </div>
       </div>
@@ -14,23 +14,27 @@
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
         <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
           <div class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
-            <div class="z-50 flex h-full w-full items-start py-1">
-              <p class="multiline-ellipsis text-gray-800 mb-0 block w-10/12 items-center justify-center px-2 pb-1 pt-0 text-start font-bold tracking-tighter">
+            <div class="z-50 flex h-full w-full items-start justify-between py-0">
+              <p class="multiline-ellipsis text-gray-800 mb-0 block w-9/12 items-center justify-center px-0 pb-1 pt-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
               </p>
-              <div class="float-right flex h-full w-2/12 items-start justify-end">
-                <MoreButton :searchEntry="props.searchEntry" />
+              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-1.5 pl-0 pr-0">
+                <div class="flex w-9 items-center justify-end">
+                  <MoreButton class="absolute w-9 translate-y-1/2" :searchEntry="props.searchEntry" />
+                </div>
+                <div class="flex w-9 items-center justify-end">
+                  <PlayButton class="w-9" :searchEntry="props.searchEntry" @click="handlePlaying" />
+                </div>
               </div>
             </div>
             <div class="flex w-full justify-center">
-              <div class="mb-0 pb-1 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-2 py-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated && playing ? 'animate__animated animate__flipInX animate__faster' : ''} vertical text-gray-800 ml-0 mr-0 h-full w-full overflow-hidden multiline-ellipsis line-clamp-4`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+              <div class="mb-0 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-0 py-0 pb-1 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} vertical multiline-ellipsis text-gray-800 ml-0 mr-0 line-clamp-4 h-full w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
-          </div>
-
-          <div v-if="moreTextModalOpen">
-            <MoreTextCard :close-dialog="openMoreTextModal" :podcast-test="hitCache[props.searchEntry.episodeGuid].hits.map((hit: any) => hit.text).join('') || []" :podcast-name="props.searchEntry.episodeTitle" />
+            <div :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">
+              <audio controls :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[190deg] dark:invert-[0.85] dark:saturate-[15] dark:filter' : ''}`">Your browser does not support the audio tag.</audio>
+            </div>
           </div>
         </div>
       </div>
@@ -39,23 +43,25 @@
 </template>
 
 <script lang="ts" setup>
-import { Utils } from "composables/useUtils";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
+import { usePlayerStore } from "../../store/playerStore";
 import { Hit, SearchResponse } from "../../types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
 import { showToast as shoeToastType } from "../../utils/toastService/useToast";
-
-const showToast = inject("showToast") as typeof shoeToastType;
-const searchStore = useSearchStore();
-const { hitCache } = storeToRefs(searchStore);
+const { isFirefox, isSafari } = useDevice();
 
 const props = defineProps<{
   searchEntry: Hit;
 }>();
+
+const showToast = inject("showToast") as typeof shoeToastType;
+const searchStore = useSearchStore();
+const playerStore = usePlayerStore();
+const { hitCache } = storeToRefs(searchStore);
+const { playing } = storeToRefs(playerStore);
 const subtitlesActivated: Ref<boolean> = ref(false);
-const utils: Utils = useUtils();
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
 hitCache.value[props.searchEntry.episodeGuid] = {
@@ -64,10 +70,8 @@ hitCache.value[props.searchEntry.episodeGuid] = {
   numberOfPages: undefined,
 };
 
-const playing: Ref<boolean> = ref(false);
-const handlePlaying = (playingState: boolean) => {
-  playing.value = playingState;
-  console.log("PlayingState: ", playingState, " and playing is: ", playing);
+const handlePlaying = () => {
+  playing.value = !playing.value;
 };
 
 const toggleSubtitles = () => {
@@ -238,4 +242,11 @@ const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
   white-space: pre-wrap !important;
 }
 
+@media (prefers-color-scheme: dark) {
+  /* audio {
+    filter: hue-rotate(180deg) saturate(20) invert(0.85);
+    @apply bg-[#f6feff];
+    @apply border-gray-100;
+  } */
+}
 </style>
