@@ -496,6 +496,10 @@ Has to be a live version auto
 - [ ] ~~Sett default til å alltid være darkMode~~ (Nah use system)
 - [ ] ~~Flytt subsene inn i den modda spilleren~~ (no subs)
 - [ ] ~~Grab transcriptionsne til anthony for lex for å spare tid~~ (no, he doesnt have the necessary info
+- [ ] ~~Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing~~
+- [x] ~~Convert play-button too say Play podcast~~
+- [ ] ~~Bytt audioPlayer til howler.js til designet som er ønsket~~
+- [ ] ~~When someone clicks on the button, it should set the global playing value to true and it should set the link of the audioLink that is being played. If the audioPlayer has that enclosure it should continue playing, if not it shant. The audioPlayer should also show up if the it has a chosen audio-file. If not, it shant be shown.~~
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -594,13 +598,17 @@ Has to be a live version auto
 - [x] Refaktorerer transcriberen
 - [x] Fiks desktop searchbar
 - [x] Microphone-functionality on phones will redirect to app to stimulate users + better audio-quality which is needed for the transcriptions.
-
-- [ ] ~~Bytt audioPlayer til howler.js til designet som er ønsket~~
-- [ ] Start transcriberen bruk large?
 - [x] Halve the amount of text returned and the height of the textField component
-- [ ] ~~Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing~~
+- [x] Use the native audio player as far as you can embeeded into each entry if someone clicks on the playing button.
+- [x] Style all of them accordingly, for chrome a certain way, for firefox a certain way and for opera another way.
+- [ ] Start transcriberen bruk large
 - [ ] Make MeiliSearch production probably.
-- [x] ~~Convert play-button too say Play podcast~~
+- [ ] When you've done those 2 things, I think youre more of less done and then I think you need to start the transcriber and see how long it's gonna take to retranscribe it all with the large modelthen you gotta write a script that takes karpovs transcriptions and get those, and then youre done
+- [ ] Button to get entire transcript, named with time, this is good as it motivates users to come here, also it cant be scraped because we dont have a paged api
+- [ ] Are the about page and contact page good looking, different font?
+- [ ] Android / Apple app button where the microphone is, like a "pod-it" symbol.
+- [ ] Make design for android and apple🥵
+- [ ] Start up all pm2-services.
 
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
