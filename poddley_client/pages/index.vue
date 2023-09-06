@@ -11,15 +11,11 @@
 import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
-import { RouteLocationNormalizedLoaded, Router } from ".nuxt/vue-router";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
-import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
 
 //Vars
 let worker: Worker;
-const route: RouteLocationNormalizedLoaded = useRoute();
-const routePath: Ref<string> = ref(route.fullPath);
 const requestUrl: URL = useRequestURL();
 const searchStore = useSearchStore();
 const { searchQuery } = storeToRefs(searchStore);

@@ -1,6 +1,6 @@
 <template>
   <div class="border-gray-400 group bg-gray-100 relative mb-1 mt-0 flex h-12 w-full flex-grow items-center rounded-lg border-[3px] bg-transparent outline-none ring-0 sm:hidden" v-if="props.openSearchSection">
-    <input type="text" name="search" id="search" placeholder="Search for a quote in a podcast here" class="text-gray-900 bg-gray-100 focus:ring-0 rounded-lg outline-gray-400 focus:border-none block w-full p-2.5 pl-10 text-center text-base focus:border-gray-500 focus:ring-gray-500" autofocus @input="navigateWithQuery" />
+    <input type="text" name="search" id="search" placeholder="Search for a quote in a podcast here" class="text-gray-900 bg-gray-100 focus:ring-0 rounded-lg outline-gray-20 focus:border-none block w-full p-2.5 pl-10 text-center text-base focus:border-gray-500 focus:ring-gray-500" autofocus @input="navigateWithQuery" />
 
     <button v-if="searchQuery.searchString" @click="cleanSearchString" class="hover:bg-gray-transparent text-gray-400 mr-0 flex aspect-square h-full items-center justify-center rounded-md border-none p-2 outline-none ring-0 hover:text-gray-500 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset">
       <XMarkIcon class="block h-full w-full scale-90 fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
@@ -54,7 +54,7 @@ watch(searchQuery, () => {
 //Navigate function
 const navigateWithQuery = (event?: any) => {
   const searchQ: SearchQuery = {
-    searchString: searchQuery.value.searchString,
+    searchString: event.target.value,
   };
   searchQuery.value = searchQ;
   router.push({
