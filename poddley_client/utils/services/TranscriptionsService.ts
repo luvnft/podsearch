@@ -1,4 +1,4 @@
-import { SearchResponse } from "~~/types/SearchResponse";
+import { SearchResponse } from "../../types/SearchResponse";
 import ApiService from "./ApiService";
 import { SearchQuery } from "types/SearchQuery";
 
