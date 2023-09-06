@@ -26,7 +26,7 @@
         <!-- <ButtonsDonateButton aria-hidden="true" /> -->
 
         <!-- Cart -->
-        <DarkMode aria-hidden="true" />
+        <ButtonsDarkModeButton aria-hidden="true" />
       </div>
     </div>
   </div>

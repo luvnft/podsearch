@@ -8,7 +8,7 @@
                             <div class="flex items-center justify-between p-0 py-1 sm:hidden">
                                 <div class="flex flex-row items-center justify-center gap-x-4">
                                     <BurgerMenu class="col-2 flex items-center justify-center" />
-                                    <DarkMode class="col-2 flex items-center justify-center" />
+                                    <ButtonsDarkModeButton class="col-2 flex items-center justify-center" />
                                 </div>
                                 <NavTitle class="col-4 flex items-center justify-center" />
                                 <div class="flex flex-row items-center justify-center gap-x-4">
