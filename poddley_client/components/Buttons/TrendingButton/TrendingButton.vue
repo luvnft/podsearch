@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     type="button"
-    :class="`items-center font-medium group flex items-center justify-center rounded-md border border-gray-200  ${
+    :class="`items-center font-medium group flex justify-center rounded-md border border-gray-200  ${
       $route.name !== route ? 'bg-gray-50' : 'border-gray-400 bg-gray-100'
     } fill-gray-400 p-2 text-gray-400 no-underline shadow hover:bg-gray-100 active:shadow-sm`"
     :to="route"

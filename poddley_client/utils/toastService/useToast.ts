@@ -40,4 +40,5 @@ function useToastProvider() {
   provide("showToast", showToast);
 }
 
-export { useToastProvider, toasts, showToast, Toast };
+export { useToastProvider, toasts, showToast };
+export type { Toast };

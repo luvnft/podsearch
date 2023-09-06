@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
-import { Hit } from "../../types/SearchResponse";
+import { Hit } from "../../../types/SearchResponse";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 const utils: Utils = useUtils();

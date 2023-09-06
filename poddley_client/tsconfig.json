@@ -6,7 +6,7 @@
     "strictNullChecks": true,
     "alwaysStrict": true,
     "strict": true,
-    "target": "es6",
+    "target": "es2017",
     "module": "ESNext",
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
