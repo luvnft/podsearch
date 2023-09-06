@@ -23,13 +23,13 @@
                   <MoreButton class="absolute w-9 translate-y-1/2" :searchEntry="props.searchEntry" />
                 </div>
                 <div class="flex w-9 items-center justify-end">
-                  <PlayButton class="w-9" :searchEntry="props.searchEntry" @click="handlePlaying" />
+                  <PlayButton class="w-9" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
                 </div>
               </div>
             </div>
             <div class="flex w-full justify-center">
               <div class="mb-0 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-0 py-0 pb-1 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} vertical multiline-ellipsis text-gray-800 ml-0 mr-0 line-clamp-4 h-full w-full overflow-hidden`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-24 w-full overflow-scroll`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
             <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">
