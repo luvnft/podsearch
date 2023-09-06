@@ -29,7 +29,7 @@
             </div>
             <div class="flex w-full justify-center">
               <div class="mb-0 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-0 py-0 pb-1 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-24 w-full overflow-scroll`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-24 w-full overflow-y-auto overflow-x-hidden `" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
             <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">

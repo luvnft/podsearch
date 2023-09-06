@@ -17,3 +17,11 @@ hr {
     @apply bg-white;
   }
 }
+
+* {
+  @apply scrollbar;
+  @apply scrollbar-thumb-gray-600 !important;
+  @apply scrollbar-track-gray-300 !important;
+  @apply scrollbar-thumb-rounded !important;
+  @apply scrollbar-w-0.5 !important;
+}
