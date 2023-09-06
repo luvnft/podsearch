@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper flex-column flex pb-24">
     <!-- <Notification /> -->
-    <Notification v-for="toast in toasts" :key="toast.id" :toast="toast" />
+    <!-- <Notification v-for="toast in toasts" :key="toast.id" :toast="toast" /> -->
     <!-- Rest -->
     <NuxtLayout>
       <NuxtLoadingIndicator />
@@ -12,10 +12,10 @@
 
 <script setup lang="ts">
 // Imports
-import { useToastProvider, toasts } from "./utils/toastService/useToast";
+// import { useToastProvider, toasts } from "./utils/toastService/useToast";
 
 // Toast functionality global enable it
-useToastProvider();
+// useToastProvider();
 
 // Key-binding
 onMounted(() => {

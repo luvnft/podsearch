@@ -34,6 +34,12 @@
               <svg-icon name="link" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
+          <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
+            <a :href="props.searchEntry.episodeLinkToEpisode" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
+              Load entire transcript
+              <svg-icon name="transcript" class="-mr-0.5 h-5 w-5 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+            </a>
+          </HeadlessMenuItem>
         </div>
       </HeadlessMenuItems>
     </transition>

@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0.5 py-1">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0 py-1">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
         <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
           <div class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
@@ -18,15 +18,12 @@
               <p class="multiline-ellipsis text-gray-800 mb-0 block w-9/12 items-center justify-center px-0 pb-1 pt-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
               </p>
-              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-0.5 pl-0 pr-0">
+              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-1 pl-0 pr-0">
                 <div class="flex w-9 items-center justify-end">
-                  <ButtonsSubtitlesButton class="w-9" :searchEntry="props.searchEntry" :activated="false" />
+                  <ButtonsPlayButton class="w-9" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
                 </div>
                 <div class="flex w-9 items-center justify-end">
                   <ButtonsMoreButton class="absolute w-9 translate-y-1/2" :searchEntry="props.searchEntry" />
-                </div>
-                <div class="flex w-9 items-center justify-end">
-                  <ButtonsPlayButton class="w-9" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
                 </div>
               </div>
             </div>
@@ -46,41 +43,21 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { useSearchStore } from "../../store/searchStore";
 import { Hit, SearchResponse } from "../../types/SearchResponse";
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { SearchQuery } from "types/SearchQuery";
-import { showToast as shoeToastType } from "../../utils/toastService/useToast";
 
 const props = defineProps<{
   searchEntry: Hit;
 }>();
 const { isFirefox, isSafari } = useDevice();
 const playing: Ref<boolean> = ref(false);
-const showToast = inject("showToast") as typeof shoeToastType;
-const searchStore = useSearchStore();
-const { hitCache } = storeToRefs(searchStore);
 const subtitlesActivated: Ref<boolean> = ref(false);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const currentPlayingSegment: Ref<Hit> = ref(props.searchEntry);
-hitCache.value[props.searchEntry.episodeGuid] = {
-  hits: [props.searchEntry],
-  lastFetchedPage: undefined,
-  numberOfPages: undefined,
-};
 
 const handlePlaying = () => {
   playing.value = !playing.value;
-};
-
-const toggleSubtitles = () => {
-  if (subtitlesActivated.value) {
-    showToast("Subtitles enabled", "success", 1500, 500);
-  } else {
-    showToast("Subtitles disabled", "error", 1500, 500);
-  }
-  subtitlesActivated.value = !subtitlesActivated.value;
 };
 
 const computedStartTime = computed(() => {
@@ -91,87 +68,9 @@ const computedStartTime = computed(() => {
 });
 
 async function search(searchQuery: SearchQuery) {
-  console.log("====> Sending API request!");
   const searchResponse: SearchResponse = await transcriptionService.search(searchQuery);
   return searchResponse;
 }
-
-const removeDuplicateHits = (hits: Hit[]) => {
-  const hitsIds: Set<string> = new Set();
-  const uniqueHits: Hit[] = [];
-  for (let i = 0; i < hits.length; i++) {
-    const hit: Hit = hits[i];
-
-    if (hitsIds.has(hit.id)) continue;
-
-    // If new
-    hitsIds.add(hit.id);
-
-    // add unique hit
-    uniqueHits.push(hit);
-  }
-
-  // return
-  return uniqueHits;
-};
-
-const moreTextModalOpen = ref(false);
-
-const openMoreTextModal = () => {
-  moreTextModalOpen.value = !moreTextModalOpen.value;
-  handleTimeUpdate(parseFloat(currentPlayingSegment.value.start.toString()) || parseFloat(props.searchEntry.start.toString()));
-};
-
-const handleTimeUpdate = async (currentTime: number) => {
-  currentTime = currentTime - 0.1;
-  if (subtitlesActivated.value === false && moreTextModalOpen.value === false) return;
-  else {
-    let episodeGuid = props.searchEntry.episodeGuid;
-    // The reason for doing currentTime - 2 when it kinda should just be (currentTime) is purely because MeiliSearch is kinds shait at comparing decimals, probably a bug trollolo
-    const constructedFilter: string = `belongsToEpisodeGuid='${episodeGuid}' AND (start >= ${currentTime - 2} AND start <= ${currentTime + 300})`;
-    // First We gotta check if we have the currentTime hit in the episodeGuid hit array?
-    let foundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end) || null;
-    // If we do, we just set
-    if (foundHit) {
-      console.log("CurrentTime: ", currentTime, "Found hit, setting currentPlatingSegment to the foundHit");
-      console.log("HitCache: ", hitCache);
-      console.log("Setting foundHit: ", foundHit);
-      currentPlayingSegment.value = foundHit;
-    } else {
-      const hitCacheHitsLength: number = hitCache.value[episodeGuid].hits.length - 1;
-      const lastElement: Hit = hitCache.value[episodeGuid].hits[hitCacheHitsLength];
-      // if (currentTime <= lastElement.end) {
-      //   console.log("Didn't find hitCache, but the currentTime is part of the sorted hitCache array, so we dont sent API request again.", hitCache);
-      //   // Terminate early.
-      //   currentPlayingSegment.value = currentPlayingSegment.value;
-      // } else {
-      const res: SearchResponse = await debouncedSegmentSearcher({ filter: constructedFilter, sort: ["start:asc"] });
-      if (res?.hits?.length > 0) {
-        // Update hitCache with new hits
-        hitCache.value[episodeGuid].hits.push(...res.hits);
-        hitCache.value[episodeGuid].hits = removeDuplicateHits(hitCache.value[episodeGuid].hits);
-
-        const newlyAddedFoundHit = hitCache.value[episodeGuid].hits.find((hit: Hit) => currentTime >= hit.start && currentTime <= hit.end);
-        currentPlayingSegment.value = newlyAddedFoundHit ? newlyAddedFoundHit : currentPlayingSegment.value;
-        // }
-      } else {
-        console.log("Mamma mia!");
-      }
-    }
-  }
-};
-
-const debouncedSegmentSearcher = _Debounce(search, 300, {
-  leading: true,
-  trailing: true,
-  maxWait: 300,
-});
-
-const handleTimeUpdateDebounced = _Debounce(handleTimeUpdate, 300, {
-  leading: true,
-  trailing: true,
-  maxWait: 300,
-});
 </script>
 
 <style scoped>
