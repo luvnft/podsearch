@@ -1,5 +1,5 @@
 <template>
-  <GenericButton @click="toggleColorMode" class="aspect-square h-12 w-12">
+  <ButtonsGenericButton @click="toggleColorMode" class="aspect-square h-12 w-12">
     <div class="flex aspect-square h-12 w-12 items-center justify-center">
       <div class="sun flex aspect-square h-full w-12 items-center justify-center">
         <svg-icon name="sun" class="sun block h-full scale-[0.5] fill-gray-500 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
@@ -8,7 +8,7 @@
         <svg-icon name="moon" class="moon block h-full scale-[0.5] fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
       </div>
     </div>
-  </GenericButton>
+  </ButtonsGenericButton>
 </template>
 <script setup lang="ts">
 const colorMode = useColorMode();

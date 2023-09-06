@@ -1,5 +1,5 @@
 <template>
-  <GenericButton @click="startRecording">
+  <ButtonsGenericButton @click="startRecording">
     <div class="inset-y-0 left-0 flex h-full w-full items-center">
       <div class="flex h-full w-full flex-row items-center justify-center">
         <div class="h-full w-full" v-if="!loading">
@@ -17,7 +17,7 @@
     <div>
       <audio v-for="recording in recordings" :src="recording.blobUrl" :type="recording.mimeType" controls="true" autoplay />
     </div>
-  </GenericButton>
+  </ButtonsGenericButton>
 </template>
 
 <script setup lang="ts">
