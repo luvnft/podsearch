@@ -33,9 +33,8 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "@nuxt/image", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt"],
   googleFonts: {
     families: {
-      Nunito: true,
       Lato: true,
-      Inter: true,
+      Quicksand: true,
     },
     download: true,
     base64: true,
