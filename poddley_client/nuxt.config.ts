@@ -89,13 +89,13 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "en",
       },
-      title: "Poddley - Search podcasts like books",
+      title: "Poddley - Podcast Discovery, Transcriptions & Text-based Episode Search",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
-          content: "Search podcast transcriptions like text. It would functionalliy be like shazam, but for podcast transcriptions I suppose.",
+          content: "Search and identify podcasts playing around you. Dive deep into the episodes you love. Use Poddley to search for shows, read transcriptions, and explore a comprehensive corpus of transcribed podcasts, bringing every spoken word to your fingertips.",
         },
         { name: "msapplication-TileColor", content: "#2d89ef" },
         { name: "theme-color", content: "#ffffff" },
