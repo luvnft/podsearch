@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { SearchQuery } from "types/SearchQuery";
+import { SearchQuery } from "../../types/SearchQuery";
 
 export default class TranscriptionsServiceSearch {
   protected BASE_URL: string;
@@ -11,7 +11,7 @@ export default class TranscriptionsServiceSearch {
   protected getBaseUrl(): string {
     return this.BASE_URL;
   }
- 
+
   protected async fetchPost<T>(url: string, searchQuery: SearchQuery): Promise<T> {
     const response: AxiosResponse = await axios({
       url: this.getBaseUrl() + url,
