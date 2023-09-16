@@ -13,31 +13,31 @@
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center no-underline">
             <a :href="props.searchEntry.link" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Podcast homepage
-              <svg-icon name="podcast" class="-mr-0.5 h-5 w-5 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+              <svg-icon name="podcastduotone" class="mr-[3px] h-[18px] w-[18px] p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <a :href="props.searchEntry.url" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Podcast RSS-feed
-              <svg-icon name="rss" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+              <svg-icon name="rss" class="mr-[3px] h-[18px] w-[18px] p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <button :href="props.searchEntry.id" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']" @click="copySegmentLink">
               Copy link to segment
-              <svg-icon name="copylink" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+              <svg-icon name="copylink" class="mr-[3px] h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </button>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <a :href="props.searchEntry.episodeLinkToEpisode" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Go to episode
-              <svg-icon name="link" class="h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+              <svg-icon name="link" class="mr-[3px] h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <a :href="props.searchEntry.episodeLinkToEpisode" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Load entire transcript
-              <svg-icon name="transcript" class="-mr-0.5 h-5 w-5 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+              <svg-icon name="transcript" class="mr-[3px] h-[18px] w-[18px] p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
         </div>
