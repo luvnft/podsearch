@@ -3,7 +3,7 @@
     <SearchBoxSectionCategoryDropDown />
     <input type="text" name="search" id="search" placeholder="Search poddley" :class="`text-gray-900 bg-gray-100 block h-12 w-full rounded-none ${searchQuery.searchString ? '' : 'rounded-r-[0.34rem]'} p-0 text-center text-base focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset`" autofocus @input="handleSearch" :value="searchQuery.searchString" />
 
-    <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString" class="rounded-l-none border-l rounded-r-[0.31rem]">
+    <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString" class="rounded-l-none border-l border-gray-300 rounded-r-[0.31rem]">
       <XMarkIcon class="block h-full w-full scale-[0.6] fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
     </ButtonsGenericButton>
   </div>
@@ -27,7 +27,7 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 import { Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
-import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { SearchQuery } from "#build/types/SearchQuery";
  
 const props = defineProps<{
