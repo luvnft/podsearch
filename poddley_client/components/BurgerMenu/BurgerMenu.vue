@@ -25,7 +25,7 @@
           <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
             <NuxtLink exact to="/about" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
               About
-              <svg-icon name="circleinfo" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
+              <svg-icon name="info" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">

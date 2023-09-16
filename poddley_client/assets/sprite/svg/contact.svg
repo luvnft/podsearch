@@ -1,3 +1,13 @@
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
-  </svg>
+<svg aria-hidden="true" focusable="false" data-prefix="fa-duotone" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <style>
+      .fa-secondary {
+        opacity: 0.4;
+      }
+    </style>
+  </defs>
+  <g class="fa-group">
+    <path class="fa-primary" d="M16.29 145.3l212.2 165.1c16.19 12.6 38.87 12.6 55.06 0l212.2-165.1C505.1 137.3 512 125 512 112C512 85.49 490.5 64 464 64h-416C21.49 64 0 85.49 0 112C0 125 6.01 137.3 16.29 145.3z" fill="currentColor" />
+    <path class="fa-secondary" d="M511.1 120H512v280c0 26.51-21.49 48-48 48h-416C21.49 448 0 426.5 0 400V120h.9199c1.926 9.936 7.236 18.98 15.37 25.3l212.2 165.1c16.19 12.6 38.87 12.6 55.06 0l212.2-165.1C503.8 138.1 509.2 129.9 511.1 120z" fill="currentColor" />
+  </g>
+</svg>
