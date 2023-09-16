@@ -1,23 +1,23 @@
 <template>
-  <div class="group bg-gray-100 border-gray-400 relative mb-1 mt-0 flex h-12 w-full flex-grow items-center rounded-lg border-none bg-transparent outline-none outline-gray-500 ring-0 sm:hidden mt-1" v-if="props.openSearchSection">
-    <input type="text" name="search" id="search" placeholder="Search for a quote in a podcast here" class="text-gray-900 bg-gray-100 block w-full rounded-lg p-2.5 text-center text-base outline-none focus:border-gray-500 focus:ring-gray-500 focus:border-none focus:ring-0" autofocus @input="handleSearch" />
+  <div class="group bg-gray-100 border-gray-300 relative mb-1.5 mt-1 flex w-full flex-grow items-center rounded-md border sm:hidden" v-if="props.openSearchSection">
+    <SearchBoxSectionCategoryDropDown />
+    <input type="text" name="search" id="search" placeholder="Search " class="text-gray-900 bg-gray-100 block h-12 w-full rounded-none p-0 text-center text-base focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset" autofocus @input="handleSearch" />
 
-    <button v-if="searchQuery.searchString" @click="cleanSearchString" class="z-50 bg-gray-100 rounded-lg absolute right-0 hover:bg-gray-transparent text-gray-400 mr-0 flex aspect-square h-full items-center justify-center rounded-md border-none p-2 outline-none ring-0 hover:text-gray-500 focus:ring-gray-500 hover:border-none focus:outline-none focus:ring-2 focus:ring-inset">
-      <XMarkIcon class="block h-full w-full scale-90 fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
-    </button>
+    <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString" class="rounded-l-none">
+      <XMarkIcon class="block h-full w-full scale-[0.6] fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
+    </ButtonsGenericButton>
   </div>
   <!-- Desktop Search Bar-->
   <div class="h-15 mx-auto hidden w-full flex-col items-center justify-center gap-y-2 pt-2.5 sm:flex sm:pb-0.5 md:px-0">
     <label for="voice-search" class="sr-only">Search</label>
     <div class="relative w-full">
-      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <MagnifyingGlassIcon class="text-gray-500 h-4 w-4" />
-      </div>
-      <input autofocus @input="handleSearch" type="text" id="voice-search" class="text-gray-900 bg-gray-100 border-gray-200 block w-full rounded-lg border p-2.5 pl-10 text-center text-base focus:border-gray-500 focus:ring-gray-500" placeholder="Search for podcasts, episodes and quotes from podcasts" required />
+      <SearchBoxSectionCategoryDropDown class="absolute h-12" />
 
-      <button type="button" class="group absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-lg" v-if="searchQuery.searchString" @click="cleanSearchString">
+      <input autofocus @input="handleSearch" type="text" id="voice-search" class="text-gray-900 bg-gray-100 block w-full rounded-md p-2.5 pl-10 text-center text-base" placeholder="Search for podcasts, episodes and quotes from podcasts" required />
+
+      <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString">
         <XMarkIcon class="text-gray-500 h-4 w-4" />
-      </button>
+      </ButtonsGenericButton>
     </div>
   </div>
 </template>
