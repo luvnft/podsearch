@@ -2,7 +2,7 @@
   <div class="flex h-full flex-col items-center">
     <!-- Show off iFrame -->
     <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
-      <div class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] md:rounded-lg">
+      <div class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
         <div class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
           <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" loading="lazy" />
         </div>
@@ -26,7 +26,7 @@
         <IconsSpinnerIcon />
       </div>
 
-      <iframe :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`" :title="props.videoTitle" frameborder="0" :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`" :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null" class="aspect-video h-full w-full sm:rounded-lg" v-show="!loading" @load="iFrameLoaded()" />
+      <iframe :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`" :title="props.videoTitle" frameborder="0" :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`" :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null" class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()" />
     </div>
   </div>
 </template>
