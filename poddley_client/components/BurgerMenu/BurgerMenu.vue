@@ -23,18 +23,18 @@
             </NuxtLink>
           </HeadlessMenuItem>
           <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
-            <NuxtLink exact to="/about" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
+            <NuxtLink exact to="/about" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base hover:bg-gray-300`">
               About
               <svg-icon name="info" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
-          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
+          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline hover:bg-gray-300">
             <NuxtLink exact to="/contact" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
               Contact
               <svg-icon name="contact" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
             </NuxtLink>
           </HeadlessMenuItem>
-          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline">
+          <HeadlessMenuItem class="group flex w-full flex-row flex-nowrap items-center no-underline hover:bg-gray-300">
             <a :href="donateLink" :class="`group flex justify-between gap-x-0 px-3 py-2 text-base`">
               Donate
               <svg-icon name="donate" class="h-4 w-4 fill-gray-300 p-0 group-hover:fill-gray-700 dark:fill-gray-600 dark:group-hover:fill-gray-300" />
