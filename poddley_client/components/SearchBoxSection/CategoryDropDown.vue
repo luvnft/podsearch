@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeadlessMenu as="div" class="min-w-32 max-w-32 z-50 flex w-32 items-center justify-center text-left">
+    <HeadlessMenu as="div" class="max-w-[120px] z-50 flex w-[120px] items-center justify-center text-left">
       <HeadlessMenuButton class="text-gray-700 bg-gray-100 border-gray-300 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-l-md border-r px-2.5 py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
         <svg-icon v-if="chosenCategory === 'quote'" name="transcript" class="-mr-0.5 h-5 w-5 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
         <svg-icon v-if="chosenCategory === 'episode'" name="episode" class="-mr-0.5 h-4 w-4 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
