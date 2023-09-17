@@ -29,6 +29,11 @@ import { Utils } from "composables/useUtils";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { SearchQuery } from "#build/types/SearchQuery";
 
+const utils: Utils = useUtils();
+const router: Router = useRouter();
+const searchStore = useSearchStore();
+const { searchQuery } = storeToRefs(searchStore);
+
 const props = defineProps<{
   openSearchSection: boolean;
 }>();
@@ -72,12 +77,14 @@ const handleCategoryChange = (event: any) => {
       break;
   }
   console.log(event.target.name);
+
+  // Updating searchQuery:
+  searchQuery.value = {
+    ...searchQuery.value,
+    
+  }
 };
 
-const utils: Utils = useUtils();
-const router: Router = useRouter();
-const searchStore = useSearchStore();
-const { searchQuery } = storeToRefs(searchStore);
 
 const cleanSearchString = () => {
   searchQuery.value = {

@@ -5,4 +5,11 @@ export interface SearchQuery {
   limit?: number;
   hitsPerPage?: number;
   page?: number;
+  category?: Category;
+}
+
+export enum Category {
+  EPISODE = "episode",
+  PODCAST = "podcast",
+  QUOTE = "quote"
 }
