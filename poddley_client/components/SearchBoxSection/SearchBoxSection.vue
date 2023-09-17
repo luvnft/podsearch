@@ -8,16 +8,15 @@
     </ButtonsGenericButton>
   </div>
   <!-- Desktop Search Bar-->
-  <div class="h-15 mx-auto hidden w-full flex-col items-center justify-center gap-y-2 pt-2.5 sm:flex sm:pb-0.5 md:px-0">
-    <label for="voice-search" class="sr-only">Search</label>
-    <div class="relative w-full">
-      <SearchBoxSectionCategoryDropDown class="absolute h-12" />
+  <div class="mx-auto hidden w-full flex-col items-center justify-center gap-y-2 py-0 sm:flex md:px-0 bg-gray-100 border-gray-300 rounded-md">
+    <div class="sm:flex w-full flex-row ">
+      <SearchBoxSectionCategoryDropDown />
 
-      <input autofocus @input="handleSearch" type="text" id="voice-search" class="text-gray-900 bg-gray-100 block w-full rounded-md p-2.5 pl-10 text-center text-base" placeholder="Search for podcasts, episodes and quotes from podcasts" required />
+      <input autofocus @input="handleSearch" type="text" id="voice-search" :class="`text-gray-900 bg-gray-100 block w-full ${searchQuery.searchString ? '' : 'rounded-r-md'} p-2.5 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset text-center text-base`" placeholder="Search for podcasts, episodes and quotes from podcasts" required />
 
-      <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString">
-        <XMarkIcon class="text-gray-500 h-4 w-4" />
-      </ButtonsGenericButton>
+      <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString" class="border-gray-300 rounded-l-none rounded-r-[0.31rem] border-none">
+      <XMarkIcon class="block h-full w-full scale-[0.6] fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
+    </ButtonsGenericButton>
     </div>
   </div>
 </template>
