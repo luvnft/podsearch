@@ -1,18 +1,18 @@
 <template>
   <div>
-    <HeadlessMenu as="div" class="z-50 flex w-28 items-center justify-center text-left">
-      <HeadlessMenuButton class="text-gray-700 bg-gray-200 border-gray-300 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-l-md border-r px-2 py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
-        <div class="w-4 h-12 flex justify-center items-center">
-          <svg-icon v-if="chosenCategory === 'quote'" name="quotes" class="-mr-0.5 w-full h-12 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
-          <svg-icon v-if="chosenCategory === 'episode'" name="episode" class="-mr-0.5 w-full h-12 p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+    <HeadlessMenu as="div" class="z-50 flex w-32 items-center justify-center text-left" v-slot="{ open, close }">
+      <HeadlessMenuButton class="text-gray-700 bg-gray-200 border-gray-300 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-l-md border-r px-2.5 py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
+        <div class="flex h-12 w-[18px] items-center justify-center">
+          <svg-icon v-if="chosenCategory === 'quote'" name="quote" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+          <svg-icon v-if="chosenCategory === 'episode'" name="episode" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="chosenCategory === 'podcast'" name="podcastduotone" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
         </div>
         <div>
-          <p class="category w-[60px] flex justify-center items-center">
+          <p class="category flex w-[60px] items-center justify-center">
             {{ chosenCategory }}
           </p>
         </div>
-        <div class="w-3 flex justify-center items-center">
+        <div class="flex w-3 items-center justify-center">
           <svg class="mt-0.5 h-2.5 w-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
           </svg>
@@ -20,7 +20,7 @@
       </HeadlessMenuButton>
 
       <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-        <HeadlessMenuItems @click="close" class="bg-white ring-black absolute left-0 top-full z-10 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+        <HeadlessMenuItems @click="close" class="bg-white ring-black absolute left-0 top-full z-20 m-0 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
           <div class="bg-white w-full rounded-lg px-0 py-1">
             <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-start no-underline">
               <button name="podcast" @click="handleCategoryChange" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-start gap-x-3 px-3 py-2 text-left text-base']">
