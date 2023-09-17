@@ -2,9 +2,11 @@
   <div class="border-gray-200 h-full w-full border-b">
     <div class="flex h-full w-full items-center justify-between gap-x-0">
       <!-- Linker -->
-      <div class="col-5 m-0 flex h-full items-center md:gap-x-0 px-0 gap-x-0">
-        <GenericLink v-for="page in navigation" :link="page.href" class="text-gray-500 my-0 mr-0 ml-3 flex items-center justify-center font-normal text-center text-base hover:text-gray-600">
-          {{ page.name }}
+      <div class="col-5 m-0 flex h-full items-center gap-x-0 px-0 md:gap-x-5">
+        <GenericLink v-for="page in navigation" :link="page.href" class="text-gray-500 mx-0 my-0 flex items-center justify-center text-center text-base font-normal hover:text-gray-600">
+          <span class = "px-2">
+            {{ page.name }}
+          </span>
         </GenericLink>
       </div>
       <!-- Logo -->
@@ -17,13 +19,12 @@
           <SearchBox class="text-gray-400 flex-shrink-0 group-hover:text-gray-500" aria-hidden="true" :open-search-section="void" />
         </div> -->
 
-        <!-- Account -->
-        <!-- <div class="flex h-full items-center justify-center">
+        <div class="flex h-full items-center justify-center">
           <ButtonsMicrophoneButton class="text-gray-400 flex-shrink-0 group-hover:text-gray-500" aria-hidden="true" />
-        </div> -->
+        </div>
 
         <!-- DonateButton -->
-        <!-- <ButtonsDonateButton aria-hidden="true" /> -->
+        <ButtonsDonateButton aria-hidden="true" />
 
         <!-- Cart -->
         <ButtonsDarkModeButton aria-hidden="true" />

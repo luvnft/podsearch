@@ -8,7 +8,7 @@
     </ButtonsGenericButton>
   </div>
   <!-- Desktop Search Bar-->
-  <div class="mx-auto hidden w-full flex-col items-center justify-center gap-y-2 py-0 sm:flex md:px-0 bg-gray-100 border-gray-300 rounded-md">
+  <div class="mx-auto hidden w-full flex-col items-center justify-center gap-y-2 py-0 sm:flex md:px-0 bg-gray-100 border-gray-200 rounded-md border">
     <div class="sm:flex w-full flex-row ">
       <SearchBoxSectionCategoryDropDown />
 

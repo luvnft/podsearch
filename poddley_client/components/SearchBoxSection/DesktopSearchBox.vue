@@ -1,6 +1,6 @@
 <template>
     <!-- Desktop Search Bar-->
-    <div class="mx-auto flex-col gap-y-2 py-3 sm:flex sm:pb-5 md:px-3">
+    <div class="mx-auto flex-col gap-y-2 py-3 sm:flex sm:pb-5 md:px-5">
         <form class="flex items-center">
             <label for="voice-search" class="sr-only">Search</label>
             <div class="relative w-full">
