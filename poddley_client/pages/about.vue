@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center w-full mt-3 text-gray-900 bg-white">
+  <div class="flex flex-col items-center justify-center mt-3 text-gray-900 bg-white max-w-screen-xl mx-auto">
     <div class="p-6 mx-auto">
       <h1 class="mb-4 text-3xl font-bold">About Poddley</h1>
       <p class="mb-6">
