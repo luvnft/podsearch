@@ -3,13 +3,13 @@
     <HeadlessMenu as="div" class="z-50 flex w-32 items-center justify-center text-left" v-slot="{ open, close }">
       <HeadlessMenuButton class="text-gray-700 bg-gray-200 border-gray-300 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-l-md border-r px-2.5 py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
         <div class="flex h-12 w-[21px] items-center justify-center">
-          <svg-icon v-if="chosenCategory.key === 'quote'" name="quote" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
-          <svg-icon v-if="chosenCategory.key === 'episode'" name="episode" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
-          <svg-icon v-if="chosenCategory.key === 'podcast'" name="podcastduotone" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+          <svg-icon v-if="props.chosenCategory.key === 'quote'" name="quote" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+          <svg-icon v-if="props.chosenCategory.key === 'episode'" name="episode" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+          <svg-icon v-if="props.chosenCategory.key === 'podcast'" name="podcastduotone" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
         </div>
         <div>
           <p class="category flex w-[60px] items-center justify-center">
-            {{ chosenCategory.name }}
+            {{ props.chosenCategory.name }}
           </p>
         </div>
         <div class="flex w-3 items-center justify-center">
@@ -48,49 +48,17 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
-const chosenCategory: Ref<{
-  key: string;
-  name: string;
-}> = ref<{
-  key: string;
-  name: string;
-}>({
-  key: "quote",
-  name: "Quotes",
-});
+
+const props = defineProps<{
+  chosenCategory: {
+    key: string;
+    name: string;
+  };
+  handleCategoryChange: (event: any) => void;
+}>();
+
 const searchStore = useSearchStore();
-const { searchQuery } = storeToRefs(searchStore);
-const handleCategoryChange = (event: any) => {
-  switch (event?.target?.name) {
-    case "quote":
-      chosenCategory.value = {
-        key: "quote",
-        name: "Quotes",
-      };
-      break;
-    case "episode":
-      chosenCategory.value = {
-        key: "episode",
-        name: "Episode",
-      };
-      break;
-    case "podcast":
-      chosenCategory.value = {
-        key: "podcast",
-        name: "Podcast",
-      };
-      break;
-    default:
-      chosenCategory.value = {
-        key: "error",
-        name: "error",
-      };
-      break;
-  }
-  console.log(event.target.name);
-};
 </script>
 
 <style scoped>
