@@ -1,9 +1,9 @@
 <template>
   <div class="group bg-gray-100 border-gray-300 relative mb-1 mt-0 flex w-full flex-grow items-center rounded-md border sm:hidden" v-if="props.openSearchSection">
     <SearchBoxSectionCategoryDropDown />
-    <input type="text" name="search" id="search" placeholder="Search poddley" :class="`text-gray-900 bg-gray-100 block h-12 w-full rounded-none ${searchQuery.searchString ? '' : 'rounded-r-[0.34rem]'} py-0 pr-0 pl-2 text-center text-base focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset`" autofocus @input="handleSearch" :value="searchQuery.searchString" />
+    <input type="text" name="search" id="search" placeholder="Search poddley" :class="`text-gray-900 bg-gray-100 block h-12 w-full rounded-none ${searchQuery.searchString ? '' : 'rounded-r-[0.34rem]'} py-0 pl-2 pr-0 text-center text-base focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset`" autofocus @input="handleSearch" :value="searchQuery.searchString" />
 
-    <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString" class="rounded-l-none border-none border-gray-300 rounded-r-[0.31rem]">
+    <ButtonsGenericButton v-if="searchQuery.searchString" @click="cleanSearchString" class="border-gray-300 rounded-l-none rounded-r-[0.31rem] border-none">
       <XMarkIcon class="block h-full w-full scale-[0.6] fill-gray-300 group-hover:fill-gray-500" aria-hidden="true" />
     </ButtonsGenericButton>
   </div>
@@ -29,7 +29,7 @@ import { Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { SearchQuery } from "#build/types/SearchQuery";
- 
+
 const props = defineProps<{
   openSearchSection: boolean;
 }>();
