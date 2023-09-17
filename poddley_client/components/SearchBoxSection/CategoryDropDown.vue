@@ -2,7 +2,7 @@
   <div>
     <HeadlessMenu as="div" class="z-50 flex w-32 items-center justify-center text-left" v-slot="{ open, close }">
       <HeadlessMenuButton class="text-gray-700 bg-gray-200 border-gray-300 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-l-md border-r px-2.5 py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
-        <div class="flex h-12 w-[18px] items-center justify-center">
+        <div class="flex h-12 w-[21px] items-center justify-center">
           <svg-icon v-if="chosenCategory.key === 'quote'" name="quote" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="chosenCategory.key === 'episode'" name="episode" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="chosenCategory.key === 'podcast'" name="podcastduotone" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
