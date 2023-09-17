@@ -9,7 +9,7 @@
   </div>
   <!-- Desktop Search Bar-->
   <div class="mx-auto hidden w-full flex-col items-center justify-center gap-y-2 py-0 sm:flex md:px-0 bg-gray-100 border-gray-200 rounded-md border">
-    <div class="sm:flex w-full flex-row ">
+    <div class="sm:flex w-full flex-row relative ">
       <SearchBoxSectionCategoryDropDown />
 
       <input autofocus @input="handleSearch" type="text" id="voice-search" :class="`text-gray-900 bg-gray-100 block w-full ${searchQuery.searchString ? '' : 'rounded-r-md'} p-2.5 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset text-center text-base`" placeholder="Search for podcasts, episodes and quotes from podcasts" required />
