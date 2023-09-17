@@ -36,7 +36,7 @@
           <HeadlessMenuItem v-slot="{ active }" class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
             <a :href="props.searchEntry.episodeLinkToEpisode" :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base  ']">
               Load entire transcript
-              <svg-icon name="transcript" class="mr-[3px] h-[18px] w-[18px] p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+              <svg-icon name="quotes" class="mr-[3px] h-[18px] w-[18px] p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
             </a>
           </HeadlessMenuItem>
         </div>

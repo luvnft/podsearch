@@ -35,6 +35,11 @@ export default defineNuxtConfig({
     families: {
       Lato: true,
       Quicksand: true,
+      Inter: true,
+      Nunito: true,
+      Raleway: true,
+      Poppins: true,
+      Mooli: true,
     },
     download: true,
     base64: true,
