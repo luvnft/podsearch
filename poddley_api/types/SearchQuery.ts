@@ -8,4 +8,5 @@ export interface SearchQuery {
   showMatchesPosition?: boolean;
   hitsPerPage?: number;
   page?: number;
+  category?: string;
 }
