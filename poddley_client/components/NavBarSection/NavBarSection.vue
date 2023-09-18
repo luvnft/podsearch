@@ -5,7 +5,7 @@
         <div class="my-0 flex h-full w-full items-center justify-between sm:items-stretch sm:justify-start">
           <div class="m-0 h-full w-full flex-shrink-0 items-center justify-between p-0">
             <div class="m-0 h-full w-full flex-nowrap items-center justify-between">
-              <div class="flex items-center justify-between p-0 py-1 sm:hidden">
+              <div class="flex items-center justify-between p-0 pt-1 sm:hidden">
                 <div class="flex flex-row items-center justify-center gap-x-4">
                   <BurgerMenu class="col-2 flex items-center justify-center" />
                   <ButtonsMicrophoneButton class="col-2 flex items-center justify-center" />
