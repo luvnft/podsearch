@@ -1,9 +1,9 @@
 <template>
   <div>
     <HeadlessMenu as="div" class="z-50 flex w-auto items-center justify-center text-left" v-slot="{ open, close }">
-      <HeadlessMenuButton class="text-gray-700 bg-gray-200 border-gray-300 gap-x-1 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-l-md border-r py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset pr-4 pl-3">
-        <div class="flex h-12 w-[21px] items-center justify-center">
-          <svg-icon v-if="props.chosenCategory.key === 'quote'" name="quote" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
+      <HeadlessMenuButton class="text-gray-700 bg-gray-200 border-gray-300 gap-x-1 z-0 ml-0 inline-flex h-12 w-full flex-shrink-0 items-center justify-between rounded-none border-r py-0 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset pr-4 pl-3">
+        <div class="flex h-12 w-5 items-center justify-center">
+          <svg-icon v-if="props.chosenCategory.key === 'quote'" name="filter" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="props.chosenCategory.key === 'episode'" name="episode" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="props.chosenCategory.key === 'podcast'" name="podcastduotone" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
         </div>
