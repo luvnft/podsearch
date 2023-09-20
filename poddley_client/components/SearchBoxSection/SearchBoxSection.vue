@@ -1,5 +1,5 @@
 <template>
-  <div class="group bg-gray-100 border-gray-300 relative mb-1 mt-0 flex w-full flex-grow items-center rounded-md border sm:hidden" v-if="props.openSearchSection">
+  <div class="group bg-gray-100 border-gray-300 relative mb-0 mt-0 flex w-full flex-grow items-center rounded-md border sm:hidden" v-if="props.openSearchSection">
     <SearchBoxSectionCategoryDropDown :chosenCategory="chosenCategory" :handleCategoryChange="handleCategoryChange" />
     <FilterDropDown :chosenCategory="chosenCategory" :handleCategoryChange="handleCategoryChange" />
 
