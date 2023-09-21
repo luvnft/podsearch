@@ -10,29 +10,30 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0 py-1">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0 pt-1">
       <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
         <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
           <div class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
-            <div class="z-50 flex h-auto w-full flex-row items-center justify-between py-0">
-              <p class="multiline-ellipsis text-gray-800 mb-0 block w-9/12 items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
+            <div class="z-50 flex h-auto w-full flex-row items-center justify-between py-0 pb-1">
+              <p class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
               </p>
               <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-1 pl-0 pr-0">
-                <div class="flex w-9 items-center justify-end">
-                  <ButtonsPlayButton class="w-9" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
+                <div class="flex h-8 w-8 items-center justify-end">
+                  <ButtonsPlayButton class="h-8 w-8" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
                 </div>
-                <div class="flex w-9 items-center justify-end">
-                  <ButtonsMoreButton class="absolute w-9 translate-y-1/2" :searchEntry="props.searchEntry" />
+                <div class="flex h-8 w-8 items-center justify-end">
+                  <ButtonsMoreButton class="absolute h-8 w-8" :searchEntry="props.searchEntry" />
                 </div>
               </div>
             </div>
             <div class="flex w-full justify-start">
               <div class="mb-0 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-0 py-0 pb-1 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-24 w-full overflow-y-auto overflow-x-hidden `" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-auto w-full overflow-y-auto overflow-x-hidden pb-1 `" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
-            <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-0 `">
+
+            <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-1 `">
               <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay :key="props.searchEntry.start" :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`" type="audio/mpeg" :title="props.searchEntry.episodeTitle" :src="props.searchEntry.episodeEnclosure" />
             </div>
           </div>
