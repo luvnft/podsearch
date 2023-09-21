@@ -30,7 +30,7 @@ import { useSearchStore } from "../../store/searchStore";
 import { Router } from ".nuxt/vue-router";
 import { Utils } from "composables/useUtils";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
-import { SearchQuery } from "#build/types/SearchQuery";
+import { Category, SearchQuery } from "../../types/SearchQuery";
 import FilterDropDown from "./FilterDropDown.vue";
 
 const utils: Utils = useUtils();
@@ -53,7 +53,7 @@ const chosenCategory: Ref<{
   name: "Quotes",
 });
 const handleCategoryChange = (event: any) => {
-  console.log("Event: ", event)
+  console.log("Event: ", event);
   switch (event?.target?.name) {
     case "quote":
       chosenCategory.value = {
@@ -84,21 +84,22 @@ const handleCategoryChange = (event: any) => {
   // Updating searchQuery:
   searchQuery.value = {
     ...searchQuery.value,
-    
-  }
+    category: chosenCategory.value.key as Category,
+  };
 };
-
 
 const cleanSearchString = () => {
   searchQuery.value = {
     searchString: "",
+    category: Category.QUOTE,
   };
 };
 
 const handleSearch = (event: any) => {
   const searchQ: SearchQuery = {
-    searchString: event?.target?.value || "",
+    ...searchQuery.value,
   };
+  searchQ.searchString = event?.target?.value || "";
   searchQuery.value = searchQ;
 };
 
