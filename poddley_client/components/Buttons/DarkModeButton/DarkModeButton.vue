@@ -12,9 +12,9 @@
 </template>
 <script setup lang="ts">
 const colorMode = useColorMode();
-console.log(colorMode);
 
 const toggleColorMode = () => {
+console.log(colorMode);
   if (colorMode.unknown === false) {
     if (colorMode.preference === "system") {
       colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
