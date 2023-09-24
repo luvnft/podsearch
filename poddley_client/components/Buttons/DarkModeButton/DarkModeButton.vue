@@ -1,5 +1,7 @@
 <template>
+  <div>
     <svg-icon name="sun" class="sun block h-full fill-gray-500 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
+  </div>
 </template>
 <script setup lang="ts">
 const colorMode = useColorMode();
