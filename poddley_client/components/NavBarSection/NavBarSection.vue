@@ -12,6 +12,7 @@
                 </div>
                 <NavTitle class="col-4 flex items-center justify-center" />
                 <div class="flex flex-row items-center justify-center gap-x-4">
+                  <p>hu</p>
                   <ButtonsDarkModeButton class="col-2 flex items-center justify-center" />
                   <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 flex items-center justify-center" />
                 </div>
