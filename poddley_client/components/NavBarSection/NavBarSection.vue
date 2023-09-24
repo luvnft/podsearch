@@ -11,7 +11,7 @@
                   <ButtonsMicrophoneButton class="col-2 flex items-center justify-center" />
                 </div>
                 <NavTitle class="col-4 flex items-center justify-center" />
-                <div class="flex flex-row items-center justify-center gap-x-4">
+                <div class="flex flex-row row items-center justify-center gap-x-4">
                   <ButtonsDarkModeButton class="col-2 flex items-center justify-center" />
                   <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="col-2 flex items-center justify-center" />
                 </div>
