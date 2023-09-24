@@ -1,7 +1,5 @@
 <template>
-  <ButtonsGenericButton @click="toggleColorMode" class="aspect-square h-12 w-12">
     <svg-icon name="microphone" class="sun block h-full fill-gray-500 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
-  </ButtonsGenericButton>
 </template>
 <script setup lang="ts">
 const colorMode = useColorMode();
