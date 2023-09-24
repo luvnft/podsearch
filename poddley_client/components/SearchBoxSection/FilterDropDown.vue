@@ -1,12 +1,13 @@
 <template>
   <div>
-    <HeadlessMenu as="div" class="z-50 flex w-auto items-center justify-center text-left" v-slot="{ open, close }">
-      <HeadlessMenuButton :as="GenericButton" class="flex justify-center rounded-none text-gray-700 bg-gray-200 border-gray-300 z-0 ml-0 h-12 w-full flex-shrink-0 items-center gap-x-1 border-r py-0 px-2.5 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
+    <HeadlessMenu as="div" class="z-50 flex w-32 items-center justify-center text-left" v-slot="{ open, close }">
+      <HeadlessMenuButton :as="GenericButton" class="flex justify-center rounded-none text-gray-700 bg-gray-200 border-gray-300 z-0 ml-0 h-12 w-32 flex-shrink-0 items-center gap-x-1 border-r py-0 px-2.5 text-center text-sm font-medium outline-none hover:bg-gray-200 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
         <div class="flex h-12 w-5 items-center justify-center">
           <svg-icon v-if="props.chosenCategory.key === 'quote'" name="filter" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="props.chosenCategory.key === 'episode'" name="episode" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
           <svg-icon v-if="props.chosenCategory.key === 'podcast'" name="podcastduotone" class="-mr-0.5 h-12 w-full p-0 group-hover:fill-gray-500 dark:group-hover:fill-gray-300" />
         </div>
+        <span>Quote</span>
       </HeadlessMenuButton>
 
       <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
