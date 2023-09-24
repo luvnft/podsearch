@@ -1,5 +1,5 @@
 <template>
-  <div class = "xl:px-2">
+  <div class>
     <NavBarSection />
     <MainContainerSection>
       <slot />

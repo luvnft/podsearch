@@ -1,11 +1,11 @@
 <template>
-  <ButtonsGenericButton @click="toggleColorMode" class="aspect-square h-12 w-12">
-    <div class="flex aspect-square h-12 w-12 items-center justify-center">
-      <div class="sun sun flex h-full w-full items-center justify-center">
-        <svg-icon name="sun" class="flex h-full w-1/2 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
-      </div>
+  <ButtonsGenericButton @click="toggleColorMode" class="aspect-square h-12">
+    <div class="flex aspect-square h-12 w-full items-center justify-center">
       <div class="moon flex h-full w-full items-center justify-center">
         <svg-icon name="moon" class="flex h-full w-1/2 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+      </div>
+      <div class="sun flex h-full w-full items-center justify-center">
+        <svg-icon name="sun" class="flex h-full w-1/2 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
       </div>
     </div>
   </ButtonsGenericButton>
