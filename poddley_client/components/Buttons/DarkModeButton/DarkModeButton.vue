@@ -1,6 +1,13 @@
 <template>
   <ButtonsGenericButton @click="toggleColorMode" class="aspect-square h-12 w-12">
-        <svg-icon name="sun" class="sun block h-full scale-[0.55] fill-gray-500 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
+    <div class="flex aspect-square h-12 w-12 items-center justify-center">
+      <div class="sun flex aspect-square h-full w-12 items-center justify-center">
+        <svg-icon name="microphone" class="sun block h-full scale-[0.55] fill-gray-500 group-hover:fill-gray-500 dark:group-hover:fill-gray-400" aria-hidden="true" />
+      </div>
+      <div class="moon flex aspect-square h-full w-12 items-center justify-center">
+        <svg-icon name="contact" class="moon block h-full scale-[0.5] fill-gray-500 group-hover:fill-gray-500" aria-hidden="true" />
+      </div>
+    </div>
   </ButtonsGenericButton>
 </template>
 <script setup lang="ts">
@@ -20,9 +27,11 @@ console.log(colorMode);
 
 <style scoped>
 /* This allows instant beforeRender iconSwitch 😎 */
-.light .sun {
+.light .moon {
+  display: none !important;
 }
 
-.dark .moon {
+.dark .sun {
+  display: none !important;
 }
 </style>
