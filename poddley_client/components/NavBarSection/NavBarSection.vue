@@ -8,12 +8,10 @@
               <div class="flex w-full items-center justify-between px-0 py-0.5 sm:hidden">
                 <div class="flex w-1/3 flex-row items-center justify-start gap-x-4 p-0">
                   <BurgerMenu class="flex items-center justify-center" />
-                  <ButtonsMicrophoneButton class="flex items-center justify-center" />
                 </div>
                 <NavTitle class="flex w-1/3 items-center justify-center" />
                 <div class="flex w-1/3 flex-row items-center justify-end gap-x-4 p-0">
                   <ButtonsDarkModeButton class="flex items-center justify-center" />
-                  <SearchBox @click="toggleSearchSection" :openSearchSection="openSearchSection" class="flex items-center justify-center" />
                 </div>
               </div>
               <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly border-none py-1 sm:flex" />
