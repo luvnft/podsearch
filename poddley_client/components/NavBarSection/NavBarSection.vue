@@ -1,6 +1,6 @@
 <template>
   <nav class="container-fluid bg-white z-40 px-0 py-0">
-    <div class="container-fluid mx-auto h-full w-full max-w-screen px-1.5">
+    <div class="container-fluid mx-auto h-full w-full max-w-screen-2xl px-1.5">
       <div class="relative flex h-full w-full justify-center">
         <div class="my-0 flex h-full w-full items-center justify-between sm:items-stretch sm:justify-start">
           <div class="m-0 h-full w-full flex-shrink-0 items-center justify-between p-0">

@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     server: false,
   },
   vueuse: {
-    ssrHandlers: false,
+    ssrHandlers: true,
     autoImports: true,
   },
   headlessui: {
