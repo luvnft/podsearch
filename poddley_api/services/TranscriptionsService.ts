@@ -42,6 +42,7 @@ class TranscriptionsService {
       highlightPostTag: "</span>",
       showMatchesPosition: true,
       matchingStrategy: "all",
+      
     };
     // If searchString, add it:
     if (this.searchQuery.filter) mainQuery.filter = searchQuery.filter;
@@ -53,10 +54,10 @@ class TranscriptionsService {
 
     // Initial search, get ids
     let response: SearchResponse = {} as SearchResponse;
-    console.log(this.searchQuery.category)
+    console.log(this.searchQuery.category);
     if (this.searchQuery.category === "quote" || !this.searchQuery.category) response = await this.segmentSearch(mainQuery);
     else if (this.searchQuery.category === "episode") response = await this.episodeSearch(mainQuery);
-    else if (this.searchQuery.category === "podcast") response = await this.podcastSearch(mainQuery);
+    else if (this.searchQuery.category === "podcast") response = await this.podcastSearch(this.searchQuery);
 
     return response;
   }
@@ -64,7 +65,8 @@ class TranscriptionsService {
   private async episodeSearch(mainQuery: SearchQuery): Promise<SearchResponse> {
     // Query episodes based on searchString
     let initialSearchResponse: EpisodeResponse = await this.episodesIndex.search(undefined, {
-      
+      attributesToSearchOn: ["title"],
+      q: mainQuery.searchString,
     });
 
     // Construct filter and use segmentSearch again with that
@@ -85,20 +87,24 @@ class TranscriptionsService {
     return response;
   }
 
-  private async podcastSearch(mainQuery: SearchQuery): Promise<SearchResponse> {
+  private async podcastSearch(searchQuery: SearchQuery): Promise<SearchResponse> {
     // Query episodes based on searchString
+    console.log("Yellow");
+    console.log("mainQuery.searchString", searchQuery.searchString);
     let initialSearchResponse: PodcastResponse = await this.podcastsIndex.search(undefined, {
-      facets: ["title"]
-    }) 
+      attributesToSearchOn: ["title"],
+      q: searchQuery.searchString,
+    });
+    console.log("Mellow 2");
+    console.log(initialSearchResponse.hits.length);
 
-    console.log(initialSearchResponse);
-    // Construct filter and use segmentSearch again with that 
+    // Construct filter and use segmentSearch again with that
     const episodeIds: string[] = initialSearchResponse.hits.map((hit: PodcastHit) => hit.podcastGuid);
     const filter: string = `podcastGuid=${episodeIds.join(" OR podcastGuid=")}`;
 
     // New query:
     const newQuery: SearchQuery = {
-      ...mainQuery,
+      searchString: undefined,
       filter: filter,
       sort: ["start:asc"],
     };
@@ -114,7 +120,7 @@ class TranscriptionsService {
     // Search results => Perform it.
     let initialSearchResponse: any = await this.segmentsIndex.search(undefined, mainQuery);
 
-    console.log("mainquery::::", mainQuery)
+    console.log("mainquery::::", mainQuery);
 
     const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
     const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
