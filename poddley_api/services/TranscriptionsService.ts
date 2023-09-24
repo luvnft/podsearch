@@ -49,10 +49,11 @@ class TranscriptionsService {
     if (this.searchQuery.hitsPerPage) mainQuery.hitsPerPage = searchQuery.hitsPerPage;
     if (this.searchQuery.page) mainQuery.page = searchQuery.page;
     if (this.searchQuery.searchString) mainQuery.q = this.searchQuery.searchString;
-    mainQuery.limit = searchQuery.limit === undefined ? 100 : searchQuery.limit <= 100 ? searchQuery.limit : 10;
+    mainQuery.limit = searchQuery.limit === undefined ? 50 : searchQuery.limit <= 50 ? searchQuery.limit : 10;
 
     // Initial search, get ids
     let response: SearchResponse = {} as SearchResponse;
+    console.log(this.searchQuery.category)
     if (this.searchQuery.category === "quote" || !this.searchQuery.category) response = await this.segmentSearch(mainQuery);
     else if (this.searchQuery.category === "episode") response = await this.episodeSearch(mainQuery);
     else if (this.searchQuery.category === "podcast") response = await this.podcastSearch(mainQuery);
@@ -62,7 +63,9 @@ class TranscriptionsService {
 
   private async episodeSearch(mainQuery: SearchQuery): Promise<SearchResponse> {
     // Query episodes based on searchString
-    let initialSearchResponse: EpisodeResponse = await this.episodesIndex.search(undefined, mainQuery);
+    let initialSearchResponse: EpisodeResponse = await this.episodesIndex.search(undefined, {
+      
+    });
 
     // Construct filter and use segmentSearch again with that
     const episodeIds: string[] = initialSearchResponse.hits.map((hit: EpisodeHit) => hit.episodeGuid);
@@ -84,9 +87,12 @@ class TranscriptionsService {
 
   private async podcastSearch(mainQuery: SearchQuery): Promise<SearchResponse> {
     // Query episodes based on searchString
-    let initialSearchResponse: PodcastResponse = await this.episodesIndex.search(undefined, mainQuery);
+    let initialSearchResponse: PodcastResponse = await this.podcastsIndex.search(undefined, {
+      facets: ["title"]
+    }) 
 
-    // Construct filter and use segmentSearch again with that
+    console.log(initialSearchResponse);
+    // Construct filter and use segmentSearch again with that 
     const episodeIds: string[] = initialSearchResponse.hits.map((hit: PodcastHit) => hit.podcastGuid);
     const filter: string = `podcastGuid=${episodeIds.join(" OR podcastGuid=")}`;
 
@@ -107,6 +113,8 @@ class TranscriptionsService {
   private async segmentSearch(mainQuery: SearchQuery): Promise<SearchResponse> {
     // Search results => Perform it.
     let initialSearchResponse: any = await this.segmentsIndex.search(undefined, mainQuery);
+
+    console.log("mainquery::::", mainQuery)
 
     const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
     const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
