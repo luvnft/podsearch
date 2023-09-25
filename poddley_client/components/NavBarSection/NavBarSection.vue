@@ -14,7 +14,7 @@
                   <ButtonsDarkModeButton class="flex items-center justify-center" />
                 </div>
               </div>
-              <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly border-none py-1 sm:flex" />
+              <DesktopNavBar class="m-0 hidden h-16 w-full justify-evenly border-none py-1.5 sm:flex" />
             </div>
           </div>
         </div>

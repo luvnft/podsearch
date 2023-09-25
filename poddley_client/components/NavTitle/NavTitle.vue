@@ -1,6 +1,6 @@
 <template>
   <a
-    class="flex items-center justify-center h-12 p-0 text-gray-400 rounded-md w-28 hover:text-gray-500 focus:ring-gray-500 hover:fill-gray-700 focus:outline-none focus:ring-2 focus:ring-inset sm:w-24"
+    class="flex items-center justify-center h-10 p-0 text-gray-400 rounded-md w-28 hover:text-gray-500 focus:ring-gray-500 hover:fill-gray-700 focus:outline-none focus:ring-2 focus:ring-inset sm:w-24"
     href="/"
   >
     <div :class="`flex items-center justify-center ${!loading || 'hidden'}`">
