@@ -18,12 +18,12 @@
               <p class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
               </p>
-              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-1 pl-1 pr-0">
-                <div class="flex h-8 w-8 items-center justify-end">
-                  <ButtonsPlayButton class="h-8 w-8" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
+              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-0 pl-1 pr-0">
+                <div class="flex h-10 w-10 items-start justify-end">
+                  <ButtonsPlayButton class="h-10 w-10" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
                 </div>
-                <div class="flex h-8 w-8 items-center justify-end">
-                  <ButtonsMoreButton class="absolute h-8 w-8" :searchEntry="props.searchEntry" />
+                <div class="flex h-10 w-10 items-start justify-end">
+                  <ButtonsMoreButton class="absolute h-10 w-10" :searchEntry="props.searchEntry" />
                 </div>
               </div>
             </div>

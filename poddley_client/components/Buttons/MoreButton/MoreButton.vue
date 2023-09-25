@@ -1,7 +1,7 @@
 <template>
-  <HeadlessMenu as="div" class="absolute z-50 flex h-8 w-8 items-center justify-center text-left">
-    <div class="flex w-8 h-8 items-center justify-center">
-        <HeadlessMenuButton :as = "GenericButton" class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-8 w-8 items-center justify-center rounded-lg border  fill-neutral-400 p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
+  <HeadlessMenu as="div" class="absolute z-50 flex h-9 w-9 items-center justify-center text-left">
+    <div class="flex w-9 h-9 items-center justify-center">
+        <HeadlessMenuButton :as = "GenericButton" class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 items-center justify-center rounded-lg border  fill-neutral-400 p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
           <EllipsisVerticalIcon class="h-[23px] group-hover:fill-gray-500 dark:group-hover:fill-gray-300" aria-hidden="true" />
         </HeadlessMenuButton>
       </div>
