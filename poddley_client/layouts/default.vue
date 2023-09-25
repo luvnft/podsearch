@@ -1,5 +1,5 @@
 <template>
-  <div class>
+  <div>
     <NavBarSection />
     <MainContainerSection>
       <slot />
