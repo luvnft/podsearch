@@ -1,6 +1,5 @@
 <template>
   <div class="flex h-full flex-col items-center">
-    <!-- Show off iFrame -->
     <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
       <div class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
         <div class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
@@ -20,7 +19,6 @@
       </button>
     </div>
 
-    <!-- Actual iFrame -->
     <div v-if="showiFrame" :class="`bg-gray-8 m-0 mb-1.5 flex aspect-video h-full w-full items-center justify-center rounded-lg p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
       <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
         <IconsSpinnerIcon />

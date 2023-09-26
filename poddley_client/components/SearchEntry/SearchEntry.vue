@@ -18,25 +18,25 @@
               <p class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                 {{ props.searchEntry.episodeTitle }}
               </p>
-              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-1 pl-0 pr-0">
-                <div class="flex h-8 w-8 items-center justify-end">
-                  <ButtonsPlayButton class="h-8 w-8" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
+              <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-0 pl-1 pr-0">
+                <div class="flex h-10 w-10 items-start justify-end">
+                  <ButtonsPlayButton class="h-10 w-10" :searchEntry="props.searchEntry" @click="handlePlaying" :playing="playing" />
                 </div>
-                <div class="flex h-8 w-8 items-center justify-end">
-                  <ButtonsMoreButton class="absolute h-8 w-8" :searchEntry="props.searchEntry" />
+                <div class="flex h-10 w-10 items-start justify-end">
+                  <ButtonsMoreButton class="absolute h-10 w-10" :searchEntry="props.searchEntry" />
                 </div>
               </div>
             </div>
             <div class="flex w-full justify-start">
-              <div class="mb-0 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-0 py-0 pb-1 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-28 w-full overflow-y-auto overflow-x-hidden pb-1 `" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
+              <div class="mb-0 mt-0 flex h-full max-h-full min-h-full justify-center rounded-lg px-0 py-0 pb-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
+                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-[100px] w-full overflow-y-auto overflow-x-hidden pb-0 `" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()"></div>
               </div>
             </div>
 
-            <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-1 `">
-              <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay :key="props.searchEntry.start" :class="`text-black border-neutral-200 h-10 w-full rounded-lg border shadow-sm dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`" type="audio/mpeg" :title="props.searchEntry.episodeTitle" :src="props.searchEntry.episodeEnclosure" />
-            </div>
-          </div>
+            <div v-if="playing" :class="`m-0 py-2 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-1 `">
+              <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay :key="props.searchEntry.start" :class="`text-black h-10 w-full rounded-lg border ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'}  dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`" type="audio/mpeg" :title="props.searchEntry.episodeTitle" :src="props.searchEntry.episodeEnclosure" />
+            </div> 
+          </div> 
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@ import { SearchQuery } from "types/SearchQuery";
 const props = defineProps<{
   searchEntry: Hit;
 }>();
-const { isFirefox, isSafari } = useDevice();
+const { isFirefox, isSafari, isIos } = useDevice();
 const playing: Ref<boolean> = ref(false);
 const subtitlesActivated: Ref<boolean> = ref(false);
 const transcriptionService: TranscriptionService = new TranscriptionService();
