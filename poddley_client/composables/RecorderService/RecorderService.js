@@ -125,7 +125,6 @@ export default class RecorderService {
       })
       .catch((error) => {
         alert("Error with getUserMedia: " + error.message); // temp: helps when testing for strange issues on ios/safari
-        console.log(error);
       });
   }
 
@@ -192,7 +191,6 @@ export default class RecorderService {
       // Todo: Note that time slicing with manual wav encoderWav won't work. To allow it would require rewriting the encoderWav
       // to assemble all chunks at end instead of adding header to each chunk.
       if (timeslice) {
-        console.log("Time slicing without MediaRecorder is not yet supported. The resulting recording will not be playable.");
         this.slicing = setInterval(function () {
           if (this.state === "recording") {
             this.encoderWorker.postMessage(["dump", this.context.sampleRate]);

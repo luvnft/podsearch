@@ -38,7 +38,6 @@
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/vue/24/outline";
 import { XMarkIcon } from "@heroicons/vue/20/solid";
 import { Toast } from "../../utils/toastService/useToast";
-console.log("Loaded");
 const props = defineProps<{
   toast: Toast;
 }>();
