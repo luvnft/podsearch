@@ -1,8 +1,5 @@
 <template>
-  <div class="wrapper flex-column flex pb-24">
-    <!-- <Notification /> -->
-    <!-- <Notification v-for="toast in toasts" :key="toast.id" :toast="toast" /> -->
-    <!-- Rest -->
+  <div class="flex-column flex pb-20">
     <NuxtLayout>
       <NuxtLoadingIndicator />
       <NuxtPage />
@@ -11,12 +8,6 @@
 </template>
 
 <script setup lang="ts">
-// Imports
-// import { useToastProvider, toasts } from "./utils/toastService/useToast";
-
-// Toast functionality global enable it
-// useToastProvider();
-
 // Key-binding
 onMounted(() => {
   const handleSpacebarClick = (event) => {
