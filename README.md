@@ -1,7 +1,7 @@
 # Poddley - Shazam for podcasts
 
 ## Main Goal:
-The main goal of the website/service is to be the Shazam for podcasts. Therefore we are not going to expand upon this further than its search search functionality and beyond its main purpose which is to display/hotlink and allow search of podcast transcriptions.
+The main goal of the website/service is to be the Shazam for podcasts. Therefore we are not going to expand upon this further than its overall search functionality and mapping of resource-sources and beyond its main purpose which is to display/hotlink and allow search of podcast transcriptions. 
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
