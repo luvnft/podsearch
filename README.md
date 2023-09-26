@@ -605,14 +605,12 @@ Has to be a live version auto
 - [x] Use the native audio player as far as you can embeeded into each entry if someone clicks on the playing button.
 - [x] Style all of them accordingly, for chrome a certain way, for firefox a certain way and for opera another way.
 - [x] Are the about page and contact page good looking, different font?
+- [x] Start up all pm2-services.
 - [ ] Start transcriberen og bruk large
 - [ ] Make MeiliSearch production version.
-- [ ] Start up all pm2-services.
-- [ ] Modify the backend so the first segment is always what was searched for. Don't show anything before the searchSegment. And reduce the size of the response as it's too big.
 - [ ] Add the "getEntireTranscript"-button. The button shall...???
-- [ ] So essentially, when someone clicks on the button it should fetch the transcript associated with that podcast
-- [ ] Android / Apple app button where the microphone is, like a "pod-it" symbol.
-- [ ] Make design for android and apple
+- [ ] Fix height of text-area
+- [ ] More padding on the navbar on the mobile phones.
 
 After finish:
 - [ ] Medlemskap: API usage, full transcript downloads, no ads,
