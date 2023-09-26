@@ -6,8 +6,8 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
 
-## Demo
-[Demo Link](https://poddley.com)
+## Project 
+[Link to website/product](https://poddley.com)
 
 ## Design iterations
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/6e4ca29a-6093-481d-b566-39aac740dbf5" width="23%"></img>
@@ -18,7 +18,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/91629802-afb1-4770-8f66-4214b8a28d71" width="23%"></img>
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/31b170c6-1dd6-439a-8853-bb948fbdce1c" width="23%"></img>
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/21a0014e-1abc-4165-a8e9-575a19547235" width="23%"></img>
-
 
 ## Realizations
 - I don't like apps.
@@ -611,18 +610,7 @@ Has to be a live version auto
 - [ ] Add the "getEntireTranscript"-button. The button shall...???
 - [ ] Fix height of text-area
 - [ ] More padding on the navbar on the mobile phones.
-
-After finish:
-- [ ] Medlemskap: API usage, full transcript downloads, no ads,
+- [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also)
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
-- [ ] Start en egen IT blogg
 - [ ] Markedsfør
 - [ ] Finskriv githuben
-
-**Later maybe**:
-- [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
-- [ ] Slett konto
-- [ ] Se lagrede quotes
-- [ ] Upload a picture/profile pic using r3
-- [ ] External API to sell.
