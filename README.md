@@ -9,16 +9,19 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 ## Demo
 [Demo Link](https://poddley.com)
 
-## Apps
-Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastlanes the process of developing a native app for both ecosystems. Below is a link to them on the respective stores.
-- iOS:
-- Android:
+## Design iterations
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/6e4ca29a-6093-481d-b566-39aac740dbf5" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/95e34b1c-29f3-40c3-8aed-5caeae92cb28" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/ae14c18a-691e-43c6-8c07-079818eebf34" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/fac49f03-2f1b-45f6-b870-3dafbffc23b6" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/56327a71-be18-4046-962f-46411554239c" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/91629802-afb1-4770-8f66-4214b8a28d71" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/31b170c6-1dd6-439a-8853-bb948fbdce1c" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/21a0014e-1abc-4165-a8e9-575a19547235" width="23%"></img>
 
-## Design timeline
-![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
 
 ## Realizations
-- Safari/iOS sucks (forcing you to make apps, fuck em). Android at least has workarounds.
+- I don't like apps.
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
