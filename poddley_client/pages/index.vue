@@ -47,10 +47,11 @@ onMounted(() => {
     worker.onmessage = (event: any) => {
       const { action, payload } = event.data;
 
+      console.log("event: ", event);
       switch (action) {
         case "searchCompleted":
           searchResults.value = payload;
-          console.log(payload);
+          console.log("PP:", payload);
           debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
@@ -84,6 +85,7 @@ async function makeSearch() {
         console.log("Searching with query: ", query);
         searchQuery.value = query;
         searchResults.value = await transcriptionService.search(query);
+        console.log("RES: ", searchResults.value);
       } catch (e) {}
     }
   }

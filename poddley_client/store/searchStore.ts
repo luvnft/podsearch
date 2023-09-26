@@ -8,7 +8,6 @@ export const useSearchStore = defineStore("searchStore", () => {
   const loading: Ref<boolean> = ref(false);
   const searchResults: Ref<SearchResponse> = ref({} as SearchResponse);
   const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);
-  const hitCache: Ref<HitCache> = ref({} as HitCache);
 
   //Returning
   return {
@@ -16,6 +15,5 @@ export const useSearchStore = defineStore("searchStore", () => {
     loading,
     setLoadingState,
     searchResults,
-    hitCache,
   };
 });
