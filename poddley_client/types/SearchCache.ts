@@ -1,3 +1,5 @@
+import { Hit } from "./SearchResponse";
+
 interface HitCache {
   [key: string]: HitObject;
 }
