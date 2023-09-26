@@ -35,7 +35,7 @@
 
             <div v-if="playing" :class="`m-0 py-2 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 pb-1 `">
               <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay :key="props.searchEntry.start" :class="`text-black h-10 w-full rounded-lg border ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'}  dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`" type="audio/mpeg" :title="props.searchEntry.episodeTitle" :src="props.searchEntry.episodeEnclosure" />
-            </div>
+            </div> 
           </div> 
         </div>
       </div>
