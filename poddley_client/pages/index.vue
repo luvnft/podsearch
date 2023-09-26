@@ -83,7 +83,7 @@ async function makeSearch() {
         console.log(decodedRouteBasedQuery);
         const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
         console.log("Searching with query: ", query);
-        searchQuery.value = query;
+        // searchQuery.value = query;
         searchResults.value = await transcriptionService.search(query);
         console.log("RES: ", searchResults.value);
       } catch (e) {}
