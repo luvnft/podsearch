@@ -4,7 +4,6 @@
       <SearchEntry :searchEntry="searchEntry" :key="searchEntry.id" />
     </li>
   </ul>
-  <!-- <p v-else class="text-gray-800 mt-4 text-center">No results for the given search query.</p> -->
 </template>
 
 <script lang="ts" setup>
