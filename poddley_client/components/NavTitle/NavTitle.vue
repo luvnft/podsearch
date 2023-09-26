@@ -17,12 +17,10 @@ const searchStore = useSearchStore();
 const { loading, searchQuery } = storeToRefs(searchStore);
 
 const toHomeClick = () => {
-  console.log("Clicked!");
   searchQuery.value = {
     ...searchQuery.value,
     searchString: undefined,
   };
-  console.log("SearchQuery", searchQuery.value);
 };
 </script>
 

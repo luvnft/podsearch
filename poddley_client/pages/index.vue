@@ -47,11 +47,9 @@ onMounted(() => {
     worker.onmessage = (event: any) => {
       const { action, payload } = event.data;
 
-      console.log("event: ", event);
       switch (action) {
         case "searchCompleted":
           searchResults.value = payload;
-          console.log("PP:", payload);
           debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
@@ -64,13 +62,11 @@ onMounted(() => {
 
 function searchViaWorker() {
   searchStore.setLoadingState(true);
-  console.log("SearchQuery: ", searchQuery.value);
   worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-  console.log("Searching... ", searchQuery.value);
   // Send a message to the worker to perform the search
   if (worker) {
     searchViaWorker();
@@ -80,12 +76,9 @@ async function makeSearch() {
       try {
         const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
         const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
-        console.log(decodedRouteBasedQuery);
         const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
-        console.log("Searching with query: ", query);
         // searchQuery.value = query;
         searchResults.value = await transcriptionService.search(query);
-        console.log("RES: ", searchResults.value);
       } catch (e) {}
     }
   }
