@@ -20,7 +20,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/21a0014e-1abc-4165-a8e9-575a19547235" width="23%"></img>
 
 ## Realizations
-- I don't like apps.
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
@@ -53,7 +52,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 	- Lodash module (for _Debounce-function)
 	- Device module (for iPhone-device detection)
 	- Pinia Nuxt Module (for global storage across components)
- 	- NuxtJS Ionic module (for fast Android/iOS development)
   	- Nightwind Tailwind plugin (for deep automatic nightmode)
 
 ## Backend:
