@@ -1,7 +1,7 @@
 # Poddley - Shazam for podcasts
 
 ## Main Goal:
-The main goal of the website/service is to be the Shazam for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between different podcast-resources online (youtube, public podcast, transcriptions, time-location, rss-feeds, podcast homepages, episode-links and youtube time-location). 
+The main goal of the website/service is to be the Shazam for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between different podcast-resources (youtube, public podcasts, transcriptions, time-location, rss-feeds, podcast homepages, episode-links and youtube time-location). 
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
@@ -44,7 +44,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 - ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic (as in the first 1 second API calls should be instantaneous, but the ones after shan't). Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
 - Nuxt 3 modules used:
 	- TailwindCSS module (integrated PurgeCSS and fast design development)
-	- Supabase module
 	- NuxtImage module
 	- HeadlessUI module
 	- SVG-sprite-module (for reducing SVG-requests to server)
