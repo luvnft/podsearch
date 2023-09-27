@@ -605,12 +605,11 @@ Has to be a live version auto
 - [x] Style all of them accordingly, for chrome a certain way, for firefox a certain way and for opera another way.
 - [x] Are the about page and contact page good looking, different font?
 - [x] Start up all pm2-services.
+- [x] Fix height of text-area
+- [x] More padding on the navbar on the mobile phones.
+- [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok, markedsfør/kontakt podcasters/logan paul/lex fridman/etc etc etc...
 - [ ] Start transcriberen og bruk large
 - [ ] Make MeiliSearch production version.
-- [ ] Add the "getEntireTranscript"-button. The button shall...???
-- [ ] Fix height of text-area
-- [ ] More padding on the navbar on the mobile phones.
-- [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also)
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] Markedsfør
+- [ ] Add the "getEntireTranscript"-button.	
 - [ ] Finskriv githuben
