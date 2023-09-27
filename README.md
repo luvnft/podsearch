@@ -449,8 +449,7 @@ Has to be a live version auto
 
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
-## Features planned adding:
-### Do-es
+## Stuff to do:
 - [ ] ~~Covert search to multiseach to speed up search time~~
 - [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
 - [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
@@ -607,7 +606,7 @@ Has to be a live version auto
 - [x] More padding on the navbar on the mobile phones.
 - [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok, markedsfør/kontakt podcasters/logan paul/lex fridman/etc etc etc...
-- [ ] Start transcriberen og bruk large
+- [ ] Start transcriberen og bruk large-v2
 - [ ] Make MeiliSearch production version.
 - [ ] Add the "getEntireTranscript"-button.	
 - [ ] Finskriv githuben
