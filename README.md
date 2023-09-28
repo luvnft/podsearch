@@ -1,7 +1,7 @@
 # Poddley - Shazam for podcasts
 
 ## Main Goal:
-The main goal of the website/service is to be the Shazam for podcasts. Therefore we are not going to expand upon this further than its overall search functionality and mapping of resource-sources and beyond its main purpose which is to display/hotlink and allow search of podcast transcriptions. 
+The main goal of the website/service is to be the Shazam for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between different podcast-resources (youtube, public podcasts, transcriptions, time-location, rss-feeds, podcast homepages, episode-links and youtube time-location). 
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
@@ -20,7 +20,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/21a0014e-1abc-4165-a8e9-575a19547235" width="23%"></img>
 
 ## Realizations
-- I don't like apps.
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
@@ -45,7 +44,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 - ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic (as in the first 1 second API calls should be instantaneous, but the ones after shan't). Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
 - Nuxt 3 modules used:
 	- TailwindCSS module (integrated PurgeCSS and fast design development)
-	- Supabase module
 	- NuxtImage module
 	- HeadlessUI module
 	- SVG-sprite-module (for reducing SVG-requests to server)
@@ -53,7 +51,6 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 	- Lodash module (for _Debounce-function)
 	- Device module (for iPhone-device detection)
 	- Pinia Nuxt Module (for global storage across components)
- 	- NuxtJS Ionic module (for fast Android/iOS development)
   	- Nightwind Tailwind plugin (for deep automatic nightmode)
 
 ## Backend:
@@ -451,8 +448,7 @@ Has to be a live version auto
 
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
-## Features planned adding:
-### Do-es
+## Stuff to do:
 - [ ] ~~Covert search to multiseach to speed up search time~~
 - [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
 - [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
@@ -609,7 +605,7 @@ Has to be a live version auto
 - [x] More padding on the navbar on the mobile phones.
 - [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok, markedsfør/kontakt podcasters/logan paul/lex fridman/etc etc etc...
-- [ ] Start transcriberen og bruk large
+- [ ] Start transcriberen og bruk large-v2
 - [ ] Make MeiliSearch production version.
 - [ ] Add the "getEntireTranscript"-button.	
 - [ ] Finskriv githuben
