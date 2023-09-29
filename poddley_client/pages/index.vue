@@ -1,6 +1,6 @@
 <template>
   <div class="block" ref="searchResultsRef">
-    <SearchResults :searchEntries="searchResults?.hits" v-if="searchResults?.hits" />
+    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -11,7 +11,6 @@ import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 
-const searchResultsRef: Ref<HTMLElement | null> = ref(null);
 const scrollY = ref(0);
 const { y } = useWindowScroll();
 
@@ -30,8 +29,7 @@ watch(y, () => {
 let worker: Worker;
 const requestUrl: URL = useRequestURL();
 const searchStore = useSearchStore();
-const { searchQuery } = storeToRefs(searchStore);
-const searchResults: Ref<any> = useState();
+const { searchQuery, searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
@@ -47,11 +45,12 @@ onMounted(() => {
     worker.onmessage = (event: any) => {
       const { action, payload } = event.data;
 
-      console.log("event: ", event);
       switch (action) {
         case "searchCompleted":
-          searchResults.value = payload;
-          console.log("PP:", payload);
+          // searchResults.value = payload;
+          console.log("OK");
+          console.log("payload", payload)
+          debounceSetSearchResults(payload)
           debounceSetLoadingToggle(false);
           break;
         case "searchFailed":
@@ -64,13 +63,11 @@ onMounted(() => {
 
 function searchViaWorker() {
   searchStore.setLoadingState(true);
-  console.log("SearchQuery: ", searchQuery.value);
   worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-  console.log("Searching... ", searchQuery.value);
   // Send a message to the worker to perform the search
   if (worker) {
     searchViaWorker();
@@ -80,12 +77,9 @@ async function makeSearch() {
       try {
         const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
         const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
-        console.log(decodedRouteBasedQuery);
         const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
-        console.log("Searching with query: ", query);
-        searchQuery.value = query;
+        // searchQuery.value = query;
         searchResults.value = await transcriptionService.search(query);
-        console.log("RES: ", searchResults.value);
       } catch (e) {}
     }
   }
@@ -93,12 +87,17 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 300, {
-  leading: true,
+  leading: false,
   trailing: true,
 });
 
 const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 500, {
-  leading: false,
+  leading: true,
+  trailing: true,
+});
+
+const debounceSetSearchResults = _Debounce(searchStore.setSearchResults, 500, {
+  leading: true,
   trailing: true,
 });
 

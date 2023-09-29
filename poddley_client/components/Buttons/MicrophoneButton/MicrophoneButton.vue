@@ -51,7 +51,6 @@ const startRecording = async () => {
   if (recorderService && !loading.value) {
     // Ensure a recording isn't already in progress
     try {
-      console.log("Started recording!");
       loading.value = true;
 
       await recorderService.startRecording();
@@ -62,8 +61,6 @@ const startRecording = async () => {
       loading.value = false;
       recorderService.stopRecording();
     }
-  } else {
-    console.log("Recording is already in progress or recorderService is unavailable.");
   }
 };
 
@@ -90,7 +87,6 @@ const onNewRecording = async (event: any) => {
       searchString: apiResponse.message,
     };
   }
-  console.log(apiResponse);
 
   // Clear the recordings
   // recordings.value = [];
@@ -98,6 +94,5 @@ const onNewRecording = async (event: any) => {
 
 const stopRecording = () => {
   recorderService.stopRecording();
-  console.log("Stopped recording after 7 seconds!");
 };
 </script>

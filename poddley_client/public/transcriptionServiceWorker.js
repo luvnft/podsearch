@@ -13,7 +13,6 @@ self.addEventListener("message", async (event) => {
           payload: res,
         });
       } catch (e) {
-        console.log("Error: ", e);
         self.postMessage({
           action: "searchFailed",
           payload: "",
