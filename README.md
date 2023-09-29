@@ -1,24 +1,25 @@
 # Poddley - Shazam for podcasts
 
 ## Main Goal:
-The main goal of the website/service is to be the Shazam for podcasts. Therefore we are not going to expand upon this further than its search search functionality and beyond its main purpose which is to display/hotlink and allow search of podcast transcriptions.
+The main goal of the website/service is to be the Shazam for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between different podcast-resources (youtube, public podcasts, transcriptions, time-location, rss-feeds, podcast homepages, episode-links and youtube time-location). 
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
 
-## Demo
-[Demo Link](https://poddley.com)
+## Project 
+[Link to website/product](https://poddley.com)
 
-## Apps
-Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastlanes the process of developing a native app for both ecosystems. Below is a link to them on the respective stores.
-- iOS:
-- Android:
-
-## Design timeline
-![image](https://github.com/lukamo1996/poddley/assets/52632596/789ec1cc-5d10-4f9d-8dbc-4b5cc2c46152)
+## Design iterations
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/6e4ca29a-6093-481d-b566-39aac740dbf5" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/95e34b1c-29f3-40c3-8aed-5caeae92cb28" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/ae14c18a-691e-43c6-8c07-079818eebf34" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/fac49f03-2f1b-45f6-b870-3dafbffc23b6" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/56327a71-be18-4046-962f-46411554239c" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/91629802-afb1-4770-8f66-4214b8a28d71" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/31b170c6-1dd6-439a-8853-bb948fbdce1c" width="23%"></img>
+<img src="https://github.com/lukamo1996/poddley/assets/52632596/21a0014e-1abc-4165-a8e9-575a19547235" width="23%"></img>
 
 ## Realizations
-- Safari/iOS sucks (forcing you to make apps, fuck em). Android at least has workarounds.
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
@@ -43,7 +44,6 @@ Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastla
 - ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic (as in the first 1 second API calls should be instantaneous, but the ones after shan't). Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
 - Nuxt 3 modules used:
 	- TailwindCSS module (integrated PurgeCSS and fast design development)
-	- Supabase module
 	- NuxtImage module
 	- HeadlessUI module
 	- SVG-sprite-module (for reducing SVG-requests to server)
@@ -51,7 +51,6 @@ Both solutions are solved using nuxt3-module Ionic/Capacitor plugin which fastla
 	- Lodash module (for _Debounce-function)
 	- Device module (for iPhone-device detection)
 	- Pinia Nuxt Module (for global storage across components)
- 	- NuxtJS Ionic module (for fast Android/iOS development)
   	- Nightwind Tailwind plugin (for deep automatic nightmode)
 
 ## Backend:
@@ -449,8 +448,7 @@ Has to be a live version auto
 
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
-## Features planned adding:
-### Do-es
+## Stuff to do:
 - [ ] ~~Covert search to multiseach to speed up search time~~
 - [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
 - [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
@@ -602,26 +600,12 @@ Has to be a live version auto
 - [x] Use the native audio player as far as you can embeeded into each entry if someone clicks on the playing button.
 - [x] Style all of them accordingly, for chrome a certain way, for firefox a certain way and for opera another way.
 - [x] Are the about page and contact page good looking, different font?
-- [ ] Start transcriberen og bruk large
+- [x] Start up all pm2-services.
+- [x] Fix height of text-area
+- [x] More padding on the navbar on the mobile phones.
+- [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.
+- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok, markedsfør/kontakt podcasters/logan paul/lex fridman/etc etc etc...
+- [ ] Start transcriberen og bruk large-v2
 - [ ] Make MeiliSearch production version.
-- [ ] Start up all pm2-services.
-- [ ] Modify the backend so the first segment is always what was searched for. Don't show anything before the searchSegment. And reduce the size of the response as it's too big.
-- [ ] Add the "getEntireTranscript"-button. The button shall...???
-- [ ] So essentially, when someone clicks on the button it should fetch the transcript associated with that podcast
-- [ ] Android / Apple app button where the microphone is, like a "pod-it" symbol.
-- [ ] Make design for android and apple
-
-After finish:
-- [ ] Medlemskap: API usage, full transcript downloads, no ads,
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok
-- [ ] Skriv et blogginnlegg om prosjektet, skriv om integrering av CloudWorkers med Nuxt3 på medium,
-- [ ] Start en egen IT blogg
-- [ ] Markedsfør
+- [ ] Add the "getEntireTranscript"-button.	
 - [ ] Finskriv githuben
-
-**Later maybe**:
-- [ ] En bruker skal kunne se en historikk over poddehistorikken deres ala iPhone shazam, 
-- [ ] Slett konto
-- [ ] Se lagrede quotes
-- [ ] Upload a picture/profile pic using r3
-- [ ] External API to sell.
