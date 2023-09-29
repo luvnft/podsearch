@@ -50,6 +50,8 @@ const handleSearch = (event: any) => {
   };
   searchQ.searchString = event?.target?.value || "";
   searchQuery.value = searchQ;
+  console.log("trololo", searchQ)
+  console.log("query: ", searchQuery.value)
 };
 
 //When mounted start the watcher to navigate if not on page etc.
