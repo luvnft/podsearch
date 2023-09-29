@@ -1,22 +1,15 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from 'axios';
 import { SearchQuery } from "../../types/SearchQuery";
+import { SearchResponse } from "../../types/SearchResponse";
 
 export default class TranscriptionsServiceSearch {
-  protected BASE_URL: string;
+  protected readonly BASE_URL = "https://api.poddley.com";
 
-  public constructor() {
-    this.BASE_URL = "https://api.poddley.com" || "http://localhost:3000";
-  }
-
-  protected getBaseUrl(): string {
-    return this.BASE_URL;
-  }
-
-  protected async fetchPost<T>(url: string, searchQuery: SearchQuery): Promise<T> {
+  protected async fetchPost<T>(apiUrl: string, requestData: any): Promise<T> {
     const response: AxiosResponse = await axios({
-      url: this.getBaseUrl() + url,
+      url: this.BASE_URL + apiUrl,
       method: "POST",
-      data: { searchQuery },
+      data: requestData,
     });
 
     if (response.status >= 200 && response.status < 300) {
@@ -25,8 +18,12 @@ export default class TranscriptionsServiceSearch {
 
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  public async search(searchQuery: SearchQuery): Promise<any> {
-    const data = await this.fetchPost<any>("/transcriptions/search", searchQuery);
-    return data;
+
+  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
+    return this.fetchPost<SearchResponse>("/transcriptions/search", searchQuery);
+  }
+
+  public async getFullTranscript(episodeGuid: string): Promise<SearchResponse> {
+    return this.fetchPost<SearchResponse>("/transcriptions/get-full-transcript", { episodeGuid });
   }
 }

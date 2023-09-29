@@ -1,6 +1,6 @@
 <template>
   <div class="block" ref="searchResultsRef">
-    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
+    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchQuery.searchString" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -78,7 +78,6 @@ async function makeSearch() {
         const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
         const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
         const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
-        // searchQuery.value = query;
         searchResults.value = await transcriptionService.search(query);
       } catch (e) {}
     }
@@ -87,7 +86,7 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 300, {
-  leading: false,
+  leading: true,
   trailing: true,
 });
 
