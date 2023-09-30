@@ -11,19 +11,19 @@ import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 
-const scrollY = ref(0);
-const { y } = useWindowScroll();
+// const scrollY = ref(0);
+// const { y } = useWindowScroll();
 
-// load more data when scrolled 70% of the document.
-watch(y, () => {
-  scrollY.value = y.value;
-  const windowHeight = document.documentElement.scrollHeight;
-  const visibleHeight = window.innerHeight;
+// // load more data when scrolled 70% of the document.
+// watch(y, () => {
+//   scrollY.value = y.value;
+//   const windowHeight = document.documentElement.scrollHeight;
+//   const visibleHeight = window.innerHeight;
 
-  if (scrollY.value + visibleHeight >= 0.7 * windowHeight) {
-    console.log("calling");
-  }
-});
+//   if (scrollY.value + visibleHeight >= 0.7 * windowHeight) {
+//     console.log("calling");
+//   }
+// });
 
 //Vars
 let worker: Worker;
@@ -46,17 +46,17 @@ onMounted(() => {
       const { action, payload } = event.data;
 
       console.log("Action: ", action);
-      console.log("Payload: ", payload)
+      console.log("Payload: ", payload);
       switch (action) {
         case "searchCompleted":
           // searchResults.value = payload;
           console.log("OK");
-          console.log("payload", payload)
-          debounceSetSearchResults(payload)
-          debounceSetLoadingToggle(false);
+          console.log("payload", payload);
+          searchStore.setSearchResults(payload);
+          searchStore.setLoadingState(false);
           break;
         case "searchFailed":
-          debounceSetLoadingToggle(false);
+          searchStore.setLoadingState(false);
           break;
       }
     };
@@ -64,13 +64,14 @@ onMounted(() => {
 });
 
 function searchViaWorker() {
-  console.log("Searching via worker")
+  console.log("Searching via worker");
   searchStore.setLoadingState(true);
   worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
+  console.log("Searching....")
   // Send a message to the worker to perform the search
   if (worker) {
     searchViaWorker();
@@ -88,18 +89,8 @@ async function makeSearch() {
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 300, {
-  leading: true,
-  trailing: true,
-});
-
-const debounceSetLoadingToggle = _Debounce(searchStore.setLoadingState, 500, {
-  leading: true,
-  trailing: true,
-});
-
-const debounceSetSearchResults = _Debounce(searchStore.setSearchResults, 500, {
-  leading: true,
+const debouncedSearch = _Debounce(makeSearch, 1000, {
+  leading: false,
   trailing: true,
 });
 
