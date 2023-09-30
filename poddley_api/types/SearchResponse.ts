@@ -1,10 +1,6 @@
 export interface SearchResponse {
   hits: SearchResponseHit[];
   query: string;
-  processingTimeMs: number;
-  limit?: number | undefined;
-  offset?: number | undefined;
-  estimatedTotalHits?: number;
 }
 
 export interface SearchResponseHit {
