@@ -31,3 +31,7 @@ hr {
   @apply scrollbar-thumb-rounded !important;
   @apply scrollbar-w-0.5 !important;
 }
+
+time {
+  @apply text-gray-400;
+}
