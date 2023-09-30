@@ -71,7 +71,10 @@ class TranscriptionsService {
   private async segmentSearch(searchParams: SearchParams): Promise<SearchResponse> {
     // Search results => Perform it.
     let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
-    const searchResponse: SearchResponse = {} as SearchResponse;
+    let searchResponse: SearchResponse = {
+      query: searchParams.q || "",
+      hits: [],
+    };
 
     // Getting the podcast ids and episode ids to fetch them further as they are not part of the segmentObjects on the segmentsIndex
     const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
@@ -83,36 +86,51 @@ class TranscriptionsService {
     const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
 
     // Get surrounding hits or not depending on boolean flag
-    if (searchParams.getFullTranscript){
-      console.log("OK");
-    } 
-    else {
-
-      for(let i = 0; i < initialSearchResponse.hits.length; i++){
+    if (searchParams.getFullTranscript) {
+    } else {
+      for (let i = 0; i < initialSearchResponse.hits.length; i++) {
         const segmentHit: SegmentHit = initialSearchResponse.hits[i];
+
+        // Setting up a query for 5 segments up and 5 segments down using some reference (I'm using `start` for this example)
+        let postParams: SearchParams = {
+          filter: `start ${segmentHit.start} TO ${segmentHit.start + 60} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
+          limit: 10,
+          sort: ["start:asc"],
+          q: undefined,
+        };
+
+        // Hits around the current looped hit
+        let postResponse: SegmentResponse = await this.segmentsIndex.search(undefined, postParams);
+        let postHits: SegmentHit[] = postResponse.hits;
+        let postHitsCombinedText: string = postHits
+        .map((hit: SegmentHit) => hit.text.trim())
+        .filter(Boolean)
+        .join(" ").trim();
+        const combinedTextWithFormattedText = `${segmentHit._formatted.text.trim()} ${postHitsCombinedText.trim()}`.trim();
+        segmentHit._formatted.text = combinedTextWithFormattedText;
         const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentHit.belongsToPodcastGuid) as PodcastHit;
         const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentHit.belongsToEpisodeGuid) as EpisodeHit;
-          const searchResponseHitConstructed: SearchResponseHit = {
-            ...segmentHit,
-            podcastTitle: segmentHitPodcast.title,
-            episodeTitle: segmentHitEpisode.episodeTitle,
-            podcastSummary: segmentHitPodcast.description,
-            episodeSummary: segmentHitEpisode.episodeSummary,
-            description: segmentHitPodcast.description,
-            podcastAuthor: segmentHitPodcast.itunesAuthor,
-            episodeLinkToEpisode: segmentHitEpisode.episodeLinkToEpisode,
-            episodeEnclosure: segmentHitEpisode.episodeEnclosure,
-            podcastLanguage: segmentHitPodcast.language,
-            podcastGuid: segmentHitPodcast.podcastGuid,
-            imageUrl: segmentHitPodcast.imageUrl,
-            podcastImage: segmentHitPodcast.imageUrl,
-            episodeGuid: segmentHitEpisode.episodeGuid,
-            url: segmentHitPodcast.url,
-            link: segmentHitPodcast.link,
-            youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-            deviationTime: segmentHitEpisode.deviationTime || 0,
-          };
-          searchResponse.hits.push(searchResponseHitConstructed);
+        const searchResponseHitConstructed: SearchResponseHit = {
+          ...segmentHit,
+          podcastTitle: segmentHitPodcast.title,
+          episodeTitle: segmentHitEpisode.episodeTitle,
+          podcastSummary: segmentHitPodcast.description,
+          episodeSummary: segmentHitEpisode.episodeSummary,
+          description: segmentHitPodcast.description,
+          podcastAuthor: segmentHitPodcast.itunesAuthor,
+          episodeLinkToEpisode: segmentHitEpisode.episodeLinkToEpisode,
+          episodeEnclosure: segmentHitEpisode.episodeEnclosure,
+          podcastLanguage: segmentHitPodcast.language,
+          podcastGuid: segmentHitPodcast.podcastGuid,
+          imageUrl: segmentHitPodcast.imageUrl,
+          podcastImage: segmentHitPodcast.imageUrl,
+          episodeGuid: segmentHitEpisode.episodeGuid,
+          url: segmentHitPodcast.url,
+          link: segmentHitPodcast.link,
+          youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
+          deviationTime: segmentHitEpisode.deviationTime || 0,
+        };
+        searchResponse.hits.push(searchResponseHitConstructed);
       }
 
       // Assign similarity score to all hits. If no searchString, nothing to calculate essentially
@@ -124,7 +142,6 @@ class TranscriptionsService {
         searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
       }
     }
-
     return searchResponse;
   }
 
