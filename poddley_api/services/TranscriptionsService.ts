@@ -59,7 +59,7 @@ class TranscriptionsService {
       matchingStrategy: "last",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
-      limit: searchQuery.limit === undefined ? 50 : searchQuery.limit <= 50 ? searchQuery.limit : 10,
+      limit: 25,
     };
 
     // Initial search
@@ -95,12 +95,11 @@ class TranscriptionsService {
         // Setting up a query for 5 segments up and 5 segments down using some reference (I'm using `start` for this example)
         let postParams: SearchParams = {
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
-          limit: 50,
+          limit: 25,
           sort: ["start:asc"],
           attributesToHighlight: ["text"],
           highlightPreTag: '<span class="highlight">',
           highlightPostTag: "</span>",
-          showMatchesPosition: true,
           matchingStrategy: "last",
           q: searchParams.q,
         };
@@ -117,20 +116,6 @@ class TranscriptionsService {
         // segmentHit._formatted.text = combinedTextWithFormattedText;
         const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentHit.belongsToPodcastGuid) as PodcastHit;
         const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentHit.belongsToEpisodeGuid) as EpisodeHit;
-        const firstSearchResponseAsSegmentHit: SegmentHit = {
-          text: segmentHit.text,
-          id: segmentHit.id,
-          start: segmentHit.start,
-          end: segmentHit.end,
-          language: segmentHit.language,
-          belongsToPodcastGuid: segmentHit.belongsToPodcastGuid,
-          belongsToEpisodeGuid: segmentHit.belongsToEpisodeGuid,
-          belongsToTranscriptId: segmentHit.belongsToTranscriptId,
-          indexed: segmentHit.indexed,
-          segmentWordEntries: segmentHit.segmentWordEntries,
-          _formatted: segmentHit._formatted,
-          similarity: segmentHit.similarity,
-        };
         const searchResponseHitConstructed: SearchResponseHit = {
           ...segmentHit,
           podcastTitle: segmentHitPodcast.title,
@@ -189,20 +174,20 @@ class TranscriptionsService {
               let segmentEndTime = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
 
               // Create and add the formatted segment to the segments array
-              segments.push(`<span class="text-gray-400">${convertSecondsToTime(segmentStartTime)}: </span><i>${segmentWords.join(" ").trim()}</i>`);
+              segments.push(`<p><time>${convertSecondsToTime(segmentStartTime)}:</time> <i>${segmentWords.join(" ").trim()}</i></p>`);
 
               // Update the segmentStartTime for the next segment
               segmentStartTime = segmentEndTime;
             }
 
-            return segments.join("<br /> ");
+            return segments.join("");
           }
 
           // If not, let'se goooo
-          return `<span class="text-gray-400">${convertSecondsToTime(startTime)}: </span><i>${text}</i>`;
+          return `<p><time>${convertSecondsToTime(startTime)}:</time> <i>${text}</i></p>`;
         });
 
-        responseHit._formatted.text = formattedData?.join("<br /> ") || "";
+        responseHit._formatted.text = formattedData?.join("") || "";
       }
     });
 
