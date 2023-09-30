@@ -45,6 +45,8 @@ onMounted(() => {
     worker.onmessage = (event: any) => {
       const { action, payload } = event.data;
 
+      console.log("Action: ", action);
+      console.log("Payload: ", payload)
       switch (action) {
         case "searchCompleted":
           // searchResults.value = payload;
@@ -62,6 +64,7 @@ onMounted(() => {
 });
 
 function searchViaWorker() {
+  console.log("Searching via worker")
   searchStore.setLoadingState(true);
   worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }

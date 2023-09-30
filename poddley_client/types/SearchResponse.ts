@@ -18,7 +18,7 @@ export interface Hit {
   episodeEnclosure: string;
   podcastLanguage: string;
   podcastGuid: string;
-  imageUrl: string;
+  podcastImage: string;
   episodeGuid: string;
   url: string;
   link: string;
@@ -26,6 +26,22 @@ export interface Hit {
   deviationTime?: number;
   id: string;
   _formatted: Formatted;
+  subHits?: SegmentHit[];
+}
+
+export interface SegmentHit {
+  text: string;
+  id: string;
+  start: number;
+  end: number;
+  language: string;
+  belongsToPodcastGuid: string;
+  belongsToEpisodeGuid: string;
+  belongsToTranscriptId: string;
+  indexed: boolean;
+  segmentWordEntries: any;
+  _formatted: Formatted;
+  similarity: number;
 }
 
 export interface Formatted {
@@ -43,7 +59,7 @@ export interface Formatted {
   episodeEnclosure: string;
   podcastLanguage: string;
   podcastGuid: string;
-  imageUrl: string;
+  podcastImage: string;
   episodeGuid: string;
   url: string;
   link: string;
