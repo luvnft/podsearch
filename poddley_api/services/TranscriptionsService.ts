@@ -10,6 +10,7 @@ import { PrismaClient } from "@prisma/client";
 import { Category, SearchQuery } from "../types/SearchQuery";
 import { removeDuplicates } from "./helpers/helpers";
 import { SearchParams } from "../types/SearchParams";
+import { convertSecondsToTime } from "../utils/secondsToTime";
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
@@ -93,8 +94,8 @@ class TranscriptionsService {
 
         // Setting up a query for 5 segments up and 5 segments down using some reference (I'm using `start` for this example)
         let postParams: SearchParams = {
-          filter: `start ${segmentHit.start} TO ${segmentHit.start + 60} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
-          limit: 10,
+          filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
+          limit: 50,
           sort: ["start:asc"],
           q: undefined,
         };
@@ -103,9 +104,10 @@ class TranscriptionsService {
         let postResponse: SegmentResponse = await this.segmentsIndex.search(undefined, postParams);
         let postHits: SegmentHit[] = postResponse.hits;
         let postHitsCombinedText: string = postHits
-        .map((hit: SegmentHit) => hit.text.trim())
-        .filter(Boolean)
-        .join(" ").trim();
+          .map((hit: SegmentHit) => hit.text.trim())
+          .filter(Boolean)
+          .join(" ")
+          .trim();
         const combinedTextWithFormattedText = `${segmentHit._formatted.text.trim()} ${postHitsCombinedText.trim()}`.trim();
         segmentHit._formatted.text = combinedTextWithFormattedText;
         const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentHit.belongsToPodcastGuid) as PodcastHit;
@@ -122,13 +124,13 @@ class TranscriptionsService {
           episodeEnclosure: segmentHitEpisode.episodeEnclosure,
           podcastLanguage: segmentHitPodcast.language,
           podcastGuid: segmentHitPodcast.podcastGuid,
-          imageUrl: segmentHitPodcast.imageUrl,
           podcastImage: segmentHitPodcast.imageUrl,
           episodeGuid: segmentHitEpisode.episodeGuid,
           url: segmentHitPodcast.url,
           link: segmentHitPodcast.link,
           youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
           deviationTime: segmentHitEpisode.deviationTime || 0,
+          subHits: postHits,
         };
         searchResponse.hits.push(searchResponseHitConstructed);
       }
@@ -142,6 +144,47 @@ class TranscriptionsService {
         searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
       }
     }
+
+    // Change the response to be correctly formatted
+    // Change the response to be correctly formatted
+searchResponse.hits.forEach((responseHit: SearchResponseHit) => {
+  if (responseHit && responseHit._formatted) {
+    let formattedData = responseHit?.subHits?.map((item) => {
+      let startTime = item.start;
+      let endTime = item.end;
+      let text = item.text;
+      
+      let words = text.split(' ');
+      
+      if(words.length > 6) {
+        let segments = [];
+        
+        // Calculate duration per word in the original segment
+        let durationPerWord = (endTime - startTime) / words.length;
+        
+        let segmentStartTime = startTime; // Initialize segmentStartTime for the first segment
+        
+        while(words.length) {
+          let segmentWords = words.splice(0, 6); // Adjust the '6' to disperse the words accordingly in the segments
+          let segmentEndTime = segmentStartTime + (segmentWords.length * durationPerWord);
+          
+          // Create and add the formatted segment to the segments array
+          segments.push(`<span class = "text-gray-400">${convertSecondsToTime(segmentStartTime)}</span>: <i>${segmentWords.join(' ').trim()}</i>`);
+          
+          // Update the segmentStartTime for the next segment
+          segmentStartTime = segmentEndTime;
+        }
+        
+        return segments.join('<br /> ');
+      }
+      
+      return `<span class = "text-gray-400">${convertSecondsToTime(startTime)}</span>:<i>${text}</i>`;
+      
+    });
+    
+    responseHit._formatted.text = formattedData?.join("<br /> ") || "";
+  }
+});
     return searchResponse;
   }
 
