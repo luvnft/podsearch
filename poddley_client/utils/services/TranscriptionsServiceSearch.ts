@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from "axios";
 import { SearchQuery } from "../../types/SearchQuery";
 import { SearchResponse } from "../../types/SearchResponse";
 
@@ -20,10 +20,13 @@ export default class TranscriptionsServiceSearch {
   }
 
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
-    return this.fetchPost<SearchResponse>("/transcriptions/search", searchQuery);
+    console.log("Searching from api srrr");
+    const data = await this.fetchPost<any>("/transcriptions/search", { searchQuery });
+    console.log("DATA:", data);
+    return data;
   }
 
   public async getFullTranscript(episodeGuid: string): Promise<SearchResponse> {
-    return this.fetchPost<SearchResponse>("/transcriptions/get-full-transcript", { episodeGuid });
+    return await this.fetchPost<SearchResponse>("/transcriptions/get-full-transcript", { episodeGuid });
   }
 }

@@ -8,11 +8,13 @@ self.addEventListener("message", async (event) => {
     case "search":
       try {
         const res = await transcriptionsServiceSearch.search(parsedPayload);
+        console.log(res)
         self.postMessage({
           action: "searchCompleted",
           payload: res,
         });
       } catch (e) {
+        console.log(e)
         self.postMessage({
           action: "searchFailed",
           payload: "",

@@ -3,7 +3,7 @@
     <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
       <div class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
         <div class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
-          <NuxtImg :src="props.searchEntry?.imageUrl" class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" loading="lazy" />
+          <NuxtImg :src="props.searchEntry?.podcastImage" class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" loading="lazy" />
         </div>
         <div class="flex min-w-0 items-center">
           <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base" style="color: rgb(246, 246, 246)">

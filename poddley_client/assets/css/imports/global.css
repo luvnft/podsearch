@@ -1,3 +1,9 @@
+/* Font smoothing for better font rendering on macOS and iOS */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 * {
   font-family: "Quicksand" !important;
 }
@@ -24,39 +30,4 @@ hr {
   @apply scrollbar-track-gray-300 !important;
   @apply scrollbar-thumb-rounded !important;
   @apply scrollbar-w-0.5 !important;
-}
-
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-  * {
-    font-size: 16px;
-  }
-}
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-  * {
-    font-size: 16px;
-  }
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-  * {
-    font-size: 16px;
-  }
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-  * {
-    font-size: 18px;
-  }
-}
-
-/* Extra extra large devices (larger desktops, 1400px and up) */
-@media (min-width: 1400px) {
-  * {
-    font-size: 20px;
-  }
 }
