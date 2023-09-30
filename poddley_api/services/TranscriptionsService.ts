@@ -4,7 +4,7 @@ import { SearchResponse, SearchResponseHit } from "../types/SearchResponse";
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
 import _ from "lodash";
-import { Index, MeiliSearch, MultiSearchParams, MultiSearchResponse, MultiSearchResult } from "meilisearch";
+import { Index, MeiliSearch, MultiSearchParams, MultiSearchQuery, MultiSearchResponse, MultiSearchResult } from "meilisearch";
 import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 import { PrismaClient } from "@prisma/client";
 import { SearchQuery } from "../types/SearchQuery";
@@ -24,7 +24,7 @@ class TranscriptionsService {
     this.transcriptionsIndex = meilisearchConnection.index("transcriptions");
     this.segmentsIndex = meilisearchConnection.index("segments");
     this.podcastsIndex = meilisearchConnection.index("podcasts");
-    this.episodesIndex = meilisearchConnection.index("episodes"); 
+    this.episodesIndex = meilisearchConnection.index("episodes");
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
   }
@@ -47,7 +47,7 @@ class TranscriptionsService {
     // Return response
     return response;
   }
- 
+
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     // MainQuery
@@ -58,7 +58,7 @@ class TranscriptionsService {
       matchingStrategy: "last",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
-      limit: 25,
+      limit: 50,
     };
 
     // Initial search
@@ -82,13 +82,10 @@ class TranscriptionsService {
     const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
 
     // Making a query for the podcast and episodes based on the ids connected to the segments
-    const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
-    const podcastsMap: Map<string, PodcastHit> = new Map(podcasts.hits.map((podcast) => [podcast.podcastGuid, podcast]));
-    const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
 
     // Get surrounding hits or not depending on boolean flag
     let multiSearchParams: MultiSearchParams = {
-      queries: [],
+      queries: [this.getPodcastMultiQuery(podcastIds), this.getEpisodeMultiQuery(episodeIds)],
     };
     if (searchParams.getFullTranscript) {
     } else {
@@ -107,7 +104,11 @@ class TranscriptionsService {
       });
 
       let multiSearchResponse: MultiSearchResponse = await meilisearchConnection.multiSearch(multiSearchParams);
-
+      const podcastsMap: Map<string, PodcastHit> = new Map(multiSearchResponse.results[0].hits.map((podcastHit: any) => [podcastHit.podcastGuid, podcastHit]));
+      const episodesMap: Map<string, EpisodeHit> = new Map(multiSearchResponse.results[1].hits.map((episodeHit: any) => [episodeHit.episodeGuid, episodeHit]));
+      multiSearchResponse.results = multiSearchResponse.results.slice(2);
+      
+      console.log(podcastsMap);
       multiSearchResponse.results.forEach((result: MultiSearchResult<any>, index: number) => {
         let segmentHit: any = initialSearchResponse.hits[index];
         let postHits: SegmentHit[] = result.hits;
@@ -176,6 +177,7 @@ class TranscriptionsService {
         });
 
         responseHit._formatted.text = formattedData?.join("") || "";
+        responseHit.subHits = [];
       }
     });
 
@@ -188,8 +190,8 @@ class TranscriptionsService {
       searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
     }
     const endTime = new Date().getTime();
-    console.log("Search took: ", (endTime - startTime) / 3600)
-    
+    console.log("Search took: ", (endTime - startTime) / 3600);
+
     return searchResponse;
   }
 
@@ -203,6 +205,32 @@ class TranscriptionsService {
     });
     // Return data
     return resData;
+  }
+
+  private getPodcastMultiQuery(podcastIds: string[]): MultiSearchQuery {
+    podcastIds = podcastIds.map((e) => `'${e}'`);
+    const filter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
+    const podcastMultiSearchQuery: MultiSearchQuery = {
+      limit: podcastIds.length || 5,
+      filter: filter,
+      indexUid: "podcasts",
+      q: undefined,
+    };
+    // Return podcastMultiSearchQuery
+    return podcastMultiSearchQuery;
+  }
+
+  private getEpisodeMultiQuery(episodesIds: string[]): MultiSearchQuery {
+    episodesIds = episodesIds.map((e) => `'${e}'`);
+    const filter: string = `episodeGuid=${episodesIds.join(" OR episodeGuid=")}`;
+    const episodeMultiSearchQuery: MultiSearchQuery = {
+      limit: episodesIds.length || 5,
+      filter: filter,
+      indexUid: "episodes",
+      q: undefined,
+    };
+    // Return episodeMultiSearchQuery
+    return episodeMultiSearchQuery;
   }
 
   private async searchEpisodesWithIds(episodesIds: string[]): Promise<EpisodeResponse> {
