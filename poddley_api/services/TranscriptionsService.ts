@@ -4,11 +4,11 @@ import { SearchResponse, SearchResponseHit } from "../types/SearchResponse";
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
 import _ from "lodash";
-import { Index, MeiliSearch } from "meilisearch";
+import { Index, MeiliSearch, MultiSearchParams, MultiSearchResponse, MultiSearchResult } from "meilisearch";
 import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 import { PrismaClient } from "@prisma/client";
-import { Category, SearchQuery } from "../types/SearchQuery";
-import { formatSearchResponse, removeDuplicates } from "./helpers/helpers";
+import { SearchQuery } from "../types/SearchQuery";
+import { removeDuplicates } from "./helpers/helpers";
 import { SearchParams } from "../types/SearchParams";
 import { convertSecondsToTime } from "../utils/secondsToTime";
 
@@ -24,7 +24,7 @@ class TranscriptionsService {
     this.transcriptionsIndex = meilisearchConnection.index("transcriptions");
     this.segmentsIndex = meilisearchConnection.index("segments");
     this.podcastsIndex = meilisearchConnection.index("podcasts");
-    this.episodesIndex = meilisearchConnection.index("episodes");
+    this.episodesIndex = meilisearchConnection.index("episodes"); 
     this.prismaConnection = prismaConnection;
     this.meilisearchConnection = meilisearchConnection;
   }
@@ -47,7 +47,7 @@ class TranscriptionsService {
     // Return response
     return response;
   }
-
+ 
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     // MainQuery
@@ -55,7 +55,6 @@ class TranscriptionsService {
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
       highlightPostTag: "</span>",
-      showMatchesPosition: true,
       matchingStrategy: "last",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
@@ -70,6 +69,7 @@ class TranscriptionsService {
   }
 
   private async segmentSearch(searchParams: SearchParams): Promise<SearchResponse> {
+    const startTime = new Date().getTime();
     // Search results => Perform it.
     let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
     let searchResponse: SearchResponse = {
@@ -87,13 +87,15 @@ class TranscriptionsService {
     const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
 
     // Get surrounding hits or not depending on boolean flag
+    let multiSearchParams: MultiSearchParams = {
+      queries: [],
+    };
     if (searchParams.getFullTranscript) {
     } else {
-      for (let i = 0; i < initialSearchResponse.hits.length; i++) {
-        const segmentHit: SegmentHit = initialSearchResponse.hits[i];
-
-        // Setting up a query for 5 segments up and 5 segments down using some reference (I'm using `start` for this example)
-        let postParams: SearchParams = {
+      initialSearchResponse.hits.map((segmentHit: SegmentHit) => {
+        multiSearchParams.queries.push({
+          indexUid: "segments", // Replace with the actual index name
+          q: searchParams.q,
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
           limit: 25,
           sort: ["start:asc"],
@@ -101,19 +103,15 @@ class TranscriptionsService {
           highlightPreTag: '<span class="highlight">',
           highlightPostTag: "</span>",
           matchingStrategy: "last",
-          q: searchParams.q,
-        };
+        });
+      });
 
-        // Hits around the current looped hit
-        let postResponse: SegmentResponse = await this.segmentsIndex.search(undefined, postParams);
-        let postHits: SegmentHit[] = postResponse.hits;
-        let postHitsCombinedText: string = postHits
-          .map((hit: SegmentHit) => hit.text.trim())
-          .filter(Boolean)
-          .join(" ")
-          .trim();
-        const combinedTextWithFormattedText = `${segmentHit._formatted.text.trim()} ${postHitsCombinedText.trim()}`.trim();
-        // segmentHit._formatted.text = combinedTextWithFormattedText;
+      let multiSearchResponse: MultiSearchResponse = await meilisearchConnection.multiSearch(multiSearchParams);
+
+      multiSearchResponse.results.forEach((result: MultiSearchResult<any>, index: number) => {
+        let segmentHit: any = initialSearchResponse.hits[index];
+        let postHits: SegmentHit[] = result.hits;
+
         const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentHit.belongsToPodcastGuid) as PodcastHit;
         const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentHit.belongsToEpisodeGuid) as EpisodeHit;
         const searchResponseHitConstructed: SearchResponseHit = {
@@ -137,19 +135,9 @@ class TranscriptionsService {
           subHits: postHits,
         };
         searchResponse.hits.push(searchResponseHitConstructed);
-      }
-
-      // Assign similarity score to all hits. If no searchString, nothing to calculate essentially
-      if (searchParams.q) {
-        this.addSimilarityScoreToHits(searchResponse.hits, searchParams.q);
-
-        // Setting new unique hits
-        searchResponse.hits = removeDuplicates(searchResponse.hits, "id");
-        searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
-      }
+      });
     }
 
-    // Change the response to be correctly formatted
     // Change the response to be correctly formatted
     searchResponse.hits.forEach((responseHit: SearchResponseHit) => {
       if (responseHit && responseHit._formatted) {
@@ -159,8 +147,8 @@ class TranscriptionsService {
           let text = item._formatted.text;
           let words = text.split(/ (?![^<]*>)/g);
 
-          // If bigger than 6 words, gotta make em smaller
-          if (words.length > 6) {
+          // If bigger than 5 words, gotta make em smaller
+          if (words.length > 5) {
             let segments = [];
 
             // Calculate duration per word in the original segment
@@ -191,6 +179,17 @@ class TranscriptionsService {
       }
     });
 
+    // Assign similarity score to all hits. If no searchString, nothing to calculate essentially
+    if (searchParams.q) {
+      this.addSimilarityScoreToHits(searchResponse.hits, searchParams.q);
+
+      // Setting new unique hits
+      searchResponse.hits = removeDuplicates(searchResponse.hits, "id");
+      searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
+    }
+    const endTime = new Date().getTime();
+    console.log("Search took: ", (endTime - startTime) / 3600)
+    
     return searchResponse;
   }
 
