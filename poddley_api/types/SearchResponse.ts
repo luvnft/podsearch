@@ -1,3 +1,5 @@
+import { SegmentHit } from "./SegmentResponse";
+
 export interface SearchResponse {
   hits: SearchResponseHit[];
   query: string;
@@ -26,11 +28,11 @@ export interface SearchResponseHit {
   similarity: number;
   youtubeVideoLink: string;
   deviationTime: number;
-  imageUrl: string;
   _formatted?: Formatted;
   _matchesPosition?: MatchesPosition;
+  subHits?: SegmentHit[];
 }
-
+ 
 export interface MatchesPosition {
   text: Text[];
 }
