@@ -21,12 +21,12 @@ export default class TranscriptionsServiceSearch {
 
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     console.log("Searching from api srrr");
-    const data = await this.fetchPost<any>("/transcriptions/search", { searchQuery });
+    const data = this.fetchPost<any>("/transcriptions/search", { searchQuery });
     console.log("DATA:", data);
     return data;
   }
 
   public async getFullTranscript(episodeGuid: string): Promise<SearchResponse> {
-    return await this.fetchPost<SearchResponse>("/transcriptions/get-full-transcript", { episodeGuid });
+    return this.fetchPost<SearchResponse>("/transcriptions/get-full-transcript", { episodeGuid });
   }
 }
