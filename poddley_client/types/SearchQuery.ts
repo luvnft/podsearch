@@ -4,7 +4,7 @@ export interface SearchQuery {
   filter?: string;
   limit?: number;
   hitsPerPage?: number;
-  page?: number;
+  offset?: number;
 }
 export enum Category {
   EPISODE = "episode",
