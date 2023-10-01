@@ -48,8 +48,8 @@
                                 class="mb-0 mt-0 flex h-full max-h-full min-h-full w-full justify-center rounded-lg px-0 py-0 pb-0 text-start">
                                 <div v-if="!loadingFullTranscript"
                                     :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base`">
-                                    <SearchEntryHit :index="index" :searchEntry="props.searchEntry" :key="props.searchEntry"
-                                        :currentPlayingTime="currentPlayingTime" />
+                                    <SearchEntryHit @goToAudioTime="goToAudioTime" :index="index"
+                                        :searchEntry="props.searchEntry" :currentPlayingTime="currentPlayingTime" />
                                 </div>
                                 <IconsSpinnerIcon class="w-100 flex h-40 items-center justify-center"
                                     v-if="loadingFullTranscript" />
@@ -58,7 +58,7 @@
 
                         <div v-if="playing"
                             :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 py-0 pb-0 `">
-                            <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay
+                            <audio ref="audioPlayer" :currentTime="props.searchEntry.start" controls preload="auto" autoplay
                                 :class="`text-black h-10 w-full rounded-lg border ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'}  dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
                                 :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
@@ -71,14 +71,22 @@
 </template>
 
 <script lang="ts" setup>
-import { Hit } from "../../types/SearchResponse";
+import TranscriptionService from "../../utils/services/TranscriptionsService";
+import { Hit, SearchResponse, SegmentHit, Formatted } from "../../types/SearchResponse";
+import { storeToRefs } from "pinia";
+import { useSearchStore } from "../../store/searchStore";
 
+const searchStore = useSearchStore();
+const { searchResults } = storeToRefs(searchStore);
+const transcriptionService: TranscriptionService = new TranscriptionService();
+let hasSearched: boolean = false;
 const props = defineProps<{
     searchEntry: Hit;
     index: number;
 }>();
 const { isFirefox, isSafari, isIos } = useDevice();
 const playing: Ref<boolean> = ref(false);
+const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 const subtitlesActivated: Ref<boolean> = ref(false);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
@@ -86,17 +94,68 @@ const handlePlaying = () => {
 };
 const currentPlayingTime: Ref<number> = ref(props.searchEntry.start);
 
-const handleTimeChange = (event: any) => {
-    console.log("Time changed: ", event)
-    const currentSeconds: number = parseFloat((event.target.currentTime).toFixed(1).toString())
-    console.log("CurrentTime in seconds: ", currentSeconds);
-
-    // Go to that specific section of the transcription
-    currentPlayingTime.value = currentSeconds;
-    console.log(currentPlayingTime.value)
-    //element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-
+const goToAudioTime = (moveToTime: number) => {
+    console.log("Triggerede aduoi move event", moveToTime)
+    if (audioPlayer.value) {
+        audioPlayer.value.currentTime = moveToTime;
+    }
 }
+
+const handleTimeChange = async (event: Event) => {
+    try {
+        // Assuming event is of type Event, we need to cast it to any 
+        // to access the non-standard properties like target.currentTime
+        const currentSeconds: number = parseFloat((event as any).target.currentTime.toFixed(1));
+
+        // Assuming currentPlayingTime and searchResults are reactive references
+        // and SegmentHit, SearchResponse are properly imported types
+        currentPlayingTime.value = currentSeconds;
+
+        const hits = searchResults.value.hits[props.index];
+        const lastAvailableElementIndex: number = hits.subHits.length - 1;
+        const lastAvailableElement: SegmentHit = hits.subHits[lastAvailableElementIndex];
+
+        if ((currentSeconds / lastAvailableElement.start) > 0.96) {
+            // Assuming audioPlayer is a reactive reference
+            if (hasSearched) return;
+            if (lastAvailableElementIndex + 1 !== audioPlayer.value?.duration) {
+                hasSearched = true;
+                console.log("Fetching full transcript due to 98% rule");
+
+                const searchResponse: SearchResponse = await transcriptionService.search({
+                    filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
+                    getFullTranscript: true,
+                });
+                console.log("Transcript: ", searchResponse);
+
+                // First we gotta loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
+                let segmentHits: SegmentHit[] = searchResponse.hits.map((hit: Hit) => {
+                    return {
+                        text: hit.text,
+                        id: hit.id,
+                        start: hit.start,
+                        end: hit.end,
+                        language: hit.podcastLanguage,
+                        belongsToPodcastGuid: hit.podcastGuid,
+                        belongsToEpisodeGuid: hit.episodeGuid,
+                        belongsToTranscriptId: hit.belongsToTranscriptId,
+                        _formatted: hit._formatted,
+                    }
+                })
+
+                // Doing it:
+                console.log("Index is: ", props.index)
+                segmentHits = fragmentSegmentHits(segmentHits)
+                searchResults.value.hits[props.index].subHits = segmentHits;
+                console.log("SearchResults NOOOOOOW: ", searchResults.value)
+                console.log("Fragmentation done, should be set");
+            }
+        }
+    } catch (error) {
+        console.error("Error in handleTimeChange: ", error);
+        hasSearched = false;
+    }
+};
 
 const computedStartTime = computed(() => {
     const start = parseFloat(props.searchEntry.start.toString()) || 0;

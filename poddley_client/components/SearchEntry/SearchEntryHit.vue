@@ -1,8 +1,10 @@
 <template>
     <ul ref="listRef" class="relative">
-        <li class="m-0 p-0" v-for="(subHit, index) in props.searchEntry.subHits"
+        <li class="m-0 p-0 cursor" v-for="(subHit, index) in props.searchEntry.subHits"
             :class="`${(subHit.start <= props.currentPlayingTime + 0.2 && subHit.end >= props.currentPlayingTime + 0.2) ? 'highlight' : ''}`">
-            <div v-html="utils.convertHitToFormattedText(subHit as unknown as Hit)" />
+            <button @click="goToAudioTime(subHit.start)">
+                <div v-html="utils.convertSegmentHitToFormattedText(subHit)" />
+            </button>
         </li>
     </ul>
 </template>
@@ -10,17 +12,24 @@
 <script lang="ts" setup>
 import { Hit } from '../../types/SearchResponse';
 
+const emit = defineEmits<{
+    (e: "goToAudioTime", number: number): void;
+}>();
+
 const listRef: Ref<any> = ref(null);
 const utils: Utils = useUtils();
 
 const props = defineProps<{
     searchEntry: Hit;
-    index: number;
     currentPlayingTime: number;
 }>();
 // Define a flag to determine whether the component has just mounted
 const isMounted: Ref<boolean> = ref(false);
 
+const goToAudioTime = (moveToTime: number) => {
+    console.log("yolo")
+    emit("goToAudioTime", moveToTime)
+}
 watch(
     // watch accepts the source data that you want to observe.
     () => [props.currentPlayingTime, props.searchEntry.subHits],
@@ -30,7 +39,7 @@ watch(
                 if (props.searchEntry.subHits) {
                     const subHit = props.searchEntry.subHits[index];
                     if (subHit.start <= props.currentPlayingTime + 0.2 && subHit.end >= props.currentPlayingTime + 0.2) {
-                        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center' })
                     }
                 }
             });

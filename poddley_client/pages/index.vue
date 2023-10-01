@@ -9,6 +9,7 @@ import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
+import { Hit, SegmentHit } from "../types/SearchResponse";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -72,6 +73,13 @@ async function makeSearch() {
                 const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
                 const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
+                searchResults.value.hits.forEach((hit: Hit) => {
+                    if (hit.subHits) {
+                        const fragmentedSubHits: SegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                        hit.subHits = fragmentedSubHits;
+                    }
+                });
+
             } catch (e) { }
         }
     }
@@ -79,7 +87,7 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 1000, {
-    leading: false,
+    leading: true,
     trailing: true,
 });
 
@@ -101,7 +109,7 @@ const debouncedOffsetIncrement = _Debounce(
     },
     1000,
     {
-        leading: false,
+        leading: true,
         trailing: true,
     }
 );
