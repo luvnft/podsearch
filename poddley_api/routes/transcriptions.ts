@@ -9,7 +9,6 @@ const transcriptionsController: TranscriptionsController = new TranscriptionsCon
 
 //Routes
 transcriptionsRouter.post("/search", transcriptionsController.search);
-transcriptionsRouter.post("/get-full-transcript", transcriptionsController.getFullTranscript);
 
 //Export it
 export default transcriptionsRouter;
