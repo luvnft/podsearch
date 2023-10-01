@@ -603,9 +603,26 @@ Has to be a live version auto
 - [x] Start up all pm2-services.
 - [x] Fix height of text-area
 - [x] More padding on the navbar on the mobile phones.
-- [ ] Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.
+- [ ] ~~Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.~~ Not possible due to Cloudflare not supporting custom dbs or express backend
 - [ ] Legg ut som showHN, reddit, contact podcasters + tiktok, markedsfør/kontakt podcasters/logan paul/lex fridman/etc etc etc...
 - [ ] Start transcriberen og bruk large-v2
 - [ ] Make MeiliSearch production version.
-- [ ] Add the "getEntireTranscript"-button.	
+- [x] Add the "getEntireTranscript"-button.	
 - [ ] Finskriv githuben
+
+- [ ] 8. We need to refactor the transcriber to be able to support concurrency
+10. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio???
+12. Start up large v2
+13. Meilisearch into production mode
+14. Legg ut poddley sanitized?=?=?=
+
+
+BackendStuff:
+Services:
+Single=> (30min)                                                            1. Updates meilisearch indexes based on db data
+Single=> (30min)                                                            2. RSS-updater (checks the saved rss feeds and upserts into episode db)
+Concurrent=>[DB-locking allows multiple transcribers to run] (continuously) 3. Transcriber / Aligner / YouTube Getter / Youtube video => Podcast Audio aligner/Deviation Calculator 
+
+1. Start the transcriber and services again with this structure in pm2 probably
+2. Modify the transcriber to lock the row and not depend on python prisma at all
+3. 
