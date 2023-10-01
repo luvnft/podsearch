@@ -5,6 +5,7 @@ export interface SearchQuery {
   limit?: number;
   hitsPerPage?: number;
   offset?: number;
+  getFullTranscript?: boolean;
 }
 export enum Category {
   EPISODE = "episode",

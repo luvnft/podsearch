@@ -26,8 +26,4 @@ export default class TranscriptionsServiceSearch {
     console.log("DATA:", data);
     return data;
   }
-
-  public async getFullTranscript(episodeGuid: string): Promise<SearchResponse> {
-    return this.fetchPost<SearchResponse>("/transcriptions/get-full-transcript", { episodeGuid });
-  }
 }

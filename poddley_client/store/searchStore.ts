@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { SearchResponse } from "types/SearchResponse";
 import { SearchQuery } from "../types/SearchQuery";
-import { Utils, useUtils } from "../composables/useUtils";
 const utils: Utils = useUtils();
 
 export const useSearchStore = defineStore("searchStore", () => {
