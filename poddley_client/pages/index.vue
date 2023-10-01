@@ -1,6 +1,6 @@
 <template>
   <div class="block" ref="searchResultsRef">
-    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
+    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchQuery.searchString" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -11,19 +11,8 @@ import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { Utils } from "composables/useUtils";
 
-// const scrollY = ref(0);
-// const { y } = useWindowScroll();
-
-// // load more data when scrolled 70% of the document.
-// watch(y, () => {
-//   scrollY.value = y.value;
-//   const windowHeight = document.documentElement.scrollHeight;
-//   const visibleHeight = window.innerHeight;
-
-//   if (scrollY.value + visibleHeight >= 0.7 * windowHeight) {
-//     console.log("calling");
-//   }
-// });
+const scrollY = ref(0);
+const { y } = useWindowScroll();
 
 //Vars
 let worker: Worker;
@@ -34,6 +23,7 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
   searchString: "The following is a conversation",
+  offset: 0,
 };
 //Running
 onMounted(() => {
@@ -71,7 +61,7 @@ function searchViaWorker() {
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-  console.log("Searching....")
+  console.log("Searching....");
   // Send a message to the worker to perform the search
   if (worker) {
     searchViaWorker();
@@ -90,7 +80,7 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 1000, {
-  leading: false,
+  leading: true,
   trailing: true,
 });
 
@@ -101,5 +91,20 @@ onServerPrefetch(async () => {
 
 watch(searchQuery, debouncedSearch, {
   deep: true,
+});
+
+// load more data when scrolled 70% of the document.
+watch(y, () => {
+  scrollY.value = y.value;
+  const windowHeight = document.documentElement.scrollHeight;
+  const visibleHeight = window.innerHeight;
+  console.log("OK");
+
+  if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
+    searchQuery.value = {
+      ...searchQuery.value,
+      offset: searchQuery.value.offset ? searchQuery.value.offset + 12 : 0,
+    };
+  }
 });
 </script>
