@@ -1,6 +1,6 @@
 <template>
   <div class="block" ref="searchResultsRef">
-    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchQuery.searchString" />
+    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -80,7 +80,7 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 1000, {
-  leading: true,
+  leading: false,
   trailing: true,
 });
 
@@ -93,6 +93,20 @@ watch(searchQuery, debouncedSearch, {
   deep: true,
 });
 
+const debouncedOffsetIncrement = _Debounce(
+  () => {
+    searchQuery.value = {
+      ...searchQuery.value,
+      offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
+    };
+  },
+  1000,
+  {
+    leading: false,
+    trailing: true,
+  }
+);
+
 // load more data when scrolled 70% of the document.
 watch(y, () => {
   scrollY.value = y.value;
@@ -101,10 +115,10 @@ watch(y, () => {
   console.log("OK");
 
   if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
-    searchQuery.value = {
-      ...searchQuery.value,
-      offset: searchQuery.value.offset ? searchQuery.value.offset + 12 : 0,
-    };
+    console.log("SEESES: ", searchQuery.value);
+    debouncedOffsetIncrement();
+    
+    console.log("new searchQuery: ", searchQuery.value);
   }
 });
 </script>
