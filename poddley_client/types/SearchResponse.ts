@@ -26,7 +26,7 @@ export interface Hit {
   deviationTime?: number;
   id: string;
   _formatted: Formatted;
-  subHits?: SegmentHit[];
+  subHits: SegmentHit[];
 }
 
 export interface SegmentHit {
@@ -38,10 +38,7 @@ export interface SegmentHit {
   belongsToPodcastGuid: string;
   belongsToEpisodeGuid: string;
   belongsToTranscriptId: string;
-  indexed: boolean;
-  segmentWordEntries: any;
   _formatted: Formatted;
-  similarity: number;
 }
 
 export interface Formatted {
