@@ -48,8 +48,8 @@
                                 class="mb-0 mt-0 flex h-full max-h-full min-h-full w-full justify-center rounded-lg px-0 py-0 pb-0 text-start">
                                 <div v-if="!loadingFullTranscript"
                                     :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base`">
-                                    <SearchEntryHit :index="index" :searchEntry="props.searchEntry"
-                                        :key="props.searchEntry" />
+                                    <SearchEntryHit :index="index" :searchEntry="props.searchEntry" :key="props.searchEntry"
+                                        :currentPlayingTime="currentPlayingTime" />
                                 </div>
                                 <IconsSpinnerIcon class="w-100 flex h-40 items-center justify-center"
                                     v-if="loadingFullTranscript" />
@@ -61,7 +61,7 @@
                             <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay
                                 :class="`text-black h-10 w-full rounded-lg border ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'}  dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
-                                :src="props.searchEntry.episodeEnclosure" />
+                                :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
                         </div>
                     </div>
                 </div>
@@ -84,6 +84,19 @@ const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
     playing.value = !playing.value;
 };
+const currentPlayingTime: Ref<number> = ref(props.searchEntry.start);
+
+const handleTimeChange = (event: any) => {
+    console.log("Time changed: ", event)
+    const currentSeconds: number = parseFloat((event.target.currentTime).toFixed(1).toString())
+    console.log("CurrentTime in seconds: ", currentSeconds);
+
+    // Go to that specific section of the transcription
+    currentPlayingTime.value = currentSeconds;
+    console.log(currentPlayingTime.value)
+    //element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+
+}
 
 const computedStartTime = computed(() => {
     const start = parseFloat(props.searchEntry.start.toString()) || 0;

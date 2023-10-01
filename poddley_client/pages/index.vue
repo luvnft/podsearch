@@ -79,7 +79,7 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 1000, {
-    leading: true,
+    leading: false,
     trailing: true,
 });
 
@@ -101,7 +101,7 @@ const debouncedOffsetIncrement = _Debounce(
     },
     1000,
     {
-        leading: true,
+        leading: false,
         trailing: true,
     }
 );
