@@ -19,16 +19,6 @@ class TranscriptionsController {
       res.status(400).send({ message: JSON.stringify(error) });
     }
   };
-
-  public getFullTranscript = async (req: Request, res: Response) => {
-    try {
-      const episodeGuid: string = req.body?.episodeGuid;
-      const data: SearchResponse = await this.transcriptionService.getFullTranscript(episodeGuid);
-      res.status(200).send(data);
-    } catch (error: any) {
-      res.status(400).send({ message: JSON.stringify(error) });
-    }
-  };
 }
 
 export default TranscriptionsController;
