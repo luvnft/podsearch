@@ -51,7 +51,7 @@ class TranscriptionsService {
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     // MainQuery
-    console.log(searchQuery);
+    console.log("KOKOKO", searchQuery);
     let mainQuery: SearchParams = {
       attributesToHighlight: ["text"],
       highlightPreTag: '<span class="highlight">',
@@ -63,10 +63,11 @@ class TranscriptionsService {
       offset: searchQuery.offset || 0,
     };
 
+    console.log("::::::", mainQuery)
+
     // Initial search
     let response: SearchResponse = await this.segmentSearch(mainQuery);
-    console.log(response);
-
+ 
     // Return response
     return response;
   }
