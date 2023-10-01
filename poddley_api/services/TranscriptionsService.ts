@@ -29,25 +29,6 @@ class TranscriptionsService {
     this.meilisearchConnection = meilisearchConnection;
   }
 
-  // Get full transcript functionality
-  public async getFullTranscript(episodeGuid: string): Promise<SearchResponse> {
-    // MainQuery
-    let mainQuery: SearchParams = {
-      q: undefined,
-      filter: `episoeGuid=${episodeGuid}`,
-      limit: 10000, // Hard limit, no way a podcast has more than 10000 segments...
-    };
-
-    // Initial search, get ids
-    let response: SearchResponse = {} as SearchResponse;
-
-    // At the moment we are defaulting to QUOTE so no need for category check from searchQuery
-    response = await this.segmentSearch(mainQuery);
-
-    // Return response
-    return response;
-  }
-
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     // MainQuery
@@ -63,46 +44,152 @@ class TranscriptionsService {
       offset: searchQuery.offset || 0,
     };
 
-    console.log("::::::", mainQuery)
+    if (searchQuery.getFullTranscript) {
+      mainQuery = {
+        filter: searchQuery.filter,
+        limit: 10000,
+        q: undefined,
+        matchingStrategy: "last",
+        sort: ["start:asc"],
+      };
+    }
+
+    console.log("::::::", mainQuery);
 
     // Initial search
-    let response: SearchResponse = await this.segmentSearch(mainQuery);
- 
+    let response: SearchResponse = await this.segmentSearch(mainQuery, searchQuery?.getFullTranscript || false);
+
     // Return response
     return response;
   }
 
-  private async segmentSearch(searchParams: SearchParams): Promise<SearchResponse> {
-    const startTime = new Date().getTime();
-    // Search results => Perform it.
-    console.log("YES");
-    let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
-    console.log("YES22");
+  private async segmentSearch(searchParams: SearchParams, getFullTranscript: boolean): Promise<SearchResponse> {
+    if (getFullTranscript) {
+      const startTime = new Date().getTime();
+      // Search results => Perform it.
+      console.log("YES", searchParams);
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
+      console.log("YES22");
 
-    let searchResponse: SearchResponse = {
-      query: searchParams.q || "",
-      hits: [],
-    };
+      let searchResponse: SearchResponse = {
+        query: searchParams.q || "",
+        hits: [],
+      };
 
-    console.log("NO");
-    // Getting the podcast ids and episode ids to fetch them further as they are not part of the segmentObjects on the segmentsIndex
-    const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
-    const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
+      console.log("NO");
+      // Getting the podcast ids and episode ids to fetch them further as they are not part of the segmentObjects on the segmentsIndex
+      const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
+      const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
 
-    console.log(podcastIds);
-    console.log(episodeIds);
-    // Making a query for the podcast and episodes based on the ids connected to the segments
-    const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
-    const podcastsMap: Map<string, PodcastHit> = new Map(podcasts.hits.map((podcast) => [podcast.podcastGuid, podcast]));
-    const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
+      console.log(podcastIds);
+      console.log(episodeIds);
+      // Making a query for the podcast and episodes based on the ids connected to the segments
+      const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
+      const podcastsMap: Map<string, PodcastHit> = new Map(podcasts.hits.map((podcast) => [podcast.podcastGuid, podcast]));
+      const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
 
-    console.log("HUHUHUU");
-    // Get surrounding hits or not depending on boolean flag
-    let multiSearchParams: MultiSearchParams = {
-      queries: [],
-    };
-    if (searchParams.getFullTranscript) {
+      console.log("HUHUHUU");
+      // Get surrounding hits or not depending on boolean flag
+      let multiSearchParams: MultiSearchParams = {
+        queries: [],
+      };
+      console.log("OK");
+      console.log(searchParams);
+      console.log("CUM");
+      initialSearchResponse.hits.map((segmentHit: SegmentHit, i: number) => {
+        const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentHit.belongsToPodcastGuid) as PodcastHit;
+        const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentHit.belongsToEpisodeGuid) as EpisodeHit;
+        const searchResponseHitConstructed: SearchResponseHit = {
+          ...segmentHit,
+          podcastTitle: segmentHitPodcast.title,
+          episodeTitle: segmentHitEpisode.episodeTitle,
+          podcastSummary: segmentHitPodcast.description,
+          episodeSummary: segmentHitEpisode.episodeSummary,
+          description: segmentHitPodcast.description,
+          podcastAuthor: segmentHitPodcast.itunesAuthor,
+          episodeLinkToEpisode: segmentHitEpisode.episodeLinkToEpisode,
+          episodeEnclosure: segmentHitEpisode.episodeEnclosure,
+          podcastLanguage: segmentHitPodcast.language,
+          podcastGuid: segmentHitPodcast.podcastGuid,
+          podcastImage: segmentHitPodcast.imageUrl,
+          episodeGuid: segmentHitEpisode.episodeGuid,
+          url: segmentHitPodcast.url,
+          link: segmentHitPodcast.link,
+          youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
+          deviationTime: segmentHitEpisode.deviationTime || 0,
+        };
+        if (searchResponseHitConstructed && searchResponseHitConstructed._formatted) {
+          let formattedData = "";
+          let startTime = searchResponseHitConstructed.start;
+          let endTime = searchResponseHitConstructed.end;
+          let text = searchResponseHitConstructed._formatted.text;
+          let words = text.split(/ (?![^<]*>)/g);
+
+          // If bigger than 5 words, gotta make em smaller
+          if (words.length > 5) {
+            let segments = [];
+
+            // Calculate duration per word in the original segment
+            let durationPerWord = (endTime - startTime) / words.length;
+
+            let segmentStartTime = startTime; // Initialize segmentStartTime for the first segment
+
+            while (words.length) {
+              // Splice is cutting the words from 0 and removes 6 returning them, leaving words 6 words less
+              let segmentWords = words.splice(0, 6); // Adjust the '6' to disperse the words accordingly in the segments
+              let segmentEndTime = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
+
+              // Create and add the formatted segment to the segments array
+              segments.push(`<p><time>${convertSecondsToTime(segmentStartTime)}:</time> <i>${segmentWords.join(" ").trim()}</i></p>`);
+
+              // Update the segmentStartTime for the next segment
+              segmentStartTime = segmentEndTime;
+            }
+
+            formattedData = segments.join("");
+          }
+
+          // If not, let'se goooo
+          formattedData = `<p><time>${convertSecondsToTime(startTime)}:</time> <i>${text}</i></p>`;
+
+          searchResponseHitConstructed._formatted.text = formattedData;
+        }
+
+        searchResponse.hits.push(searchResponseHitConstructed);
+      });
+      console.log("returning...");
+      return searchResponse;
     } else {
+      const startTime = new Date().getTime();
+      // Search results => Perform it.
+      console.log("YES", searchParams);
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
+      console.log("YES22");
+
+      let searchResponse: SearchResponse = {
+        query: searchParams.q || "",
+        hits: [],
+      };
+
+      console.log("NO");
+      // Getting the podcast ids and episode ids to fetch them further as they are not part of the segmentObjects on the segmentsIndex
+      const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))] as string[];
+      const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))] as string[];
+
+      console.log(podcastIds);
+      console.log(episodeIds);
+      // Making a query for the podcast and episodes based on the ids connected to the segments
+      const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds(podcastIds), this.searchEpisodesWithIds(episodeIds)]);
+      const podcastsMap: Map<string, PodcastHit> = new Map(podcasts.hits.map((podcast) => [podcast.podcastGuid, podcast]));
+      const episodesMap: Map<string, EpisodeHit> = new Map(episodes.hits.map((episode) => [episode.episodeGuid, episode]));
+
+      console.log("HUHUHUU");
+      // Get surrounding hits or not depending on boolean flag
+      let multiSearchParams: MultiSearchParams = {
+        queries: [],
+      };
+      console.log("OK");
+      console.log(searchParams);
       console.log("MAMMA MIA");
       initialSearchResponse.hits.map((segmentHit: SegmentHit) => {
         multiSearchParams.queries.push({
@@ -147,60 +234,60 @@ class TranscriptionsService {
           subHits: postHits,
         };
 
-        if (searchResponseHitConstructed && searchResponseHitConstructed._formatted) {
-          let formattedData = searchResponseHitConstructed?.subHits?.map((item: SegmentHit) => {
-            let startTime = item.start;
-            let endTime = item.end;
-            let text = item._formatted.text;
-            let words = text.split(/ (?![^<]*>)/g);
+        // if (searchResponseHitConstructed && searchResponseHitConstructed._formatted) {
+        //   let formattedData = searchResponseHitConstructed?.subHits?.map((item: SegmentHit) => {
+        //     let startTime = item.start;
+        //     let endTime = item.end;
+        //     let text = item._formatted.text;
+        //     let words = text.split(/ (?![^<]*>)/g);
 
-            // If bigger than 5 words, gotta make em smaller
-            if (words.length > 5) {
-              let segments = [];
+        //     // If bigger than 5 words, gotta make em smaller
+        //     if (words.length > 5) {
+        //       let segments = [];
 
-              // Calculate duration per word in the original segment
-              let durationPerWord = (endTime - startTime) / words.length;
+        //       // Calculate duration per word in the original segment
+        //       let durationPerWord = (endTime - startTime) / words.length;
 
-              let segmentStartTime = startTime; // Initialize segmentStartTime for the first segment
+        //       let segmentStartTime = startTime; // Initialize segmentStartTime for the first segment
 
-              while (words.length) {
-                // Splice is cutting the words from 0 and removes 6 returning them, leaving words 6 words less
-                let segmentWords = words.splice(0, 6); // Adjust the '6' to disperse the words accordingly in the segments
-                let segmentEndTime = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
+        //       while (words.length) {
+        //         // Splice is cutting the words from 0 and removes 6 returning them, leaving words 6 words less
+        //         let segmentWords = words.splice(0, 6); // Adjust the '6' to disperse the words accordingly in the segments
+        //         let segmentEndTime = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
 
-                // Create and add the formatted segment to the segments array
-                segments.push(`<p><time>${convertSecondsToTime(segmentStartTime)}:</time> <i>${segmentWords.join(" ").trim()}</i></p>`);
+        //         // Create and add the formatted segment to the segments array
+        //         segments.push(`<p><time>${convertSecondsToTime(segmentStartTime)}:</time> <i>${segmentWords.join(" ").trim()}</i></p>`);
 
-                // Update the segmentStartTime for the next segment
-                segmentStartTime = segmentEndTime;
-              }
+        //         // Update the segmentStartTime for the next segment
+        //         segmentStartTime = segmentEndTime;
+        //       }
 
-              return segments.join("");
-            }
+        //       return segments.join("");
+        //     }
 
-            // If not, let'se goooo
-            return `<p><time>${convertSecondsToTime(startTime)}:</time> <i>${text}</i></p>`;
-          });
+        //     // If not, let'se goooo
+        //     return `<p><time>${convertSecondsToTime(startTime)}:</time> <i>${text}</i></p>`;
+        //   });
 
-          searchResponseHitConstructed._formatted.text = formattedData?.join("") || "";
-          searchResponseHitConstructed.subHits = [];
-        }
+        //   searchResponseHitConstructed._formatted.text = formattedData?.join("") || "";
+        //   searchResponseHitConstructed.subHits = [];
+        // }
         searchResponse.hits.push(searchResponseHitConstructed);
       });
+
+      // Assign similarity score to all hits. If no searchString, nothing to calculate essentially
+      if (searchParams.q) {
+        this.addSimilarityScoreToHits(searchResponse.hits, searchParams.q);
+
+        // Setting new unique hits
+        searchResponse.hits = removeDuplicates(searchResponse.hits, "id");
+        searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
+      }
+      const endTime = new Date().getTime();
+      console.log("Search took: ", (endTime - startTime) / 3600);
+
+      return searchResponse;
     }
-
-    // Assign similarity score to all hits. If no searchString, nothing to calculate essentially
-    if (searchParams.q) {
-      this.addSimilarityScoreToHits(searchResponse.hits, searchParams.q);
-
-      // Setting new unique hits
-      searchResponse.hits = removeDuplicates(searchResponse.hits, "id");
-      searchResponse.hits = searchResponse.hits.sort((a: SearchResponseHit, b: SearchResponseHit) => b.similarity - a.similarity);
-    }
-    const endTime = new Date().getTime();
-    console.log("Search took: ", (endTime - startTime) / 3600);
-
-    return searchResponse;
   }
 
   private async searchPodcastsWithIds(podcastIds: string[]): Promise<PodcastResponse> {

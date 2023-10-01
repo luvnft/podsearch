@@ -14,6 +14,7 @@ export interface SearchQuery {
   highlightPostTag: string;
   showMatchesPosition: boolean;
   matchingStrategy: string;
+  getFullTranscript?: boolean;
 }
 
 export enum Category {
