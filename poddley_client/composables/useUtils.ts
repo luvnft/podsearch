@@ -1,55 +1,107 @@
+import { Hit, SegmentHit } from "#build/types/SearchResponse";
+import result from "postcss/lib/result";
+
 export type Utils = ReturnType<typeof useUtils>;
 
 export const useUtils = () => {
-  return {
-    convertSecondsToTime,
-    encodeQuery,
-    decodeQuery,
-    removeDuplicates,
-  };
+    return {
+        convertSecondsToTime,
+        encodeQuery,
+        decodeQuery,
+        removeDuplicates,
+        convertHitsToFormattedText,
+        convertHitToFormattedText,
+    };
 };
 
 export function removeDuplicates(hits: any[], uniqueId: string): any[] {
-  // Remove duplicates
-  const uniqueHits: any[] = [];
-  const seenSet: Set<string> = new Set();
-  for (let hit of hits) {
-    if (seenSet.has(hit[uniqueId])) continue;
-    else {
-      seenSet.add(hit[uniqueId]);
-      uniqueHits.push(hit);
+    // Remove duplicates
+    const uniqueHits: any[] = [];
+    const seenSet: Set<string> = new Set();
+    for (let hit of hits) {
+        if (seenSet.has(hit[uniqueId])) continue;
+        else {
+            seenSet.add(hit[uniqueId]);
+            uniqueHits.push(hit);
+        }
     }
-  }
-  return uniqueHits;
+    return uniqueHits;
 }
 
 export function convertSecondsToTime(sec: number): string {
-  const hours = Math.floor(sec / 3600);
-  const minutes = Math.floor((sec % 3600) / 60);
-  const seconds = Math.floor(sec % 60);
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const seconds = Math.floor(sec % 60);
 
-  const hoursString = hours.toString().padStart(2, "0");
-  const minutesString = minutes.toString().padStart(2, "0");
-  const secondsString = seconds.toString().padStart(2, "0");
+    const hoursString = hours.toString().padStart(2, "0");
+    const minutesString = minutes.toString().padStart(2, "0");
+    const secondsString = seconds.toString().padStart(2, "0");
 
-  return `${hoursString}:${minutesString}:${secondsString}`;
+    return `${hoursString}:${minutesString}:${secondsString}`;
 }
 
 export function encodeQuery(query: any) {
-  if (!query) return undefined;
-  try {
-    return encodeURIComponent(JSON.stringify(query));
-  } catch (e: any) {
-    return undefined;
-  }
+    if (!query) return undefined;
+    try {
+        return encodeURIComponent(JSON.stringify(query));
+    } catch (e: any) {
+        return undefined;
+    }
 }
 
 export function decodeQuery(query: any) {
-  if (!query) return undefined;
-  try {
-    const d = JSON.parse(decodeURIComponent(query));
-    return d;
-  } catch (e: any) {
-    return undefined;
-  }
+    if (!query) return undefined;
+    try {
+        const d = JSON.parse(decodeURIComponent(query));
+        return d;
+    } catch (e: any) {
+        return undefined;
+    }
 }
+
+export function convertHitsToFormattedText(hits: Hit[]): string {
+    const formattedData: string[] = hits.map((hit: Hit, index: number) => {
+        return convertHitToFormattedText(hit);
+    });
+
+    return formattedData.join("") || "";
+}
+
+export function convertHitToFormattedText(hit: Hit): string {
+    if (hit && hit.text) {
+        let startTime: number = hit.start as number;
+        let endTime: number = hit.end;
+        let text: string = hit.text;
+        let words: string[] = text.split(/ (?![^<]*>)/g);
+
+        // If bigger than 5 words, gotta make em smaller
+        if (words.length > 5) {
+            let segments: string[] = [];
+
+            // Calculate duration per word in the original segment
+            let durationPerWord: number = (endTime - startTime) / words.length;
+
+            let segmentStartTime: number = startTime; // Initialize segmentStartTime for the first segment
+
+            while (words.length) {
+                // Splice is cutting the words from 0 and removes 6 returning them, leaving words 6 words less
+                let segmentWords: string[] = words.splice(0, 5); // Adjust the '6' to disperse the words accordingly in the segments
+                let segmentEndTime: number = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
+
+                // Create and add the formatted segment to the segments array
+                segments.push(`<p><time>${convertSecondsToTime(segmentStartTime)}:</time> <i>${segmentWords.join(" ").trim()}</i></p>`);
+
+                // Update the segmentStartTime for the next segment
+                segmentStartTime = segmentEndTime;
+            }
+            return segments.join("") || " ";
+        }
+
+        // If not, let'se goooo
+        return `<p><time>${convertSecondsToTime(startTime)}:</time> <i>${text}</i></p>` || "";
+    }
+    else {
+        return "";
+    }
+}
+
