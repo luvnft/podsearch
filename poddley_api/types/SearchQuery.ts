@@ -1,4 +1,5 @@
 export interface SearchQuery {
+  offset: number;
   searchString: string | undefined;
   sort?: string[];
   filter?: string;
