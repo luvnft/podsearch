@@ -1,6 +1,6 @@
 <template>
   <div class="block" ref="searchResultsRef">
-    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
+    <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchQuery.searchString" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -80,7 +80,7 @@ async function makeSearch() {
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
 const debouncedSearch = _Debounce(makeSearch, 1000, {
-  leading: false,
+  leading: true,
   trailing: true,
 });
 
@@ -102,7 +102,7 @@ const debouncedOffsetIncrement = _Debounce(
   },
   1000,
   {
-    leading: false,
+    leading: true,
     trailing: true,
   }
 );
