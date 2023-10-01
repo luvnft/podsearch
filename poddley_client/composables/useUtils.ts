@@ -5,8 +5,23 @@ export const useUtils = () => {
     convertSecondsToTime,
     encodeQuery,
     decodeQuery,
+    removeDuplicates,
   };
 };
+
+export function removeDuplicates(hits: any[], uniqueId: string): any[] {
+  // Remove duplicates
+  const uniqueHits: any[] = [];
+  const seenSet: Set<string> = new Set();
+  for (let hit of hits) {
+    if (seenSet.has(hit[uniqueId])) continue;
+    else {
+      seenSet.add(hit[uniqueId]);
+      uniqueHits.push(hit);
+    }
+  }
+  return uniqueHits;
+}
 
 export function convertSecondsToTime(sec: number): string {
   const hours = Math.floor(sec / 3600);
