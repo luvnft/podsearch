@@ -21,6 +21,7 @@ export default class TranscriptionsServiceSearch {
 
   public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
     console.log("Searching from api srrr");
+    console.log(searchQuery)
     const data = this.fetchPost<any>("/transcriptions/search", { searchQuery });
     console.log("DATA:", data);
     return data;

@@ -29,11 +29,11 @@
             </div>
             <div class="flex w-full justify-start">
               <div class="mb-0 mt-0 flex h-full max-h-full min-h-full w-full justify-center rounded-lg px-0 py-0 pb-0 text-start" :key="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()">
-                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-base`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
+                <div :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base`" v-html="currentPlayingSegment?._formatted?.text.trim() || props.searchEntry._formatted.text.trim()" />
               </div>
             </div>
 
-            <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 py-0 pb-1 `">
+            <div v-if="playing" :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center rounded-lg border border-none p-0 py-0 pb-0 `">
               <audio :currentTime="props.searchEntry.start" controls preload="auto" autoplay :key="props.searchEntry.start" :class="`text-black h-10 w-full rounded-lg border ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'}  dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : ''}`" type="audio/mpeg" :title="props.searchEntry.episodeTitle" :src="props.searchEntry.episodeEnclosure" />
             </div>
           </div>

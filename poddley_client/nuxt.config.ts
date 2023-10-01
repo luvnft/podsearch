@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    preset: "digital-ocean",
+    preset: "cloudflare",
     sourceMap: false,
   },
   colorMode: {
@@ -79,7 +79,6 @@ export default defineNuxtConfig({
         treeshake: true,
       },
     },
-    server: {},
     css: {
       devSourcemap: false,
     },
