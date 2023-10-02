@@ -1,6 +1,6 @@
 <template>
     <ButtonsGenericButton @click="subSyncTrigger"
-        class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex w-9 h-9 items-center justify-center rounded-lg border fill-neutral-400 p-0  font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
+        class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex w-9 h-9 items-center justify-center rounded-lg border fill-neutral-400 p-0 px-0.5 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
 
         <div class="flex aspect-square h-10 w-full items-center justify-center">
             <div class="flex h-full w-full items-center justify-center" v-if="props.activated">

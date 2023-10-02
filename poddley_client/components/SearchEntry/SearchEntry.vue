@@ -35,7 +35,7 @@
                                     <ButtonsPlayButton class="h-10 w-10" :searchEntry="props.searchEntry"
                                         @click="handlePlaying" :playing="playing" />
                                 </div>
-                                <div class="flex h-10 w-10 items-start justify-end">
+                                <div class="flex h-10 w-10 items-start justify-end pl-1">
                                     <ButtonsMoreButton
                                         @gettingFullTranscript="(value: boolean) => loadingFullTranscript = value"
                                         class="absolute h-10 w-10" :searchEntry="props.searchEntry" :index="index"
