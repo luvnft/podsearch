@@ -41,6 +41,13 @@
                                         class="absolute h-10 w-10" :searchEntry="props.searchEntry" :index="index"
                                         :loadingFullTranscript="loadingFullTranscript" />
                                 </div>
+                                <div class="flex h-10 w-10 items-start justify-end">
+                                    <ButtonsSubtitlesButton @subSyncTrigger="(value: boolean) => {
+                                        subtitlesActivated = !subtitlesActivated;
+                                        console.log(!subtitlesActivated)
+                                    }" class="absolute h-10 w-10" :searchEntry="props.searchEntry" :index="index"
+                                        :loadingFullTranscript="loadingFullTranscript" :activated="subtitlesActivated" />
+                                </div>
                             </div>
                         </div>
                         <div class="flex w-full justify-start">
@@ -48,8 +55,9 @@
                                 class="mb-0 mt-0 flex h-full max-h-full min-h-full w-full justify-start rounded-lg px-0 py-0 pb-0 text-start">
                                 <div v-if="!loadingFullTranscript"
                                     :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} ${isFirefox ? 'scrollbar-thin' : 'scrollbar scrollbar-w-[5px]'} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
-                                    <SearchEntryHit @goToAudioTime="goToAudioTime" :index="index"
-                                        :searchEntry="props.searchEntry" :currentPlayingTime="currentPlayingTime" />
+                                    <SearchEntryHit @goToAudioTime="goToAudioTime"
+                                        :searchEntry="props.searchEntry" :currentPlayingTime="currentPlayingTime"
+                                        :subtitlesActivated="subtitlesActivated" />
                                 </div>
                                 <IconsSpinnerIcon class="w-100 flex h-40 items-center justify-center"
                                     v-if="loadingFullTranscript" />
@@ -129,7 +137,8 @@ const handleTimeChange = async (event: Event) => {
                 });
                 console.log("Transcript: ", searchResponse);
 
-                // First we gotta loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
+                // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
+                // Maybe casting is better, but dunno
                 let segmentHits: SegmentHit[] = searchResponse.hits.map((hit: Hit) => {
                     return {
                         text: hit.text,
@@ -144,7 +153,7 @@ const handleTimeChange = async (event: Event) => {
                     }
                 })
 
-                // Doing it:
+                // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
                 console.log("Index is: ", props.index)
                 segmentHits = fragmentSegmentHits(segmentHits)
                 searchResults.value.hits[props.index].subHits = segmentHits;
