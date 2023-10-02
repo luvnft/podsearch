@@ -46,6 +46,7 @@
     "recordrtc": "^5.6.2",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.0",
+    "scroll-into-view-if-needed": "^3.1.0",
     "tailwind-animatecss": "^1.0.0",
     "vue-clamp": "^0.4.1",
     "vue3-text-clamp": "^0.1.2"

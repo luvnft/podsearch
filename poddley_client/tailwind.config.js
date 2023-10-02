@@ -12,7 +12,7 @@ module.exports = {
   plugins: [
     require("nightwind"),
     require("tailwind-animatecss"),
-    require('tailwind-scrollbar')({ nocompatible: true }), // Need this nocompatible to enable rounded utilities in chrome/chromium-browsers
+    require("tailwind-scrollbar")({ nocompatible: true }), // Need this nocompatible to enable rounded utilities in chrome/chromium-browsers
   ],
   prefix: "",
   darkMode: "class",

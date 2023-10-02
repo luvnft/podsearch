@@ -82,7 +82,8 @@ const utils: Utils = useUtils();
 const props = defineProps<{
     searchEntry: Hit;
     index: number;
-    loadingFullTranscript}>();
+    loadingFullTranscript: boolean;
+}>();
 
 const emit = defineEmits<{
     (e: "gettingFullTranscript", gettingFullTranscript: boolean): void;
