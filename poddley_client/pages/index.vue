@@ -1,6 +1,6 @@
 <template>
     <div class="block" ref="searchResultsRef">
-        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchQuery.searchString" />
+        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchResults.hits" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -22,7 +22,7 @@ const { searchQuery, searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
-    searchString: "This past weekend is",
+    searchString: "The following is a ",
     offset: 0,
 };
 //Running
@@ -42,6 +42,12 @@ onMounted(() => {
                     // searchResults.value = payload;
                     console.log("OK");
                     console.log("payload", payload);
+                    payload.hits.forEach((hit: Hit) => {
+                        if (hit.subHits) {
+                            const fragmentedSubHits: SegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                            hit.subHits = fragmentedSubHits;
+                        }
+                    });
                     searchStore.setSearchResults(payload);
                     searchStore.setLoadingState(false);
                     break;
@@ -79,7 +85,6 @@ async function makeSearch() {
                         hit.subHits = fragmentedSubHits;
                     }
                 });
-
             } catch (e) { }
         }
     }
