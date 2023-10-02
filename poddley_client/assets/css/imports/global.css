@@ -18,18 +18,27 @@ hr {
   margin-top: 10px;
 }
 
+* {
+  @apply scrollbar !important;
+  @apply scrollbar-thumb-gray-400 !important;
+  @apply scrollbar-track-gray-900 !important;
+  @apply scrollbar-thumb-rounded !important;
+  @apply scrollbar-w-[5px];
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     @apply bg-white;
   }
+  * {
+    @apply scrollbar-track-gray-100 !important;
+  }
 }
 
-* {
-  @apply scrollbar;
-  @apply scrollbar-thumb-gray-600 !important;
-  @apply scrollbar-track-gray-300 !important;
-  @apply scrollbar-thumb-rounded !important;
-  @apply scrollbar-w-0.5 !important;
+@-moz-document url-prefix() {
+  * {
+    @apply scrollbar-thin !important;
+  }
 }
 
 time {

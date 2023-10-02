@@ -1,16 +1,18 @@
 <template>
-    <ul ref="listRef" class="relative">
-        <li class="m-0 p-0 cursor" v-for="(subHit, index) in props.searchEntry.subHits"
+    <div ref="listRef" class="relative">
+        <div class="m-0 p-0 cursor text-start" v-for="(subHit, index) in props.searchEntry.subHits"
+            :id="`${subHit.id}-${subHit.start}`"
             :class="`${(subHit.start <= props.currentPlayingTime + 0.2 && subHit.end >= props.currentPlayingTime + 0.2) ? 'highlight' : ''}`">
-            <button @click="goToAudioTime(subHit.start)">
-                <div v-html="utils.convertSegmentHitToFormattedText(subHit)" />
+            <button @click="goToAudioTime(subHit.start)" class="text-start">
+                <div v-html="utils.convertSegmentHitToFormattedText(subHit)"></div>
             </button>
-        </li>
-    </ul>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { Hit } from '../../types/SearchResponse';
+import scrollIntoView from 'scroll-into-view-if-needed';
 
 const emit = defineEmits<{
     (e: "goToAudioTime", number: number): void;
@@ -27,7 +29,6 @@ const props = defineProps<{
 const isMounted: Ref<boolean> = ref(false);
 
 const goToAudioTime = (moveToTime: number) => {
-    console.log("yolo")
     emit("goToAudioTime", moveToTime)
 }
 watch(
@@ -39,7 +40,10 @@ watch(
                 if (props.searchEntry.subHits) {
                     const subHit = props.searchEntry.subHits[index];
                     if (subHit.start <= props.currentPlayingTime + 0.2 && subHit.end >= props.currentPlayingTime + 0.2) {
-                        item.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                        scrollIntoView(item, {
+                            behavior: 'smooth',
+                            boundary: item.parentNode.parentNode
+                        });
                     }
                 }
             });
