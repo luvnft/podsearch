@@ -609,14 +609,12 @@ Has to be a live version auto
 - [ ] Make MeiliSearch production version.
 - [x] Add the "getEntireTranscript"-button.	
 - [ ] Finskriv githuben
-
-- [ ] 8. We need to refactor the transcriber to be able to support concurrency
-10. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio???
-12. Start up large v2
-13. Meilisearch into production mode
-14. Legg ut poddley sanitized?=?=?=
-
-
+- [ ]  We need to refactor the transcriber to be able to support concurrency
+- [ ]  How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio???
+- [ ]  Legg ut poddley sanitized?=?=?=
+- [ ]  Fix the sceollIntoView bug
+- [ ]  Remove all console log
+Add this to github readme
 BackendStuff:
 Services:
 Single=> (30min)                                                            1. Updates meilisearch indexes based on db data
