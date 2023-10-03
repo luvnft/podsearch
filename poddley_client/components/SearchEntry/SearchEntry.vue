@@ -30,22 +30,22 @@
                                 class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                                 {{ props.searchEntry.episodeTitle }}
                             </p>
-                            <div class="w-18 float-right -mr-1 flex h-full items-start justify-start gap-x-0 pl-1 pr-0">
-                                <div class="flex h-10 w-10 items-start justify-end">
-                                    <ButtonsPlayButton class="h-10 w-10" :searchEntry="props.searchEntry"
+                            <div class="w-18 float-right flex h-full items-start justify-start gap-x-1 pr-0 mr-0">
+                                <div class="block h-9 w-9 items-start justify-end">
+                                    <ButtonsPlayButton class="absolute h-9 w-9" :searchEntry="props.searchEntry"
                                         @click="handlePlaying" :playing="playing" />
                                 </div>
-                                <div class="flex h-10 w-10 items-start justify-end pl-1">
+                                <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsMoreButton
                                         @gettingFullTranscript="(value: boolean) => loadingFullTranscript = value"
-                                        class="absolute h-10 w-10" :searchEntry="props.searchEntry" :index="index"
+                                        class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
                                         :loadingFullTranscript="loadingFullTranscript" />
                                 </div>
-                                <div class="flex h-10 w-10 items-start justify-end">
+                                <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsSubtitlesButton @subSyncTrigger="(value: boolean) => {
                                         subtitlesActivated = !subtitlesActivated;
                                         console.log(!subtitlesActivated)
-                                    }" class="absolute h-10 w-10" :searchEntry="props.searchEntry" :index="index"
+                                    }" class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
                                         :loadingFullTranscript="loadingFullTranscript" :activated="subtitlesActivated" />
                                 </div>
                             </div>
@@ -54,10 +54,9 @@
                             <div
                                 class="mb-0 mt-0 flex h-full max-h-full min-h-full w-full justify-start rounded-lg px-0 py-0 pb-0 text-start">
                                 <div v-if="!loadingFullTranscript"
-                                    :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} ${isFirefox ? 'scrollbar-thin' : 'scrollbar scrollbar-w-[5px]'} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
-                                    <SearchEntryHit @goToAudioTime="goToAudioTime"
-                                        :searchEntry="props.searchEntry" :currentPlayingTime="currentPlayingTime"
-                                        :subtitlesActivated="subtitlesActivated" />
+                                    :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
+                                    <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
+                                        :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
                                 </div>
                                 <IconsSpinnerIcon class="w-100 flex h-40 items-center justify-center"
                                     v-if="loadingFullTranscript" />
@@ -67,7 +66,7 @@
                         <div v-if="playing"
                             :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center border-none p-0 py-0 pb-0 pt-1`">
                             <audio ref="audioPlayer" :currentTime="props.searchEntry.start" controls preload="auto" autoplay
-                                :class="`border-none text-black h-9 w-full rounded-lg border ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'} dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : 'dark:filter dark:saturate-100 dark:sepia dark:hue-rotate-[200deg]'}`"
+                                :class="`focus:outline-2 focus:outline-gray-900 ring-0 border-none focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'} dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : 'dark:filter dark:saturate-100 dark:sepia dark:hue-rotate-[200deg]'}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
                                 :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
                         </div>

@@ -1,11 +1,10 @@
-/* Font smoothing for better font rendering on macOS and iOS */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 * {
   font-family: "Quicksand" !important;
+  @apply focus:ring-gray-500;
+  @apply focus:outline-none;
+  @apply focus:ring-2;
+  @apply focus:ring-inset;
+  
 }
 
 main *,
@@ -18,27 +17,53 @@ hr {
   margin-top: 10px;
 }
 
+body {
+  @apply bg-white;
+  -moz-osx-font-smoothing: grayscale !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
 * {
-  @apply scrollbar !important;
-  @apply scrollbar-thumb-gray-400 !important;
-  @apply scrollbar-track-gray-900 !important;
-  @apply scrollbar-thumb-rounded !important;
-  @apply scrollbar-w-[5px];
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    @apply bg-white;
+  ::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track) !important;
+    border-radius: var(--scrollbar-track-radius) !important;
   }
-  * {
-    @apply scrollbar-track-gray-100 !important;
+  ::-webkit-scrollbar-track:hover {
+    background-color: var(--scrollbar-track-hover, var(--scrollbar-track)) !important;
   }
-}
-
-@-moz-document url-prefix() {
-  * {
-    @apply scrollbar-thin !important;
+  ::-webkit-scrollbar-track:active {
+    background-color: var(--scrollbar-track-active, var(--scrollbar-track-hover, var(--scrollbar-track))) !important;
   }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb) !important;
+    border-radius: var(--scrollbar-thumb-radius) !important;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover, var(--scrollbar-thumb)) !important;
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb-active, var(--scrollbar-thumb-hover, var(--scrollbar-thumb))) !important;
+  }
+  ::-webkit-scrollbar-corner {
+    background-color: var(--scrollbar-corner) !important;
+    border-radius: var(--scrollbar-corner-radius) !important;
+  }
+  ::-webkit-scrollbar-corner:hover {
+    background-color: var(--scrollbar-corner-hover, var(--scrollbar-corner)) !important;
+  }
+  ::-webkit-scrollbar-corner:active {
+    background-color: var(--scrollbar-corner-active, var(--scrollbar-corner-hover, var(--scrollbar-corner))) !important;
+  }
+  ::-webkit-scrollbar {
+    display: block !important;
+    width: 2px !important;
+    height: 2px !important;
+  }
+  @apply scrollbar-thumb-gray-500;
+  @apply scrollbar-track-gray-100;
+  @apply dark:scrollbar-thumb-gray-400 !important;
+  @apply dark:scrollbar-track-gray-900 !important;
+  @apply scrollbar-thumb-rounded;
 }
 
 time {
