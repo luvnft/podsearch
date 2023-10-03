@@ -1,12 +1,13 @@
 const colors = require("tailwindcss/colors");
+const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
   variants: {
     extend: {
-      backgroundColor: ["group-hover"],
+      backgroundColor: ["group-hover", "firefox"],
     },
-    nightwind: ["group-hover", "focus"],
+    nightwind: ["group-hover", "focus", "firefox"],
   },
   important: true,
   plugins: [

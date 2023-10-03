@@ -8,9 +8,6 @@
             </button>
         </div>
     </div>
-    {{
-        props.subtitlesActivated
-    }}
 </template>
 
 <script lang="ts" setup>
@@ -61,7 +58,7 @@ function setupWatcher() {
                 Array.from(listRef.value.children).forEach((item: any, index) => {
                     if (props.searchEntry.subHits) {
                         const subHit = props.searchEntry.subHits[index];
-                        if (subHit.start <= props.currentPlayingTime + 0.2 && subHit.end >= props.currentPlayingTime + 0.2) {
+                        if (subHit.start <= props.currentPlayingTime && subHit.end >= props.currentPlayingTime) {
                             scrollIntoView(item, {
                                 behavior: 'smooth',
                                 boundary: item.parentNode.parentNode

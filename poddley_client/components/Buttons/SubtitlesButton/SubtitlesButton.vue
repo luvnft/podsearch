@@ -9,7 +9,7 @@
             </div>
             <div class="flex h-full w-full items-center justify-center" v-if="!props.activated">
                 <svg-icon name="subtitlesOff"
-                    class="flex h-full w-3/5 scale-110 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+                    class="flex h-full w-3/5 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
             </div>
         </div>
     </ButtonsGenericButton>
