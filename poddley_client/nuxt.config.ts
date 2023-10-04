@@ -30,16 +30,15 @@ export default defineNuxtConfig({
     headlessui: {
         prefix: "Headless",
     },
-    modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "@nuxt/image", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt"],
+    modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "@nuxt/image", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt", "nuxt-delay-hydration"],
+    delayHydration: {
+        mode: "mount",
+        debug: false,
+    },
     googleFonts: {
         families: {
             Lato: true,
             Quicksand: true,
-            Inter: true,
-            Nunito: true,
-            Raleway: true,
-            Poppins: true,
-            Mooli: true,
         },
         download: true,
         base64: true,
