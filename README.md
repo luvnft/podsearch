@@ -58,308 +58,275 @@ The main goal of the website/service is to be the "Shazam" for podcasts. Therefo
 ### Services:
 The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
 - Express-API: API that queries the meilisearch instance.
-  - Route-Controller-Service architecture for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
+  - Route-Controller-Service architecture for ExpressJS/Node-backends. [Architecture](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
 - Indexer (runs every 30min): Updates meilisearch indexes based on db-data
 - RSS-updater (runs very 30min): Updates db (upsert) based on changes in rss-feeds
-- Transcriber/Aligner/YoutubeGetter/YoutubeAudioDeviationCalculator (runs continuously) (can be run concurrently due to db-row locking)
+- Transcriber/YoutubeGetter (runs continuously) (can be run concurrently due to db-row locking)
 - Meilisearch-instance (native rust): Does the full-text search functionality
 
 ### Meilisearch instance
 A meilisearch instance running with the following settings (all indexes use the default settings), besides what's specified in the backend scripts.
 
 ##### Indexes
-```
 
-// 20230811100148
-// https://meilisearch.poddley.com/indexes
-
-{
-  "results": [
-    {
-      "uid": "episodes",
-      "createdAt": "2023-07-16T09:34:08.17973422Z",
-      "updatedAt": "2023-07-16T16:08:47.711337274Z",
-      "primaryKey": "id"
-    },
-    {
-      "uid": "podcasts",
-      "createdAt": "2023-07-16T09:34:08.151876845Z",
-      "updatedAt": "2023-07-16T16:08:46.805978082Z",
-      "primaryKey": "id"
-    },
-    {
-      "uid": "segments",
-      "createdAt": "2023-07-16T09:34:08.099810144Z",
-      "updatedAt": "2023-07-16T16:25:23.740301301Z",
-      "primaryKey": "id"
-    },
-    {
-      "uid": "transcriptions",
-      "createdAt": "2023-07-16T09:34:08.05460293Z",
-      "updatedAt": "2023-07-16T16:10:23.650756332Z",
-      "primaryKey": "id"
-    }
-  ],
-  "offset": 0,
-  "limit": 20,
-  "total": 4
-}
-```
-##### Episodes:
-```
-{
-  "uid": "episodes",
-  "createdAt": "2023-07-16T09:34:08.17973422Z",
-  "updatedAt": "2023-07-16T16:08:47.711337274Z",
-  "primaryKey": "id"
-}
-
-{
-  "displayedAttributes": [
-    "*"
-  ],
-  "searchableAttributes": [
-    "*"
-  ],
-  "filterableAttributes": [
-    "episodeGuid"
-  ],
-  "sortableAttributes": [
-    "addedDate"
-  ],
-  "rankingRules": [
-    "words",
-    "typo",
-    "proximity",
-    "attribute",
-    "sort",
-    "exactness"
-  ],
-  "stopWords": [
-    
-  ],
-  "synonyms": {
-    
-  },
-  "distinctAttribute": null,
-  "typoTolerance": {
-    "enabled": true,
-    "minWordSizeForTypos": {
-      "oneTypo": 5,
-      "twoTypos": 9
-    },
-    "disableOnWords": [
-      
-    ],
-    "disableOnAttributes": [
-      
-    ]
-  },
-  "faceting": {
-    "maxValuesPerFacet": 100
-  },
-  "pagination": {
-    "maxTotalHits": 1000
-  }
-}
+<details>
+  <summary>Indexes</summary>
 
 ```
-##### Transcriptions:
-```
-{
-  "uid": "transcriptions",
-  "createdAt": "2023-07-16T09:34:08.05460293Z",
-  "updatedAt": "2023-07-16T16:10:23.650756332Z",
-  "primaryKey": "id"
-}
+	{
+	    "results": [
+	        {
+	            "uid": "episodes",
+	            "createdAt": "2023-07-16T09:34:08.17973422Z",
+	            "updatedAt": "2023-09-23T11:11:03.374123595Z",
+	            "primaryKey": "id"
+	        },
+	        {
+	            "uid": "podcasts",
+	            "createdAt": "2023-07-16T09:34:08.151876845Z",
+	            "updatedAt": "2023-09-23T11:39:47.029653816Z",
+	            "primaryKey": "id"
+	        },
+	        {
+	            "uid": "segments",
+	            "createdAt": "2023-07-16T09:34:08.099810144Z",
+	            "updatedAt": "2023-10-01T15:16:28.788349424Z",
+	            "primaryKey": "id"
+	        },
+	        {
+	            "uid": "transcriptions",
+	            "createdAt": "2023-07-16T09:34:08.05460293Z",
+	            "updatedAt": "2023-09-23T11:08:48.119600807Z",
+	            "primaryKey": "id"
+	        }
+	    ],
+	    "offset": 0,
+	    "limit": 20,
+	    "total": 4
+	}
 
-{
-  "displayedAttributes": [
-    "*"
-  ],
-  "searchableAttributes": [
-    "transcription"
-  ],
-  "filterableAttributes": [
-    
-  ],
-  "sortableAttributes": [
-    
-  ],
-  "rankingRules": [
-    "exactness",
-    "proximity",
-    "typo",
-    "words"
-  ],
-  "stopWords": [
-    
-  ],
-  "synonyms": {
-    
-  },
-  "distinctAttribute": null,
-  "typoTolerance": {
-    "enabled": true,
-    "minWordSizeForTypos": {
-      "oneTypo": 5,
-      "twoTypos": 9
-    },
-    "disableOnWords": [
-      
-    ],
-    "disableOnAttributes": [
-      
-    ]
-  },
-  "faceting": {
-    "maxValuesPerFacet": 100
-  },
-  "pagination": {
-    "maxTotalHits": 1000
-  }
-}
 ```
-
-##### Segments:
-```
-{
-  "uid": "segments",
-  "createdAt": "2023-07-16T09:34:08.099810144Z",
-  "updatedAt": "2023-07-16T16:25:23.740301301Z",
-  "primaryKey": "id"
-}
-
-{
-  "displayedAttributes": [
-    "*"
-  ],
-  "searchableAttributes": [
-    "text"
-  ],
-  "filterableAttributes": [
-    "belongsToEpisodeGuid",
-    "belongsToPodcastGuid",
-    "belongsToTranscriptGuid",
-    "end",
-    "id",
-    "start"
-  ],
-  "sortableAttributes": [
-    "start"
-  ],
-  "rankingRules": [
-    "exactness",
-    "sort",
-    "proximity",
-    "typo",
-    "words"
-  ],
-  "stopWords": [
-    
-  ],
-  "synonyms": {
-    
-  },
-  "distinctAttribute": null,
-  "typoTolerance": {
-    "enabled": true,
-    "minWordSizeForTypos": {
-      "oneTypo": 5,
-      "twoTypos": 9
-    },
-    "disableOnWords": [
-      
-    ],
-    "disableOnAttributes": [
-      
-    ]
-  },
-  "faceting": {
-    "maxValuesPerFacet": 100
-  },
-  "pagination": {
-    "maxTotalHits": 1000
-  }
-}
-```
+</details>
 
 ##### Podcasts:
+<details>
+  <summary>Podcasts Index Settings</summary>
+	
 ```
-{
-  "uid": "podcasts",
-  "createdAt": "2023-07-16T09:34:08.151876845Z",
-  "updatedAt": "2023-07-16T16:08:46.805978082Z",
-  "primaryKey": "id"
-}
-
-{
-  "displayedAttributes": [
-    "*"
-  ],
-  "searchableAttributes": [
-    "*"
-  ],
-  "filterableAttributes": [
-    "podcastGuid"
-  ],
-  "sortableAttributes": [
-    
-  ],
-  "rankingRules": [
-    "words",
-    "typo",
-    "proximity",
-    "attribute",
-    "sort",
-    "exactness"
-  ],
-  "stopWords": [
-    
-  ],
-  "synonyms": {
-    
-  },
-  "distinctAttribute": null,
-  "typoTolerance": {
-    "enabled": true,
-    "minWordSizeForTypos": {
-      "oneTypo": 5,
-      "twoTypos": 9
-    },
-    "disableOnWords": [
-      
+	{
+    "displayedAttributes": [
+        "*"
     ],
-    "disableOnAttributes": [
-      
-    ]
-  },
-  "faceting": {
-    "maxValuesPerFacet": 100
-  },
-  "pagination": {
-    "maxTotalHits": 1000
-  }
+    "searchableAttributes": [
+        "*"
+    ],
+    "filterableAttributes": [
+        "podcastGuid"
+    ],
+    "sortableAttributes": [],
+    "rankingRules": [
+        "words",
+        "typo",
+        "proximity",
+        "attribute",
+        "sort",
+        "exactness"
+    ],
+    "stopWords": [],
+    "synonyms": {},
+    "distinctAttribute": null,
+    "typoTolerance": {
+        "enabled": true,
+        "minWordSizeForTypos": {
+            "oneTypo": 5,
+            "twoTypos": 9
+        },
+        "disableOnWords": [],
+        "disableOnAttributes": []
+    },
+    "faceting": {
+        "maxValuesPerFacet": 100,
+        "sortFacetValuesBy": {
+            "*": "alpha"
+        }
+    },
+    "pagination": {
+        "maxTotalHits": 1000
+    }
 }
 ```
+
+</details>
+
+##### Episodes:
+<details>
+  <summary>Episodes Index Settings</summary>
+	
+```
+	{
+    "displayedAttributes": [
+        "*"
+    ],
+    "searchableAttributes": [
+        "*"
+    ],
+    "filterableAttributes": [
+        "episodeGuid"
+    ],
+    "sortableAttributes": [
+        "addedDate"
+    ],
+    "rankingRules": [
+        "words",
+        "typo",
+        "proximity",
+        "attribute",
+        "sort",
+        "exactness"
+    ],
+    "stopWords": [],
+    "synonyms": {},
+    "distinctAttribute": null,
+    "typoTolerance": {
+        "enabled": true,
+        "minWordSizeForTypos": {
+            "oneTypo": 5,
+            "twoTypos": 9
+        },
+        "disableOnWords": [],
+        "disableOnAttributes": []
+    },
+    "faceting": {
+        "maxValuesPerFacet": 100,
+        "sortFacetValuesBy": {
+            "*": "alpha"
+        }
+    },
+    "pagination": {
+        "maxTotalHits": 1000
+    }
+}
+```
+
+</details>
+
+##### Transcriptions:
+<details>
+  <summary>Transcriptions Index Settings</summary>
+	
+```
+	{
+    "displayedAttributes": [
+        "*"
+    ],
+    "searchableAttributes": [
+        "transcription"
+    ],
+    "filterableAttributes": [],
+    "sortableAttributes": [],
+    "rankingRules": [
+        "exactness",
+        "proximity",
+        "typo",
+        "words"
+    ],
+    "stopWords": [],
+    "synonyms": {},
+    "distinctAttribute": null,
+    "typoTolerance": {
+        "enabled": true,
+        "minWordSizeForTypos": {
+            "oneTypo": 5,
+            "twoTypos": 9
+        },
+        "disableOnWords": [],
+        "disableOnAttributes": []
+    },
+    "faceting": {
+        "maxValuesPerFacet": 100,
+        "sortFacetValuesBy": {
+            "*": "alpha"
+        }
+    },
+    "pagination": {
+        "maxTotalHits": 1000
+    }
+}
+```
+
+</details>
+
+##### Segments:
+<details>
+  <summary>Segments Index Settings</summary>
+	
+```
+	{
+    "displayedAttributes": [
+        "*"
+    ],
+    "searchableAttributes": [
+        "text"
+    ],
+    "filterableAttributes": [
+        "belongsToEpisodeGuid",
+        "belongsToPodcastGuid",
+        "belongsToTranscriptGuid",
+        "end",
+        "id",
+        "start"
+    ],
+    "sortableAttributes": [
+        "start"
+    ],
+    "rankingRules": [
+        "exactness",
+        "sort",
+        "proximity",
+        "typo",
+        "words"
+    ],
+    "stopWords": [],
+    "synonyms": {},
+    "distinctAttribute": null,
+    "typoTolerance": {
+        "enabled": true,
+        "minWordSizeForTypos": {
+            "oneTypo": 5,
+            "twoTypos": 9
+        },
+        "disableOnWords": [],
+        "disableOnAttributes": []
+    },
+    "faceting": {
+        "maxValuesPerFacet": 200,
+        "sortFacetValuesBy": {
+            "*": "alpha"
+        }
+    },
+    "pagination": {
+        "maxTotalHits": 5000
+    }
+}
+```
+
+</details>
 
 ### Transcriber/Re-alignment-service
 - The transcriber is a python script that grabs a selection of podcast names from a json.
-- Queries a SQLite database downloaded daily from PodcastIndex.
+- Queries a SQLite database downloaded daily from PodcastIndex.com
 - Uses feedparser to get episode-names, audiofiles, titles etc. from the rss-feeds for further parsing
-- ~~Uses the original whisper AI to transcribe data~~ Uses WhispherX to transcribe and align the segments. This implementation is better than the original Whisper due to it using faster-whisper under the hood which supports batching among other performance-improvements.
+- Uses WhispherX to transcribe and align the segments. This implementation is better than the original Whisper due to it using faster-whisper under the hood which supports batching among other performance-improvements.
 - Then uses WhisperX to re-align the timestamps in accordance with the audio file (using the large [wav2vec](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-english) model.
 - Then finds the youtube video that fits to that audio file and updates the episode in the database.
-- Downloads the youtube video and finds the offset in seconds between the audio-podcast and video-podcast to save time and avoid having to re-transcribe audio from youtube video as well. This implementation uses [British Broadcasting Channel's](https://github.com/bbc/audio-offset-finder) own implementation. This value is then added or subtracted from the "start"-value that accompanies all segments.
-- DeviationCalculator:
-  - Positive means the youtube video needs reduction in the time
-  - Negative means the youtube video needs the addition of time
-- ~~If a new podcast is added, express backend images endpoint uses sharp-package to resize image to webp-format and stores it in /uploads/ folder on digitalocean backend.~~
-- We upload the images directly to cloudflare images which does all the resizing and it does it dynamically and on the go in accordance to the image size on all devices.
 
-# For meilisearch.poddley.com
+# Nginx settings:
 
+<details>
+  <summary>Nginx Settings</summary>
+	
 ```
+# For meilisearch.poddley.com
 server {
     listen 80;
     listen [::]:80;
@@ -381,10 +348,8 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
-```
-# For all other routes (default server)
 
-```
+# For all other routes (default server)
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -409,7 +374,6 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
-
 ```
 
 ### Current running nginx reverse proxies for easier usage and https-setup:
@@ -420,8 +384,7 @@ server {
 - HTTPS everywhere done with let's encrypt. Free https certificates
 
 ### AI services
-- All AI services run 24/7 on this machine:
-![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a)
+- All AI services run 24/7 on a ASUS GeForce RTX 3060 Dual OC V2
 - I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
@@ -581,19 +544,13 @@ server {
 - [x] Fix height of text-area
 - [x] More padding on the navbar on the mobile phones.
 - [ ] ~~Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.~~ Not possible due to Cloudflare not supporting custom dbs or express backend
-- [ ] Legg ut som showHN, reddit, contact podcasters + tiktok, markedsfør/kontakt podcasters/logan paul/lex fridman/etc etc etc...
 - [ ] Start transcriberen og bruk large-v2
 - [ ] Make MeiliSearch production version.
 - [x] Add the "getEntireTranscript"-button.	
-- [ ] Finskriv githuben
+- [x] Finskriv githuben
 - [ ]  We need to refactor the transcriber to be able to support concurrency
 - [ ]  How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio???
-- [ ]  Legg ut poddley sanitized?=?=?=
-- [ ]  Fix the sceollIntoView bug
-- [ ]  Remove all console log
-Add this to github readme
-
-            Mooli: true,
+- [x]  Fix the sceollIntoView bug
 
 1. Start the transcriber and services again with this structure in pm2 probably
 2. Modify the transcriber to lock the row and not depend on python prisma at all
