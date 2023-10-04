@@ -1,7 +1,7 @@
 # Poddley - Shazam for podcasts
 
 ## Main Goal:
-The main goal of the website/service is to be the Shazam for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between different podcast-resources (youtube, public podcasts, transcriptions, time-location, rss-feeds, podcast homepages, episode-links and youtube time-location). 
+The main goal of the website/service is to be the "Shazam" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages, episode-links and youtube time-location). 
 
 ## Status build
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
@@ -23,25 +23,24 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
-- No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds. Most was futile. Finally decided to try Cloudflare, went straight to 1.2 seconds.
-- Unused CSS and third-party script/services can be a pain in the ass to deal with.
-- CDN's are awesome
-- Lazy-loading is king.
+- No amount of time optimizing backend will save you from long TTFB (Time To First Byte). After spending a week optimizing backend, testing out Vercel and Netlify (Pro and Free tier) trying to get speed-index below 2 seconds.
+  Finally decided to try Cloudflare, went straight to 1.2 seconds.
+- Unused CSS and third-party script/services can be tricky to deal with.
+- Lazy-loading is nice.
 - Assets compression:
   - Decided to use Brotli Compression to improve transfer time.
     *Since Brotli was designed to compress streams on the fly, it is faster at both compressing content on the server and decompressing it in the browser than in gzip. In some cases the overall front-end decompression is up to 64% faster than gzip.* [Source](https://eu.siteground.com/blog/brotli-vs-gzip-compression/#:~:text=Since%20Brotli%20was%20designed%20to,to%2064%25%20faster%20than%20gzip.)
   - Only using webp on website due to faster loading speed and better compression during transfer [Source](https://developers.google.com/speed/webp/docs/webp_study#:~:text=From%20the%20tables%20above%2C%20we%20can%20observe%20that%20WebP%20gives%20additional%2025%25%2D34%25%20compression%20gains%20compared%20to%20JPEG%20at%20equal%20or%20slightly%20better%20SSIM%20index.)
-  - Also using gzip as they apparrntly arent mutually exclusive
 ## Frontend:
 - Nuxt 3 for client-stuff:
 	- SSR enabled
-	- Pages-structure
+	- Server-structure (as website can't be generated statically due to dynamic route-params)
 	- Nitro-server with gzip- and brotli-compression and minified assets
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
-- TypeScript everywhere.
-- Cloudflare page for CI/CD of Client code + using them as a DNS-manager for easier setup.
-- Tracking was done by ~~[Plausible](https://plausible.io/)~~ Switched to Cloudflare as it was free
-- ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic (as in the first 1 second API calls should be instantaneous, but the ones after shan't). Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
+- TypeScript.
+- Cloudflare  for CI/CD of Client code + using them as a DNS-manager for easier setup.
+- Tracking: ~~[Plausible](https://plausible.io/)~~ Switched to Cloudflare as it was free
+- ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic. Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
 - Nuxt 3 modules used:
 	- TailwindCSS module (integrated PurgeCSS and fast design development)
 	- NuxtImage module
@@ -51,29 +50,23 @@ The main goal of the website/service is to be the Shazam for podcasts. Therefore
 	- Lodash module (for _Debounce-function)
 	- Device module (for iPhone-device detection)
 	- Pinia Nuxt Module (for global storage across components)
-  	- Nightwind Tailwind plugin (for deep automatic nightmode)
-
+  	- Nightwind Tailwind plugin (for deep automaticaally generated tailwind classes for nightmode)
+	- Nuxt Image Cloudflare (passes correct image width and height to cloudflare image url causes cloudflare to automatically resize and compress image to be the smallest payload)'
+ 	- Floating UI + Nuxt3 Headless UI to have automatic flipping of UI when outside of viewport
+  	- Nuxt3 Google Fonts module for async fetching of google fonts (probably GDPR breach, but...) 
 ## Backend:
 ### Services:
 The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
-- Express-API: Does the full-text search functionality as an API querying the Meilisearch-instance
-- Indexer: Pushes the segments, transcription, episode and podcast data to the meilisearch-instance
-- Transcriber:
-  - Transcriber_main: Does pessimistic locking of rows and sends them to the transcriber
-  - Transcriber_transcribe: Does the transcribing using WhispherX and saves it like a json + does the deviationCalculation and Youtube-information-getting
-  - Transcriber_dbinserter: Does the inserting of the json to the db
-- Meilisearch-instance: Does the full-text search functionality
-
-### API:
-- Route-Controller-Service architecture for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
-- The backend is written in TypeScript
-- Prisma Object Relational Mapper is used for database querying and modeling. Used with MySQL as database.
-
-### Indexer 
-Contunously fetches from database and pushing in new transcriptions to Meilisearch instance.
+- Express-API: API that queries the meilisearch instance.
+  - Route-Controller-Service architecture for ExpressJS/Node-backends. [Rundown here](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
+- Indexer (runs every 30min): Updates meilisearch indexes based on db-data
+- RSS-updater (runs very 30min): Updates db (upsert) based on changes in rss-feeds
+- Transcriber/Aligner/YoutubeGetter/YoutubeAudioDeviationCalculator (runs continuously) (can be run concurrently due to db-row locking)
+- Meilisearch-instance (native rust): Does the full-text search functionality
 
 ### Meilisearch instance
 A meilisearch instance running with the following settings (all indexes use the default settings), besides what's specified in the backend scripts.
+
 ##### Indexes
 ```
 
@@ -419,17 +412,6 @@ server {
 
 ```
 
-### Full-text searching (this idea was dumped due to it ruining backend functionality and making further id-implementations gunk)
-- Rust based full-text search engine called Meilisearch is used to create fast full-text search of transcription data indexed from the MySQL database.
-- Due to limitations on meilisearch and non-existant phrase-searching with typo-tolerance, custom solution was made.
-  - Custom solution consisted of the following search-ranking score:
-    - rankingRules: [
-        "proximity",
-        "typo",
-        "words"
-      ],
-   - ...and the server search was done with 3-n-grams + jaccard string comparison finding the max score, sorting them based on similarityScore and selecting the top 5. This has proved to be a good solution.
-
 ### Current running nginx reverse proxies for easier usage and https-setup:
   - api.poddley.com => .../api/ endpoints (transcriptions/search-functionality)
   - meilisearch.poddley.com => meilisearch GUI instance
@@ -437,15 +419,10 @@ server {
 ### Other
 - HTTPS everywhere done with let's encrypt. Free https certificates
 
-### Lighthouse score
-Has to be a live version auto
-
 ### AI services
 - All AI services run 24/7 on this machine:
 ![image](https://github.com/lukamo1996/poddley/assets/52632596/db542c41-922b-4057-ac3f-a7b23ede4a6a)
-
 - I used to run and do tests on runpod.io due to their cheap prices, but realized quickly that long term use would quickly become expensive. Paperspace was even more expensive. Deepgram was ridiculous expensive.
-
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
 ## Stuff to do:
@@ -615,11 +592,8 @@ Has to be a live version auto
 - [ ]  Fix the sceollIntoView bug
 - [ ]  Remove all console log
 Add this to github readme
-BackendStuff:
-Services:
-Single=> (30min)                                                            1. Updates meilisearch indexes based on db data
-Single=> (30min)                                                            2. RSS-updater (checks the saved rss feeds and upserts into episode db)
-Concurrent=>[DB-locking allows multiple transcribers to run] (continuously) 3. Transcriber / Aligner / YouTube Getter / Youtube video => Podcast Audio aligner/Deviation Calculator 
+
+            Mooli: true,
 
 1. Start the transcriber and services again with this structure in pm2 probably
 2. Modify the transcriber to lock the row and not depend on python prisma at all
