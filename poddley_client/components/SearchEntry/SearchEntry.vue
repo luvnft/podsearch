@@ -36,17 +36,17 @@
                                         @click="handlePlaying" :playing="playing" />
                                 </div>
                                 <div class="block h-9 w-9 items-start justify-end">
-                                    <ButtonsMoreButton
-                                        @gettingFullTranscript="(value: boolean) => loadingFullTranscript = value"
-                                        class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
-                                        :loadingFullTranscript="loadingFullTranscript" />
-                                </div>
-                                <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsSubtitlesButton @subSyncTrigger="(value: boolean) => {
                                         subtitlesActivated = !subtitlesActivated;
                                         console.log(!subtitlesActivated)
                                     }" class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
                                         :loadingFullTranscript="loadingFullTranscript" :activated="subtitlesActivated" />
+                                </div>
+                                <div class="block h-9 w-9 items-start justify-end">
+                                    <ButtonsMoreButton
+                                        @gettingFullTranscript="(value: boolean) => loadingFullTranscript = value"
+                                        class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
+                                        :loadingFullTranscript="loadingFullTranscript" />
                                 </div>
                             </div>
                         </div>

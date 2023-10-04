@@ -5,9 +5,9 @@ module.exports = {
   content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
   variants: {
     extend: {
-      backgroundColor: ["group-hover", "firefox"],
+      backgroundColor: ["group-hover"],
     },
-    nightwind: ["group-hover", "focus", "firefox"],
+    nightwind: ["group-hover", "focus"],
   },
   important: true,
   plugins: [
