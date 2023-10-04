@@ -130,9 +130,11 @@ const handleTimeChange = async (event: Event) => {
                 hasSearched = true;
                 console.log("Fetching full transcript due to 98% rule");
 
+                // Get entire transcript for that particular episode...
                 const searchResponse: SearchResponse = await transcriptionService.search({
                     filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
                     getFullTranscript: true,
+                    sort: ["start:asc"]
                 });
                 console.log("Transcript: ", searchResponse);
 

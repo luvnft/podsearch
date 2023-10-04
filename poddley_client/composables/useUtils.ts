@@ -53,6 +53,8 @@ export const fragmentSegmentHits = (segmentHits: SegmentHit[]) => {
         return [...accumulatedSegments, segHit];
 
     }, []);
+
+    // There is a slight possibility that we should do some sorting here, but not sure...
     return fragmentedSegmentHits;
 }
 
