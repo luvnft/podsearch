@@ -7,7 +7,7 @@ The main goal of the website/service is to be the "Shazam" for podcasts. Therefo
 [![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
 
 ## Project 
-[Link to website/product](https://poddley.com)
+[Link to Poddley](https://poddley.com)
 
 ## Design iterations
 <img src="https://github.com/lukamo1996/poddley/assets/52632596/6e4ca29a-6093-481d-b566-39aac740dbf5" width="23%"></img>
@@ -70,7 +70,7 @@ A meilisearch instance running with the following settings (all indexes use the 
 ##### Indexes
 
 <details>
-  <summary>Indexes</summary>
+  <summary>All Meilisearch Indexes</summary>
 
 ```
 	{
@@ -321,65 +321,65 @@ A meilisearch instance running with the following settings (all indexes use the 
 - Then finds the youtube video that fits to that audio file and updates the episode in the database.
 
 # Nginx settings:
+| ![NginxSetup](https://github.com/lukamomc/poddley/assets/52632596/6011a550-8a25-4946-9718-2a5a2f766c7c) | ![NginxDiagram](https://github.com/lukamomc/poddley/assets/52632596/7d7f2578-a181-4a14-8a53-da1ee6452559)
+|:---:|:---|
+
 
 <details>
   <summary>Nginx Settings</summary>
 	
 ```
-# For meilisearch.poddley.com
-server {
-    listen 80;
-    listen [::]:80;
-
-    server_name meilisearch.poddley.com;
-
-    location / {
-        proxy_pass http://localhost:7700;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-
-    listen 443 ssl;
-    ssl_certificate /etc/letsencrypt/live/meilisearch.poddley.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/meilisearch.poddley.com/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-}
-
-# For all other routes (default server)
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    server_name api.poddley.com;
-
-    # Add this line to increase max upload size
-    client_max_body_size 30M;
-
-    location / {
-        proxy_pass http://localhost:3000/;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-
-    listen 443 ssl;
-    ssl_certificate /etc/letsencrypt/live/api.poddley.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.poddley.com/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-}
+	# For meilisearch.poddley.com
+	server {
+	    listen 80;
+	    listen [::]:80;
+	
+	    server_name meilisearch.poddley.com;
+	
+	    location / {
+	        proxy_pass http://localhost:7700;
+	        proxy_http_version 1.1;
+	        proxy_set_header Upgrade $http_upgrade;
+	        proxy_set_header Connection 'upgrade';
+	        proxy_set_header Host $host;
+	        proxy_cache_bypass $http_upgrade;
+	    }
+	
+	    listen 443 ssl;
+	    ssl_certificate /etc/letsencrypt/live/meilisearch.poddley.com/fullchain.pem;
+	    ssl_certificate_key /etc/letsencrypt/live/meilisearch.poddley.com/privkey.pem;
+	    include /etc/letsencrypt/options-ssl-nginx.conf;
+	    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+	}
+	
+	# For all other routes (default server)
+	server {
+	    listen 80 default_server;
+	    listen [::]:80 default_server;
+	
+	    server_name api.poddley.com;
+	
+	    # Add this line to increase max upload size
+	    client_max_body_size 30M;
+	
+	    location / {
+	        proxy_pass http://localhost:3000/;
+	        proxy_http_version 1.1;
+	        proxy_set_header Upgrade $http_upgrade;
+	        proxy_set_header Connection 'upgrade';
+	        proxy_set_header Host $host;
+	        proxy_cache_bypass $http_upgrade;
+	    }
+	
+	    listen 443 ssl;
+	    ssl_certificate /etc/letsencrypt/live/api.poddley.com/fullchain.pem;
+	    ssl_certificate_key /etc/letsencrypt/live/api.poddley.com/privkey.pem;
+	    include /etc/letsencrypt/options-ssl-nginx.conf;
+	    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+	}
 ```
+</details>
 
-### Current running nginx reverse proxies for easier usage and https-setup:
-  - api.poddley.com => .../api/ endpoints (transcriptions/search-functionality)
-  - meilisearch.poddley.com => meilisearch GUI instance
-  
 ### Other
 - HTTPS everywhere done with let's encrypt. Free https certificates
 
@@ -389,9 +389,7 @@ server {
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
 ## Stuff to do:
-- [ ] ~~Covert search to multiseach to speed up search time~~
-- [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
-- [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
+- [x] ~~Convert play-button too say Play podcast~~
 - [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
 - [x] ~~Joe Rogan Recorder~~(illegal)
 - [x] ~~Download all Podcast audio-files to own server to support long-term support~~ (probably illegal)
@@ -399,8 +397,7 @@ server {
 - [x] ~~Create spotify recorder~~ (it's illegal)
 - [x] ~~Use Spotify audioplayer for the spotify podcasts~~ (pointless)
 - [x] ~~Create spotify recorder~~ (it's illegal)
-- [ ] ~~Add faceting for episode and podcast (route for episode og podcast)~~
-- [ ] ~~Make the types shared between backend and client~~
+- [x] ~~Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
 - [x] ~~We need 3 tabs that show at the top like the buttons:~~
       - [ ] ~~New episodes~~
       - [ ] ~~Trending episodes~~
@@ -409,12 +406,14 @@ server {
 - [x]  ~~Add info component~~ (part of three tabs task) 
 - [x]  ~~Add top 3 most searched podcasts~~ (part of tabs)
 - [x] ~~Switch to use the puppeteer script as time ensues~~ (meaningless)
+- [x] ~~Record knappen skal være der doneringsknappen er nå~~
 - [ ] ~~Implement https://github.com/GoogleChromeLabs/quicklink and Instant.page~~
 - [ ] ~~Set up CI/CD pipeline for backend (here: https://medium.com/@fredrik.burmester/nuxt-3-website-with-cloudflare-workers-and-github-actions-336411530aa1)~~
-- [x] ~~Try Workes on Cloudflare just in case, with the nitro template~~ (using cloudflare images and pages)
 - [ ] ~~Lag desktop moden~~
 - [ ] ~~Lag iPhone moden~~
 - [ ] ~~Lag Android moden~~
+- [ ] ~~Add faceting for episode and podcast (route for episode og podcast)~~
+- [ ] ~~Make the types shared between backend and client~~
 - [ ]  ~~Add audio noise denoising on backend to clean up safari audio recordings as they are very muddy due to Safari being restrictive~~ (Was implemented primarily to address the issues associated with Safari and it's horrible audio-recording issues, but it didn't really solve much. The audio was denoised and clean, but the muffled speech was unavoidable. This was the main reason to create an app).
 - [ ] ~~Disable animation button~~ (nah)
 - [ ] ~~Skal være mulig å paste en link til youtube/tiktok/ehatever side og få svarer på hvilken episode det kommer fra~~
@@ -427,7 +426,6 @@ server {
 - [ ] ~~Legg til navbar i toppen hvor det står hvor mange podcaster episoder er transcriba+ current listerens~~
 - [ ] ~~Increase zoom further to 25% or 10%??~~ (not necessary, enough screen hagging)
 - [ ] ~~Binary tree subs cache object needs to be available~~ (unnecessary)
-- [x] ~~Record knappen skal være der doneringsknappen er nå~~
 - [ ] ~~Add dark mode icon to the button~~
 - [ ] ~~Logo color?~~
 - [ ] ~~Add share buttons to moreLink~~
@@ -435,9 +433,12 @@ server {
 - [ ] ~~Flytt subsene inn i den modda spilleren~~ (no subs)
 - [ ] ~~Grab transcriptionsne til anthony for lex for å spare tid~~ (no, he doesnt have the necessary info
 - [ ] ~~Legg til sjekk som blokker flere audioplayere fra å spille samtidig + make the audioPlayer not visible until someone starts playing~~
-- [x] ~~Convert play-button too say Play podcast~~
 - [ ] ~~Bytt audioPlayer til howler.js til designet som er ønsket~~
 - [ ] ~~When someone clicks on the button, it should set the global playing value to true and it should set the link of the audioLink that is being played. If the audioPlayer has that enclosure it should continue playing, if not it shant. The audioPlayer should also show up if the it has a chosen audio-file. If not, it shant be shown.~~
+- [ ] ~~Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.~~ Not possible due to Cloudflare not supporting custom dbs or express backend
+- [ ] ~~Covert search to multiseach to speed up search time~~
+- [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
+- [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -543,15 +544,10 @@ server {
 - [x] Start up all pm2-services.
 - [x] Fix height of text-area
 - [x] More padding on the navbar on the mobile phones.
-- [ ] ~~Dockerize entire product on 1 server container (cloudflare workers, it's cheaper than digitalocean, CICD also. This means (client + api/backend + indexer). The transcriber is on my own setup.~~ Not possible due to Cloudflare not supporting custom dbs or express backend
-- [ ] Start transcriberen og bruk large-v2
-- [ ] Make MeiliSearch production version.
 - [x] Add the "getEntireTranscript"-button.	
 - [x] Finskriv githuben
+- [x]  Fix the sceollIntoView bug
+- [ ] Start transcriberen og bruk large-v2
+- [ ] Make MeiliSearch production version.
 - [ ]  We need to refactor the transcriber to be able to support concurrency
 - [ ]  How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio???
-- [x]  Fix the sceollIntoView bug
-
-1. Start the transcriber and services again with this structure in pm2 probably
-2. Modify the transcriber to lock the row and not depend on python prisma at all
-3. 
