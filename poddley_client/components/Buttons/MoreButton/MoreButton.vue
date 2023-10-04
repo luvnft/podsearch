@@ -9,12 +9,10 @@
                 </HeadlessMenuButton>
             </div>
 
-            <transition enter-active-class="transition duration-75 ease-out"
-                enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-                leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
-                leave-to-class="transform scale-95 opacity-0">
-                <HeadlessMenuItems
-                :offset="4"
+            <transition enter-active-class="transition duration-75 ease-out" enter-from-class="transform scale-95 opacity-0"
+                enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in"
+                leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
+                <HeadlessMenuItems :offset="4"
                     class="bg-white ring-black z-50 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
                     <div class="bg-white w-full rounded-lg px-0 py-1">
                         <HeadlessMenuItem v-slot="{ active }"
@@ -108,6 +106,7 @@ const loadEntireTranscript = async (episodeGuid: string) => {
     const searchResponse: SearchResponse = await transcriptionService.search({
         filter: `belongsToEpisodeGuid='${episodeGuid}'`,
         getFullTranscript: true,
+        sort: ["start:asc"]
     });
     console.log("Transcript: ", searchResponse);
     console.log("episodeGuid is: ", episodeGuid);
