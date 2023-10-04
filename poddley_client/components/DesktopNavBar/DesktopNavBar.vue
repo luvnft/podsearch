@@ -3,7 +3,7 @@
         <div class="container-fluid mx-auto flex h-full items-center justify-between px-0">
             <div class="flex-grow h-full flex items-center md:gap-x-5">
                 <GenericLink v-for="page in navigation" :key="page.name" :link="page.href"
-                    class="text-gray-500 mx-0 my-0 flex items-center justify-center text-center text-base font-normal hover:text-gray-600">
+                    class="text-gray-500 mx-0 my-0 flex items-center justify-center text-center text-base font-semibold hover:text-gray-600">
                     <span class="px-2">
                         {{ page.name }}
                     </span>
@@ -14,7 +14,7 @@
             </div>
             <div class="flex-grow h-full flex items-center justify-end md:gap-x-5">
                 <GenericLink :link="donateLink"
-                    class="text-gray-500 mx-0 my-0 flex items-center justify-center text-center text-base font-normal hover:text-gray-600">
+                    class="text-gray-500 mx-0 my-0 flex items-center justify-center text-center text-base font-semibold hover:text-gray-600">
                     <span class="px-2">Support us</span>
                 </GenericLink>
                 <ButtonsDarkModeButton aria-hidden="true" />

@@ -1,14 +1,31 @@
 <template>
-    <button
-        :class="`group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 
-    items-center justify-center rounded-lg border p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 active:shadow-sm`">
-        <svg-icon name="subtitlesOn" class="h-[18px] fill-gray-400" v-show="props.activated" />
-        <svg-icon name="subtitlesOff" class="h-[18px] fill-gray-400 group-hover:text-gray-500" v-show="!props.activated" />
-    </button>
+    <ButtonsGenericButton @click="subSyncTrigger"
+        class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex w-9 h-9 items-center justify-center rounded-lg border fill-neutral-400 p-0 px-0.5 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
+
+        <div class="flex aspect-square h-10 w-full items-center justify-center">
+            <div class="flex h-full w-full items-center justify-center" v-if="props.activated">
+                <svg-icon name="subtitlesOn"
+                    class="flex h-full w-3/5 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+            </div>
+            <div class="flex h-full w-full items-center justify-center" v-if="!props.activated">
+                <svg-icon name="subtitlesOff"
+                    class="flex h-full w-3/5 scale-110 justify-center fill-gray-400 group-hover:fill-gray-500" aria-hidden="true" />
+            </div>
+        </div>
+    </ButtonsGenericButton>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps<{
     activated: boolean;
 }>();
+
+const emit = defineEmits<{
+    (e: "subSyncTrigger", subSyncTrigger: boolean): void;
+}>();
+
+const subSyncTrigger = () => {
+    console.log(231)
+    emit("subSyncTrigger", !props.activated)
+}
 </script>

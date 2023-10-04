@@ -1,11 +1,9 @@
-/* Font smoothing for better font rendering on macOS and iOS */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 * {
   font-family: "Quicksand" !important;
+  @apply focus:ring-gray-500;
+  @apply focus:outline-none;
+  @apply focus:ring-2;
+  @apply focus:ring-inset;
 }
 
 main *,
@@ -18,18 +16,31 @@ hr {
   margin-top: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    @apply bg-white;
-  }
+body {
+  @apply bg-white;
 }
 
-* {
-  @apply scrollbar;
-  @apply scrollbar-thumb-gray-600 !important;
-  @apply scrollbar-track-gray-300 !important;
-  @apply scrollbar-thumb-rounded !important;
-  @apply scrollbar-w-0.5 !important;
+/* My name is firefox and chromium, we dont really work together ... */
+.dark,
+.dark * {
+  @apply scrollbar-thin;
+  @apply scrollbar-thumb-gray-500;
+  @apply scrollbar-track-gray-900;
+  @apply scrollbar-thumb-rounded-lg;
+}
+
+.light,
+.light * {
+  @apply scrollbar-thin;
+  @apply scrollbar-thumb-gray-400;
+  @apply scrollbar-track-gray-100;
+  @apply scrollbar-thumb-rounded;
+  @apply scrollbar-thumb-rounded-lg;
+}
+
+*::-webkit-scrollbar {
+  width: 3px !important;
+  height: 3px !important;
 }
 
 time {
