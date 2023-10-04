@@ -24,13 +24,13 @@
             <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
                 <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
                     <div
-                        class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-2.5 py-1.5 shadow-sm">
-                        <div class="z-50 flex h-auto w-full flex-row items-center justify-between py-0 pb-1">
+                        class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-1.5 py-1.5 shadow-sm">
+                        <div class="z-50 flex h-auto w-full flex-row items-center justify-between py-0 pb-0 pl-1">
                             <p
                                 class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                                 {{ props.searchEntry.episodeTitle }}
                             </p>
-                            <div class="w-18 float-right flex h-full items-start justify-start gap-x-1 pr-0 mr-0">
+                            <div class="w-18 float-right flex h-full items-start justify-start gap-x-0.5 pl-1 mr-0">
                                 <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsPlayButton class="absolute h-9 w-9" :searchEntry="props.searchEntry"
                                         @click="handlePlaying" :playing="playing" />
@@ -58,8 +58,9 @@
                                     <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
                                         :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
                                 </div>
-                                <IconsSpinnerIcon class="w-100 flex h-40 items-center justify-center"
-                                    v-if="loadingFullTranscript" />
+                                <div class="w-full flex h-40 items-center justify-center" v-if="loadingFullTranscript">
+                                    <IconsSpinnerIcon />
+                                </div>
                             </div>
                         </div>
 
