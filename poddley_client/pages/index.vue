@@ -1,6 +1,6 @@
 <template>
     <div class="block" ref="searchResultsRef">
-        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" :key="searchQuery.searchString" />
+        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits"/>
     </div>
 </template>
 <script lang="ts" setup>
@@ -9,6 +9,7 @@ import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
+import { Hit, SegmentHit } from "../types/SearchResponse";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -21,7 +22,7 @@ const { searchQuery, searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
-    searchString: "This past weekend is",
+    searchString: "The following is a ",
     offset: 0,
 };
 //Running
@@ -41,6 +42,12 @@ onMounted(() => {
                     // searchResults.value = payload;
                     console.log("OK");
                     console.log("payload", payload);
+                    payload.hits.forEach((hit: Hit) => {
+                        if (hit.subHits) {
+                            const fragmentedSubHits: SegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                            hit.subHits = fragmentedSubHits;
+                        }
+                    });
                     searchStore.setSearchResults(payload);
                     searchStore.setLoadingState(false);
                     break;
@@ -72,14 +79,20 @@ async function makeSearch() {
                 const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
                 const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
+                searchResults.value.hits.forEach((hit: Hit) => {
+                    if (hit.subHits) {
+                        const fragmentedSubHits: SegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                        hit.subHits = fragmentedSubHits;
+                    }
+                });
             } catch (e) { }
         }
     }
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 1000, {
-    leading: true,
+const debouncedSearch = _Debounce(makeSearch, 500, {
+    leading: false,
     trailing: true,
 });
 
@@ -99,9 +112,9 @@ const debouncedOffsetIncrement = _Debounce(
             offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
         };
     },
-    1000,
+    500,
     {
-        leading: true,
+        leading: false,
         trailing: true,
     }
 );
