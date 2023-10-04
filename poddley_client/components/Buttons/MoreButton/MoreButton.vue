@@ -103,21 +103,36 @@ const emit = defineEmits<{
 
 const loadEntireTranscript = async (episodeGuid: string) => {
     emit("gettingFullTranscript", true);
+    // Get entire transcript for that particular episode...
     const searchResponse: SearchResponse = await transcriptionService.search({
-        filter: `belongsToEpisodeGuid='${episodeGuid}'`,
+        filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
         getFullTranscript: true,
         sort: ["start:asc"]
     });
     console.log("Transcript: ", searchResponse);
-    console.log("episodeGuid is: ", episodeGuid);
-    console.log(searchResponse.hits.length)
 
-    // First we gotta loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
-    let segmentHits: SegmentHit[] = searchResults.value.hits[props.index].subHits
+    // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
+    // Maybe casting is better, but dunno
+    let segmentHits: SegmentHit[] = searchResponse.hits.map((hit: Hit) => {
+        return {
+            text: hit.text,
+            id: hit.id,
+            start: hit.start,
+            end: hit.end,
+            language: hit.podcastLanguage,
+            belongsToPodcastGuid: hit.podcastGuid,
+            belongsToEpisodeGuid: hit.episodeGuid,
+            belongsToTranscriptId: hit.belongsToTranscriptId,
+            _formatted: hit._formatted,
+        }
+    })
 
-    // Doing it:
+    // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
+    console.log("Index is: ", props.index)
     segmentHits = fragmentSegmentHits(segmentHits)
     searchResults.value.hits[props.index].subHits = segmentHits;
+    console.log("SearchResults NOOOOOOW: ", searchResults.value)
+    console.log("Fragmentation done, should be set");
 
     emit("gettingFullTranscript", false);
 };
