@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex w-full justify-start h-44">
+                        <div class="flex w-full justify-start h-44 flex-grow">
 
                             <div v-if="!loadingFullTranscript"
                                 :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 flex-grow w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
