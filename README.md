@@ -548,6 +548,8 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Finskriv githuben
 - [x]  Fix the sceollIntoView bug
 - [ ] Start transcriberen og bruk large-v2
+- [ ] Remove all the gunk from the segments and keep the episode and podcast stuff only on the Hit-object but not on the subhits and dont have any values besides the necessary on the subhits. that should reduce the payload substatially.
 - [ ] Make MeiliSearch production version.
 - [ ]  We need to refactor the transcriber to be able to support concurrency
-- [ ]  How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio???
+- [ ]  Start up all the pm2 instances in accorance to the written architecture
+- [ ]  Some podcast-streams might have ads when being played and when being transcribed. Solution to this is...??? Save podcast. Legal???...??? Not save  podcast...??? Legal, but lame due to the ads and it fucking with the timestamp so solution is... mini-model on web audio ad killer??? .. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio??? Solution is: Download podcast, remove ad from using AI, save audio, stream audio from own R3-bucket.
