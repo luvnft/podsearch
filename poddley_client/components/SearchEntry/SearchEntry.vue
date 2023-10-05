@@ -5,7 +5,7 @@
             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-lg px-0 py-0 pb-0 leading-normal sm:px-2">
             <div class="border-1 h-full min-w-full rounded-lg shadow-lg dark:border-neutral-100">
                 <div v-if="props.searchEntry.youtubeVideoLink">
-                    <LiteYoutubeEmbed
+                    <LiteYoutubeEmbed @click="handleYoutubeClick"
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
                         :startTime="computedStartTime" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
@@ -50,17 +50,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex w-full justify-start">
-                            <div
-                                class="mb-0 mt-0 flex h-full max-h-full min-h-full w-full justify-start rounded-lg px-0 py-0 pb-0 text-start">
-                                <div v-if="!loadingFullTranscript"
-                                    :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 h-40 w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
-                                    <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
-                                        :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
-                                </div>
-                                <div class="w-full flex h-40 items-center justify-center" v-if="loadingFullTranscript">
-                                    <IconsSpinnerIcon />
-                                </div>
+                        <div class="flex w-full justify-start h-44">
+
+                            <div v-if="!loadingFullTranscript"
+                                :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 flex-grow w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
+                                <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
+                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
+                            </div>
+                            <div class="w-full flex h-44 items-center justify-center" v-if="loadingFullTranscript">
+                                <IconsSpinnerIcon />
                             </div>
                         </div>
 
@@ -175,6 +173,10 @@ const computedStartTime = computed(() => {
     const val = start - deviationTime;
     return val < 0 ? 0 : val;
 });
+
+const handleYoutubeClick = (event: any) => {
+    console.log("OK: ", event);
+}
 
 </script>
 

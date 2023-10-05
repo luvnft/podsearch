@@ -35,9 +35,9 @@
             </div>
 
             <iframe
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}`"
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
                 :title="props.videoTitle" frameborder="0"
-                :allow="`accelerometer; ${props.autoplay ? 'autoplay' : ''}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
+                :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
                 class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()" />
         </div>
@@ -189,4 +189,5 @@ const props = defineProps({
 .bgbg {
     background: rgb(0, 0, 0) !important;
     background: linear-gradient(90deg, rgba(0, 0, 0, 1) 20%, rgba(255, 255, 255, 1) 100%) !important;
-}</style>
+}
+</style>

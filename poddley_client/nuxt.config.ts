@@ -9,7 +9,7 @@ export default defineNuxtConfig({
             gzip: true,
         },
         minify: true,
-        preset: "cloudflare",
+        preset: "",
         sourceMap: false,
     },
     colorMode: {
@@ -30,11 +30,7 @@ export default defineNuxtConfig({
     headlessui: {
         prefix: "Headless",
     },
-    modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "@nuxt/image", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt", "nuxt-delay-hydration"],
-    delayHydration: {
-        mode: "mount",
-        debug: false,
-    },
+    modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "@nuxt/image", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt"],
     googleFonts: {
         families: {
             Lato: true,
