@@ -125,7 +125,7 @@ export function convertSegmentHitToFormattedText(segmentHit: SegmentHit): string
                 let segmentEndTime: number = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
 
                 // Create and add the formatted segment to the segments array
-                segments.push(`<p><time>${convertSecondsToTime(segmentStartTime)}:</time> <i>${segmentWords.join(" ").trim()}</i></p>`);
+                segments.push(`<p class = 'px-1'><time>${convertSecondsToTime(segmentStartTime)}:</time> <span class = "italic">${segmentWords.join(" ").trim()}</span></p>`);
 
                 // Update the segmentStartTime for the next segment
                 segmentStartTime = segmentEndTime;
@@ -134,7 +134,7 @@ export function convertSegmentHitToFormattedText(segmentHit: SegmentHit): string
         }
 
         // If not, let'se goooo
-        return `<p><time>${convertSecondsToTime(startTime)}:</time> <i>${text}</i></p>` || "";
+        return `<p class = 'px-1'><time>${convertSecondsToTime(startTime)}:</time> <span class = "italic">${text}</span></p>` || "";
     }
     else {
         return "";
