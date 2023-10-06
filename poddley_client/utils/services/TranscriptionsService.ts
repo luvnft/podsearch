@@ -1,4 +1,4 @@
-import { SearchResponse } from "../../types/SearchResponse";
+import { ClientSearchResponse } from "../../types/ClientSearchResponse";
 import ApiService from "./ApiService";
 import { SearchQuery } from "types/SearchQuery";
 
@@ -7,13 +7,13 @@ export default class TranscriptionService extends ApiService {
     super();
   }
 
-  public async search(searchQuery: SearchQuery): Promise<SearchResponse> {
-    const res = await useFetch<SearchResponse>("/transcriptions/search", {
+  public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
+    const res = await useFetch<ClientSearchResponse>("/transcriptions/search", {
       method: "POST",
       baseURL: this.BASE_URL,
       body: { searchQuery },
     });
-    const data: SearchResponse = res.data.value as SearchResponse;
+    const data: ClientSearchResponse = res.data.value as ClientSearchResponse;
     return data;
   }
 }

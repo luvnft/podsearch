@@ -1,4 +1,4 @@
-import { Hit, SegmentHit } from "../types/SearchResponse";
+import { ClientSearchResponseHit, ClientSegmentHit, ClientSearchResponse } from "../types/ClientSearchResponse";
 
 export type Utils = ReturnType<typeof useUtils>;
 
@@ -13,9 +13,9 @@ export const useUtils = () => {
     };
 };
 
-export const fragmentSegmentHits = (segmentHits: SegmentHit[]) => {
+export const fragmentSegmentHits = (segmentHits: ClientSegmentHit[]) => {
     // Doing it:
-    const fragmentedSegmentHits: SegmentHit[] = segmentHits.reduce((accumulatedSegments: SegmentHit[], segHit: SegmentHit) => {
+    const fragmentedSegmentHits: ClientSegmentHit[] = segmentHits.reduce((accumulatedSegments: ClientSegmentHit[], segHit: ClientSegmentHit) => {
         let startTime: number = segHit.start as number;
         let endTime: number = segHit.end;
         let text: string = segHit.text;
@@ -23,7 +23,7 @@ export const fragmentSegmentHits = (segmentHits: SegmentHit[]) => {
 
         // If bigger than 5 words, gotta make em smaller
         if (words.length > 5) {
-            let segments: SegmentHit[] = [];
+            let segments: ClientSegmentHit[] = [];
 
             // Calculate duration per word in the original segment
             let durationPerWord: number = (endTime - startTime) / words.length;
@@ -36,7 +36,7 @@ export const fragmentSegmentHits = (segmentHits: SegmentHit[]) => {
                 let segmentEndTime: number = segmentStartTime + segmentWords.length * durationPerWord; // Getting segmentEndTime which will be the new segmentStartTime for the next segment based on the durationperWord
 
                 // Create and add the formatted segment to the segments array
-                const newSegmentHit: SegmentHit = {
+                const newSegmentHit: ClientSegmentHit = {
                     ...segHit,
                     start: segmentStartTime,
                     text: segmentWords.join(" "),
@@ -103,7 +103,7 @@ export function decodeQuery(query: any) {
     }
 }
 
-export function convertSegmentHitToFormattedText(segmentHit: SegmentHit): string {
+export function convertSegmentHitToFormattedText(segmentHit: ClientSegmentHit): string {
     if (segmentHit && segmentHit.text) {
         let startTime: number = segmentHit.start as number;
         let endTime: number = segmentHit.end;
