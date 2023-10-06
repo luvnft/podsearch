@@ -18,7 +18,7 @@ export interface SegmentHit {
   belongsToTranscriptId: string;
   indexed: boolean;
   segmentWordEntries: any;
-  _formatted: Formatted;
+  _formatted?: Formatted;
   similarity: number;
 }
 
