@@ -1,6 +1,6 @@
 <template>
     <div class="block" ref="searchResultsRef">
-        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits"/>
+        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -105,7 +105,7 @@ watch(searchQuery, debouncedSearch, {
     deep: true,
 });
 
-const debouncedOffsetIncrement = _Debounce(
+const debouncedOffsetIncrement = _Throttle(
     () => {
         searchQuery.value = {
             ...searchQuery.value,
@@ -113,10 +113,6 @@ const debouncedOffsetIncrement = _Debounce(
         };
     },
     500,
-    {
-        leading: false,
-        trailing: true,
-    }
 );
 
 // load more data when scrolled 95% of the document.
@@ -126,7 +122,7 @@ watch(y, () => {
     const visibleHeight = window.innerHeight;
     console.log("OK");
 
-    if (scrollY.value + visibleHeight >= 0.95 * windowHeight) {
+    if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
         console.log("SEESES: ", searchQuery.value);
         debouncedOffsetIncrement();
 

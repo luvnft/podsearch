@@ -100,7 +100,8 @@ const loadEntireTranscript = async (episodeGuid: string) => {
     const searchResponse: ClientSearchResponse = await transcriptionService.search({
         filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
         getFullTranscript: true,
-        sort: ["start:asc"]
+        sort: ["start:asc"],
+        searchString: ""
     });
     console.log("Transcript: ", searchResponse);
 
@@ -135,6 +136,7 @@ const copySegmentLink = () => {
     const filter: string = `id='${segmentId}'`;
     const constructedSearchQuery: SearchQuery = {
         filter: filter,
+        searchString: null
     };
     // Save url to user copy/paste
     const encodedUrl: string = utils.encodeQuery(constructedSearchQuery) || "";

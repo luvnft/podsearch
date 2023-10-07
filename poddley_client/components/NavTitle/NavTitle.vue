@@ -18,7 +18,7 @@ const { loading, searchQuery } = storeToRefs(searchStore);
 const toHomeClick = () => {
     searchQuery.value = {
         ...searchQuery.value,
-        searchString: undefined,
+            searchString: "",
     };
 };
 </script>
