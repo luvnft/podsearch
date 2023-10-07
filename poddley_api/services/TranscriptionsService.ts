@@ -183,18 +183,19 @@ class TranscriptionsService {
       // Performing queries using promise awaitAll possibly faster
       const allResponses: any = await Promise.all( 
         multiSearchParams.queries.map(async (query: any) => {
-          const indexCopy: string = query.indexUid;
-          const segmentIdCopy: string = query.segmentId;
-          delete query.indexUid;
-          delete query.segmentId;
-
           return {
-            result: await meilisearchConnection.index(indexCopy).search("", query),
-            indexUid: indexCopy,
-            segmentId: segmentIdCopy,
+            result: await meilisearchConnection.index(query.indexUid).search("", {
+              q: query.q,
+              filter: query.filter,
+              limit: query.limit,
+              sort: query.sort,
+              matchingStrategy: query.matchingStrategy,
+            }),
+            indexUid: query.indexUid,
+            segmentId: query.segmentId,
           };
         })
-      );
+      ); 
 
       // All responses cached length
       const allResponsesLength: number = allResponses.length;
@@ -205,8 +206,6 @@ class TranscriptionsService {
 
       // Creating podcastGuid->PodcastHit and episodeGuid->EpisodeHit Map
       for (let i = 0; i < allResponsesLength; i++) {
-        if (foundEpisode && foundPodcast) break;
-
         // Result var
         const { result, indexUid } = allResponses[i];
 
@@ -218,6 +217,7 @@ class TranscriptionsService {
           episodesMap = new Map(result.hits.map((episode: EpisodeHit) => [episode.episodeGuid, episode]));
           foundEpisode = true;
         }
+        if (foundEpisode && foundPodcast) break;
       }
 
       // If both are truthy we go further
