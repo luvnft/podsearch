@@ -9,7 +9,7 @@
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
                         :startTime="computedStartTime" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
-                        :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault"
+                        :pictureInPicture="true" :noCookie="true" posterQuality="sddefault"
                         :searchEntry="props.searchEntry" />
                 </div>
                 <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
@@ -156,8 +156,8 @@ const handleTimeChange = async (event: Event) => {
 
                 // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
                 console.log("Index is: ", props.index)
-                // segmentHits = fragmentSegmentHits(segmentHits)
-                // searchResults.value.hits[props.index].subHits = segmentHits;
+                const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
+                searchResults.value.hits[props.index].subHits = segmentHits;
                 console.log("SearchResults NOOOOOOW: ", searchResults.value)
                 console.log("Fragmentation done, should be set");
             }

@@ -10,6 +10,7 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
+import { LocationQuery, Router } from "#build/.nuxt/vue-router";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -25,6 +26,9 @@ const initialSearchQuery: SearchQuery = {
     searchString: "The following is a ",
     offset: 0,
 };
+const segmentMode: Ref<boolean> = ref(false);
+const router: Router = useRouter();
+
 //Running
 onMounted(() => {
     if (process.client) {
@@ -77,7 +81,7 @@ async function makeSearch() {
             try {
                 const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
                 const decodedRouteBasedQuery: SearchQuery = utils.decodeQuery(routeBasedQuery);
-                const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
+                const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
                 searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
                     if (hit.subHits) {
@@ -105,7 +109,7 @@ watch(searchQuery, debouncedSearch, {
     deep: true,
 });
 
-const debouncedOffsetIncrement = _Throttle(
+const debouncedOffsetIncrement = _Debounce(
     () => {
         searchQuery.value = {
             ...searchQuery.value,
@@ -113,6 +117,10 @@ const debouncedOffsetIncrement = _Throttle(
         };
     },
     500,
+    {
+        leading: false,
+        trailing: true
+    },
 );
 
 // load more data when scrolled 95% of the document.
@@ -124,7 +132,20 @@ watch(y, () => {
 
     if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
         console.log("SEESES: ", searchQuery.value);
-        debouncedOffsetIncrement();
+
+        // If the 
+        const routePath: LocationQuery = router?.currentRoute?.value?.query;
+        let presence: boolean | undefined = undefined;
+
+        try {
+            const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
+            presence = Boolean(routeBasedSearchQuery.filter?.match(/(id)/gi));
+        }
+        catch (e) { }
+        console.log("Presence: ", presence);
+        if (presence === false) {
+            debouncedOffsetIncrement();
+        }
 
         console.log("new searchQuery: ", searchQuery.value);
     }
