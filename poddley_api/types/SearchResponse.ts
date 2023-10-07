@@ -1,9 +1,10 @@
 export interface ClientSearchResponse {
   hits: ClientSearchResponseHit[];
-  query: string | undefined;
+  query: string;
 }
 
 export interface ClientSearchResponseHit {
+  id: string; // This is segmentId
   podcastTitle: string;
   episodeTitle: string;
   podcastSummary: string;
@@ -29,5 +30,4 @@ export interface ClientSegmentHit {
   id: string;
   start: number;
   end: number;
-  formatted?: string;
 }
