@@ -135,10 +135,15 @@ watch(y, () => {
 
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
-        const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
-        const presence = routeBasedSearchQuery.filter?.match(/(id)/gi);
+        let presence: boolean | undefined = undefined;
+
+        try {
+            const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
+            presence = Boolean(routeBasedSearchQuery.filter?.match(/(id)/gi));
+        }
+        catch (e) { }
         console.log("Presence: ", presence);
-        if (!presence) {
+        if (presence === false) {
             debouncedOffsetIncrement();
         }
 

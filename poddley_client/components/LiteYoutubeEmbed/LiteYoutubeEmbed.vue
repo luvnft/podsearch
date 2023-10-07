@@ -5,8 +5,14 @@
                 class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
                 <div
                     class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
-                    <NuxtImg :src="props.searchEntry?.podcastImage"
-                        class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" loading="lazy" />
+                    <NuxtImg
+                    name="youtubeChannelIcon"
+                    :src="props.searchEntry?.podcastImage"
+                    class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" 
+                    loading="lazy"
+                    width="40px"
+                    height="40px"
+                    />
                 </div>
                 <div class="flex min-w-0 items-center">
                     <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base"
@@ -16,7 +22,7 @@
                 </div>
             </div>
             <div>
-                <button id="playButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
+                <button name="youtubePlayButton" id="youtubePlayButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
             </div>
             <button
                 class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
