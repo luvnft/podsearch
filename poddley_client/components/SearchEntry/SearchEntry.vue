@@ -95,7 +95,7 @@ const props = defineProps<{
 const { isFirefox, isSafari, isIos } = useDevice();
 const playing: Ref<boolean> = ref(false);
 const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
-const subtitlesActivated: Ref<boolean> = ref(true);
+const subtitlesActivated: Ref<boolean> = ref(false);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
     console.log("Triggered")

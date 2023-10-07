@@ -10,6 +10,7 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
+import { LocationQuery, Router } from "#build/.nuxt/vue-router";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -25,6 +26,9 @@ const initialSearchQuery: SearchQuery = {
     searchString: "The following is a ",
     offset: 0,
 };
+const segmentMode: Ref<boolean> = ref(false);
+const router: Router = useRouter();
+
 //Running
 onMounted(() => {
     if (process.client) {
@@ -128,7 +132,15 @@ watch(y, () => {
 
     if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
         console.log("SEESES: ", searchQuery.value);
-        debouncedOffsetIncrement();
+
+        // If the 
+        const routePath: LocationQuery = router?.currentRoute?.value?.query;
+        const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
+        const presence = routeBasedSearchQuery.filter?.match(/(id)/gi);
+        console.log("Presence: ", presence);
+        if (!presence) {
+            debouncedOffsetIncrement();
+        }
 
         console.log("new searchQuery: ", searchQuery.value);
     }
