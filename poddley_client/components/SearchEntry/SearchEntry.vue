@@ -116,7 +116,6 @@ const handleTimeChange = async (event: Event) => {
         const currentSeconds: number = parseFloat((event as any).target.currentTime.toFixed(1));
 
         // Assuming currentPlayingTime and searchResults are reactive references
-        // and SegmentHit, SearchResponse are properly imported types
         currentPlayingTime.value = currentSeconds;
 
         const hits = searchResults.value.hits[props.index];
