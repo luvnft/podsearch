@@ -46,7 +46,7 @@ class TranscriptionsService {
       mainQuery = {
         filter: searchQuery.filter,
         limit: 10000,
-        q: undefined,
+        q: "",
         matchingStrategy: "last",
         sort: ["start:asc"],
       };
@@ -62,11 +62,11 @@ class TranscriptionsService {
   private async segmentSearch(searchParams: SearchParams, getFullTranscript: boolean): Promise<ClientSearchResponse> {
     if (getFullTranscript) {
       // Perform initial search on the segmentsIndex to get the segments
-      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search("", searchParams);
 
       // Final ClientSearchResponse object
       let searchResponse: ClientSearchResponse = {
-        query: searchParams.q || undefined,
+        query: searchParams.q || "",
         hits: [],
       };
 
@@ -93,13 +93,14 @@ class TranscriptionsService {
       const segmentHitPodcast: PodcastHit | undefined = podcastsMap.get(segmentHit.belongsToPodcastGuid);
       const segmentHitEpisode: EpisodeHit | undefined = episodesMap.get(segmentHit.belongsToEpisodeGuid);
 
-      // If segmentHitEpisode or podcastHitEpisode are both undefined, throw an error
+      // If segmentHitEpisode or podcastHitEpisode are both "", throw an error
       if (!segmentHitEpisode || !segmentHitPodcast) {
-        throw Error("SegmentHitEpisode or SegmentHitPodcast is undefined");
+        throw Error("SegmentHitEpisode or SegmentHitPodcast is:");
       }
 
       // We are setting the first element to be container of all the hits since
       searchResponse.hits[0] = {
+        id: segmentHit.id,
         podcastTitle: segmentHitPodcast.title,
         episodeTitle: segmentHitEpisode.episodeTitle,
         podcastSummary: segmentHitPodcast.description,
@@ -108,43 +109,43 @@ class TranscriptionsService {
         podcastAuthor: segmentHitPodcast.itunesAuthor,
         episodeLinkToEpisode: segmentHitEpisode.episodeLinkToEpisode,
         episodeEnclosure: segmentHitEpisode.episodeEnclosure,
-        podcastLanguage: segmentHitPodcast.language,
+        podcastLanguage: segmentHitPodcast.language, 
         podcastGuid: segmentHitPodcast.podcastGuid,
         podcastImage: segmentHitPodcast.imageUrl,
-        episodeGuid: segmentHitEpisode.episodeGuid,
+        episodeGuid: segmentHitEpisode.episodeGuid, 
         url: segmentHitPodcast.url,
         link: segmentHitPodcast.link,
         youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-        deviationTime: segmentHitEpisode.deviationTime || 0,
+        deviationTime: segmentHitEpisode.deviationTime || 0, 
         subHits: initialSearchResponse.hits.flat(),
         belongsToTranscriptId: segmentHit.belongsToTranscriptId,
       };
 
-      // Removing all the other hits:
+      // Removing all the other hits as they were initially part of the .hits of the initialSearchResponse, but since they all share a common episodeGuid ID then I shoved them into the subHits.
       searchResponse.hits = [searchResponse.hits[0]];
 
-      // Return the entire transcript
+      // Return the entire transcript 
       return searchResponse;
     } else {
       // Perform initial search on the segmentsIndex to get the segments
-      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search("", searchParams);
 
       // Final ClientSearchResponse object
       let searchResponse: ClientSearchResponse = {
-        query: searchParams.q || undefined,
+        query: searchParams.q || "",
         hits: [],
       };
 
       // MultiSearchQuery object
-      let multiSearchParams: MultiSearchParams = {
+      let multiSearchParams: any = {
         queries: [],
       };
 
       // Create the queries for the multiSearch route on meilisearch
-      initialSearchResponse.hits.map((segmentHit: SegmentHit) => {
+      initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
         multiSearchParams.queries.push({
           indexUid: "segments", // Replace with the actual index name
-          q: undefined,
+          q: "",
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
           limit: 50,
           sort: ["start:asc"],
@@ -152,6 +153,7 @@ class TranscriptionsService {
           highlightPreTag: '<span class="highlight">',
           highlightPostTag: "</span>",
           matchingStrategy: "last",
+          segmentId: segmentHit.id,
         });
       });
 
@@ -159,42 +161,42 @@ class TranscriptionsService {
       const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToPodcastGuid}'`))];
       const podcastFilter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
       const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToEpisodeGuid}'`))];
-      const episodesFilter: string = `episodeGuid=${episodeIds.join(" OR episodeGuid=")}`;
-
-      console.log("The initialResponse hits has elements number: ", initialSearchResponse.hits.length);
-      console.log("PodcastIDS: ", podcastIds);
-      console.log("EpisodeIDS: ", episodeIds);
+      const episodeFilter: string = `episodeGuid=${episodeIds.join(" OR episodeGuid=")}`;
 
       // Adding extra queries
       multiSearchParams.queries.push(
         ...[
           {
             indexUid: "episodes",
-            q: undefined,
-            filter: episodesFilter,
+            q: "",
+            filter: episodeFilter,
+            limit: 12,
           },
           {
             indexUid: "podcasts",
-            q: undefined,
+            q: "",
             filter: podcastFilter,
+            limit: 12,
           },
         ]
       );
 
-      console.log("The queries look like this now: ", multiSearchParams.queries);
-
       // Declaring the Map<string, Hit> variables
-      let podcastsMap: Map<string, PodcastHit> | undefined = undefined;
-      let episodesMap: Map<string, EpisodeHit> | undefined = undefined;
+      let podcastsMap: Map<string, PodcastHit> | "" = "";
+      let episodesMap: Map<string, EpisodeHit> | "" = "";
 
-      // Performing queries using promise await all possibly faster
-      const allResponses: any = await Promise.allSettled(
+      // Performing queries using promise awaitAll possibly faster
+      const allResponses: any = await Promise.all(
         multiSearchParams.queries.map(async (query: any) => {
-          const indexxy = query.indexUid;
+          const indexCopy: string = query.indexUid;
+          const segmentIdCopy: string = query.segmentId;
           delete query.indexUid;
+          delete query.segmentId;
+
           return {
-            result: await meilisearchConnection.index(indexxy).search(undefined, query),
-            indexUid: indexxy,
+            result: await meilisearchConnection.index(indexCopy).search("", query),
+            indexUid: indexCopy,
+            segmentId: segmentIdCopy,
           };
         })
       );
@@ -211,55 +213,36 @@ class TranscriptionsService {
         if (foundEpisode && foundPodcast) break;
 
         // Result var
-        const result: {
-          result: SearchResponse<any>;
-          indexUid: string;
-        } = allResponses[i].value;
+        const { result, indexUid } = allResponses[i];
 
-        if (result.indexUid === "podcasts" && !foundPodcast) {
-          podcastsMap = new Map(result.result.hits.map((podcast: PodcastHit) => [podcast.podcastGuid, podcast]));
+        // Work
+        if (indexUid === "podcasts" && !foundPodcast) {
+          podcastsMap = new Map(result.hits.map((podcast: PodcastHit) => [podcast.podcastGuid, podcast]));
           foundPodcast = true;
-        } else if (result.indexUid === "episodes" && !foundEpisode) {
-          episodesMap = new Map(result.result.hits.map((episode: EpisodeHit) => [episode.episodeGuid, episode]));
+        } else if (indexUid === "episodes" && !foundEpisode) {
+          episodesMap = new Map(result.hits.map((episode: EpisodeHit) => [episode.episodeGuid, episode]));
           foundEpisode = true;
         }
       }
 
-      console.log("This finished fine: ");
-
       // If both are truthy we go further
       if (podcastsMap && episodesMap) {
-        console.log("Are you here?");
         // We take all the multisearchResponses and construct a clientResponseObject
         for (let i = 0; i < allResponsesLength; i++) {
-          console.log("IIII", i);
           // Result var
-          const result: {
-            result: SearchResponse<any>;
-            indexUid: string;
-          } = allResponses[i].value;
+          const { result, indexUid, segmentId } = allResponses[i];
 
           // Skip if wrong index we already processed them further up
-          if (result.indexUid === "podcasts" || result.indexUid === "episodes") continue;
+          if (indexUid === "podcasts" || indexUid === "episodes") continue;
 
-          // Setting more readable vars, al
-          const segmentPostHits: SegmentHit[] = result.result.hits;
+          // Setting more readable vars
+          const segmentPostHits: SegmentHit[] = result.hits;
           const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentPostHits[0].belongsToPodcastGuid) as PodcastHit;
           const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentPostHits[0].belongsToEpisodeGuid) as EpisodeHit;
 
-          if (!segmentHitPodcast || !segmentHitEpisode) {
-            console.log("It occurred once lol: ", segmentPostHits[0]);
-            console.log("!segmentHitPodcast", !segmentHitPodcast);
-            console.log("!segmentHitEpisode", !segmentHitEpisode);
-            console.log("PodcastsMap: ", podcastsMap);
-            console.log("EpisodesMap: ", episodesMap);
-            console.log("EpisodeGuid is: ", segmentPostHits[0].belongsToEpisodeGuid);
-            console.log("PodcastGuid is: ", segmentPostHits[0].belongsToPodcastGuid);
-            console.log("You're telling me it can't find the map???");
-            console.log(episodesMap.get(segmentPostHits[0].belongsToEpisodeGuid));
-          }
           // We are setting the first element to be container of all the hits since
           const clientSearchResponseHit: ClientSearchResponseHit = {
+            id: segmentId,
             podcastTitle: segmentHitPodcast.title,
             episodeTitle: segmentHitEpisode.episodeTitle,
             podcastSummary: segmentHitPodcast.description,
@@ -280,11 +263,10 @@ class TranscriptionsService {
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
-          console.log("Adding");
           searchResponse.hits.push(clientSearchResponseHit);
         }
-        console.log("LUKAMANN: ", searchResponse);
-        return searchResponse;
+        console.log("SSS", searchResponse)
+        return searchResponse as ClientSearchResponse;
       }
     }
     return {} as ClientSearchResponse;
@@ -294,7 +276,7 @@ class TranscriptionsService {
     // Search the index
     podcastIds = podcastIds.map((e) => `'${e}'`);
     const filter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
-    const resData: PodcastResponse = await this.podcastsIndex.search(undefined, {
+    const resData: PodcastResponse = await this.podcastsIndex.search("", {
       limit: podcastIds.length || 5,
       filter: filter,
     });
@@ -306,7 +288,7 @@ class TranscriptionsService {
     // Search the index
     episodesIds = episodesIds.map((e) => `'${e}'`);
     const filter: string = `episodeGuid=${episodesIds.join(" OR episodeGuid=")}`;
-    const resData: EpisodeResponse = await this.episodesIndex.search(undefined, {
+    const resData: EpisodeResponse = await this.episodesIndex.search("", {
       limit: episodesIds.length || 5,
       filter: filter,
     });
