@@ -2,7 +2,8 @@
     <HeadlessMenu as="div" class="inset-y-0 left-0 flex h-10 w-10 origin-top-left items-center p-0 text-left"
         v-slot="{ open, close }">
         <HeadlessMenuButton
-            class="hover:bg-gray-transparent text-gray-400 flex h-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset">
+            class="hover:bg-gray-transparent text-gray-400 flex h-full items-center justify-center rounded-md p-2 hover:text-gray-500 focus:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-inset"
+            name="burgerMenuButton">
             <Bars3Icon v-if="!open" class="h-full w-full scale-95" aria-hidden="true" />
             <XMarkIcon v-else class="block h-full w-full scale-95" aria-hidden="true" />
         </HeadlessMenuButton>
