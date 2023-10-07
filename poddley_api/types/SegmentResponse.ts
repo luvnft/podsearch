@@ -18,21 +18,7 @@ export interface SegmentHit {
   belongsToTranscriptId: string;
   indexed: boolean;
   segmentWordEntries: any;
-  _formatted?: Formatted;
   similarity: number;
-}
-
-export interface Formatted {
-  text: string;
-  id: string;
-  start: string;
-  end: string;
-  language: string;
-  belongsToPodcastGuid: string;
-  belongsToEpisodeGuid: string;
-  belongsToTranscriptId: string;
-  indexed: boolean;
-  segmentWordEntries: any;
   createdAt: Date;
   updatedAt: Date;
 }
