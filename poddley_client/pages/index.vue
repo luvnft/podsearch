@@ -77,7 +77,7 @@ async function makeSearch() {
             try {
                 const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
                 const decodedRouteBasedQuery: SearchQuery = utils.decodeQuery(routeBasedQuery);
-                const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
+                const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
                 searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
                     if (hit.subHits) {
@@ -105,7 +105,7 @@ watch(searchQuery, debouncedSearch, {
     deep: true,
 });
 
-const debouncedOffsetIncrement = _Throttle(
+const debouncedOffsetIncrement = _Debounce(
     () => {
         searchQuery.value = {
             ...searchQuery.value,
@@ -113,6 +113,10 @@ const debouncedOffsetIncrement = _Throttle(
         };
     },
     500,
+    {
+        leading: false,
+        trailing: true
+    },
 );
 
 // load more data when scrolled 95% of the document.

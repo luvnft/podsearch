@@ -9,7 +9,7 @@
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
                         :startTime="computedStartTime" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
-                        :pictureInPicture="true" :noCookie="true" posterQuality="hqdefault"
+                        :pictureInPicture="true" :noCookie="true" posterQuality="sddefault"
                         :searchEntry="props.searchEntry" />
                 </div>
                 <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
@@ -95,7 +95,7 @@ const props = defineProps<{
 const { isFirefox, isSafari, isIos } = useDevice();
 const playing: Ref<boolean> = ref(false);
 const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
-const subtitlesActivated: Ref<boolean> = ref(false);
+const subtitlesActivated: Ref<boolean> = ref(true);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
     console.log("Triggered")
