@@ -64,7 +64,8 @@
 
                         <div v-if="playing"
                             :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center border-none p-0 py-0 pb-0 pt-1`">
-                            <audio ref="audioPlayer" :currentTime="props.searchEntry.subHits[0]" controls preload="auto" autoplay
+                            <audio ref="audioPlayer" :currentTime="props.searchEntry.subHits[0]" controls preload="auto"
+                                autoplay
                                 :class="`focus:outline-2 focus:outline-gray-900 ring-0 border-none focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'} dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : 'dark:filter dark:saturate-100 dark:sepia dark:hue-rotate-[200deg]'}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
                                 :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
@@ -133,7 +134,8 @@ const handleTimeChange = async (event: Event) => {
                 const searchResponse: ClientSearchResponse = await transcriptionService.search({
                     filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
                     getFullTranscript: true,
-                    sort: ["start:asc"]
+                    sort: ["start:asc"],
+                    searchString: ""
                 });
                 console.log("Transcript: ", searchResponse);
 

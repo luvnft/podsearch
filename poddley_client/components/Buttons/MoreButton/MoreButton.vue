@@ -136,7 +136,7 @@ const copySegmentLink = () => {
     const filter: string = `id='${segmentId}'`;
     const constructedSearchQuery: SearchQuery = {
         filter: filter,
-        searchString: null
+        searchString: ""
     };
     // Save url to user copy/paste
     const encodedUrl: string = utils.encodeQuery(constructedSearchQuery) || "";

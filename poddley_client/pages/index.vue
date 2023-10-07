@@ -76,7 +76,7 @@ async function makeSearch() {
         if (process.server) {
             try {
                 const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
-                const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
+                const decodedRouteBasedQuery: SearchQuery = utils.decodeQuery(routeBasedQuery);
                 const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
                 searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
