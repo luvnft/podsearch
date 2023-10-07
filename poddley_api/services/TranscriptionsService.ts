@@ -1,6 +1,6 @@
 import meilisearchConnection from "../other/meilisearchConnection";
 import prismaConnection from "../other/prismaConnection";
-import { ClientSearchResponse, ClientSearchResponseHit, ClientSegmentHit } from "../types/SearchResponse";
+import { ClientSearchResponse, ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
 import _ from "lodash";
@@ -9,6 +9,7 @@ import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 import { PrismaClient } from "@prisma/client";
 import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
+import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
@@ -31,9 +32,6 @@ class TranscriptionsService {
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
     // MainQuery
     let mainQuery: SearchParams = {
-      attributesToHighlight: ["text"],
-      highlightPreTag: '<span class="highlight">',
-      highlightPostTag: "</span>",
       matchingStrategy: "last",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
@@ -109,14 +107,14 @@ class TranscriptionsService {
         podcastAuthor: segmentHitPodcast.itunesAuthor,
         episodeLinkToEpisode: segmentHitEpisode.episodeLinkToEpisode,
         episodeEnclosure: segmentHitEpisode.episodeEnclosure,
-        podcastLanguage: segmentHitPodcast.language, 
+        podcastLanguage: segmentHitPodcast.language,
         podcastGuid: segmentHitPodcast.podcastGuid,
         podcastImage: segmentHitPodcast.imageUrl,
-        episodeGuid: segmentHitEpisode.episodeGuid, 
+        episodeGuid: segmentHitEpisode.episodeGuid,
         url: segmentHitPodcast.url,
         link: segmentHitPodcast.link,
         youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-        deviationTime: segmentHitEpisode.deviationTime || 0, 
+        deviationTime: segmentHitEpisode.deviationTime || 0,
         subHits: initialSearchResponse.hits.flat(),
         belongsToTranscriptId: segmentHit.belongsToTranscriptId,
       };
@@ -124,7 +122,7 @@ class TranscriptionsService {
       // Removing all the other hits as they were initially part of the .hits of the initialSearchResponse, but since they all share a common episodeGuid ID then I shoved them into the subHits.
       searchResponse.hits = [searchResponse.hits[0]];
 
-      // Return the entire transcript 
+      // Return the entire transcript
       return searchResponse;
     } else {
       // Perform initial search on the segmentsIndex to get the segments
@@ -149,9 +147,6 @@ class TranscriptionsService {
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
           limit: 50,
           sort: ["start:asc"],
-          attributesToHighlight: ["text"],
-          highlightPreTag: '<span class="highlight">',
-          highlightPostTag: "</span>",
           matchingStrategy: "last",
           segmentId: segmentHit.id,
         });
@@ -178,7 +173,7 @@ class TranscriptionsService {
             filter: podcastFilter,
             limit: 12,
           },
-        ]
+        ] 
       );
 
       // Declaring the Map<string, Hit> variables
@@ -186,7 +181,7 @@ class TranscriptionsService {
       let episodesMap: Map<string, EpisodeHit> | "" = "";
 
       // Performing queries using promise awaitAll possibly faster
-      const allResponses: any = await Promise.all(
+      const allResponses: any = await Promise.all( 
         multiSearchParams.queries.map(async (query: any) => {
           const indexCopy: string = query.indexUid;
           const segmentIdCopy: string = query.segmentId;
@@ -259,13 +254,12 @@ class TranscriptionsService {
             link: segmentHitPodcast.link,
             youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
             deviationTime: segmentHitEpisode.deviationTime || 0,
-            subHits: segmentPostHits.flat(),
+            subHits: convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
           searchResponse.hits.push(clientSearchResponseHit);
         }
-        console.log("SSS", searchResponse)
         return searchResponse as ClientSearchResponse;
       }
     }

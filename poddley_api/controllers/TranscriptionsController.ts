@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ClientSearchResponse } from "../types/SearchResponse";
+import { ClientSearchResponse } from "../types/ClientSearchResponse";
 import TranscriptionsService from "../services/TranscriptionsService";
 import { SearchQuery } from "../types/SearchQuery";
 
