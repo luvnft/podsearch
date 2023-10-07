@@ -14,6 +14,7 @@ self.addEventListener("message", async (event) => {
           payload: res,
         });
       } catch (e) {
+        console.log("Event: ", event)
         console.log(e)
         self.postMessage({
           action: "searchFailed",

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Hit } from '../../types/SearchResponse';
+import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
 
 const emit = defineEmits<{
@@ -21,7 +21,7 @@ const emit = defineEmits<{
 const listRef: Ref<any> = ref(null);
 const utils: Utils = useUtils();
 const props = defineProps<{
-    searchEntry: Hit;
+    searchEntry: ClientSearchResponseHit;
     currentPlayingTime: number;
     subtitlesActivated: Ref<boolean>;
 }>();

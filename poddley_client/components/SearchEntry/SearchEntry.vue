@@ -64,7 +64,7 @@
 
                         <div v-if="playing"
                             :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center border-none p-0 py-0 pb-0 pt-1`">
-                            <audio ref="audioPlayer" :currentTime="props.searchEntry.start" controls preload="auto" autoplay
+                            <audio ref="audioPlayer" :currentTime="props.searchEntry.subHits[0]" controls preload="auto" autoplay
                                 :class="`focus:outline-2 focus:outline-gray-900 ring-0 border-none focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'} dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : 'dark:filter dark:saturate-100 dark:sepia dark:hue-rotate-[200deg]'}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
                                 :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
@@ -78,16 +78,17 @@
 
 <script lang="ts" setup>
 import TranscriptionService from "../../utils/services/TranscriptionsService";
-import { Hit, SearchResponse, SegmentHit, Formatted } from "../../types/SearchResponse";
+import { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 
 const searchStore = useSearchStore();
 const { searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
+
 let hasSearched: boolean = false;
 const props = defineProps<{
-    searchEntry: Hit;
+    searchEntry: ClientSearchResponseHit;
     index: number;
 }>();
 const { isFirefox, isSafari, isIos } = useDevice();
@@ -99,7 +100,7 @@ const handlePlaying = () => {
     console.log("Triggered")
     playing.value = !playing.value;
 };
-const currentPlayingTime: Ref<number> = ref(props.searchEntry.start);
+const currentPlayingTime: Ref<number> = ref(props.searchEntry.subHits[0].start);
 
 const goToAudioTime = (moveToTime: number) => {
     console.log("Triggerede aduoi move event", moveToTime)
@@ -120,7 +121,7 @@ const handleTimeChange = async (event: Event) => {
 
         const hits = searchResults.value.hits[props.index];
         const lastAvailableElementIndex: number = hits.subHits.length - 1;
-        const lastAvailableElement: SegmentHit = hits.subHits[lastAvailableElementIndex];
+        const lastAvailableElement: ClientSegmentHit = hits.subHits[lastAvailableElementIndex];
 
         if ((currentSeconds / lastAvailableElement.start) > 0.96) {
             // Assuming audioPlayer is a reactive reference
@@ -130,33 +131,32 @@ const handleTimeChange = async (event: Event) => {
                 console.log("Fetching full transcript due to 98% rule");
 
                 // Get entire transcript for that particular episode...
-                const searchResponse: SearchResponse = await transcriptionService.search({
+                const searchResponse: ClientSearchResponse = await transcriptionService.search({
                     filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
                     getFullTranscript: true,
                     sort: ["start:asc"]
                 });
                 console.log("Transcript: ", searchResponse);
 
-                // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
-                // Maybe casting is better, but dunno
-                let segmentHits: SegmentHit[] = searchResponse.hits.map((hit: Hit) => {
-                    return {
-                        text: hit.text,
-                        id: hit.id,
-                        start: hit.start,
-                        end: hit.end,
-                        language: hit.podcastLanguage,
-                        belongsToPodcastGuid: hit.podcastGuid,
-                        belongsToEpisodeGuid: hit.episodeGuid,
-                        belongsToTranscriptId: hit.belongsToTranscriptId,
-                        _formatted: hit._formatted,
-                    }
-                })
+                // // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
+                // // Maybe casting is better, but dunno
+                // let segmentHits: ClientSegmentHit[] = searchResponse.hits.map((hit: ClientSegmentHit) => {
+                //     return {
+                //         text: hit.text,
+                //         id: hit.id,
+                //         start: hit.start,
+                //         end: hit.end,
+                //         language: hit.podcastLanguage,
+                //         belongsToPodcastGuid: hit.podcastGuid,
+                //         belongsToEpisodeGuid: hit.episodeGuid,
+                //         belongsToTranscriptId: hit.belongsToTranscriptId,
+                //     }
+                // })
 
                 // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
                 console.log("Index is: ", props.index)
-                segmentHits = fragmentSegmentHits(segmentHits)
-                searchResults.value.hits[props.index].subHits = segmentHits;
+                // segmentHits = fragmentSegmentHits(segmentHits)
+                // searchResults.value.hits[props.index].subHits = segmentHits;
                 console.log("SearchResults NOOOOOOW: ", searchResults.value)
                 console.log("Fragmentation done, should be set");
             }
@@ -168,7 +168,7 @@ const handleTimeChange = async (event: Event) => {
 };
 
 const computedStartTime = computed(() => {
-    const start = parseFloat(props.searchEntry.start.toString()) || 0;
+    const start = parseFloat(props.searchEntry.subHits[0].toString()) || 0;
     const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
     const val = start - deviationTime;
     return val < 0 ? 0 : val;

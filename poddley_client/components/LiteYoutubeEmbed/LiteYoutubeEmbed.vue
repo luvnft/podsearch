@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Hit } from "types/SearchResponse";
+import { ClientSearchResponseHit } from "types/ClientSearchResponse";
 import { PropType } from "vue";
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 
@@ -111,7 +111,7 @@ const props = defineProps({
         default: false,
     },
     searchEntry: {
-        type: Object as PropType<Hit>,
+        type: Object as PropType<ClientSearchResponseHit>,
         required: false,
     },
 });
