@@ -35,7 +35,7 @@
                         </HeadlessMenuItem>
                         <HeadlessMenuItem v-slot="{ active }"
                             class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
-                            <button :href="props.searchEntry.id"
+                            <button :href="props.searchEntry.subHits[0].id"
                                 :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base']"
                                 @click="copySegmentLink">
                                 Copy link to segment
@@ -70,20 +70,13 @@
 
 <script setup lang="ts">
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
-import { Hit, SearchResponse, SegmentHit } from "../../../types/SearchResponse";
+import { ClientSegmentHit, ClientSearchResponse, ClientSearchResponseHit } from "../../../types/ClientSearchResponse";
 import { SearchQuery } from "types/SearchQuery";
 import GenericButton from "../../../components/Buttons/GenericButton/GenericButton.vue";
 import TranscriptionService from "../../../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../../store/searchStore";
 import { Float } from '@headlessui-float/vue'
-
-import {
-    useFloating,
-    offset,
-    flip,
-    shift,
-} from '@floating-ui/vue';
 
 // Inside your component
 const searchStore = useSearchStore();
@@ -92,7 +85,7 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 const showVal: Ref<any> = ref(false);
 const utils: Utils = useUtils();
 const props = defineProps<{
-    searchEntry: Hit;
+    searchEntry: ClientSearchResponseHit;
     index: number;
     loadingFullTranscript: boolean;
 }>();
@@ -104,7 +97,7 @@ const emit = defineEmits<{
 const loadEntireTranscript = async (episodeGuid: string) => {
     emit("gettingFullTranscript", true);
     // Get entire transcript for that particular episode...
-    const searchResponse: SearchResponse = await transcriptionService.search({
+    const searchResponse: ClientSearchResponse = await transcriptionService.search({
         filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
         getFullTranscript: true,
         sort: ["start:asc"]
@@ -113,23 +106,22 @@ const loadEntireTranscript = async (episodeGuid: string) => {
 
     // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
     // Maybe casting is better, but dunno
-    let segmentHits: SegmentHit[] = searchResponse.hits.map((hit: Hit) => {
-        return {
-            text: hit.text,
-            id: hit.id,
-            start: hit.start,
-            end: hit.end,
-            language: hit.podcastLanguage,
-            belongsToPodcastGuid: hit.podcastGuid,
-            belongsToEpisodeGuid: hit.episodeGuid,
-            belongsToTranscriptId: hit.belongsToTranscriptId,
-            _formatted: hit._formatted,
-        }
-    })
+    // let segmentHits: ClientSegmentHit[] = searchResponse.hits.map((hit: ClientSearchResponseHit) => {
+    //     return {
+    //         text: hit.text,
+    //         id: hit.id,
+    //         start: hit.start,
+    //         end: hit.end,
+    //         language: hit.podcastLanguage,
+    //         belongsToPodcastGuid: hit.podcastGuid,
+    //         belongsToEpisodeGuid: hit.episodeGuid,
+    //         belongsToTranscriptId: hit.belongsToTranscriptId,
+    //     }
+    // })
 
     // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
     console.log("Index is: ", props.index)
-    segmentHits = fragmentSegmentHits(segmentHits)
+    const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
     searchResults.value.hits[props.index].subHits = segmentHits;
     console.log("SearchResults NOOOOOOW: ", searchResults.value)
     console.log("Fragmentation done, should be set");
@@ -139,7 +131,7 @@ const loadEntireTranscript = async (episodeGuid: string) => {
 
 const copySegmentLink = () => {
     const rootPage: string = useRuntimeConfig().public.HOMEPAGE;
-    const segmentId: string = props.searchEntry.id;
+    const segmentId: string = props.searchEntry.subHits[0].id;
     const filter: string = `id='${segmentId}'`;
     const constructedSearchQuery: SearchQuery = {
         filter: filter,

@@ -9,7 +9,7 @@ import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
-import { Hit, SegmentHit } from "../types/SearchResponse";
+import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -42,9 +42,9 @@ onMounted(() => {
                     // searchResults.value = payload;
                     console.log("OK");
                     console.log("payload", payload);
-                    payload.hits.forEach((hit: Hit) => {
+                    payload.hits.forEach((hit: ClientSearchResponseHit) => {
                         if (hit.subHits) {
-                            const fragmentedSubHits: SegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                            const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
                             hit.subHits = fragmentedSubHits;
                         }
                     });
@@ -79,9 +79,9 @@ async function makeSearch() {
                 const decodedRouteBasedQuery: string | null = utils.decodeQuery(routeBasedQuery);
                 const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery as SearchQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
-                searchResults.value.hits.forEach((hit: Hit) => {
+                searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
                     if (hit.subHits) {
-                        const fragmentedSubHits: SegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                        const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
                         hit.subHits = fragmentedSubHits;
                     }
                 });
