@@ -389,6 +389,10 @@ A meilisearch instance running with the following settings (all indexes use the 
 - The AI models were initially running on my local computer running an RTX 1650, but it was crashing frequently and had insufficient GPU memory (would terminate sporadically). I also tried running an RTX3060 using ADT-Link connected to my Legion 5 AMD Lenovo gaming laption through the M.2 NVME as an eGPU. That was deeply unsuccessful due to frequent crashes. All solutions were unsatisfactory so splurged for a workstation in the end.
 
 ## Stuff to do:
+<details>
+  <summary>TODO</summary>
+
+
 - [x] ~~Convert play-button too say Play podcast~~
 - [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
 - [x] ~~Joe Rogan Recorder~~(illegal)
@@ -555,3 +559,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [ ]  Some podcast-streams might have ads when being played and when being transcribed. Solution to this is...??? Save podcast. Legal???...??? Not save  podcast...??? Legal, but lame due to the ads and it fucking with the timestamp so solution is... mini-model on web audio ad killer??? .. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio??? Solution is: Download podcast, remove ad from using AI, save audio, stream audio from own R3-bucket. PiHole?? Adsfree VPN? Current AI ad removers for audio suck. Find equivalent on apple podcast and use that instead of audio stream??
 - [ ]  Fix sepia colornon audioplayer lol
 - [ ]  When you click on a section of the text it should start playing.
+- [ ] Backend refactor for speed improvemnet
+ 
+</details>

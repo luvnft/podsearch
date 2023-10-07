@@ -24,7 +24,7 @@ export interface ClientSearchResponseHit {
   subHits: ClientSegmentHit[];
 }
 
-export interface ClientSegmentHit {
+export interface ClientSegmentHit { 
   text: string;
   id: string;
   start: number;

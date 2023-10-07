@@ -4,7 +4,7 @@ import { ClientSearchResponse, ClientSearchResponseHit, ClientSegmentHit } from 
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
 import _ from "lodash";
-import { Index, MeiliSearch, MultiSearchParams, MultiSearchResponse, MultiSearchResult } from "meilisearch";
+import { Index, MeiliSearch, MultiSearchParams, MultiSearchQuery, MultiSearchResponse, MultiSearchResult, SearchResponse } from "meilisearch";
 import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 import { PrismaClient } from "@prisma/client";
 import { SearchQuery } from "../types/SearchQuery";
@@ -118,15 +118,14 @@ class TranscriptionsService {
         deviationTime: segmentHitEpisode.deviationTime || 0,
         subHits: initialSearchResponse.hits.flat(),
         belongsToTranscriptId: segmentHit.belongsToTranscriptId,
-      }
+      };
 
       // Removing all the other hits:
-      searchResponse.hits = [searchResponse.hits[0]]
+      searchResponse.hits = [searchResponse.hits[0]];
 
       // Return the entire transcript
       return searchResponse;
-    }
-    else {
+    } else {
       // Perform initial search on the segmentsIndex to get the segments
       let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(undefined, searchParams);
 
@@ -156,68 +155,109 @@ class TranscriptionsService {
         });
       });
 
-      // Getting the podcast ids and episode ids to fetch them further as they are not part of the segmentObjects on the segmentsIndex
-      const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToPodcastGuid))]
+      // Ids and filters
+      const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToPodcastGuid}'`))];
       const podcastFilter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
-
-      const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => hit.belongsToEpisodeGuid))]
+      const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToEpisodeGuid}'`))];
       const episodesFilter: string = `episodeGuid=${episodeIds.join(" OR episodeGuid=")}`;
 
-      // Add podcast query to multiQuery arr
-      multiSearchParams.queries.push({
-        indexUid: "podcasts",
-        q: undefined,
-        filter: podcastFilter,
-      });
-      // Add episode query to multiQuery arr
-      multiSearchParams.queries.push({
-        indexUid: "episodes",
-        q: undefined,
-        filter: episodesFilter,
-      });
+      console.log("The initialResponse hits has elements number: ", initialSearchResponse.hits.length);
+      console.log("PodcastIDS: ", podcastIds);
+      console.log("EpisodeIDS: ", episodeIds);
+
+      // Adding extra queries
+      multiSearchParams.queries.push(
+        ...[
+          {
+            indexUid: "episodes",
+            q: undefined,
+            filter: episodesFilter,
+          },
+          {
+            indexUid: "podcasts",
+            q: undefined,
+            filter: podcastFilter,
+          },
+        ]
+      );
+
+      console.log("The queries look like this now: ", multiSearchParams.queries);
 
       // Declaring the Map<string, Hit> variables
-      let podcastsMap;
-      let episodesMap;
+      let podcastsMap: Map<string, PodcastHit> | undefined = undefined;
+      let episodesMap: Map<string, EpisodeHit> | undefined = undefined;
 
-      // Performing the multiSearch query
-      let multiSearchResponse: MultiSearchResponse = await meilisearchConnection.multiSearch(multiSearchParams);
+      // Performing queries using promise await all possibly faster
+      const allResponses: any = await Promise.allSettled(
+        multiSearchParams.queries.map(async (query: any) => {
+          const indexxy = query.indexUid;
+          delete query.indexUid;
+          return {
+            result: await meilisearchConnection.index(indexxy).search(undefined, query),
+            indexUid: indexxy,
+          };
+        })
+      );
 
-      // Found bools to avoid unnecessary loopin
+      // All responses cached length
+      const allResponsesLength: number = allResponses.length;
+
+      // Found bools to avoid unnecessary looping
       let foundPodcast: boolean = false;
       let foundEpisode: boolean = false;
 
       // Creating podcastGuid->PodcastHit and episodeGuid->EpisodeHit Map
-      for (let i = 0; i < multiSearchResponse.results.length; i++) {
+      for (let i = 0; i < allResponsesLength; i++) {
         if (foundEpisode && foundPodcast) break;
 
-        const result: MultiSearchResult<any> = multiSearchResponse.results[i]
+        // Result var
+        const result: {
+          result: SearchResponse<any>;
+          indexUid: string;
+        } = allResponses[i].value;
+
         if (result.indexUid === "podcasts" && !foundPodcast) {
-          podcastsMap = new Map(result.hits.map((podcast: PodcastHit) => [podcast.podcastGuid, podcast]));
+          podcastsMap = new Map(result.result.hits.map((podcast: PodcastHit) => [podcast.podcastGuid, podcast]));
           foundPodcast = true;
-          multiSearchResponse.results.splice(i, 1);
-        }
-        else if (result.indexUid === "episodes" && !foundEpisode) {
-          episodesMap = new Map(result.hits.map((episode: EpisodeHit) => [episode.episodeGuid, episode]));
+        } else if (result.indexUid === "episodes" && !foundEpisode) {
+          episodesMap = new Map(result.result.hits.map((episode: EpisodeHit) => [episode.episodeGuid, episode]));
           foundEpisode = true;
-          multiSearchResponse.results.splice(i, 1);
         }
       }
 
+      console.log("This finished fine: ");
+
       // If both are truthy we go further
       if (podcastsMap && episodesMap) {
-        for (let i = 0; i < multiSearchResponse.results.length; i++) {
-          const result: MultiSearchResult<any> = multiSearchResponse.results[i];
-          const segmentPostHits: SegmentHit[] = result.hits;
-          const segmentPostHitFirst: SegmentHit = result.hits[0];
-          const segmentHitPodcast: PodcastHit | undefined = podcastsMap.get(segmentPostHitFirst.belongsToPodcastGuid)
-          const segmentHitEpisode: EpisodeHit | undefined = episodesMap.get(segmentPostHitFirst.belongsToEpisodeGuid)
+        console.log("Are you here?");
+        // We take all the multisearchResponses and construct a clientResponseObject
+        for (let i = 0; i < allResponsesLength; i++) {
+          console.log("IIII", i);
+          // Result var
+          const result: {
+            result: SearchResponse<any>;
+            indexUid: string;
+          } = allResponses[i].value;
 
-          // If segmentHitEpisode or podcastHitEpisode are both undefined, throw an error
-          if (!segmentHitEpisode || !segmentHitPodcast) {
-            throw Error("SegmentHitEpisode or SegmentHitPodcast is undefined");
+          // Skip if wrong index we already processed them further up
+          if (result.indexUid === "podcasts" || result.indexUid === "episodes") continue;
+
+          // Setting more readable vars, al
+          const segmentPostHits: SegmentHit[] = result.result.hits;
+          const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentPostHits[0].belongsToPodcastGuid) as PodcastHit;
+          const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentPostHits[0].belongsToEpisodeGuid) as EpisodeHit;
+
+          if (!segmentHitPodcast || !segmentHitEpisode) {
+            console.log("It occurred once lol: ", segmentPostHits[0]);
+            console.log("!segmentHitPodcast", !segmentHitPodcast);
+            console.log("!segmentHitEpisode", !segmentHitEpisode);
+            console.log("PodcastsMap: ", podcastsMap);
+            console.log("EpisodesMap: ", episodesMap);
+            console.log("EpisodeGuid is: ", segmentPostHits[0].belongsToEpisodeGuid);
+            console.log("PodcastGuid is: ", segmentPostHits[0].belongsToPodcastGuid);
+            console.log("You're telling me it can't find the map???");
+            console.log(episodesMap.get(segmentPostHits[0].belongsToEpisodeGuid));
           }
-
           // We are setting the first element to be container of all the hits since
           const clientSearchResponseHit: ClientSearchResponseHit = {
             podcastTitle: segmentHitPodcast.title,
@@ -237,18 +277,17 @@ class TranscriptionsService {
             youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
             deviationTime: segmentHitEpisode.deviationTime || 0,
             subHits: segmentPostHits.flat(),
-            belongsToTranscriptId: segmentPostHitFirst.belongsToTranscriptId,
-          }
+            belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
+          };
 
+          console.log("Adding");
           searchResponse.hits.push(clientSearchResponseHit);
         }
-
+        console.log("LUKAMANN: ", searchResponse);
         return searchResponse;
       }
-      else {
-        throw Error("OopsieDaisy");
-      }
     }
+    return {} as ClientSearchResponse;
   }
 
   private async searchPodcastsWithIds(podcastIds: string[]): Promise<PodcastResponse> {
