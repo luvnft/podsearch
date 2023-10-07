@@ -138,12 +138,18 @@ watch(y, () => {
         let presence: boolean | undefined = undefined;
 
         try {
+            console.log("mofo")
             const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
-            presence = Boolean(routeBasedSearchQuery.filter?.match(/(id)/gi));
+            console.log("mofo2")
+
+            console.log("JIJIJI: ", routeBasedSearchQuery.filter?.includes("id"))
+            presence = routeBasedSearchQuery.filter?.includes("id") ? routeBasedSearchQuery.filter.includes("id") : false;
         }
-        catch (e) { }
+        catch (e) {
+            presence = undefined;
+        }
         console.log("Presence: ", presence);
-        if (presence === false) {
+        if (presence === undefined) {
             debouncedOffsetIncrement();
         }
 

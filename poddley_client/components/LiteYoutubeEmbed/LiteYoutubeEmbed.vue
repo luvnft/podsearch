@@ -6,12 +6,9 @@
                 <div
                     class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
                     <NuxtImg
-                    name="youtubeChannelIcon"
                     :src="props.searchEntry?.podcastImage"
                     class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" 
                     loading="lazy"
-                    width="40px"
-                    height="40px"
                     />
                 </div>
                 <div class="flex min-w-0 items-center">
