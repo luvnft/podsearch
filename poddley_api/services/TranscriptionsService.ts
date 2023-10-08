@@ -32,10 +32,10 @@ class TranscriptionsService {
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
     // MainQuery
     let mainQuery: SearchParams = {
-      matchingStrategy: "last",
+      matchingStrategy: "all",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
-      limit: 12,
+      limit: searchQuery.limit ? (searchQuery.limit > 12 ? 12 : searchQuery.limit) : 12,
       offset: searchQuery.offset || 0,
     };
 
@@ -45,7 +45,7 @@ class TranscriptionsService {
         filter: searchQuery.filter,
         limit: 10000,
         q: "",
-        matchingStrategy: "last",
+        matchingStrategy: "all",
         sort: ["start:asc"],
       };
     }
@@ -126,12 +126,16 @@ class TranscriptionsService {
       return searchResponse;
     } else {
       // Perform initial search on the segmentsIndex to get the segments
-      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search("", searchParams);
-
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search("", {
+        ...searchParams,
+        attributesToHighlight: ["text"],
+        highlightPreTag: '<span class="initialHightlight">',
+        highlightPostTag: "</span>", 
+      });
       // Final ClientSearchResponse object
       let searchResponse: ClientSearchResponse = {
         query: searchParams.q || "",
-        hits: [],
+        hits: [], 
       };
 
       // MultiSearchQuery object
@@ -144,11 +148,12 @@ class TranscriptionsService {
         multiSearchParams.queries.push({
           indexUid: "segments", // Replace with the actual index name
           q: "",
-          filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
+          filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
           limit: 50,
           sort: ["start:asc"],
-          matchingStrategy: "last",
+          matchingStrategy: "all",
           segmentId: segmentHit.id,
+          segmentHit: segmentHit,
         });
       });
 
@@ -173,7 +178,7 @@ class TranscriptionsService {
             filter: podcastFilter,
             limit: 12,
           },
-        ] 
+        ]
       );
 
       // Declaring the Map<string, Hit> variables
@@ -181,7 +186,7 @@ class TranscriptionsService {
       let episodesMap: Map<string, EpisodeHit> | "" = "";
 
       // Performing queries using promise awaitAll possibly faster
-      const allResponses: any = await Promise.all( 
+      const allResponses: any = await Promise.all(
         multiSearchParams.queries.map(async (query: any) => {
           return {
             result: await meilisearchConnection.index(query.indexUid).search("", {
@@ -193,9 +198,10 @@ class TranscriptionsService {
             }),
             indexUid: query.indexUid,
             segmentId: query.segmentId,
+            segmentHit: query.segmentHit,
           };
         })
-      ); 
+      );
 
       // All responses cached length
       const allResponsesLength: number = allResponses.length;
@@ -225,14 +231,15 @@ class TranscriptionsService {
         // We take all the multisearchResponses and construct a clientResponseObject
         for (let i = 0; i < allResponsesLength; i++) {
           // Result var
-          const { result, indexUid, segmentId } = allResponses[i];
+          const { result, indexUid, segmentId, segmentHit } = allResponses[i];
+          console.log(segmentHit);
 
           // Skip if wrong index we already processed them further up
           if (indexUid === "podcasts" || indexUid === "episodes") continue;
 
           // Setting more readable vars
           const segmentPostHits: SegmentHit[] = result.hits;
-          const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentPostHits[0].belongsToPodcastGuid) as PodcastHit;
+          const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentPostHits[0].belongsToPodcastGuid) as PodcastHit; // We can use the first one in the subhits because they all have the same podcastGuid
           const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentPostHits[0].belongsToEpisodeGuid) as EpisodeHit;
 
           // We are setting the first element to be container of all the hits since
@@ -254,12 +261,34 @@ class TranscriptionsService {
             link: segmentHitPodcast.link,
             youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
             deviationTime: segmentHitEpisode.deviationTime || 0,
-            subHits: convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
+            subHits: [
+              {
+                text: segmentHit._formatted.text,
+                start: segmentHit.start,
+                end: segmentHit.end,
+                id: segmentId,
+              },
+              ...convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
+            ],
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
           searchResponse.hits.push(clientSearchResponseHit);
         }
+
+        // Before returning the response we need to sort the hits using some jaccard string similarity checks.
+        for (let i = 0; i < searchResponse.hits.length; i++) {
+          const searchResponseHit: ClientSearchResponseHit = searchResponse.hits[i];
+          const miniSubHits: ClientSegmentHit[] = searchResponseHit.subHits.slice(0, 5);
+          const concatenated: string = miniSubHits.map((clientSegmentHit: ClientSegmentHit) => clientSegmentHit.text).join(" ");
+          searchResponseHit.similarity = this.calculateSimilarity(concatenated, searchParams.q || "");
+        }
+        // Sort them and then return them
+        // @ts-ignore
+        searchResponse.hits = searchResponse.hits.sort((a: ClientSearchResponseHit, b: ClientSearchResponseHit) => b.similarity - a.similarity);
+
+        console.log(searchResponse);
+        // Return that response
         return searchResponse as ClientSearchResponse;
       }
     }
@@ -288,6 +317,41 @@ class TranscriptionsService {
     });
     // Return data
     return resData;
+  }
+
+  private calculateSimilarity(text: string, originalSearchString: string) {
+    const n = 5; // Adjust the value of n for the desired n-gram length
+    const originalNgrams = this.createNgrams(originalSearchString, n);
+    const textNgrams = this.createNgrams(text, n);
+    const windowSize = originalNgrams.length;
+
+    if (windowSize === 0) return 0;
+
+    let maxSimilarity = 0;
+
+    for (let i = 0; i <= textNgrams.length - windowSize; i++) {
+      const textWindow = textNgrams.slice(i, i + windowSize);
+      const similarityScore = this.jaccardSimilarity(originalNgrams, textWindow);
+      if (similarityScore > maxSimilarity) {
+        maxSimilarity = similarityScore;
+      }
+    }
+
+    return maxSimilarity;
+  }
+
+  private createNgrams(text: string, n: number): string[] {
+    const ngrams = [];
+    for (let i = 0; i <= text.length - n; i++) {
+      ngrams.push(text.slice(i, i + n));
+    }
+    return ngrams;
+  }
+
+  private jaccardSimilarity(setA: any, setB: any) {
+    const intersection = _.intersection(setA, setB).length;
+    const union = _.union(setA, setB).length;
+    return intersection / union;
   }
 }
 
