@@ -443,6 +443,8 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [ ] ~~Covert search to multiseach to speed up search time~~
 - [ ] ~~Enable teksting on all iframes~~ (Youtube api doesn't support/allow this.
 - [ ] ~~Create ElasticSearch full text search engine, switch to it from MeiliSearch~~
+- [ ] ~~When you click on a section of the text it should start playing.~~
+- [ ] ~~Make dropdown lighter in color on darkMode~~
 - [x] Fine-tune the search functionality based on phrase-searching and typo-tolerance
 - [x] Fix the indexing bug that causes the entire database to be re-indexed each time
 - [x] Add loading spinner only for firefox/chrome-based audioPlayers
@@ -550,20 +552,18 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] More padding on the navbar on the mobile phones.
 - [x] Add the "getEntireTranscript"-button.	
 - [x] Finskriv githuben
-- [x]  Fix the sceollIntoView bug
-- [ ] Start transcriberen og bruk large-v2
-- [x] Remove all the gunk from the segments and keep the episode and podcast stuff only on the Hit-object but not on the subhits and dont have any values besides the necessary on the subhits. that should reduce the payload substatially.
-- [ ] Make MeiliSearch production version.
-- [ ]  We need to refactor the transcriber to be able to support concurrency
-- [ ]  Start up all the pm2 instances in accorance to the written architecture
-- [ ]  Some podcast-streams might have ads when being played and when being transcribed. Solution to this is...??? Save podcast. Legal???...??? Not save  podcast...??? Legal, but lame due to the ads and it fucking with the timestamp so solution is... mini-model on web audio ad killer??? .. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio??? Solution is: Download podcast, remove ad from using AI, save audio, stream audio from own R3-bucket. PiHole?? Adsfree VPN? Current AI ad removers for audio suck. Find equivalent on apple podcast and use that instead of audio stream??
-- [x]  Fix sepia color on audioplayer
-- [ ]  When you click on a section of the text it should start playing.
+- [x] Fix the sceollIntoView bug
 - [x] Backend refactor for speed improvemnet
-- [ ] Fix padding top on contact and about page
-- [ ] Make dropdown lighter in color on darkMode
-- [ ] Fix the search functionality to use jaccard again
-- [ ] Adapt the api response to be only 5 elements on phone reponse as phones have shit spec
+- [x] Fix padding top on contact and about page
+- [x] Remove all the gunk from the segments and keep the episode and podcast stuff only on the Hit-object but not on the subhits and dont have any values besides the necessary on the subhits. that should reduce the payload substatially.
+- [x] Adapt the api response to be only 5 elements on phone reponse as phones have shit spec
+- [x] Fix the search functionality to use jaccard again
+- [x] Fix sepia color on audioplayer
+- [ ] Make MeiliSearch production version.
+- [ ] We need to refactor the transcriber to be able to support concurrency
+- [ ] Start up all the pm2 instances in accorance to the written architecture
+- [ ] Some podcast-streams might have ads when being played and when being transcribed. Solution to this is...??? Save podcast. Legal???...??? Not save  podcast...??? Legal, but lame due to the ads and it fucking with the timestamp so solution is... mini-model on web audio ad killer??? .. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio??? Solution is: Download podcast, remove ad from using AI, save audio, stream audio from own R3-bucket. PiHole?? Adsfree VPN? Current AI ad removers for audio suck. Find equivalent on apple podcast and use that instead of audio stream??
 - [ ] Can we move backend and client closer together?
+- [ ] Start transcriberen og bruk large-v2
 
 </details>
