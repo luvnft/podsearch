@@ -2,7 +2,7 @@
     <div ref="listRef" class="relative">
         <div class="m-0 p-0 cursor text-start" v-for="(subHit, index) in props.searchEntry.subHits"
             :id="`${subHit.id}-${subHit.start}`"
-            :class="`${(subHit.start <= props.currentPlayingTime + 0.2 && subHit.end >= props.currentPlayingTime + 0.2) ? 'highlight' : ''}`">
+            :class="`${((subHit.start <= props.currentPlayingTime + 0.4 && subHit.end + 0.4 >= props.currentPlayingTime) && (currentPlayingTime > 0.3)) ? 'highlight' : currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
             <button @click="goToAudioTime(subHit.start)" class="text-start">
                 <div v-html="utils.convertSegmentHitToFormattedText(subHit)"></div>
             </button>
@@ -85,3 +85,9 @@ onMounted(() => {
     setupWatcher(); // set up watcher if subsActivated is true
 });
 </script> 
+
+<style scoped>
+.toggleDeepStyling /deep/ .initialHightlight {
+    @apply text-red-400;
+}
+</style>

@@ -25,7 +25,7 @@
                 <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
                     <div
                         class="bg-neutral-100 border-neutral-300 mb-0 line-clamp-2 flex h-full w-full flex-col flex-nowrap items-start justify-start gap-y-0 text-ellipsis rounded-lg border px-1.5 py-1.5 shadow-sm">
-                        <div class="z-50 flex h-auto w-full flex-row items-center justify-between py-0 pb-0 pl-1">
+                        <div class="flex h-auto w-full flex-row items-center justify-between py-0 pb-0 pl-1">
                             <p
                                 class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                                 {{ props.searchEntry.episodeTitle }}
@@ -53,9 +53,9 @@
                         <div class="flex w-full justify-start h-44 flex-grow">
 
                             <div v-if="!loadingFullTranscript"
-                                :class="`${subtitlesActivated ? 'animate__animated animate__flipInX animate__faster' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 flex-grow w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
+                                :class="`${subtitlesActivated ? '' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 flex-grow w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
                                 <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
-                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
+                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated"/>
                             </div>
                             <div class="w-full flex h-44 items-center justify-center" v-if="loadingFullTranscript">
                                 <IconsSpinnerIcon />
@@ -182,6 +182,7 @@ const handleYoutubeClick = (event: any) => {
 </script>
 
 <style scoped>
+
 :deep(.highlight) {
     @apply text-red-500;
 }

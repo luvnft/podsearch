@@ -1,9 +1,9 @@
 <template>
-    <HeadlessMenu as="div" class="z-50 flex h-9 w-9 items-start justify-center text-left p-0">
+    <HeadlessMenu as="div" class=" flex h-9 w-9 items-start justify-center text-left p-0">
         <Float placement="bottom-start" flip>
-            <div class="flex h-9 w-9 items-start justify-center  ml-0">
+            <div class="flex h-9 w-9 items-start justify-center  ml-0 ">
                 <HeadlessMenuButton :as="GenericButton"
-                    class="bg-gray-0 group text-gray-400 bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 items-center justify-center rounded-lg border fill-neutral-400 p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
+                    class="bg-gray-0 group text-gray-400  bg-neutral-100 border-neutral-300 ring-neutral-400 flex h-9 w-9 items-center justify-center rounded-lg border fill-neutral-400 p-0 font-medium no-underline shadow-sm hover:bg-neutral-100 focus:ring-gray-100 focus:ring-offset-gray-100 dark:ring-neutral-500 focus:outline-none focus:ring-2 active:shadow-sm">
                     <EllipsisVerticalIcon class="h-[23px] group-hover:fill-gray-500 dark:group-hover:fill-gray-300"
                         aria-hidden="true" />
                 </HeadlessMenuButton>
@@ -13,7 +13,7 @@
                 enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in"
                 leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
                 <HeadlessMenuItems :offset="4"
-                    class="bg-white ring-black z-50 w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+                    class="bg-white ring-black  w-56 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
                     <div class="bg-white w-full rounded-lg px-0 py-1">
                         <HeadlessMenuItem v-slot="{ active }"
                             class="group flex w-full flex-row flex-nowrap items-center no-underline">
