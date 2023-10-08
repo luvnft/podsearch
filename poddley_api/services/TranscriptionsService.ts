@@ -232,7 +232,6 @@ class TranscriptionsService {
         for (let i = 0; i < allResponsesLength; i++) {
           // Result var
           const { result, indexUid, segmentId, segmentHit } = allResponses[i];
-          console.log(segmentHit);
 
           // Skip if wrong index we already processed them further up
           if (indexUid === "podcasts" || indexUid === "episodes") continue;
@@ -287,7 +286,6 @@ class TranscriptionsService {
         // @ts-ignore
         searchResponse.hits = searchResponse.hits.sort((a: ClientSearchResponseHit, b: ClientSearchResponseHit) => b.similarity - a.similarity);
 
-        console.log(searchResponse);
         // Return that response
         return searchResponse as ClientSearchResponse;
       }
