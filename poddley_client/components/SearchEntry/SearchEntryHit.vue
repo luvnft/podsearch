@@ -81,5 +81,7 @@ onUnmounted(() => {
 // Set isMounted to true after the component has been mounted
 onMounted(() => {
     isMounted.value = true;
+    console.log("Starting watcher");
+    setupWatcher(); // set up watcher if subsActivated is true
 });
 </script> 

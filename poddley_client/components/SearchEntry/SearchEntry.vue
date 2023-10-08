@@ -63,10 +63,10 @@
                         </div>
 
                         <div v-if="playing"
-                            :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center border-none p-0 py-0 pb-0 pt-1`">
-                            <audio ref="audioPlayer" :currentTime="props.searchEntry.subHits[0]" controls preload="auto"
-                                autoplay
-                                :class="`focus:outline-2 focus:outline-gray-900 ring-0 border-none focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '' : 'border-neutral-200 rounded-lg border shadow-sm'} dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] dark:filter' : 'dark:filter dark:saturate-100 dark:sepia dark:hue-rotate-[200deg]'}`"
+                            :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center border-none p-0 py-0 pb-0 pt-1 ${isFirefox && 'hue-rotate-[180deg]'}`">
+                            <audio ref="audioPlayer" :currentTime="props.searchEntry.subHits[0].start" controls
+                                preload="auto" autoplay
+                                :class="`border filter focus:outline-2 focus:outline-gray-900 ring-0 focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '-mb-1 border-none' : 'border-neutral-200 rounded-lg shadow-sm'} dark:border-none dark:shadow-none ${!isSafari && !isFirefox ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] border' : ''} ${isFirefox && 'dark:sepia filter dark:invert-[0.1] invert dark:hue-rotate-[300deg] border border-gray-800 grayscale'}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
                                 :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
                         </div>
@@ -95,7 +95,7 @@ const props = defineProps<{
 const { isFirefox, isSafari, isIos } = useDevice();
 const playing: Ref<boolean> = ref(false);
 const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
-const subtitlesActivated: Ref<boolean> = ref(false);
+const subtitlesActivated: Ref<boolean> = ref(true);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
     console.log("Triggered")
