@@ -67,7 +67,7 @@ export default function () {
   }
 
   onmessage = function (e) {
-    console.log('hereAA')
+    
     if (e.data[0] === 'encode') {
       encode(e.data[1])
     }
