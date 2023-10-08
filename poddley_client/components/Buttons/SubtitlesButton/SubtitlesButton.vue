@@ -7,7 +7,7 @@
             <div class="flex aspect-square h-9 w-9 items-center justify-center">
                 <div :class="`h-9 w-9 items-center justify-center ${props.activated ? 'flex' : 'hidden'}`">
                     <svg-icon name="subtitlesOn"
-                        class="flex h-full w-3/5 justify-center fill-gray-400 group-hover:fill-gray-500"
+                        class="flex h-full w-3/5 justify-center fill-gray-400 group-hover:fill-gray-500 dark:fill-gray-500 dark:group-hover:fill-gray-400"
                         aria-hidden="true" />
                 </div>
                 <div :class="`h-9 w-9 items-center justify-center ${!props.activated ? 'flex' : 'hidden'}`">
