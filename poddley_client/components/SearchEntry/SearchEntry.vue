@@ -38,7 +38,6 @@
                                 <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsSubtitlesButton @subSyncTrigger="(value: boolean) => {
                                         subtitlesActivated = !subtitlesActivated;
-                                        console.log(!subtitlesActivated)
                                     }" class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
                                         :loadingFullTranscript="loadingFullTranscript" :activated="subtitlesActivated" />
                                 </div>
@@ -98,13 +97,13 @@ const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 const subtitlesActivated: Ref<boolean> = ref(true);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
-    console.log("Triggered")
+    
     playing.value = !playing.value;
 };
 const currentPlayingTime: Ref<number> = ref(props.searchEntry.subHits[0].start);
 
 const goToAudioTime = (moveToTime: number) => {
-    console.log("Triggerede aduoi move event", moveToTime)
+    
     if (audioPlayer.value) {
         audioPlayer.value.currentTime = moveToTime;
     }
@@ -128,7 +127,7 @@ const handleTimeChange = async (event: Event) => {
             if (hasSearched) return;
             if (lastAvailableElementIndex + 1 !== audioPlayer.value?.duration) {
                 hasSearched = true;
-                console.log("Fetching full transcript due to 98% rule");
+                
 
                 // Get entire transcript for that particular episode...
                 const searchResponse: ClientSearchResponse = await transcriptionService.search({
@@ -137,7 +136,7 @@ const handleTimeChange = async (event: Event) => {
                     sort: ["start:asc"],
                     searchString: ""
                 });
-                console.log("Transcript: ", searchResponse);
+                
 
                 // // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
                 // // Maybe casting is better, but dunno
@@ -155,11 +154,11 @@ const handleTimeChange = async (event: Event) => {
                 // })
 
                 // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
-                console.log("Index is: ", props.index)
+                
                 const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
                 searchResults.value.hits[props.index].subHits = segmentHits;
-                console.log("SearchResults NOOOOOOW: ", searchResults.value)
-                console.log("Fragmentation done, should be set");
+                
+                
             }
         }
     } catch (error) {
@@ -176,7 +175,7 @@ const computedStartTime = computed(() => {
 });
 
 const handleYoutubeClick = (event: any) => {
-    console.log("OK: ", event);
+    
 }
 
 </script>

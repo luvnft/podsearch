@@ -36,12 +36,12 @@ const goToAudioTime = (moveToTime: number) => {
 watch(
     () => props.subtitlesActivated,
     (newValue) => {
-        console.log("OK")
+        
         if (newValue) {
-            console.log("Starting watcher");
+            
             setupWatcher(); // set up watcher if subsActivated is true
         } else {
-            console.log("Stopping watcher");
+            
             stopWatch(); // tear down watcher if subsActivated is false
         }
     }
@@ -81,7 +81,7 @@ onUnmounted(() => {
 // Set isMounted to true after the component has been mounted
 onMounted(() => {
     isMounted.value = true;
-    console.log("Starting watcher");
+    
     setupWatcher(); // set up watcher if subsActivated is true
 });
 </script> 

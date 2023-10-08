@@ -30,7 +30,6 @@ const emit = defineEmits<{
 }>();
 
 const subSyncTrigger = () => {
-    console.log(231)
     emit("subSyncTrigger", !props.activated)
 }
 </script>
