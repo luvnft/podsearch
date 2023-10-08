@@ -23,6 +23,7 @@ export interface ClientSearchResponseHit {
   youtubeVideoLink?: string;
   deviationTime?: number;
   subHits: ClientSegmentHit[];
+  similarity?: number;
 }
 
 export interface ClientSegmentHit { 
