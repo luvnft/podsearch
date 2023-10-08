@@ -1,6 +1,6 @@
 <template>
     <div class="block" ref="searchResultsRef">
-        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
+        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits && searchResults.hits.length > 0" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -11,6 +11,7 @@ import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 import { LocationQuery, Router } from "#build/.nuxt/vue-router";
+import { Device } from "@nuxtjs/device/runtime/types/index";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -18,6 +19,9 @@ const { y } = useWindowScroll();
 //Vars
 let worker: Worker;
 const requestUrl: URL = useRequestURL();
+const nuxtApp: any = useNuxtApp();
+const { isMobileOrTablet }: Device = useDevice();
+
 const searchStore = useSearchStore();
 const { searchQuery, searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
@@ -25,12 +29,13 @@ const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
     searchString: "The following is a ",
     offset: 0,
+    limit: isMobileOrTablet ? 6 : 12,
 };
-const segmentMode: Ref<boolean> = ref(false);
 const router: Router = useRouter();
 
 //Running
-onMounted(() => {
+onMounted(async () => {
+
     if (process.client) {
         // Creating a worker
         worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
@@ -61,6 +66,18 @@ onMounted(() => {
             }
         };
     }
+
+    console.log("Mounted")
+    // If we are arriving from some subpage the searchResults wont be populated
+    if (!searchResults?.value?.hits) {
+        searchResults.value = await transcriptionService.search(searchQuery.value);
+        searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
+            if (hit.subHits) {
+                const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                hit.subHits = fragmentedSubHits;
+            }
+        });
+    }
 });
 
 function searchViaWorker() {
@@ -89,6 +106,9 @@ async function makeSearch() {
                         hit.subHits = fragmentedSubHits;
                     }
                 });
+
+                console.log("RequestURL: ", requestUrl);
+                console.log("NuxtApp: ", nuxtApp);
             } catch (e) { }
         }
     }
