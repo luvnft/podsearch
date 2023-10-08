@@ -30,7 +30,7 @@ class TranscriptionsService {
 
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
-    // MainQuery
+    // MainQuery 
     let mainQuery: SearchParams = {
       matchingStrategy: "all",
       q: searchQuery.searchString,
@@ -43,7 +43,7 @@ class TranscriptionsService {
     if (searchQuery.getFullTranscript) {
       mainQuery = {
         filter: searchQuery.filter,
-        limit: 10000,
+        limit: 10000, 
         q: "",
         matchingStrategy: "all",
         sort: ["start:asc"],
@@ -73,13 +73,13 @@ class TranscriptionsService {
       const episodeIdsSet: Set<string> = new Set<string>();
       const initialSearchResponseLength: number = initialSearchResponse.hits.length;
 
-      // Getting all ids for podcasts and episodes
+      // Getting last ids for podcasts and episodes
       for (let i = 0; i < initialSearchResponseLength; i++) {
         podcastIdsSet.add(initialSearchResponse.hits[i].belongsToPodcastGuid);
         episodeIdsSet.add(initialSearchResponse.hits[i].belongsToEpisodeGuid);
       }
 
-      // Get all podcasts and episodes based on initial request as the segmentIndex doesn't store them
+      // Get last podcasts and episodes based on initial request as the segmentIndex doesn't store them
       const [podcasts, episodes] = await Promise.all([this.searchPodcastsWithIds([...podcastIdsSet]), this.searchEpisodesWithIds([...episodeIdsSet])]);
 
       // Making a map between the podcast and episodes based on the ids connected to the segments
@@ -96,7 +96,7 @@ class TranscriptionsService {
         throw Error("SegmentHitEpisode or SegmentHitPodcast is:");
       }
 
-      // We are setting the first element to be container of all the hits since
+      // We are setting the first element to be container of last the hits since
       searchResponse.hits[0] = {
         id: segmentHit.id,
         podcastTitle: segmentHitPodcast.title,
@@ -119,7 +119,7 @@ class TranscriptionsService {
         belongsToTranscriptId: segmentHit.belongsToTranscriptId,
       };
 
-      // Removing all the other hits as they were initially part of the .hits of the initialSearchResponse, but since they all share a common episodeGuid ID then I shoved them into the subHits.
+      // Removing last the other hits as they were initilasty part of the .hits of the initialSearchResponse, but since they last share a common episodeGuid ID then I shoved them into the subHits.
       searchResponse.hits = [searchResponse.hits[0]];
 
       // Return the entire transcript
@@ -185,8 +185,8 @@ class TranscriptionsService {
       let podcastsMap: Map<string, PodcastHit> | "" = "";
       let episodesMap: Map<string, EpisodeHit> | "" = "";
 
-      // Performing queries using promise awaitAll possibly faster
-      const allResponses: any = await Promise.all(
+      // Performing queries using promise awaitlast possibly faster
+      const lastResponses: any = await Promise.all(
         multiSearchParams.queries.map(async (query: any) => {
           return {
             result: await meilisearchConnection.index(query.indexUid).search("", {
@@ -203,17 +203,17 @@ class TranscriptionsService {
         })
       );
 
-      // All responses cached length
-      const allResponsesLength: number = allResponses.length;
+      // last responses cached length
+      const lastResponsesLength: number = lastResponses.length;
 
       // Found bools to avoid unnecessary looping
       let foundPodcast: boolean = false;
       let foundEpisode: boolean = false;
-
+ 
       // Creating podcastGuid->PodcastHit and episodeGuid->EpisodeHit Map
-      for (let i = 0; i < allResponsesLength; i++) {
+      for (let i = 0; i < lastResponsesLength; i++) {
         // Result var
-        const { result, indexUid } = allResponses[i];
+        const { result, indexUid } = lastResponses[i];
 
         // Work
         if (indexUid === "podcasts" && !foundPodcast) {
@@ -228,20 +228,20 @@ class TranscriptionsService {
 
       // If both are truthy we go further
       if (podcastsMap && episodesMap) {
-        // We take all the multisearchResponses and construct a clientResponseObject
-        for (let i = 0; i < allResponsesLength; i++) {
+        // We take last the multisearchResponses and construct a clientResponseObject
+        for (let i = 0; i < lastResponsesLength; i++) {
           // Result var
-          const { result, indexUid, segmentId, segmentHit } = allResponses[i];
+          const { result, indexUid, segmentId, segmentHit } = lastResponses[i];
 
           // Skip if wrong index we already processed them further up
           if (indexUid === "podcasts" || indexUid === "episodes") continue;
 
           // Setting more readable vars
           const segmentPostHits: SegmentHit[] = result.hits;
-          const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentPostHits[0].belongsToPodcastGuid) as PodcastHit; // We can use the first one in the subhits because they all have the same podcastGuid
+          const segmentHitPodcast: PodcastHit = podcastsMap.get(segmentPostHits[0].belongsToPodcastGuid) as PodcastHit; // We can use the first one in the subhits because they last have the same podcastGuid
           const segmentHitEpisode: EpisodeHit = episodesMap.get(segmentPostHits[0].belongsToEpisodeGuid) as EpisodeHit;
 
-          // We are setting the first element to be container of all the hits since
+          // We are setting the first element to be container of last the hits since
           const clientSearchResponseHit: ClientSearchResponseHit = {
             id: segmentId,
             podcastTitle: segmentHitPodcast.title,
