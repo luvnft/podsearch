@@ -87,7 +87,6 @@ const isVisible = ref<Record<string, boolean>>(
     }, {} as Record<string, boolean>)
 );
 
-console.log(isVisible.value)
 // Set isMounted to true after the component has been mounted
 onMounted(() => {
     isMounted.value = true;
@@ -102,9 +101,8 @@ onMounted(() => {
                 target,
                 ([{ isIntersecting }], observerElement) => {
                     isVisible.value[targetId] = isIntersecting;
-                    console.log("Element is visibile halleluja")
                 },
-                { threshold: 0.1 }
+                { threshold: 0.001 }
             );
         }
     });
