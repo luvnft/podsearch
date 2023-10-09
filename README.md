@@ -566,6 +566,5 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Use <Lazy everywhere
 - [ ] We need to refactor the transcriber to be able to support concurrency
 - [ ] Start up all the pm2 instances in accorance to the written architecture (further up)
-- [ ] Develop AI model that finds, cuts and removes audio ads from audio-files
 
 </details>
