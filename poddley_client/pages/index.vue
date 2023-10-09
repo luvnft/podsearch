@@ -136,8 +136,6 @@ const debouncedOffsetIncrement = _Throttle(
         if(requestOngoing.value === true) return;
         requestOngoing.value = true;
 
-        console.log("Sat it in me...")
-
         searchQuery.value = {
             ...searchQuery.value,
             offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
