@@ -559,7 +559,7 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Adapt the api response to be only 5 elements on phone reponse as phones have shit spec
 - [x] Fix the search functionality to use jaccard again
 - [x] Fix sepia color on audioplayer
-- [ ] Make MeiliSearch production version.
+- [x] Make MeiliSearch production version.
 - [ ] We need to refactor the transcriber to be able to support concurrency
 - [ ] Start up all the pm2 instances in accorance to the written architecture
 - [x] Some podcast-streams might have ads when being played and when being transcribed. Solution to this is...??? Save podcast. Legal???...??? Not save  podcast...??? Legal, but lame due to the ads and it fucking with the timestamp so solution is... mini-model on web audio ad killer??? .. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio??? Solution is: Download podcast, remove ad from using AI, save audio, stream audio from own R3-bucket. PiHole?? Adsfree VPN? Current AI ad removers for audio suck. Find equivalent on apple podcast and use that instead of audio stream?? ANSWER: Until we develop Audio AI Ads removing model we will just remove them...
