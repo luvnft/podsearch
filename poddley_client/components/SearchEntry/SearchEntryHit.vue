@@ -1,9 +1,10 @@
 <template>
     <div ref="listRef" class="relative">
-        <div class="m-0 p-0 cursor text-start" v-for="(subHit, index) in props.searchEntry.subHits"
+        <div class="m-0 p-0 cursor text-start h-6 w-full" v-for="(subHit, index) in props.searchEntry.subHits"
             :id="`${subHit.id}-${subHit.start}`"
             :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
-            <button @click="goToAudioTime(subHit.start)" class="text-start">
+            <button @click="goToAudioTime(subHit.start)" class="text-start"
+                v-if="isVisible[`${subHit.id}-${subHit.start}`]">
                 <div v-if="isVisible[`${subHit.id}-${subHit.start}`]" v-html="convertSegmentHitToFormattedText(subHit)" />
             </button>
         </div>
@@ -102,7 +103,7 @@ onMounted(() => {
                 ([{ isIntersecting }], observerElement) => {
                     isVisible.value[targetId] = isIntersecting;
                 },
-                { threshold: 0.001 }
+                { threshold: 0.1 }
             );
         }
     });
