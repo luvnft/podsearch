@@ -3,9 +3,10 @@
         <div class="m-0 p-0 cursor text-start" v-for="(subHit, index) in props.searchEntry.subHits"
             :id="`${subHit.id}-${subHit.start}`"
             :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
-            <button @click="goToAudioTime(subHit.start)" class="text-start">
-                <div v-html="utils.convertSegmentHitToFormattedText(subHit)"></div>
-            </button>
+            <UseElementVisibility as="button" @click="goToAudioTime(subHit.start)" class="text-start"
+                v-slot="{ isVisible }">
+                <div v-if="isVisible" v-html="utils.convertSegmentHitToFormattedText(subHit)" />
+            </UseElementVisibility>
         </div>
     </div>
 </template>
@@ -13,7 +14,7 @@
 <script lang="ts" setup>
 import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
-
+import { UseElementVisibility } from '@vueuse/components'
 const emit = defineEmits<{
     (e: "goToAudioTime", number: number): void;
 }>();
