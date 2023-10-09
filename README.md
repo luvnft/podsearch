@@ -58,11 +58,14 @@ The main goal of the website/service is to be the "Shazam" for podcasts. Therefo
 ### Services:
 The services are running primarily as pm2-processes. With daemon-autorestart on server-shutdown, which are:
 - Express-API: API that queries the meilisearch instance.
-  - Route-Controller-Service architecture for ExpressJS/Node-backends. [Architecture](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
+- Route-Controller-Service architecture for ExpressJS/Node-backends. [Architecture](https://devtut.github.io/nodejs/route-controller-service-structure-for-expressjs.html#model-routes-controllers-services-code-structure)
 - Indexer (runs every 30min): Updates meilisearch indexes based on db-data
 - RSS-updater (runs very 30min): Updates db (upsert) based on changes in rss-feeds
 - Transcriber/YoutubeGetter (runs continuously) (can be run concurrently due to db-row locking)
 - Meilisearch-instance (native rust): Does the full-text search functionality
+
+| ![Pm2Setup](https://github.com/lukamomc/poddley/assets/52632596/20a624dc-6773-4505-8c6b-9d64345868b0) | ![Pm2Diagram](https://github.com/lukamomc/poddley/assets/52632596/3d9fbfc1-cde0-47b5-be85-fca6a17da69b)
+|:---:|:---|
 
 ### Meilisearch instance
 A meilisearch instance running with the following settings (all indexes use the default settings), besides what's specified in the backend scripts.
@@ -324,7 +327,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 | ![NginxSetup](https://github.com/lukamomc/poddley/assets/52632596/6011a550-8a25-4946-9718-2a5a2f766c7c) | ![NginxDiagram](https://github.com/lukamomc/poddley/assets/52632596/7d7f2578-a181-4a14-8a53-da1ee6452559)
 |:---:|:---|
 
-
 <details>
   <summary>Nginx Settings</summary>
 	
@@ -391,7 +393,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 ## Stuff to do:
 <details>
   <summary>TODO</summary>
-
 
 - [x] ~~Convert play-button too say Play podcast~~
 - [x] ~~Convert the insertionToDb on the TranscriptionService to javascript to take use of the $transaction functionality only available in the javascript client unlike ethe python-prisma-client port and enable multiple gpus to process transcriptions at the same time.~~
