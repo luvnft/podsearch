@@ -35,7 +35,7 @@
                         </HeadlessMenuItem>
                         <HeadlessMenuItem v-slot="{ active }"
                             class="group flex w-full flex-row flex-nowrap items-center justify-between no-underline">
-                            <button :href="props.searchEntry.subHits[0].id"
+                            <button aria-label="moreButton" :href="props.searchEntry.subHits[0].id"
                                 :class="[active ? 'text-gray-900 bg-gray-100 fill-gray-900' : 'text-gray-700 fill-gray-500', 'flex justify-between gap-x-0 px-3 py-2 text-base']"
                                 @click="copySegmentLink">
                                 Copy link to segment
