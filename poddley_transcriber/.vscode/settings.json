@@ -8,5 +8,6 @@
             "database": "${workspaceFolder:poddley_transcriber}/database/podcasts.db"
         }
     ],
-    "sqltools.useNodeRuntime": true
+    "sqltools.useNodeRuntime": true,
+    "nuxt.isNuxtApp": false
 }
