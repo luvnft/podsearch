@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div>
-                <button name="youtubePlayButton" id="youtubePlayButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" />
+                <button name="youtubePlayButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" aria-label="youtubePlayButton" />
             </div>
             <button
                 class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
