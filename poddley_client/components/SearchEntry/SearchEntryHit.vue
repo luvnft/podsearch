@@ -2,7 +2,7 @@
     <div ref="listRef" class="relative">
         <div class="m-0 p-0 cursor text-start" v-for="(subHit, index) in props.searchEntry.subHits"
             :id="`${subHit.id}-${subHit.start}`"
-            :class="`${((subHit.start <= props.currentPlayingTime + 0.4 && subHit.end + 0.4 >= props.currentPlayingTime) && (currentPlayingTime > 0.3)) ? 'highlight' : currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
+            :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
             <button @click="goToAudioTime(subHit.start)" class="text-start">
                 <div v-html="utils.convertSegmentHitToFormattedText(subHit)"></div>
             </button>
@@ -36,12 +36,12 @@ const goToAudioTime = (moveToTime: number) => {
 watch(
     () => props.subtitlesActivated,
     (newValue) => {
-        console.log("OK")
+
         if (newValue) {
-            console.log("Starting watcher");
+
             setupWatcher(); // set up watcher if subsActivated is true
         } else {
-            console.log("Stopping watcher");
+
             stopWatch(); // tear down watcher if subsActivated is false
         }
     }
@@ -81,13 +81,13 @@ onUnmounted(() => {
 // Set isMounted to true after the component has been mounted
 onMounted(() => {
     isMounted.value = true;
-    console.log("Starting watcher");
+
     setupWatcher(); // set up watcher if subsActivated is true
 });
 </script> 
 
 <style scoped>
-.toggleDeepStyling /deep/ .initialHightlight {
+.toggleDeepStyling:deep(.initialHightlight) {
     @apply text-red-400;
 }
 </style>

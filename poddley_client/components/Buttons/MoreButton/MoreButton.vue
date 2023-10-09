@@ -103,7 +103,6 @@ const loadEntireTranscript = async (episodeGuid: string) => {
         sort: ["start:asc"],
         searchString: ""
     });
-    console.log("Transcript: ", searchResponse);
 
     // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
     // Maybe casting is better, but dunno
@@ -121,11 +120,8 @@ const loadEntireTranscript = async (episodeGuid: string) => {
     // })
 
     // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
-    console.log("Index is: ", props.index)
     const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
     searchResults.value.hits[props.index].subHits = segmentHits;
-    console.log("SearchResults NOOOOOOW: ", searchResults.value)
-    console.log("Fragmentation done, should be set");
 
     emit("gettingFullTranscript", false);
 };

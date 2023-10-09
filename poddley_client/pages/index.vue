@@ -44,13 +44,13 @@ onMounted(async () => {
         worker.onmessage = (event: any) => {
             const { action, payload } = event.data;
 
-            console.log("Action: ", action);
-            console.log("Payload: ", payload);
+            
+            
             switch (action) {
                 case "searchCompleted":
                     // searchResults.value = payload;
-                    console.log("OK");
-                    console.log("payload", payload);
+                    
+                    
                     payload.hits.forEach((hit: ClientSearchResponseHit) => {
                         if (hit.subHits) {
                             const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
@@ -67,7 +67,7 @@ onMounted(async () => {
         };
     }
 
-    console.log("Mounted")
+    
     // If we are arriving from some subpage the searchResults wont be populated
     if (!searchResults?.value?.hits) {
         searchResults.value = await transcriptionService.search(searchQuery.value);
@@ -81,14 +81,14 @@ onMounted(async () => {
 });
 
 function searchViaWorker() {
-    console.log("Searching via worker");
+    
     searchStore.setLoadingState(true);
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-    console.log("Searching....");
+    
     // Send a message to the worker to perform the search
     if (worker) {
         searchViaWorker();
@@ -107,8 +107,8 @@ async function makeSearch() {
                     }
                 });
 
-                console.log("RequestURL: ", requestUrl);
-                console.log("NuxtApp: ", nuxtApp);
+                
+                
             } catch (e) { }
         }
     }
@@ -148,32 +148,32 @@ watch(y, () => {
     scrollY.value = y.value;
     const windowHeight = document.documentElement.scrollHeight;
     const visibleHeight = window.innerHeight;
-    console.log("OK");
+    
 
     if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
-        console.log("SEESES: ", searchQuery.value);
+        
 
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
         let presence: boolean | undefined = undefined;
 
         try {
-            console.log("mofo")
+            
             const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
-            console.log("mofo2")
+            
 
-            console.log("JIJIJI: ", routeBasedSearchQuery.filter?.includes("id"))
+            
             presence = routeBasedSearchQuery.filter?.includes("id") ? routeBasedSearchQuery.filter.includes("id") : false;
         }
         catch (e) {
             presence = undefined;
         }
-        console.log("Presence: ", presence);
+        
         if (presence === undefined) {
             debouncedOffsetIncrement();
         }
 
-        console.log("new searchQuery: ", searchQuery.value);
+        
     }
 });
 </script>

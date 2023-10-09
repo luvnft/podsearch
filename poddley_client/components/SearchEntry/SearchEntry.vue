@@ -38,7 +38,6 @@
                                 <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsSubtitlesButton @subSyncTrigger="(value: boolean) => {
                                         subtitlesActivated = !subtitlesActivated;
-                                        console.log(!subtitlesActivated)
                                     }" class="absolute h-9 w-9" :searchEntry="props.searchEntry" :index="index"
                                         :loadingFullTranscript="loadingFullTranscript" :activated="subtitlesActivated" />
                                 </div>
@@ -55,7 +54,7 @@
                             <div v-if="!loadingFullTranscript"
                                 :class="`${subtitlesActivated ? '' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 flex-grow w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
                                 <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
-                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated"/>
+                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
                             </div>
                             <div class="w-full flex h-44 items-center justify-center" v-if="loadingFullTranscript">
                                 <IconsSpinnerIcon />
@@ -98,13 +97,13 @@ const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 const subtitlesActivated: Ref<boolean> = ref(true);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
-    console.log("Triggered")
+
     playing.value = !playing.value;
 };
 const currentPlayingTime: Ref<number> = ref(props.searchEntry.subHits[0].start);
 
 const goToAudioTime = (moveToTime: number) => {
-    console.log("Triggerede aduoi move event", moveToTime)
+
     if (audioPlayer.value) {
         audioPlayer.value.currentTime = moveToTime;
     }
@@ -128,7 +127,7 @@ const handleTimeChange = async (event: Event) => {
             if (hasSearched) return;
             if (lastAvailableElementIndex + 1 !== audioPlayer.value?.duration) {
                 hasSearched = true;
-                console.log("Fetching full transcript due to 98% rule");
+
 
                 // Get entire transcript for that particular episode...
                 const searchResponse: ClientSearchResponse = await transcriptionService.search({
@@ -137,7 +136,7 @@ const handleTimeChange = async (event: Event) => {
                     sort: ["start:asc"],
                     searchString: ""
                 });
-                console.log("Transcript: ", searchResponse);
+
 
                 // // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
                 // // Maybe casting is better, but dunno
@@ -155,11 +154,11 @@ const handleTimeChange = async (event: Event) => {
                 // })
 
                 // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
-                console.log("Index is: ", props.index)
+
                 const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
                 searchResults.value.hits[props.index].subHits = segmentHits;
-                console.log("SearchResults NOOOOOOW: ", searchResults.value)
-                console.log("Fragmentation done, should be set");
+
+
             }
         }
     } catch (error) {
@@ -176,13 +175,12 @@ const computedStartTime = computed(() => {
 });
 
 const handleYoutubeClick = (event: any) => {
-    console.log("OK: ", event);
+
 }
 
 </script>
 
 <style scoped>
-
 :deep(.highlight) {
     @apply text-red-500;
 }
@@ -259,5 +257,49 @@ const handleYoutubeClick = (event: any) => {
     @apply bg-[#f6feff];
     @apply border-gray-100;
   } */
+}
+
+@keyframes moveRainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.rainbow-border {
+    @apply p-[1px] !important;
+    @apply rounded-lg !important;
+
+    background-size: 200% auto;
+    background-image: linear-gradient(to right,
+            violet,
+            indigo,
+            blue,
+            green,
+            yellow,
+            orange,
+            red,
+            violet);
+    animation: moveRainbow 5s linear infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.inner-content {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    width: 80px;
+    /* Adjust accordingly */
+    background-color: white;
+    /* Or another color / gradient */
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
 }
 </style>

@@ -201,12 +201,12 @@ export default class RecorderService {
   }
 
   _onAudioProcess(e) {
-    // console.log('onaudioprocess', e)
+    // 
     // let inputBuffer = e.inputBuffer
     // let outputBuffer = e.outputBuffer
-    // console.log(this.micAudioStream)
-    // console.log(this.audioCtx)
-    // console.log(this.micAudioStream.getTracks().forEach((track) => console.log(track)))
+    // 
+    // 
+    // 
 
     // this.onAudioEm.dispatch(new Event('onaudioprocess', {inputBuffer:inputBuffer,outputBuffer:outputBuffer}))
 
@@ -285,8 +285,8 @@ export default class RecorderService {
   }
 
   _onDataAvailable(evt) {
-    // console.log('state', this.mediaRecorder.state)
-    // console.log('evt.data', evt.data)
+    // 
+    // 
 
     this.chunks.push(evt.data);
     this.chunkType = evt.data.type;
@@ -353,7 +353,7 @@ export default class RecorderService {
   }
 
   _onError(evt) {
-    console.log("error", evt);
+    
     this.em.dispatchEvent(new Event("error"));
     alert("error:" + evt); // for debugging purposes
   }
