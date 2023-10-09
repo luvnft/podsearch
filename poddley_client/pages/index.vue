@@ -44,13 +44,13 @@ onMounted(async () => {
         worker.onmessage = (event: any) => {
             const { action, payload } = event.data;
 
-            
-            
+
+
             switch (action) {
                 case "searchCompleted":
                     // searchResults.value = payload;
-                    
-                    
+
+
                     payload.hits.forEach((hit: ClientSearchResponseHit) => {
                         if (hit.subHits) {
                             const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
@@ -67,7 +67,7 @@ onMounted(async () => {
         };
     }
 
-    
+
     // If we are arriving from some subpage the searchResults wont be populated
     if (!searchResults?.value?.hits) {
         searchResults.value = await transcriptionService.search(searchQuery.value);
@@ -81,14 +81,14 @@ onMounted(async () => {
 });
 
 function searchViaWorker() {
-    
+
     searchStore.setLoadingState(true);
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
-    
+
     // Send a message to the worker to perform the search
     if (worker) {
         searchViaWorker();
@@ -107,15 +107,15 @@ async function makeSearch() {
                     }
                 });
 
-                
-                
+
+
             } catch (e) { }
         }
     }
 }
 
 // Debounced search calls makeSearch if it follows the limits of the debounce function
-const debouncedSearch = _Debounce(makeSearch, 500, {
+const debouncedSearch = _Debounce(makeSearch, 400, {
     leading: false,
     trailing: true,
 });
@@ -129,16 +129,26 @@ watch(searchQuery, debouncedSearch, {
     deep: true,
 });
 
-const debouncedOffsetIncrement = _Debounce(
+const requestOngoing: Ref<boolean> = ref(false);
+    
+const debouncedOffsetIncrement = _Throttle(
     () => {
+        if(requestOngoing.value === true) return;
+        requestOngoing.value = true;
+
+        console.log("Sat it in me...")
+
         searchQuery.value = {
             ...searchQuery.value,
             offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
         };
+        setTimeout(() => {
+            requestOngoing.value = false;
+        }, 2000);
     },
     500,
     {
-        leading: false,
+        leading: true,
         trailing: true
     },
 );
@@ -148,32 +158,30 @@ watch(y, () => {
     scrollY.value = y.value;
     const windowHeight = document.documentElement.scrollHeight;
     const visibleHeight = window.innerHeight;
-    
 
-    if (scrollY.value + visibleHeight >= 0.5 * windowHeight) {
-        
+
+    if (scrollY.value + visibleHeight >= 0.80 * windowHeight) {
+8
 
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
         let presence: boolean | undefined = undefined;
 
         try {
-            
-            const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
-            
 
-            
+            const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
+
             presence = routeBasedSearchQuery.filter?.includes("id") ? routeBasedSearchQuery.filter.includes("id") : false;
         }
         catch (e) {
             presence = undefined;
         }
-        
+
         if (presence === undefined) {
             debouncedOffsetIncrement();
         }
 
-        
+
     }
 });
 </script>
