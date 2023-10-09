@@ -14,14 +14,14 @@ export const useSearchStore = defineStore("searchStore", () => {
     const searchResults: Ref<ClientSearchResponse> = ref({} as ClientSearchResponse);
     const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);
     const setSearchResults = (searchResponse: ClientSearchResponse) => {
-        console.log("SearchQuery: ", JSON.stringify(searchQuery.value.searchString));
-        console.log("previousSearchQuery: ", JSON.stringify(previousSearchQuery.value));
+        
+        
         if (searchResponse.query === previousSearchQuery.value) {
-            console.log("mamma mia: ", searchResults.value)
+            
             searchResults.value.hits = utils.removeDuplicates([...searchResults.value.hits, ...searchResponse.hits], "id");
-            console.log(searchResults.value.hits);
+            
         } else {
-            console.log("SearchResults:::::::: ", searchResults.value)
+            
             searchResults.value = searchResponse;
         }
 
