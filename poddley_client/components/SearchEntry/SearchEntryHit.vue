@@ -3,10 +3,9 @@
         <div class="m-0 p-0 cursor text-start" v-for="(subHit, index) in props.searchEntry.subHits"
             :id="`${subHit.id}-${subHit.start}`"
             :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
-            <UseElementVisibility as="button" @click="goToAudioTime(subHit.start)" class="text-start"
-                v-slot="{ isVisible }">
-                <div v-if="isVisible" v-html="utils.convertSegmentHitToFormattedText(subHit)" />
-            </UseElementVisibility>
+            <button @click="goToAudioTime(subHit.start)" class="text-start">
+                <div v-if="isVisible[`${subHit.id}-${subHit.start}`]" v-html="convertSegmentHitToFormattedText(subHit)" />
+            </button>
         </div>
     </div>
 </template>
@@ -14,7 +13,7 @@
 <script lang="ts" setup>
 import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import { UseElementVisibility } from '@vueuse/components'
+
 const emit = defineEmits<{
     (e: "goToAudioTime", number: number): void;
 }>();
@@ -79,11 +78,36 @@ onUnmounted(() => {
     }
 });
 
+const searchEntries = ref(props.searchEntry.subHits);
+// Set the first 10 subHits to be true upon load
+const isVisible = ref<Record<string, boolean>>(
+    searchEntries.value.slice(0, 10).reduce((acc, subHit) => {
+        acc[`${subHit.id}-${subHit.start}`] = true;
+        return acc;
+    }, {} as Record<string, boolean>)
+);
+
+console.log(isVisible.value)
 // Set isMounted to true after the component has been mounted
 onMounted(() => {
     isMounted.value = true;
 
     setupWatcher(); // set up watcher if subsActivated is true
+
+    searchEntries.value.forEach(subHit => {
+        const targetId = `${subHit.id}-${subHit.start}`;
+        const target = document.getElementById(targetId);
+        if (target) {
+            useIntersectionObserver(
+                target,
+                ([{ isIntersecting }], observerElement) => {
+                    isVisible.value[targetId] = isIntersecting;
+                    console.log("Element is visibile halleluja")
+                },
+                { threshold: 0.1 }
+            );
+        }
+    });
 });
 </script> 
 
