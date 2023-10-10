@@ -158,7 +158,6 @@ const handleTimeChange = async (event: Event) => {
                 const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
                 searchResults.value.hits[props.index].subHits = segmentHits;
             }
-            console.log("HALLELULA", currentPlayingTime.value)
 
         }
     } catch (error) {

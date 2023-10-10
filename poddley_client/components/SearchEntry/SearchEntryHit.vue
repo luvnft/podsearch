@@ -4,7 +4,7 @@
             v-for="(subHit, index) in props.searchEntry.subHits" :id="`${subHit.id}-${subHit.start}`"
             :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
             <button @click="goToAudioTime(subHit.start)" class="text-start whitespace-normal"
-                v-if="(subHit.start > (props.currentPlayingTime - 10) && subHit.start < (props.currentPlayingTime + 10)) || isVisible">
+                v-if="(subHit.start > (props.currentPlayingTime - 20) && subHit.start < (props.currentPlayingTime + 20)) || isVisible">
                 <div v-html="convertSegmentHitToFormattedText(subHit)" />
             </button>
         </UseElementVisibility>
