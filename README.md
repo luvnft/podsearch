@@ -67,8 +67,27 @@ The services are running primarily as pm2-processes. With daemon-autorestart on 
 | ![Pm2Setup](https://github.com/lukamomc/poddley/assets/52632596/20a624dc-6773-4505-8c6b-9d64345868b0) | ![Pm2Diagram](https://github.com/lukamomc/poddley/assets/52632596/3d9fbfc1-cde0-47b5-be85-fca6a17da69b)
 |:---:|:---|
 
-### Meilisearch instance
+##### Meilisearch pm2 config 
 A meilisearch instance running with the following settings (all indexes use the default settings), besides what's specified in the backend scripts.
+
+<details>
+  <summary>Meilisearch pm2 config </summary>
+
+```
+	module.exports = {
+	  apps: [
+	    {
+	      name: "meilisearch",
+	      script: `./meilisearch --no-analytics`,
+	      env: {
+	        MEILI_HTTP_ADDR: "0.0.0.0:7700",
+	        MEILI_MASTER_KEY: "some key here",
+	      },
+	    },
+	  ],
+	};
+```
+</details>
 
 ##### Indexes
 
@@ -381,6 +400,8 @@ A meilisearch instance running with the following settings (all indexes use the 
 	}
 ```
 </details>
+
+
 
 ### Other
 - HTTPS everywhere done with let's encrypt. Free https certificates
