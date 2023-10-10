@@ -185,11 +185,6 @@ const handleYoutubeClick = (event: any) => {
     @apply text-red-500;
 }
 
-:deep(* span) {
-
-}
-
-
 .loader {
     display: inline;
 }
