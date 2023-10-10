@@ -1,4 +1,4 @@
-# Poddley - Shazam for podcasts
+# Poddley - "*Shazam*" for podcasts
 
 ## Main Goal:
 The main goal of the website/service is to be the "Shazam" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages, episode-links and youtube time-location). 
