@@ -60,12 +60,10 @@
                                 <IconsSpinnerIcon />
                             </div>
                         </div>
-
                         <div v-if="playing"
                             :class="`m-0 flex w-full flex-col flex-nowrap items-center justify-center border-none p-0 py-0 pb-0 pt-1 ${isFirefox && 'hue-rotate-[180deg]'}`">
-                            <audio ref="audioPlayer" :currentTime="props.searchEntry.subHits[0].start" controls
-                                preload="auto" autoplay
-                                :class="`border filter focus:outline-2 focus:outline-gray-900 ring-0 focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '-mb-1 border-none' : 'border-neutral-200 rounded-lg shadow-sm'} dark:border-none dark:shadow-none ${!isFirefox && !isIos  ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] border' : ''} ${isFirefox && 'dark:sepia filter dark:invert-[0.1] invert dark:hue-rotate-[300deg] border border-gray-800 grayscale'}`"
+                            <audio ref="audioPlayer" :currentTime="unmodifiableStartValue" controls preload="auto" autoplay
+                                :class="`border filter focus:outline-2 focus:outline-gray-900 ring-0 focus:border-gray-500 text-black h-9 w-full rounded-lg  ${isIos ? '-mb-1 border-none' : 'border-neutral-200 rounded-lg shadow-sm'} dark:border-none dark:shadow-none ${!isFirefox && !isIos ? 'dark:bg-[#f2f4f5] dark:hue-rotate-[200deg] dark:invert-[0.85] dark:saturate-[10] border' : ''} ${isFirefox && 'dark:sepia filter dark:invert-[0.1] invert dark:hue-rotate-[300deg] border border-gray-800 grayscale'}`"
                                 type="audio/mpeg" :title="props.searchEntry.episodeTitle"
                                 :src="props.searchEntry.episodeEnclosure" @timeupdate="handleTimeChange" />
                         </div>
@@ -91,7 +89,7 @@ const props = defineProps<{
     searchEntry: ClientSearchResponseHit;
     index: number;
 }>();
-const { isFirefox, isSafari, isIos,  } = useDevice();
+const { isFirefox, isSafari, isIos, } = useDevice();
 const playing: Ref<boolean> = ref(false);
 const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 const subtitlesActivated: Ref<boolean> = ref(true);
@@ -101,6 +99,8 @@ const handlePlaying = () => {
     playing.value = !playing.value;
 };
 const currentPlayingTime: Ref<number> = ref(props.searchEntry.subHits[0].start);
+
+const unmodifiableStartValue: number = currentPlayingTime.value;
 
 const goToAudioTime = (moveToTime: number) => {
 
@@ -157,9 +157,9 @@ const handleTimeChange = async (event: Event) => {
 
                 const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
                 searchResults.value.hits[props.index].subHits = segmentHits;
-
-
             }
+            console.log("HALLELULA", currentPlayingTime.value)
+
         }
     } catch (error) {
         console.error("Error in handleTimeChange: ", error);
@@ -184,6 +184,11 @@ const handleYoutubeClick = (event: any) => {
 :deep(.highlight) {
     @apply text-red-500;
 }
+
+:deep(* span) {
+
+}
+
 
 .loader {
     display: inline;

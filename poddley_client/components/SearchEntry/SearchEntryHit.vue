@@ -1,25 +1,32 @@
 <template>
     <div ref="listRef" class="relative">
-        <div class="m-0 p-0 cursor text-start h-6 w-full" v-for="(subHit, index) in props.searchEntry.subHits"
-            :id="`${subHit.id}-${subHit.start}`"
+        <UseElementVisibility v-slot="{ isVisible }" class="m-0 p-0 cursor text-start w-full h-6"
+            v-for="(subHit, index) in props.searchEntry.subHits" :id="`${subHit.id}-${subHit.start}`"
             :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
-            <button @click="goToAudioTime(subHit.start)" class="text-start"
-                v-if="isVisible[`${subHit.id}-${subHit.start}`]">
-                <div v-if="isVisible[`${subHit.id}-${subHit.start}`]" v-html="convertSegmentHitToFormattedText(subHit)" />
+            <button @click="goToAudioTime(subHit.start)" class="text-start whitespace-normal"
+                v-if="(subHit.start > (props.currentPlayingTime - 10) && subHit.start < (props.currentPlayingTime + 10)) || isVisible">
+                <div v-html="convertSegmentHitToFormattedText(subHit)" />
             </button>
-        </div>
+        </UseElementVisibility>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
-
+import { UseElementVisibility } from "@vueuse/components";
 const emit = defineEmits<{
     (e: "goToAudioTime", number: number): void;
 }>();
 
-const listRef: Ref<any> = ref(null);
+
+// Set isMounted to true after the component has been mounted
+onMounted(() => {
+    isMounted.value = true;
+    setupWatcher(); // set up watcher if subsActivated is true
+});
+
+const listRef: Ref<HTMLElement | null> = ref(null);
 const utils: Utils = useUtils();
 const props = defineProps<{
     searchEntry: ClientSearchResponseHit;
@@ -39,10 +46,8 @@ watch(
     (newValue) => {
 
         if (newValue) {
-
             setupWatcher(); // set up watcher if subsActivated is true
         } else {
-
             stopWatch(); // tear down watcher if subsActivated is false
         }
     }
@@ -88,26 +93,6 @@ const isVisible = ref<Record<string, boolean>>(
     }, {} as Record<string, boolean>)
 );
 
-// Set isMounted to true after the component has been mounted
-onMounted(() => {
-    isMounted.value = true;
-
-    setupWatcher(); // set up watcher if subsActivated is true
-
-    searchEntries.value.forEach(subHit => {
-        const targetId = `${subHit.id}-${subHit.start}`;
-        const target = document.getElementById(targetId);
-        if (target) {
-            useIntersectionObserver(
-                target,
-                ([{ isIntersecting }], observerElement) => {
-                    isVisible.value[targetId] = isIntersecting;
-                },
-                { threshold: 0.1 }
-            );
-        }
-    });
-});
 </script> 
 
 <style scoped>
