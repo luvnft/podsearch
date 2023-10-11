@@ -1,4 +1,4 @@
-# Poddley - Shazam for podcasts
+# Poddley - "*Shazam*" for podcasts
 
 ## Main Goal:
 The main goal of the website/service is to be the "Shazam" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages, episode-links and youtube time-location). 
@@ -584,7 +584,8 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Make MeiliSearch production version.
 - [x] Some podcast-streams might have ads when being played and when being transcribed. Solution to this is...??? Save podcast. Legal???...??? Not save  podcast...??? Legal, but lame due to the ads and it fucking with the timestamp so solution is... mini-model on web audio ad killer??? .. How are we going to handle the issue with ads being part of some ppodcast transcription like Logan Paul?? AI to remove them from audio??? Solution is: Download podcast, remove ad from using AI, save audio, stream audio from own R3-bucket. PiHole?? Adsfree VPN? Current AI ad removers for audio suck. Find equivalent on apple podcast and use that instead of audio stream?? ANSWER: Until we develop Audio AI Ads removing model we will just remove them...
 - [x] Can we move backend and client closer together? **No.**
-- [x] Use <Lazy everywhere
+- [x] ~~Use <Lazy everywhere~~ Using  UseElementVisibily by vueUse + currentPlayingTime as markers for dom mouting
+- [x] Upload sanitized repo stripped of all private-api-keys etc...
 - [ ] We need to refactor the transcriber to be able to support concurrency
 - [ ] Start up all the pm2 instances in accorance to the written architecture (further up)
 
