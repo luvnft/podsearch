@@ -4,9 +4,6 @@ import cors from "cors";
 import transcriptionsRouter from "./routes/transcriptions";
 import compression from "compression";
 
-// Kinda bad practise, but ... 
-process.env.NODE_ENV = "production";
-
 //Setup
 const app: Express = express();
 const port: number = 3000;
