@@ -595,5 +595,5 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [ ] Doublecheck no API's have been leaked (gitguardian will probably be used)
 - [ ] Upon full load intersectionObserver goes berserker, gotta tweak that a bit I think...
 - [ ] Also remove "acast"-source podcast from podcasts.json
-
+- [ ] Make Nuxt 3 app that automatically generates iOS and Android app that has a button and connects to the Poddley-api
 </details>
