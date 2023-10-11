@@ -588,5 +588,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Upload sanitized repo stripped of all private-api-keys etc...
 - [ ] We need to refactor the transcriber to be able to support concurrency
 - [ ] Start up all the pm2 instances in accorance to the written architecture (further up)
+- [ ] Doublecheck no API's have been leaked
 
 </details>
