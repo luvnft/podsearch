@@ -10,18 +10,18 @@ The main goal of the website/service is to be the "*Shazam*" for podcasts. There
 [Link to Poddley](https://poddley.com)
 
 ## Design iterations
-<img src="https://github.com/lukamomc/poddley/assets/52632596/021db789-806d-4822-8621-3df6d737a34d" width="23%"></img>1
-<img src="https://github.com/lukamomc/poddley/assets/52632596/870d5091-f3ce-4d88-8edf-320829f388f3" width="23%"></img>2
-<img src="https://github.com/lukamomc/poddley/assets/52632596/30c84688-69de-4b5a-aa10-b6886d889ebd" width="23%"></img>3
-<img src="https://github.com/lukamomc/poddley/assets/52632596/aab77d06-3100-487f-a3c6-04e977b5f134" width="23%"></img>4
-<img src="https://github.com/lukamomc/poddley/assets/52632596/c4a29bef-0867-43b8-82fb-0fa6cfc9dd31" width="23%"></img>5
-<img src="https://github.com/lukamomc/poddley/assets/52632596/68b94afc-4284-43c3-92ff-6e726e1eed23" width="23%"></img>6
-<img src="https://github.com/lukamomc/poddley/assets/52632596/140c6555-0c35-4517-bd56-a34ff534c3b1" width="23%"></img>7
-<img src="https://github.com/lukamomc/poddley/assets/52632596/c5dad911-8149-4701-8814-3e3b3c7ad972" width="23%"></img>8
-<img src="https://github.com/lukamomc/poddley/assets/52632596/bcc4c1ac-bd0b-4725-b6b2-97947b55d406" width="23%"></img>9
-<img src="https://github.com/lukamomc/poddley/assets/52632596/b7dfb103-2ff8-4cc6-8563-ef26a000b82c" width="23%"></img>10
-<img src="https://github.com/lukamomc/poddley/assets/52632596/32fdc4e9-0fb6-4e09-845c-11d0eb674a5f" width="23%"></img>11
-<img src="https://github.com/lukamomc/poddley/assets/52632596/bcc4c1ac-bd0b-4725-b6b2-97947b55d406" width="23%"></img>12
+<img src="https://github.com/lukamomc/poddley/assets/52632596/021db789-806d-4822-8621-3df6d737a34d" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/870d5091-f3ce-4d88-8edf-320829f388f3" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/30c84688-69de-4b5a-aa10-b6886d889ebd" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/aab77d06-3100-487f-a3c6-04e977b5f134" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/c4a29bef-0867-43b8-82fb-0fa6cfc9dd31" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/68b94afc-4284-43c3-92ff-6e726e1eed23" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/140c6555-0c35-4517-bd56-a34ff534c3b1" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/c5dad911-8149-4701-8814-3e3b3c7ad972" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/bcc4c1ac-bd0b-4725-b6b2-97947b55d406" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/b7dfb103-2ff8-4cc6-8563-ef26a000b82c" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/32fdc4e9-0fb6-4e09-845c-11d0eb674a5f" width="23%"></img>
+<img src="https://github.com/lukamomc/poddley/assets/52632596/bcc4c1ac-bd0b-4725-b6b2-97947b55d406" width="23%"></img>
 
 ## Realizations
 - Don't optimize too early
