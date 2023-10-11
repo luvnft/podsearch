@@ -30,7 +30,7 @@
                                 class="multiline-ellipsis text-gray-800 mb-0 block w-full items-center justify-center px-0 py-0 text-start font-bold tracking-tighter">
                                 {{ props.searchEntry.episodeTitle }}
                             </p>
-                            <div class="w-18 float-right flex h-full items-start justify-start gap-x-0.5 pl-1 mr-0">
+                            <div class="w-18 float-right flex h-full items-start justify-start gap-x-[1.5px] pl-1 mr-0">
                                 <div class="block h-9 w-9 items-start justify-end">
                                     <ButtonsPlayButton class="absolute h-9 w-9" :searchEntry="props.searchEntry"
                                         @click="handlePlaying" :playing="playing" />
