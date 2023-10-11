@@ -1,13 +1,10 @@
 <template>
-    <div ref="listRef" class="relative">
-        <UseElementVisibility v-slot="{ isVisible }" class="m-0 p-0 cursor text-start w-full h-6"
-            v-for="(subHit, index) in props.searchEntry.subHits" :id="`${subHit.id}-${subHit.start}`"
-            :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`">
-            <button @click="goToAudioTime(subHit.start)" class="text-start whitespace-normal"
-                v-if="(subHit.start > (props.currentPlayingTime - 20) && subHit.start < (props.currentPlayingTime + 20)) || isVisible">
-                <div v-html="convertSegmentHitToFormattedText(subHit)" />
-            </button>
-        </UseElementVisibility>
+    <div ref="listRef" class="relative pl-1">
+        <button v-for="(subHit, index) in props.searchEntry.subHits" @click="goToAudioTime(subHit.start)"
+            class="text-start whitespace-normal m-0 p-0 cursor w-full h-6 italic"
+            :class="`${(((subHit.start <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`"
+            v-html="convertSegmentHitToFormattedText(subHit)">
+        </button>
     </div>
 </template>
 
@@ -15,27 +12,17 @@
 import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { UseElementVisibility } from "@vueuse/components";
+const listRef: Ref<HTMLElement | null> = ref(null);
+
 const emit = defineEmits<{
     (e: "goToAudioTime", number: number): void;
 }>();
 
-
-// Set isMounted to true after the component has been mounted
-onMounted(() => {
-    isMounted.value = true;
-    setupWatcher(); // set up watcher if subsActivated is true
-});
-
-const listRef: Ref<HTMLElement | null> = ref(null);
-const utils: Utils = useUtils();
 const props = defineProps<{
     searchEntry: ClientSearchResponseHit;
     currentPlayingTime: number;
     subtitlesActivated: Ref<boolean>;
 }>();
-
-// Define a flag to determine whether the component has just mounted
-const isMounted: Ref<boolean> = ref(false);
 
 const goToAudioTime = (moveToTime: number) => {
     emit("goToAudioTime", moveToTime)
@@ -78,21 +65,16 @@ function setupWatcher() {
     );
 }
 
+// Set isMounted to true after the component has been mounted
+onMounted(() => {
+    setupWatcher(); // set up watcher if subsActivated is true
+});
+
 onUnmounted(() => {
     if (stopWatch) {
         stopWatch();
     }
 });
-
-const searchEntries = ref(props.searchEntry.subHits);
-// Set the first 10 subHits to be true upon load
-const isVisible = ref<Record<string, boolean>>(
-    searchEntries.value.slice(0, 10).reduce((acc, subHit) => {
-        acc[`${subHit.id}-${subHit.start}`] = true;
-        return acc;
-    }, {} as Record<string, boolean>)
-);
-
 </script> 
 
 <style scoped>

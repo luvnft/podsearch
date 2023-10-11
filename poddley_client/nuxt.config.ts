@@ -1,5 +1,3 @@
-require("dotenv").config({ path: "../.env" });
-
 export default defineNuxtConfig({
   ssr: true,
   css: ["~/assets/css/imports/normalize.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
