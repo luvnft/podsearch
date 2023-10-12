@@ -3,6 +3,8 @@ import asyncio
 import os
 import json
 
+# Run continuously
+
 async def insertJsonFilesToDb(episode):
     prisma = Prisma()
     await prisma.connect()

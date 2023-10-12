@@ -1,4 +1,5 @@
 // Runs in PM2-instance.
+// Indexing continuously
 
 import prismaConnection from "./prismaConnection.js";
 import fs from "fs";
@@ -16,8 +17,7 @@ async function main() {
   const podcastsIndex = client.index("podcasts");
   const episodesIndex = client.index("episodes");
 
-  console.log("Starting: Getting episodes and podcasts, we always update all podcasts");
-  await podcastsIndex.deleteAllDocuments();
+  console.log("Starting: Getting episodes and podcasts, we always update all podcasts and episodes from db due to the small amount of rows and also due to the changes in the db most often being related to them and not the segments");
   const podcasts = await prismaConnection.podcast.findMany();
   const episodes = await prismaConnection.episode.findMany();
 
