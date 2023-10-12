@@ -68,6 +68,21 @@ The services are running primarily as pm2-processes. With daemon-autorestart on 
 - Transcriber/YoutubeGetter (runs continuously) (can be run concurrently due to db-row locking)
 - Meilisearch-instance (native rust): Does the full-text search functionality
 
+# Architecture:
+Server 1: Very low-end DigitalOcean droplet with 2vCPUs and 4Gigs of RAM run the database consistently. I need the db to be constantly available due to the transcriber and indexer fetching to and from it.
+Server 2: Higher end 8vCPUs and 16Gigs of RAM running the Express API, Meilisearch search engine, the indexer and the RSS-updater
+Local PC: Runs the Transcriber on an ASUS GeForce RTX 3060 DUAL OC as it's much cheaper than to rent any kind of Server
+
+**Overall Architecture**
+
+| Location       | Specifications                                                 | Responsibilities                                                                                                                    |
+|----------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------               |
+| Server 1       | Very low-end DigitalOcean droplet with 2vCPUs and 4Gigs of RAM | Runs the database consistently (needed for transcriber and indexer as I can't have it shut down sporadically for whatever reason)   |
+| Server 2       | Higher end 8vCPUs and 16Gigs of RAM                            | Running the Express API, Nuxt3-client code (planning to at least) Meilisearch search engine, the indexer, and the RSS-updater       |
+| Local PC       | ASUS GeForce RTX 3060 DUAL OC                                  | Runs the Transcriber                                                                                                                |
+
+TODO: Integrate CI/CD somehow when everything is on DigitalOcean. 
+
 | ![Pm2Setup](https://github.com/lukamomc/poddley/assets/52632596/573425aa-2550-47a5-97da-e3377a15b757) | ![Pm2Diagram](https://github.com/lukamomc/poddley/assets/52632596/fb23fee1-7489-4e42-bb1a-5e43fc84d11a)
 |:---:|:---|
 
