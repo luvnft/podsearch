@@ -22,9 +22,10 @@ module.exports = {
     },
     {
       name: "rsscrawler",
-      script: "/home/poddley/poddley_transcriber/rsscrawler.js",
+      script: "/home/poddley/poddley_transcriber/rsscrawler/rsscrawler.js",
+      cwd: "/home/poddley/poddley_transcriber/rsscrawler/",
       env: {
-        MEILI_MASTER_KEY: "",
+        MEILI_MASTER_KEY: """",
       },
     },
   ], 

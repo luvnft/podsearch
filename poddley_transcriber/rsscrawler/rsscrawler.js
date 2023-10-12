@@ -272,13 +272,13 @@ async function main() {
 async function mainRunner() {
     try {
         await main();
-        console.log("Process completed. Waiting for the next run in 30 minutes.");
+        console.log("Process completed. Waiting for the next run in 24 hours.");
     }
     catch (err) {
         console.error("Failed to run the main function:", err);
     }
     finally {
-        setTimeout(mainRunner, 30 * 60 * 1000); // 30 minutes in milliseconds 30 minutes * 60 seconds/min * 1000milliseconds/sec
+        setTimeout(mainRunner, 24 * 60 * 60 * 1000); // 24hours * 60min/hour * 60 seconds/min * 1000milliseconds/sec
     }
 }
 // Invoke the main function

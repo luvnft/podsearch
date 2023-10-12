@@ -19,3 +19,5 @@ poddley_fulltext_indexer/segments_ndjson.ndjson
 **/uploads
 .env
 .vscode
+poddley_transcriber/rsscrawler/database/podcasts.db
+poddley_pm2_instances/app.config.js
