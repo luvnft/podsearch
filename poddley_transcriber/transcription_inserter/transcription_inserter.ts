@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import { Episode, Podcast, Prisma, PrismaClient, PrismaPromise, Segment, Transcription } from "@prisma/client";
-import path from "path";
 
 const jsonPath: string = "../transcriber";
 
@@ -19,13 +18,14 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
 
     // Starting processing json
     console.log("Processing data from filename", filename);
-    const fileContent = fs.readFileSync(path.join(jsonPath, filename), "utf-8");
+    const fileContent = fs.readFileSync(jsonPath + filename, "utf-8");
     const data = JSON.parse(fileContent);
 
     // Extract data
     const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid } = data;
 
     // Assuming episodeGuid is provided from an external source and is available globally
+    console.log("EpisodeGuid: ", belongsToEpisodeGuid)
     const episode: Episode | null = await prisma.episode.findUnique({
       where: { episodeGuid: belongsToEpisodeGuid },
     });
@@ -106,7 +106,7 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
     );
 
     // Delete the file after it has been inserted into the database
-    fs.unlinkSync(path.join(jsonPath, filename));
+    fs.unlinkSync(jsonPath + filename);
   }
 }
 
@@ -120,7 +120,7 @@ async function mainRunner() {
 
   try {
     await insertJsonFilesToDb(prisma);
-    console.log(`Process completed. Waiting for the next run in ${runDuration} hours.`);
+    console.log(`Process completed. Waiting for the next run in ${runDuration / 1000} seconds.`);
   } catch (err) {
     console.error("Failed to run the main function:", err);
   } finally {
