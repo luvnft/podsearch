@@ -83,7 +83,7 @@ Local PC: Runs the Transcriber on an ASUS GeForce RTX 3060 DUAL OC as it's much 
 
 TODO: Integrate CI/CD somehow when everything is on DigitalOcean. 
 
-| ![Pm2Setup](https://github.com/lukamomc/poddley/assets/52632596/573425aa-2550-47a5-97da-e3377a15b757) | ![Pm2Diagram](https://github.com/lukamomc/poddley/assets/52632596/fb23fee1-7489-4e42-bb1a-5e43fc84d11a)
+| ![Pm2Setup](https://github.com/lukamomc/poddley/assets/52632596/c9f8b6d6-8b20-4896-b044-8eaeea011b0b) | ![Pm2Diagram](https://github.com/lukamomc/poddley/assets/52632596/fb23fee1-7489-4e42-bb1a-5e43fc84d11a)
 |:---:|:---|
 
 ##### Meilisearch pm2 config 
