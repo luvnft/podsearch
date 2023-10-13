@@ -303,13 +303,15 @@ async function main() {
 }
 
 async function mainRunner() {
+  // Run every 24 hours
+  const runDuration: number = 24 * 60 * 60 * 1000;
   try {
     await main();
-    console.log("Process completed. Waiting for the next run in 24 hours.");
+    console.log(`Process completed. Waiting for the next run in ${runDuration / 3600} hours.`);
   } catch (err) {
     console.error("Failed to run the main function:", err);
   } finally {
-    setTimeout(mainRunner, 24 * 60 * 60 * 1000); // 24hours * 60min/hour * 60 seconds/min * 1000milliseconds/sec
+    setTimeout(mainRunner, runDuration);
   }
 }
 

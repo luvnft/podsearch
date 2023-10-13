@@ -233,10 +233,13 @@ async function main() {
         console.log("\nDownload finished. Extracting...");
         await tar_1.default.x({ file: tempPath, C: path_1.default.dirname(dbPath) }); // Extract the .tgz to its folder
         fs.renameSync(path_1.default.join(path_1.default.dirname(dbPath), "podcastindex_feeds.db"), dbPath); // Rename the file
-        fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+        // Just double check taht the temp is gone:
+        if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
+            fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+        }
         console.log("Extraction complete.");
     }
-    // Just double check taht the temp is gone:
+    // Just double check that the temp is gone:
     if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
         fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
     }
@@ -275,15 +278,17 @@ async function main() {
     console.log("Finished crawling the rss-feeds of the db.");
 }
 async function mainRunner() {
+    // Run every 24 hours
+    const runDuration = 24 * 60 * 60 * 1000;
     try {
         await main();
-        console.log("Process completed. Waiting for the next run in 24 hours.");
+        console.log(`Process completed. Waiting for the next run in ${runDuration / 3600} hours.`);
     }
     catch (err) {
         console.error("Failed to run the main function:", err);
     }
     finally {
-        setTimeout(mainRunner, 24 * 60 * 60 * 1000); // 24hours * 60min/hour * 60 seconds/min * 1000milliseconds/sec
+        setTimeout(mainRunner, runDuration);
     }
 }
 // Invoke the main function

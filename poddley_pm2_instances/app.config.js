@@ -14,7 +14,8 @@ module.exports = {
     {
       name: "api",
       script: "/home/poddley/poddley_api/dist/app.js",
-      // watch: ["../../"], // Watches changes in the root folder
+      watch: true,
+      cwd:"/home/poddley/poddley_api/",
       env: {
         NODE_ENV: "production",
         MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
@@ -23,10 +24,10 @@ module.exports = {
     {
       name: "rsscrawler",
       script: "/home/poddley/poddley_transcriber/rsscrawler/rsscrawler.js",
-      cwd: "/home/poddley/poddley_transcriber/rsscrawler/",
-      env: {
-        DATABASE_URL: process.env.DATABASE_URL,
-      },
+    },
+    {
+      name: "indexer",
+      script: "/home/poddley/poddley_transcriber/indexer/indexer.js",
     },
   ], 
 }; 
