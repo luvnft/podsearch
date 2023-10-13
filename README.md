@@ -611,5 +611,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [ ] Move Nuxt3 to DigitalOcean from Cloudflare
 - [ ] Start up Transcriber on MainPC
 - [ ] Refactor the transcriber to support concurrency.
+- [ ] Deviation calculator
 
 </details>
