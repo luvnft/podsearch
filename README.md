@@ -81,8 +81,6 @@ Local PC: Runs the Transcriber on an ASUS GeForce RTX 3060 DUAL OC as it's much 
 | Server 2       | Higher end 8vCPUs and 16Gigs of RAM                            | Running the Express API, Nuxt3-client code (planning to at least) Meilisearch search engine, the indexer, and the RSS-updater       |
 | Local PC       | ASUS GeForce RTX 3060 DUAL OC                                  | Runs the Transcriber                                                                                                                |
 
-TODO: Integrate CI/CD somehow when everything is on DigitalOcean. 
-
 | ![Pm2Setup](https://github.com/lukamomc/poddley/assets/52632596/c9f8b6d6-8b20-4896-b044-8eaeea011b0b) | ![Pm2Diagram](https://github.com/lukamomc/poddley/assets/52632596/fb23fee1-7489-4e42-bb1a-5e43fc84d11a)
 |:---:|:---|
 
@@ -610,5 +608,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Doublecheck no API's have been leaked (gitguardian will probably be used)
 - [x] Upon full load intersectionObserver goes berserker, gotta tweak that a bit I think...
 - [x] Also remove "acast"-source podcast from podcasts.json
+- [ ] Integrate CI/CD somehow when everything is on DigitalOcean. 
 
 </details>
