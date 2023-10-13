@@ -236,6 +236,10 @@ async function main() {
         fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
         console.log("Extraction complete.");
     }
+    // Just double check taht the temp is gone:
+    if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
+        fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+    }
     // Get the top podcasts from the podcasts.db using the podcasts.json
     let objectsToInsert = gatherPodcastsFromJsonFile(dbPath);
     // Fix the macro language, standardizing them and not differentiating between en.ZH etc.

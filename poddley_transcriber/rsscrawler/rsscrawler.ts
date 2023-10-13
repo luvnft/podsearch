@@ -249,8 +249,16 @@ async function main() {
 
     await tar.x({ file: tempPath, C: path.dirname(dbPath) }); // Extract the .tgz to its folder
     fs.renameSync(path.join(path.dirname(dbPath), "podcastindex_feeds.db"), dbPath); // Rename the file
-    fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+    // Just double check taht the temp is gone:
+    if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
+      fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+    }
     console.log("Extraction complete.");
+  }
+
+  // Just double check that the temp is gone:
+  if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
+    fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
   }
 
   // Get the top podcasts from the podcasts.db using the podcasts.json
