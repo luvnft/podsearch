@@ -7,7 +7,7 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         MEILI_HTTP_ADDR: "0.0.0.0:7700",
-        MEILI_MASTER_KEY: "",
+        MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
         MEILI_DB_PATH: "/mnt/volume_nyc1_02/data.ms/",
       },
     },
@@ -17,7 +17,7 @@ module.exports = {
       // watch: ["../../"], // Watches changes in the root folder
       env: {
         NODE_ENV: "production",
-        MEILI_MASTER_KEY: "",
+        MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
       },
     },
     {
@@ -25,7 +25,7 @@ module.exports = {
       script: "/home/poddley/poddley_transcriber/rsscrawler/rsscrawler.js",
       cwd: "/home/poddley/poddley_transcriber/rsscrawler/",
       env: {
-        MEILI_MASTER_KEY: """",
+        DATABASE_URL: process.env.DATABASE_URL,
       },
     },
   ], 

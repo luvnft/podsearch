@@ -67,6 +67,7 @@ async function insertPodcastsAndUpdate(objectsToInsert: any[], prisma: PrismaCli
       console.log("Inserting podcast: ", object.title);
       await prisma.podcast.create({ data: object });
     } catch (e: any) {
+      // For now I've decided to not consistently update the podcast and episodes that get inserted from the sqlite db from podcastindex regularly.
       console.log("ERROR: ", e.message);
       // console.log("Trying to update");
       // await prisma.podcast.update({
@@ -242,13 +243,13 @@ async function main() {
   // If it doesn't exists.
   if (!fs.existsSync(dbPath)) {
     const downloadUrl = "https://public.podcastindex.org/podcastindex_feeds.db.tgz";
-    const tempPath = path.join(__dirname, "podcastindex_feeds.db.tgz");
+    const tempPath = path.join("./podcastindex_feeds.db.tgz");
     await downloadWithProgress(downloadUrl, tempPath);
     console.log("\nDownload finished. Extracting...");
 
     await tar.x({ file: tempPath, C: path.dirname(dbPath) }); // Extract the .tgz to its folder
     fs.renameSync(path.join(path.dirname(dbPath), "podcastindex_feeds.db"), dbPath); // Rename the file
-    fs.unlinkSync(tempPath); // Delete the .tgz file
+    fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
     console.log("Extraction complete.");
   }
 
