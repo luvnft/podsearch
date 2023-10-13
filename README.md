@@ -603,11 +603,13 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Can we move backend and client closer together? **No.**
 - [x] ~~Use <Lazy everywhere~~ Using  UseElementVisibily by vueUse + currentPlayingTime as markers for dom mouting
 - [x] Upload sanitized repo stripped of all private-api-keys etc...
-- [ ] We need to refactor the transcriber to be able to support concurrency
-- [ ] Start up all the pm2 instances in accorance to the written architecture (further up)
+- [x] Start up all the pm2 instances in accorance to the written architecture (further up)
 - [x] Doublecheck no API's have been leaked (gitguardian will probably be used)
 - [x] Upon full load intersectionObserver goes berserker, gotta tweak that a bit I think...
 - [x] Also remove "acast"-source podcast from podcasts.json
-- [ ] Integrate CI/CD somehow when everything is on DigitalOcean. 
+- [ ] Integrate CI/CD somehow when everything is on DigitalOcean.
+- [ ] Move Nuxt3 to DigitalOcean from Cloudflare
+- [ ] Start up Transcriber on MainPC
+- [ ] Refactor the transcriber to support concurrency.
 
 </details>
