@@ -4,6 +4,7 @@
 export PATH="$PATH:/root/.nvm/versions/node/v20.3.1/bin"
 export PODDLEY_CLIENT_DIR="/home/poddley/poddley_client"
 
+nvm use 20
 cd /home/poddley/poddley_client || exit 1  # Exit if the directory is not found
 git pull origin master
 npm install
