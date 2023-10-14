@@ -1,8 +1,12 @@
 #!/bin/bash
 
-echo "hello"
+# Set environment variables
+export PATH="$PATH:/root/.nvm/versions/node/v20.3.1/bin"
+export PODDLEY_CLIENT_DIR="/home/poddley/poddley_client"
+
 cd /home/poddley/poddley_client || exit 1  # Exit if the directory is not found
 git pull origin master
 npm install
 npm run build
 pm2 restart client
+echo "Finished deploying PoddleyClient"
