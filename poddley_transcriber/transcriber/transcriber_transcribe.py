@@ -19,14 +19,11 @@ compute_type = "float16"  # change to "int8" if low on GPU mem (may reduce accur
 
 
 # Transcribes continously
-
-
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     command = f"ffmpeg -i {video_filename} -vn -acodec copy {audio_filename}"
     subprocess.call(command, shell=True)
 
-
-async def transcribeAndDumpIt(episode, model, batch_size, device):
+async def transcribeAndSaveJson(episode, model, batch_size, device):
     # Convert episode to dictionary
     episode = dict(episode)
     url = episode["episodeEnclosure"]
@@ -94,7 +91,7 @@ async def transcribeAndDumpIt(episode, model, batch_size, device):
         audio = model.load_audio(audioFileName)
 
         # Transcribing...
-        print("Transcribing started...")
+        print("Transcribing ...", url)
         result = model.transcribe(audio, batch_size=batch_size)
         segments = result["segments"]
 
@@ -116,11 +113,15 @@ async def transcribeAndDumpIt(episode, model, batch_size, device):
         # Replace the original segments list with the filtered one
         segments = filtered_segments
 
+        # Load the model
         model_a, metadata = model.load_align_model(
             language_code="en",
             device=device,
             model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english",
         )
+        
+        # Aligning the segments in accordance to the audio now
+        print("Aligning the segments in accordance to the audio now")
         result_aligned = model.align(
             segments,
             model_a,
@@ -165,12 +166,8 @@ async def transcribeAndDumpIt(episode, model, batch_size, device):
     transcriptionFileName = re.sub(r"[^A-Za-z0-9.-]", "", transcriptionFileName)
     print("Saving transcriptionData to:", transcriptionFileName)
 
-    # Save the transcriptionDataObject as a JSON to /jsons folder
-    if os.path.exists("./jsons/") == False:
-        os.mkdir("./jsons/")
-
     try:
-        with open("./jsons/" + transcriptionFileName, "w") as file:
+        with open("./" + transcriptionFileName, "w") as file:
             json.dump(transcriptionData, file, indent=4)
     except Exception as e:
         print("Error with saving transcriptionData:", e)
@@ -203,7 +200,7 @@ async def main():
             else:
                 # Transcribe
                 print("Transcribing:", episode.episodeTitle)
-                await transcriber_transcribe.transcribeAndDumpIt(
+                await transcriber_transcribe.transcribeAndSaveJson(
                     episode, model, batch_size, device
                 )
                 print("Done with episode: ", episode.title, "Next!")
