@@ -17,11 +17,6 @@ jobs:
         host: ${{ secrets.PODDLEY_DROPLET_IP }}
         username: ${{ secrets.PODDLEY_DROPLET_USER }}
         key: ${{ secrets.PODDLEY_SSH_KEY }}
-        command: |
-          /bin/sh -c 
-          cd /home/poddley/poddley_client
-          git pull origin master
-          npm install
-          npm run build
-          pm2 restart client
-          echo 'Client is ready'
+        command: /bin/sh -c "echo 'Client is ready'"
+
+        
