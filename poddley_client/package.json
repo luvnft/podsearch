@@ -10,7 +10,8 @@
     "generate": "nuxt generate --modern=server",
     "preview": "nuxt build && npx wrangler dev .output/server/index.mjs --site .output/public/",
     "postinstall": "nuxt prepare",
-    "start": "node .output/server/index.mjs"
+    "start": "node .output/server/index.mjs",
+    "runOnOcean": "nuxt build --modern=server"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.0.2",

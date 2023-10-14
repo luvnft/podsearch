@@ -7,8 +7,8 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    preset: "cloudflare",
     sourceMap: false,
+    preset: "digital-ocean",
   },
   colorMode: {
     preference: "system", // default value of $colorMode.preference
