@@ -9,4 +9,4 @@ git pull origin master
 npm install
 npm run build
 pm2 restart client
-echo "Finished deploying PoddleyClient"
+echo "Finished deploying PoddleyClient" 
