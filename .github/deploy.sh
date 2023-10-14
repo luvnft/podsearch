@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set environment variables
-export PATH="$PATH:/root/.nvm/versions/node/v20.3.1/bin"
+export PATH="$PATH:/root/.nvm/versions/node/v20.3.1/bin:/root/.nvm/versions/node/v20.3.1/bin/node:/root/.nvm/versions/node/v20.3.1/bin/pm2"
 export PODDLEY_CLIENT_DIR="/home/poddley/poddley_client"
 
 echo "Hello!!!!"
