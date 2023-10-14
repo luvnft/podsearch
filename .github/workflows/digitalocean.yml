@@ -1,10 +1,8 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches:
       - master
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,6 +18,9 @@ jobs:
         username: ${{ secrets.PODDLEY_DROPLET_USER }}
         key: ${{ secrets.PODDLEY_SSH_KEY }}
         script: |
+          echo "Path: $PATH"
+          echo "User: $(whoami)"
+          which pm2
           cd /home/poddley/poddley_client
           git pull origin master
           npm install
