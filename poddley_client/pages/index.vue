@@ -118,7 +118,7 @@ const debouncedSearch = _Debounce(makeSearch, 400, {
 });
 
 // Make initial search (this probably runs as useServerPrefetch)
-await makeSearch();
+// await makeSearch();
 
 watch(searchQuery, debouncedSearch, {
     deep: true,
