@@ -1,8 +1,10 @@
-name: Frontend CI/CD Pipeline
+name: Backend CI/CD Pipeline
 on:
   push:
     branches:
       - master
+    paths:
+      - "backend/**"
 jobs:
   deploy:
     runs-on: ubuntu-latest

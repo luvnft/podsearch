@@ -1,0 +1,28 @@
+name: Frontend CI/CD Pipeline
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "client/**"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'  # Specify your desired Node.js version here
+        
+    - name: Deploy to DigitalOcean
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.PODDLEY_DROPLET_IP }}
+        username: ${{ secrets.PODDLEY_DROPLET_USER }}
+        key: ${{ secrets.PODDLEY_SSH_KEY }}
+        script: bash /home/poddley/.github/deploy.sh
+        
