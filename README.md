@@ -4,7 +4,7 @@
 The main goal of the website/service is to be the "*Shazam*" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages and episode-links. Additionally, it aims to be a discovery platform, helping people explore and find a wide range of podcast content based on spoken word.
 
 ## Status build
-[![cloudflare](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cloudflare.yml)
+[![CI/CD Pipeline](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml/badge.svg?branch=master)](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml)
 
 ## Project 
 [Link to Poddley](https://poddley.com)
@@ -43,7 +43,7 @@ The main goal of the website/service is to be the "*Shazam*" for podcasts. There
 	- Nitro-server with gzip- and brotli-compression and minified assets
 - [JSON to TypeScript type for types generation based on API response](https://transform.tools/json-to-typescript)
 - TypeScript.
-- Cloudflare  for CI/CD of Client code + using them as a DNS-manager for easier setup.
+- Cloudflare as the DNS-manager for easier setup and automatic image resizing.
 - Tracking: ~~[Plausible](https://plausible.io/)~~ Switched to Cloudflare as it was free
 - ServiceWorker for offloading the main-thread from the frequest API-calls to the backend-API. There are multiple ways to solve this. Throttling + Debouncing on user-input (during instantSearch) is a possibility, but it often causes laggy ui and mucky logic. Offloading it all to a ServiceWorker showed much better results in spite of it being tricky to implement.
 - Nuxt 3 modules used:
