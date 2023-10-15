@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Client startup process
-# cd ./client
-# npm install
-# npm run build
-# echo "Done building client!"
+cd ./client
+npm install
+npm run build
+echo "Done building client!"
 
 # Go to backend and install all its dependencies and build the prisma client
 # cd ..

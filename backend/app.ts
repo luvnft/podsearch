@@ -31,12 +31,12 @@ const initializeApp = async () => {
       console.log(`API is listening at http://localhost:${port}`);
     });
 
-    // Workers
-    indexer.start(600);
-    console.log("Indexer started!");
+    // // Workers
+    // indexer.start(600);
+    // console.log("Indexer started!");
 
-    rsscrawler.start(3600);
-    console.log("RSS Crawler started!");
+    // rsscrawler.start(3600);
+    // console.log("RSS Crawler started!");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);
