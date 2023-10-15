@@ -36,48 +36,48 @@ const router: Router = useRouter();
 //Running
 onMounted(async () => {
 
-    if (process.client) {
-        // Creating a worker
-        worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
+    // if (process.client) {
+    //     // Creating a worker
+    //     worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
 
-        // Listening for messages from worker
-        worker.onmessage = (event: any) => {
-            const { action, payload } = event.data;
-
-
-
-            switch (action) {
-                case "searchCompleted":
-                    // searchResults.value = payload;
+    //     // Listening for messages from worker
+    //     worker.onmessage = (event: any) => {
+    //         const { action, payload } = event.data;
 
 
-                    payload.hits.forEach((hit: ClientSearchResponseHit) => {
-                        if (hit.subHits) {
-                            const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                            hit.subHits = fragmentedSubHits;
-                        }
-                    });
-                    searchStore.setSearchResults(payload);
-                    searchStore.setLoadingState(false);
-                    break;
-                case "searchFailed":
-                    searchStore.setLoadingState(false);
-                    break;
-            }
-        };
-    }
+
+    //         switch (action) {
+    //             case "searchCompleted":
+    //                 // searchResults.value = payload;
 
 
-    // If we are arriving from some subpage the searchResults wont be populated
-    if (!searchResults?.value?.hits) {
-        searchResults.value = await transcriptionService.search(searchQuery.value);
-        searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
-            if (hit.subHits) {
-                const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                hit.subHits = fragmentedSubHits;
-            }
-        });
-    }
+    //                 payload.hits.forEach((hit: ClientSearchResponseHit) => {
+    //                     if (hit.subHits) {
+    //                         const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+    //                         hit.subHits = fragmentedSubHits;
+    //                     }
+    //                 });
+    //                 searchStore.setSearchResults(payload);
+    //                 searchStore.setLoadingState(false);
+    //                 break;
+    //             case "searchFailed":
+    //                 searchStore.setLoadingState(false);
+    //                 break;
+    //         }
+    //     };
+    // }
+
+
+    // // If we are arriving from some subpage the searchResults wont be populated
+    // if (!searchResults?.value?.hits) {
+    //     searchResults.value = await transcriptionService.search(searchQuery.value);
+    //     searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
+    //         if (hit.subHits) {
+    //             const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+    //             hit.subHits = fragmentedSubHits;
+    //         }
+    //     });
+    // }
 });
 
 function searchViaWorker() {
