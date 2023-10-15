@@ -7,7 +7,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
-    preset: "digital-ocean",
+    preset: "node-server",
     sourceMap: false,
   },
   colorMode: {
