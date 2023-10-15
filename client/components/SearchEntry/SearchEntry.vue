@@ -11,7 +11,7 @@
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
                         :pictureInPicture="true" :noCookie="true" posterQuality="sddefault"
                         :searchEntry="props.searchEntry" />
-                </div>
+                </div> 
                 <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
                     :style="`background: url(${props.searchEntry.podcastImage});`">
                     <NuxtImg loading="lazy" class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"

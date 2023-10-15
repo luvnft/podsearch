@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# This isn't finished...
 # Client startup process
 cd ./client
 npm install

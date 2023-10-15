@@ -2,6 +2,7 @@ require("dotenv").config({ path: ".env" });
 
 module.exports = {
   apps: [
+    // Starts the meilisearch instance on the machine
     {
       name: "meilisearch",
       script: "/mnt/volume_nyc1_02/meilisearch",
@@ -25,10 +26,8 @@ module.exports = {
       script: "/home/poddley/client/.output/server/index.mjs",
       watch: ["/home/poddley/client/"],
       env: {
-        NODE_ENV: "production",
         PORT: 3001,
       },
-      interpreter: "node",
     },
   ],
 };
