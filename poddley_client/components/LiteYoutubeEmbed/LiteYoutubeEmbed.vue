@@ -38,7 +38,7 @@
             </div>
 
             <iframe
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1&mute=1`"
                 :title="props.videoTitle" frameborder="0"
                 :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
