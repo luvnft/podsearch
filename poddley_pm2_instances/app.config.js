@@ -15,7 +15,7 @@ module.exports = {
       name: "api",
       script: "/home/poddley/poddley_api/dist/app.js",
       watch: true,
-      cwd:"/home/poddley/poddley_api/",
+      cwd: "/home/poddley/poddley_api/",
       env: {
         NODE_ENV: "production",
         MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
@@ -29,6 +29,13 @@ module.exports = {
       name: "indexer",
       script: "/home/poddley/poddley_transcriber/indexer/indexer.js",
     },
-  ], 
-}; 
- 
+    {
+      name: "client",
+      script: "./.output/server/index.mjs",
+      cwd: "/home/poddley/poddley_client/",
+      env: {
+        PORT: 3001,
+      },
+    },
+  ],
+};
