@@ -1,7 +1,7 @@
-import { config } from 'dotenv';
+import { config } from "dotenv";
 
 // Manually load .env from parent directory
-config({ path: '../.env' });
+config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
@@ -51,14 +51,12 @@ export default defineNuxtConfig({
   lodash: {
     prefix: "_",
   },
-  delayHydration:{
-    mode: "mount"
+  delayHydration: {
+    mode: "mount",
   },
   image: {
     provider: "cloudflare",
-    cloudflare: {
-      baseURL: "",
-    },
+    quality: 50,
   },
   experimental: {
     clientFallback: true,
@@ -113,3 +111,4 @@ export default defineNuxtConfig({
     },
   },
 });
+
