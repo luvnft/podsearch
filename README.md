@@ -5,6 +5,7 @@ The main goal of the website/service is to be the "*Shazam*" for podcasts. There
 
 ## Status build
 [![Frontend CI/CD Pipeline](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml/badge.svg)](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml)
+[![Backend CI/CD Pipeline](https://github.com/lukamomc/poddley/actions/workflows/backend.yml/badge.svg)](https://github.com/lukamomc/poddley/actions/workflows/backend.yml)
 
 ## Project 
 [Link to Poddley](https://poddley.com)
