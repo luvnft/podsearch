@@ -32,8 +32,8 @@ async function initializeApp() {
   try {
     // 1. Connect to MeiliSearch
     meilisearchConnection = new MeiliSearch({
-      host: "https://meilisearch.poddley.com",
-      apiKey: process.env.MEILI_MASTER_KEY || "",
+      host: process.env.MEILI_HOST_URL,
+      apiKey: process.env.MEILI_MASTER_KEY,
     });
     console.log("Connected to MeiliSearch");
 

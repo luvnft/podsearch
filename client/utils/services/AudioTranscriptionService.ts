@@ -8,7 +8,7 @@ export default class AudioTranscriptionService extends ApiService {
   public async uploadAudioFile(formData: any): Promise<string> {
     const res = await useFetch<any>("/audio/uploadAudio", {
       method: "POST",
-      baseURL: this.BASE_URL,
+      baseURL: this.API_BASE_URL,
       body: formData,
       immediate: true,
     });

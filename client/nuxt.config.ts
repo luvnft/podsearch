@@ -76,12 +76,6 @@ export default defineNuxtConfig({
       devSourcemap: false,
     },
   },
-  runtimeConfig: {
-    public: {
-      BASE_URL: "https://api.poddley.com",
-      HOMEPAGE: process.env.NODE_ENV === "development" ? "localhost:3000/" : "poddley.com/",
-    },
-  },
   app: {
     head: {
       htmlAttrs: {

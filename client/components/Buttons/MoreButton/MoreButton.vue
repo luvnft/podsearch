@@ -127,7 +127,7 @@ const loadEntireTranscript = async (episodeGuid: string) => {
 };
 
 const copySegmentLink = () => {
-    const rootPage: string = useRuntimeConfig().public.HOMEPAGE;
+    const rootPage: string = process.env.HOMEPAGE_URL;
     const segmentId: string = props.searchEntry.subHits[0].id;
     const filter: string = `id='${segmentId}'`;
     const constructedSearchQuery: SearchQuery = {

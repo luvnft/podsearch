@@ -1,11 +1,11 @@
 export default class ApiService {
-  protected BASE_URL: string;
+  protected API_BASE_URL: string;
 
   protected constructor() {
-    this.BASE_URL = useRuntimeConfig().public.BASE_URL as string;
+    this.API_BASE_URL = process.env.API_BASE_URL as string;
   }
 
   protected getBaseUrl() {
-    return this.BASE_URL;
+    return this.API_BASE_URL;
   }
 }
