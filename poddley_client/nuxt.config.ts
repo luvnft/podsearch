@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   ssr: true,
-  css: ["~/assets/css/imports/normalize.css", "~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
+  css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -13,7 +13,6 @@ export default defineNuxtConfig({
   colorMode: {
     preference: "dark", // default value of $colorMode.preference
     fallback: "dark", // fallback value if not system preference found
-    
     classPrefix: "",
     classSuffix: "",
   },
