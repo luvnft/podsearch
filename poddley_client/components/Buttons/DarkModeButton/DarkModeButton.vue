@@ -28,10 +28,8 @@ const toggleColorMode = () => {
 <style scoped>
 /* This allows instant beforeRender iconSwitch 😎 */
 .light .sun {
-  display: none !important;
 }
 
 .dark .moon {
-  display: none !important;
 }
 </style>
