@@ -1,0 +1,48 @@
+* {
+  font-family: "Quicksand" !important;
+  @apply focus:ring-gray-500;
+  @apply focus:outline-none;
+  @apply focus:ring-2;
+  @apply focus:ring-inset;
+}
+
+main *,
+input * {
+  font-family: "Lato" !important;
+}
+
+hr {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+body {
+  @apply bg-white;
+}
+
+/* My name is firefox and chromium, we dont really work together ... */
+.dark,
+.dark * {
+  @apply scrollbar-thin;
+  @apply scrollbar-thumb-gray-500;
+  @apply scrollbar-track-gray-900;
+  @apply scrollbar-thumb-rounded-lg;
+}
+
+.light,
+.light * {
+  @apply scrollbar-thin;
+  @apply scrollbar-thumb-gray-400;
+  @apply scrollbar-track-gray-100;
+  @apply scrollbar-thumb-rounded;
+  @apply scrollbar-thumb-rounded-lg;
+}
+
+*::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+time {
+  @apply text-gray-400;
+}
