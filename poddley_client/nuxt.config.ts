@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       gzip: true,
     },
     minify: true,
+    preset: "cloudflare",
     sourceMap: false,
   },
   colorMode: {
