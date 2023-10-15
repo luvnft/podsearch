@@ -608,8 +608,9 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Doublecheck no API's have been leaked (gitguardian will probably be used)
 - [x] Upon full load intersectionObserver goes berserker, gotta tweak that a bit I think...
 - [x] Also remove "acast"-source podcast from podcasts.json
-- [ ] Integrate CI/CD somehow when everything is on DigitalOcean.
-- [ ] Move Nuxt3 to DigitalOcean from Cloudflare
+- [x] Integrate CI/CD somehow when everything is on DigitalOcean for client
+- [ ] Integrate CI/CD somehow when everything is on DigitalOcean for backend
+- [x] Move Nuxt3 to DigitalOcean from Cloudflare
 - [ ] Start up Transcriber on MainPC
 - [ ] Refactor the transcriber to support concurrency.
 - [ ] Deviation calculator
