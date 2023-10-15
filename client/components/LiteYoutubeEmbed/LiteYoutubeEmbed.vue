@@ -9,7 +9,7 @@
                     :src="props.searchEntry?.podcastImage"
                     class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" 
                     loading="lazy"
-                    />
+                    /> 
                 </div>
                 <div class="flex min-w-0 items-center">
                     <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base"
