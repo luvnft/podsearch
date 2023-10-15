@@ -613,6 +613,7 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Move Nuxt3 to DigitalOcean from Cloudflare
 - [ ] Start up Transcriber on MainPC
 - [ ] Refactor the transcriber to support concurrency.
-- [ ] Deviation calculator
+- [ ] Inserter needs to be part of transcriber
+- [ ] Make youtube video work with subs and sync too
 
 </details>
