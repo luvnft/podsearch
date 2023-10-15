@@ -3,10 +3,7 @@
         href="/"
         aria-label="logolink"
         name="logolink">
-        <div :class="`flex items-center justify-center ${!loading || 'hidden'}`">
-            <svg-icon name="logo" class="block w-4/6 mt-1 min-h-6 max-h-7 fill-gray-600 brightness-90 dark:fill-blue-100"
-                aria-hidden="true" />
-        </div>
+        
         <IconsSpinnerIcon v-show="loading === true" />
     </a>
 </template>
