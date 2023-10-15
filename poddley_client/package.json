@@ -69,7 +69,7 @@
     "nuxt": "^3.7.4",
     "nuxt-aos": "^1.1.3",
     "nuxt-capo": "^0.1.0",
-    "nuxt-delay-hydration": "^1.2.2",
+    "nuxt-delay-hydration": "^1.2.3",
     "nuxt-headlessui": "^1.1.4",
     "nuxt-lodash": "^2.5.0",
     "nuxt-purgecss": "^2.0.0",
