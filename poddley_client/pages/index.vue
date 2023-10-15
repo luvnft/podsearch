@@ -94,7 +94,6 @@ async function makeSearch() {
         // searchViaWorker();
     } else {
         //First run on server
-        if (process.server) {
             try {
                 const routeBasedQuery: string | null = requestUrl.searchParams.get("searchQuery");
                 const decodedRouteBasedQuery: SearchQuery = utils.decodeQuery(routeBasedQuery);
@@ -107,7 +106,6 @@ async function makeSearch() {
                     }
                 });
             } catch (e) { }
-        }
     }
 }
 
@@ -118,7 +116,7 @@ const debouncedSearch = _Debounce(makeSearch, 400, {
 });
 
 // Make initial search (this probably runs as useServerPrefetch)
-// await makeSearch();
+await makeSearch();
 
 watch(searchQuery, debouncedSearch, {
     deep: true,
