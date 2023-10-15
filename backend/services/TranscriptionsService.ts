@@ -1,5 +1,5 @@
-import { meilisearchConnection } from "../app";
-import { prismaConnection } from "../app";
+import { meilisearchConnection } from "../connections/meilisearchConnection";
+import { prismaConnection } from "../connections/prismaConnection";
 import { ClientSearchResponse, ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
