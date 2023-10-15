@@ -1,6 +1,6 @@
 <template>
     <div class="block" ref="searchResultsRef">
-        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits && searchResults.hits.length > 0" />
+        <SearchResults :searchEntries="searchResults.hits" />
     </div>
 </template>
 <script lang="ts" setup>
