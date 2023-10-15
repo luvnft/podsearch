@@ -4,7 +4,7 @@
 The main goal of the website/service is to be the "*Shazam*" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages and episode-links. Additionally, it aims to be a discovery platform, helping people explore and find a wide range of podcast content based on spoken word.
 
 ## Status build
-[![CI/CD Pipeline](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml/badge.svg?branch=master)](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml)
+[![Frontend CI/CD Pipeline](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml/badge.svg)](https://github.com/lukamomc/poddley/actions/workflows/digitalocean.yml)
 
 ## Project 
 [Link to Poddley](https://poddley.com)
