@@ -2,8 +2,8 @@ import express, { Express } from "express";
 import cors from "cors";
 import transcriptionsRouter from "./routes/transcriptions";
 import compression from "compression";
-import { indexer } from "./workers/indexer";
-import { rsscrawler } from "./workers/rsscrawler";
+import { start as startIndexer } from "./workers/indexer";
+import { start as startRssCrawler } from "./workers/rsscrawler";
 import { config } from 'dotenv';
 import path from 'path';
 
@@ -31,9 +31,9 @@ const initializeApp = async () => {
       console.log(`API is listening at http://localhost:${port}`);
     });
 
-    // // Workers
-    // indexer.start(600);
-    // console.log("Indexer started!");
+    // Workers
+    startIndexer(600)
+    console.log("Indexer started!");
 
     // rsscrawler.start(3600);
     // console.log("RSS Crawler started!");

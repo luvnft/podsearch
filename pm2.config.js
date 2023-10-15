@@ -4,7 +4,8 @@ module.exports = {
   apps: [
     {
       name: "meilisearch",
-      script: "/mnt/volume_nyc1_02/meilisearch --no-analytics",
+      script: "/mnt/volume_nyc1_02/meilisearch",
+      args: "--no-analytics",
       env: {
         MEILI_HTTP_ADDR: process.env.MEILI_HTTP_ADDR,
         MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
@@ -12,23 +13,22 @@ module.exports = {
         MEILI_DUMP_DIR: process.env.MEILI_DUMP_DIR,
         MEILI_ENV: process.env.MEILI_ENV,
       },
-      wait_ready: true,
-      listen_timeout: 5000,
     },
     {
       name: "backend",
-      script: "/home/poddley/backend/./dist/app.js",
-      wait_ready: true,
-      listen_timeout: 10000,
-      depends_on: ["meilisearch"],
+      script: "/home/poddley/backend/app.ts",
+      interpreter: "/root/.nvm/versions/node/v20.3.1/bin/ts-node",
+      watch: true,
     },
     {
       name: "client",
       script: "/home/poddley/client/.output/server/index.mjs",
+      watch: ["/home/poddley/client/"],
       env: {
+        NODE_ENV: "production",
         PORT: 3001,
       },
-      depends_on: ["backend"],
+      interpreter: "node",
     },
   ],
 };

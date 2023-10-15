@@ -16,7 +16,7 @@ onMounted(() => {
             event.stopPropagation();
             const eventType = new MouseEvent("click", {
                 view: window,
-                bubbles: true,
+                bubbles: true, 
                 cancelable: true,
             });
             event.target.dispatchEvent(eventType);

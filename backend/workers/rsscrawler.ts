@@ -305,7 +305,7 @@ async function main() {
 async function start(cronTimeInSeconds: number) {
   try {
     await main();
-    console.log(`Process completed. Waiting for the next run in ${cronTimeInSeconds} seconds.`);
+    console.log(`Rsscrawler completed. Waiting for the next run in ${cronTimeInSeconds} seconds.`);
   } catch (err) {
     console.error("Failed to run the main function:", err);
   } finally {
@@ -313,6 +313,5 @@ async function start(cronTimeInSeconds: number) {
   }
 }
 
-export const rsscrawler = {
-  start,
-};
+export { start };
+

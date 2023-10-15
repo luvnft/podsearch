@@ -1,40 +1,36 @@
-import { Episode, Podcast, Prisma, PrismaClient, PrismaPromise } from "@prisma/client";
-import fs from "fs";
-import { MeiliSearch } from "meilisearch";
+import { meilisearchConnection } from "../connections/meilisearchConnection";
+import { prismaConnection } from "../connections/prismaConnection";
 
 async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function main() {
-  const prisma = new PrismaClient();
-  await prisma.$connect();
-  const client = new MeiliSearch({ host: "localhost:7700" });
-  const transcriptionsIndex = client.index("transcriptions");
-  const segmentsIndex = client.index("segments");
-  const podcastsIndex = client.index("podcasts");
-  const episodesIndex = client.index("episodes");
+  const transcriptionsIndex = meilisearchConnection.index("transcriptions");
+  const segmentsIndex = meilisearchConnection.index("segments");
+  const podcastsIndex = meilisearchConnection.index("podcasts");
+  const episodesIndex = meilisearchConnection.index("episodes");
 
   console.log("Starting: Getting episodes and podcasts, we always update all podcasts and episodes from db due to the small amount of rows and also due to the changes in the db most often being related to them and not the segments");
-  const podcasts = await prisma.podcast.findMany();
-  const episodes = await prisma.episode.findMany();
+  const podcasts = await prismaConnection.podcast.findMany();
+  const episodes = await prismaConnection.episode.findMany();
 
   //Always updating these as they have important values which may change
   console.log("Adding podcasts, the number to add is:", podcasts.length, "we're overwriting all of them essentially");
-  await podcastsIndex.addDocumentsInBatches(podcasts, 1000, {
+  await podcastsIndex.addDocumentsInBatches(podcasts, 500, {
     primaryKey: "id",
   });
   console.log("Adding episodes, the number to add is:", episodes.length, "we're overwriting all of them essentially.");
-  await episodesIndex.addDocumentsInBatches(episodes, 1000, {
+  await episodesIndex.addDocumentsInBatches(episodes, 500, {
     primaryKey: "id",
   });
 
-  const segmentCount = await prisma.segment.count({
+  const segmentCount = await prismaConnection.segment.count({
     where: {
       indexed: false,
     },
   });
-  const transcriptionCount = await prisma.transcription.count({
+  const transcriptionCount = await prismaConnection.transcription.count({
     where: {
       indexed: false,
     },
@@ -49,7 +45,7 @@ async function main() {
 
   //We loop through all the transcriptions
   for (let i = 0; i < transcriptionCount; i = i + transcriptionTake) {
-    let transcriptions = await prisma.transcription.findMany({
+    let transcriptions = await prismaConnection.transcription.findMany({
       take: transcriptionTake,
       skip: i,
       where: {
@@ -68,7 +64,7 @@ async function main() {
     });
 
     // Updating the transcriptions we added with indexes = true
-    await prisma.transcription.updateMany({
+    await prismaConnection.transcription.updateMany({
       where: {
         id: {
           in: ids,
@@ -90,7 +86,7 @@ async function main() {
 
   //We loop through all the segments
   for (let i = 0; i < segmentCount; i = i + segmentTake) {
-    let segments = await prisma.segment.findMany({
+    let segments = await prismaConnection.segment.findMany({
       take: segmentTake,
       skip: i,
       where: {
@@ -105,7 +101,7 @@ async function main() {
     await segmentsIndex.addDocumentsInBatches(segments, segmentTake, {
       primaryKey: "id",
     });
-    await prisma.segment.updateMany({
+    await prismaConnection.segment.updateMany({
       where: {
         id: {
           in: ids,
@@ -133,6 +129,5 @@ async function start(cronTimeInSeconds: number) {
   }
 }
 
-export const indexer = {
-  start,
-};
+export { start };
+
