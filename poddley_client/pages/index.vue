@@ -1,6 +1,6 @@
 <template>
     <div class="block" ref="searchResultsRef">
-        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits" />
+        <SearchResults :searchEntries="searchResults.hits" v-if="searchResults?.hits && searchResults.hits.length > 0" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -81,13 +81,13 @@ onMounted(async () => {
 });
 
 function searchViaWorker() {
-
     searchStore.setLoadingState(true);
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
 
 // If the request gets this far, we set the loading to true and we send a request to the webworker
 async function makeSearch() {
+    console.log("Calling")
 
     // Send a message to the worker to perform the search
     if (worker) {
@@ -106,9 +106,6 @@ async function makeSearch() {
                         hit.subHits = fragmentedSubHits;
                     }
                 });
-
-
-
             } catch (e) { }
         }
     }
