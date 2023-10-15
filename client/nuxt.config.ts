@@ -47,7 +47,7 @@ export default defineNuxtConfig({
     prefix: "_",
   },
   delayHydration:{
-    mode: "mount";
+    mode: "mount"
   },
   image: {
     provider: "cloudflare",

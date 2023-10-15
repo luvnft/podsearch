@@ -3,7 +3,7 @@ import { SearchQuery } from "../../types/SearchQuery";
 import { ClientSearchResponse } from "../../types/ClientSearchResponse";
 
 export default class TranscriptionsServiceSearch {
-    protected readonly BASE_URL = "https://api.poddley.com";
+    protected readonly API_BASE_URL = "https://api.poddley.com";
 
     protected async fetchPost<T>(apiUrl: string, requestData: any): Promise<T> {
         const response: AxiosResponse = await axios({

@@ -14,7 +14,7 @@
                 </div>
                 <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
                     :style="`background: url(${props.searchEntry.podcastImage});`">
-                    <img loading="lazy" class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"
+                    <NuxtImg loading="lazy" class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"
                         :src="props.searchEntry.podcastImage" alt="Description of Image" />
                 </div>
             </div>
