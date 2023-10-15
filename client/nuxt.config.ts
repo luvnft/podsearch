@@ -1,3 +1,8 @@
+import { config } from 'dotenv';
+
+// Manually load .env from parent directory
+config({ path: '../.env' });
+
 export default defineNuxtConfig({
   ssr: true,
   css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],

@@ -1,5 +1,5 @@
-import meilisearchConnection from "../other/meilisearchConnection";
-import prismaConnection from "../other/prismaConnection";
+import { meilisearchConnection } from "../app";
+import { prismaConnection } from "../app";
 import { ClientSearchResponse, ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
@@ -30,7 +30,7 @@ class TranscriptionsService {
 
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
-    // MainQuery 
+    // MainQuery
     let mainQuery: SearchParams = {
       matchingStrategy: "all",
       q: searchQuery.searchString,
@@ -43,7 +43,7 @@ class TranscriptionsService {
     if (searchQuery.getFullTranscript) {
       mainQuery = {
         filter: searchQuery.filter,
-        limit: 10000, 
+        limit: 10000,
         q: "",
         matchingStrategy: "all",
         sort: ["start:asc"],
@@ -130,12 +130,12 @@ class TranscriptionsService {
         ...searchParams,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
-        highlightPostTag: "</span>", 
+        highlightPostTag: "</span>",
       });
       // Final ClientSearchResponse object
       let searchResponse: ClientSearchResponse = {
         query: searchParams.q || "",
-        hits: [], 
+        hits: [],
       };
 
       // MultiSearchQuery object
@@ -209,7 +209,7 @@ class TranscriptionsService {
       // Found bools to avoid unnecessary looping
       let foundPodcast: boolean = false;
       let foundEpisode: boolean = false;
- 
+
       // Creating podcastGuid->PodcastHit and episodeGuid->EpisodeHit Map
       for (let i = 0; i < lastResponsesLength; i++) {
         // Result var
@@ -355,3 +355,4 @@ class TranscriptionsService {
 
 // Exporting the TranscriptionService as a class to avoid needing to create it everytime importing it somewhere
 export default TranscriptionsService;
+

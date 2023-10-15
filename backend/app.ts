@@ -1,3 +1,5 @@
+config({ path: path.resolve(__dirname, '../.env') });
+
 //Average stuff needed
 import express, { Express } from "express";
 import cors from "cors";
@@ -7,6 +9,8 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { MeiliSearch } from "meilisearch";
 import { indexer } from "./workers/indexer";
 import { rsscrawler } from "./workers/rsscrawler";
+import { config } from 'dotenv';
+import path from 'path';
 
 // Declare connections in outer scope to export later
 let prismaConnection: PrismaClient;
@@ -15,7 +19,7 @@ let meilisearchConnection: MeiliSearch;
 //Setup
 const app: Express = express();
 const port: number = 3000;
-
+console.log("OK"); 
 //Enable CORS for front-end use and compression
 app.use(compression());
 app.use(cors());
@@ -32,8 +36,8 @@ async function initializeApp() {
   try {
     // 1. Connect to MeiliSearch
     meilisearchConnection = new MeiliSearch({
-      host: process.env.MEILI_HOST_URL,
-      apiKey: process.env.MEILI_MASTER_KEY,
+      host: process.env.MEILI_HOST_URL as string,
+      apiKey: process.env.MEILI_MASTER_KEY as string,
     });
     console.log("Connected to MeiliSearch");
 
@@ -64,3 +68,4 @@ initializeApp();
 
 //Export them
 export { app, prismaConnection, meilisearchConnection };
+
