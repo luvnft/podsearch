@@ -174,6 +174,7 @@ async def transcribeAndSaveJson(episode, model, batch_size, device):
 
 
 # Main transcriber function
+# We will rather pass the the url with some other info to the python function directly and do the locking inside with javascript as its more concice and allows us to lock in a better manner and that way we can also avoid having the extra prisma file here as well and we can avoid having the env file in two different places.
 async def main():
     # Initializing prisma client
     prisma = Prisma()
