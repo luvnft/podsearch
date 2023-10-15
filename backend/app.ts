@@ -48,12 +48,11 @@ async function initializeApp() {
     });
 
     // 4. Start the workers
-    indexer.start(600)
-    console.log("Indexer started!")
+    indexer.start(600);
+    console.log("Indexer started!");
 
     rsscrawler.start(3600);
-    console.log("RSS Crawler started!")
-
+    console.log("RSS Crawler started!");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);
