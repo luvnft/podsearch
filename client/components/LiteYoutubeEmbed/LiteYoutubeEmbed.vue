@@ -1,7 +1,7 @@
 <template>
     <div class="flex h-full flex-col items-center">
         <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
-            <div
+            <div 
                 class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
                 <div
                     class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
