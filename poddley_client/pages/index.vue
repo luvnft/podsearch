@@ -91,7 +91,7 @@ async function makeSearch() {
 
     // Send a message to the worker to perform the search
     if (worker) {
-        searchViaWorker();
+        // searchViaWorker();
     } else {
         //First run on server
         if (process.server) {
@@ -159,7 +159,7 @@ watch(y, () => {
 
 
     if (scrollY.value + visibleHeight >= 0.80 * windowHeight) {
-8
+
 
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
