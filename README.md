@@ -24,7 +24,7 @@ The main goal of the website/service is to be the "*Shazam*" for podcasts. There
 <img src="https://github.com/lukamomc/poddley/assets/52632596/bcc4c1ac-bd0b-4725-b6b2-97947b55d406" width="23%"></img>
 
 ## Realizations
-- Hydration mismatch when using cloudflare as proxy is due to cloudflares automatic html minifcation. Disabling it causes hydration blinking to disappear.
+- Hydration mismatch when using cloudflare as proxy is due to cloudflares automatic html, css and js minifcation plus dns proxy. Disabling it causes hydration blinking to disappear. Als
 - Don't optimize too early
 - Too much caching is bad
 - Debouncing API should be (human reaction time in ms - API latency).
@@ -613,6 +613,7 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Move Nuxt3 to DigitalOcean from Cloudflare
 - [ ] Start up Transcriber on MainPC
 - [ ] Refactor the transcriber to support concurrency.
-- [ ] Deviation calculator
+- [ ] Inserter needs to be part of transcriber
+- [ ] Make youtube video work with subs and sync too
 
 </details>
