@@ -54,6 +54,7 @@ export default defineNuxtConfig({
     cloudflare: {
       baseURL: "",
     },
+    quality: 5
   },
   experimental: {
     clientFallback: true,

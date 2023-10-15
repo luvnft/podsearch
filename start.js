@@ -1,3 +1,4 @@
+// Run this with pm2 start ...x... to start the app and the backend. Given that all is installed and stuff. And the env stuff is gtg.
 module.exports = {
   apps: [
     {
@@ -12,22 +13,14 @@ module.exports = {
       },
     },
     {
-      name: "api",
-      script: "/home/poddley/poddley_api/dist/app.js",
+      name: "backend",
+      script: "/home/poddley/backend/dist/app.js",
       watch: true,
-      cwd: "/home/poddley/poddley_api/",
+      cwd: "/home/poddley/backend/",
       env: {
         NODE_ENV: "production",
         MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
       },
-    },
-    {
-      name: "rsscrawler",
-      script: "/home/poddley/poddley_transcriber/rsscrawler/rsscrawler.js",
-    },
-    {
-      name: "indexer",
-      script: "/home/poddley/poddley_transcriber/indexer/indexer.js",
     },
     {
       name: "client",

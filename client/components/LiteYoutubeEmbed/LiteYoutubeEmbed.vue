@@ -23,7 +23,7 @@
             </div>
             <button
                 class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
-                <img loading="lazy"
+                <NuxtImg loading="lazy"
                     class="aspect-video h-full w-full rounded-lg border-none bg-cover bg-center pb-0 bg-blend-darken shadow-none sm:rounded-lg md:rounded-lg"
                     style="object-fit: cover; object-position: center"
                     :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
