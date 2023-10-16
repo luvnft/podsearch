@@ -19,9 +19,10 @@ async function main() {
   console.log("Adding podcasts, the number to add is:", podcasts.length, "we're overwriting all of them essentially");
   await podcastsIndex.addDocumentsInBatches(podcasts, 500, {
     primaryKey: "id",
+
   });
   console.log("Adding episodes, the number to add is:", episodes.length, "we're overwriting all of them essentially.");
-  await episodesIndex.addDocumentsInBatches(episodes, 500, {
+  await episodesIndex.updateDocumentsInBatches(episodes, 500, {
     primaryKey: "id",
   });
 
