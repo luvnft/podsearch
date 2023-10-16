@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Specify your desired Node.js version here
+        node-version: '16'  # Specify your desired Node.js version here
         
     - name: Deploy to DigitalOcean
       uses: appleboy/ssh-action@master

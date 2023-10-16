@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.5",
+    "@esbuild/linux-x64": "^0.19.4",
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "@nuxt/devtools": "^1.0.0-beta.0",
     "@nuxthq/ui": "^2.7.0",
