@@ -7,6 +7,7 @@ module.exports = {
       name: "meilisearch",
       script: "/mnt/volume_nyc1_02/meilisearch",
       args: "--no-analytics",
+      watch: false,
       env: {
         MEILI_HTTP_ADDR: process.env.MEILI_HTTP_ADDR,
         MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
@@ -15,12 +16,12 @@ module.exports = {
         MEILI_ENV: process.env.MEILI_ENV,
       },
     },
-    // Start the backend and listen to changes 
+    // Start the backend and listen to changes
     {
       name: "backend",
       script: "/home/poddley/backend/app.ts",
       interpreter: "/root/.nvm/versions/node/v20.3.1/bin/ts-node",
-      watch: true,
+      watch: ["/home/poddley/backend/"],
     },
     {
       name: "client",
