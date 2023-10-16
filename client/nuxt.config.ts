@@ -56,9 +56,9 @@ export default defineNuxtConfig({
   },
   image: {
     provider: "cloudflare",
-    quality: 50,
+    quality: 10,
     cloudflare: {
-      baseURL: "https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/",
+      baseURL: process.env.CLOUDFLARE_IMAGE_BASE_URL,
     },
   },
   experimental: {
@@ -114,4 +114,3 @@ export default defineNuxtConfig({
     },
   },
 });
-
