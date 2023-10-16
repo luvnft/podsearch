@@ -8,6 +8,5 @@ const { height, width, imageUrl } = defineProps<{
     width: string;
     imageUrl: string;
 }>();
-console.log("imageUrl", imageUrl)
 const prepareImageLink = (url) => `https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/${imageUrl}/w=${width}`;
 </script>

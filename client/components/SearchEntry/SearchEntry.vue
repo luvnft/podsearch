@@ -14,7 +14,6 @@
                 </div>
                 <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
                     :style="`background: url(${props.searchEntry.podcastImage});`">
-                    {{ props.searchEntry.podcastImage }}
                     <ImageWrapper class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"
                         :imageUrl="props.searchEntry.podcastImage" alt="Description of Image" :width="40" :height="40" />
                 </div>
