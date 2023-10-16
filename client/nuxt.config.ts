@@ -33,7 +33,13 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
-  modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt", "nuxt-delay-hydration"],
+  image: {
+    provider: "cloudflare",
+    cloudflare: {
+      baseURL: "",
+    },
+  },
+  modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt", "nuxt-delay-hydration", "@nuxt/image"],
   googleFonts: {
     families: {
       Lato: true,

@@ -8,6 +8,6 @@ const { height, width, imageUrl } = defineProps<{
     width: string;
     imageUrl: string;
 }>();
-
-const prepareImageLink = (url) => `${process.env.CLOUDFLARE_IMAGE_BASE_URL}/${url}/w=${width},h=${height}`;
+console.log("imageUrl", imageUrl)
+const prepareImageLink = (url) => `https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/${imageUrl}/w=${width}`;
 </script>

@@ -5,9 +5,11 @@
                 class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
                 <div
                     class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
-                    <ImageWrapper :height="40" :width="40" :imageUrl="props.searchEntry?.podcastImage"
+                    
+                    <ImageWrapper v-if="props.searchEntry?.podcastImage" :height="40" :width="40"
+                        :imageUrl="props.searchEntry?.podcastImage"
                         class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" />
-                </div> :width=
+                </div>
                 <div class="flex min-w-0 items-center">
                     <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base"
                         style="color: rgb(246, 246, 246)">
@@ -21,7 +23,7 @@
             </div>
             <button
                 class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
-                <img loading="lazy"
+                <NuxtImg loading="lazy"
                     class="aspect-video h-full w-full rounded-lg border-none bg-cover bg-center pb-0 bg-blend-darken shadow-none sm:rounded-lg md:rounded-lg"
                     style="object-fit: cover; object-position: center"
                     :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
