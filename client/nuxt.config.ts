@@ -54,12 +54,6 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: "mount",
   },
-  image: {
-    provider: "cloudflare",
-    cloudflare: {
-      baseURL: "",
-    },
-  },
   experimental: {
     clientFallback: true,
     componentIslands: true,
