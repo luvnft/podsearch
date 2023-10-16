@@ -10,6 +10,7 @@ export const useUtils = () => {
     removeDuplicates,
     convertSegmentHitToFormattedText,
     fragmentSegmentHits,
+    prepareImageLink,
   };
 };
 
@@ -138,3 +139,5 @@ export function convertSegmentHitToFormattedText(segmentHit: ClientSegmentHit): 
     return "";
   }
 }
+
+export const prepareImageLink = (cloudflareImageId: string, width: number) => `https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/${cloudflareImageId}/w=${width}`;

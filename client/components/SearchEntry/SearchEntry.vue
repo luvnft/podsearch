@@ -13,9 +13,10 @@
                         :searchEntry="props.searchEntry" />
                 </div>
                 <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
-                    :style="`background: url(${props.searchEntry.podcastImage});`">
+                    :style="`background: url(${utils.prepareImageLink(props.searchEntry.podcastImage, 500)});`">
                     <ImageWrapper class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"
-                        :imageUrl="props.searchEntry.podcastImage" alt="Description of Image" :width="'40'" :height="'40'" />
+                        :imageUrl="props.searchEntry.podcastImage"
+                        :alt="`Description of Image of ${props.searchEntry.episodeTitle}`" :width="400" />
                 </div>
             </div>
         </div>
@@ -74,12 +75,13 @@
     </div>
 </template>
 
-<script lang="ts" setup> 
+<script lang="ts" setup>
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 
+const utils: Utils = useUtils();
 const searchStore = useSearchStore();
 const { searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
