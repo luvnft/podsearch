@@ -4,6 +4,7 @@ module.exports = {
     node: true,
     browser: true,
   },
+  plugins: ["unused-imports"],
   extends: ["plugin:vue/recommended", "eslint:recommended", "plugin:prettier/recommended"],
   rules: {
     "prettier/prettier": "error",

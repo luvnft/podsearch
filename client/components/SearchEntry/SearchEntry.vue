@@ -81,7 +81,6 @@ import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
-import { UseElementVisibility } from "@vueuse/components"
 
 const utils: Utils = useUtils();
 const searchStore = useSearchStore();

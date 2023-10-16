@@ -11,7 +11,6 @@
 <script lang="ts" setup>
 import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import { UseElementVisibility } from "@vueuse/components";
 const listRef: Ref<HTMLElement | null> = ref(null);
 
 const emit = defineEmits<{
