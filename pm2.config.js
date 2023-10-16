@@ -15,6 +15,7 @@ module.exports = {
         MEILI_ENV: process.env.MEILI_ENV,
       },
     },
+    // Start the backend and listen to changes 
     {
       name: "backend",
       script: "/home/poddley/backend/app.ts",

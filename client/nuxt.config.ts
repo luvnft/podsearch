@@ -57,6 +57,9 @@ export default defineNuxtConfig({
   image: {
     provider: "cloudflare",
     quality: 50,
+    cloudflare: {
+      baseURL: "https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/",
+    },
   },
   experimental: {
     clientFallback: true,
