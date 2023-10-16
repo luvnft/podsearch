@@ -7,7 +7,7 @@ import { start as startRssCrawler } from "./workers/rsscrawler";
 import { config } from 'dotenv';
 import path from 'path';
 
-console.log("Trigger")
+console.log("Trigger 2" )
 
 // Ref to the env
 config({ path: path.resolve(__dirname, '.env') });
