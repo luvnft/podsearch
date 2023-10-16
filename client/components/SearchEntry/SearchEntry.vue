@@ -74,7 +74,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup> 
 import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
 import { storeToRefs } from "pinia";
