@@ -11,12 +11,12 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Specify your desired Node.js version here
+        node-version: '16'  # Specify your desired Node.js version here
         
     - name: Deploy to DigitalOcean
       uses: appleboy/ssh-action@master
