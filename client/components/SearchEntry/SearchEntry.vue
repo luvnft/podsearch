@@ -14,7 +14,7 @@
                 </div>
                 <div v-if="!props.searchEntry.youtubeVideoLink && props.searchEntry.podcastImage"
                     class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
-                    :style="`background: url(${utils.prepareImageLink(props.searchEntry.podcastImage, 500)});`">
+                    :style="`background: url(${utils.prepareImageLink(props.searchEntry.podcastImage, 500)})`">
                     <ImageWrapper class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"
                         :imageUrl="props.searchEntry.podcastImage"
                         :alt="`Description of Image of ${props.searchEntry.episodeTitle}`" :width="400" />

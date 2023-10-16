@@ -140,4 +140,6 @@ export function convertSegmentHitToFormattedText(segmentHit: ClientSegmentHit): 
   }
 }
 
-export const prepareImageLink = (cloudflareImageId: string, width: number) => `https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/${cloudflareImageId}/w=${width}`;
+export const prepareImageLink = (cloudflareImageId: string, width: number): string => {
+  return `https://imagedelivery.net/lIUoO1zdA8rhNVUlNWC26w/${cloudflareImageId}/w=${width}`;
+};
