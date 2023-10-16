@@ -1,16 +1,13 @@
 <template>
     <div class="flex h-full flex-col items-center">
         <div class="video-container flex w-full border-none shadow-none" @click="toggleiFrame" v-if="!showiFrame">
-            <div 
+            <div
                 class="nightwind-prevent text-white via-black from-black opacity-90 absolute z-10 flex w-full flex-row items-center justify-start bg-gradient-to-b p-[11px] rounded-lg">
                 <div
                     class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
-                    <NuxtImg
-                    :src="props.searchEntry?.podcastImage"
-                    class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" 
-                    loading="lazy"
-                    /> 
-                </div>
+                    <ImageWrapper :height="40" :width="40" :imageUrl="props.searchEntry?.podcastImage"
+                        class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" />
+                </div> :width=
                 <div class="flex min-w-0 items-center">
                     <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base"
                         style="color: rgb(246, 246, 246)">
@@ -19,7 +16,8 @@
                 </div>
             </div>
             <div>
-                <button name="youtubePlayButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale" aria-label="youtubePlayButton" />
+                <button name="youtubePlayButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale"
+                    aria-label="youtubePlayButton" />
             </div>
             <button
                 class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
@@ -27,7 +25,7 @@
                     class="aspect-video h-full w-full rounded-lg border-none bg-cover bg-center pb-0 bg-blend-darken shadow-none sm:rounded-lg md:rounded-lg"
                     style="object-fit: cover; object-position: center"
                     :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
-                    alt="Image of the youtube video associated with the podcast logo" @click="toggleiFrame()" />
+                    :alt="`Image of the youtube video for ${props.videoTitle}`" @click="toggleiFrame()" />
             </button>
         </div>
 
