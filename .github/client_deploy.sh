@@ -10,4 +10,5 @@ cd /home/poddley/client || exit 1  # Exit if the directory is not found
 git pull origin master
 npm install
 npm run build
+pm2 restart client
 echo "Finished deploying PoddleyClient" 
