@@ -9,7 +9,7 @@
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
                         :startTime="computedStartTime" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
-                        :pictureInPicture="true" :noCookie="true" posterQuality="sddefault"
+                        :pictureInPicture="true" :noCookie="true" posterQuality="mqdefault"
                         :searchEntry="props.searchEntry" />
                 </div>
                 <div v-if="!props.searchEntry.youtubeVideoLink && props.searchEntry.podcastImage"
