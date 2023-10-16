@@ -6,8 +6,7 @@
                 <div
                     class="channelIcon flex aspect-video h-10 w-10 items-center justify-center rounded-full before:h-10 before:w-10">
 
-                    <ImageWrapper v-if="props.searchEntry?.podcastImage" 
-                        :width="500"
+                    <ImageWrapper v-if="props.searchEntry?.podcastImage" :width="500"
                         :imageUrl="props.searchEntry?.podcastImage"
                         class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" />
                 </div>
@@ -24,7 +23,7 @@
             </div>
             <button
                 class="flex h-full w-full min-w-full items-center justify-center rounded border-none shadow-none after:rounded-lg md:rounded-lg md:after:rounded-lg">
-                <NuxtImg loading="lazy"
+                <img loading="lazy"
                     class="aspect-video h-full w-full rounded-lg border-none bg-cover bg-center pb-0 bg-blend-darken shadow-none sm:rounded-lg md:rounded-lg"
                     style="object-fit: cover; object-position: center"
                     :src="`https://i.ytimg.com/vi_webp/${props.videoId}/${props.posterQuality}.webp`"
@@ -37,13 +36,15 @@
             <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
                 <IconsSpinnerIcon />
             </div>
-
-            <iframe
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
-                :title="props.videoTitle" frameborder="0"
-                :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
-                :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-                class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()" />
+            <UseElementVisibility v-slot="{ isVisible }">
+                <iframe
+                    :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
+                    :title="props.videoTitle" frameborder="0"
+                    :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
+                    :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
+                    class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()"
+                    v-if="isVisible" />
+            </UseElementVisibility>
         </div>
     </div>
 </template>

@@ -12,7 +12,8 @@
                         :pictureInPicture="true" :noCookie="true" posterQuality="sddefault"
                         :searchEntry="props.searchEntry" />
                 </div>
-                <div v-else class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
+                <div v-if="!props.searchEntry.youtubeVideoLink && props.searchEntry.podcastImage"
+                    class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
                     :style="`background: url(${utils.prepareImageLink(props.searchEntry.podcastImage, 500)});`">
                     <ImageWrapper class="h-full w-full rounded-lg bg-top object-contain backdrop-blur"
                         :imageUrl="props.searchEntry.podcastImage"
@@ -20,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div 
+        <div
             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0 pt-1">
             <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
                 <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
@@ -80,6 +81,7 @@ import TranscriptionService from "../../utils/services/TranscriptionsService";
 import { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
+import { UseElementVisibility } from "@vueuse/components"
 
 const utils: Utils = useUtils();
 const searchStore = useSearchStore();
