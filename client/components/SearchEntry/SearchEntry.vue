@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div
+        <div 
             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-grow flex-col items-center justify-between px-0 pt-1">
             <div class="row flex-grow-1 flex h-full w-full flex-row justify-start">
                 <div class="flex h-full flex-col items-start justify-center gap-y-0 px-0 py-0">
