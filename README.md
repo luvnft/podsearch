@@ -613,8 +613,8 @@ A meilisearch instance running with the following settings (all indexes use the 
 - [x] Integrate CI/CD somehow when everything is on DigitalOcean for backend
 - [x] Move Nuxt3 to DigitalOcean from Cloudflare
 - [ ] Start up Transcriber on MainPC
-- [ ] Refactor the transcriber to support concurrency.
-- [ ] Inserter needs to be part of transcriber
+- [x] Refactor the transcriber to support concurrency.
+- [x] Inserter needs to be part of transcriber
 - [ ] Make youtube video work with subs and sync too
 
 </details>
