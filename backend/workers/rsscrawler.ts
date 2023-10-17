@@ -116,12 +116,26 @@ function gatherPodcastsFromJsonFile(filename: string): { [key: string]: any }[] 
   for (const title of Object.keys(podcasts)) {
     console.log("====>Title: ", title);
 
-    const stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title LIKE ? LIMIT 1");
-    const podcast = stmt.get(`%${title}%`);
+    let stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title = ? LIMIT 1");
+    let podcast: Podcast = stmt.get(title);
 
     if (!podcast) {
-      console.log("Didn't find title: ", title);
-      continue;
+      console.log("Trying LIKE query for title: ", title);
+      stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title LIKE ? LIMIT 1");
+      podcast = stmt.get(`%${title}%`);
+
+      if (!podcast) {
+        console.log("Didn't find title with LIKE either: ", title);
+        continue;
+      } else if (podcast.title !== title) {
+        console.log("Found title with LIKE but it's not an exact match: ", podcast.title);
+
+        // Delete the podcast from the database
+        const deleteStmt = db.prepare("DELETE FROM podcasts WHERE title = ?");
+        deleteStmt.run(podcast.title);
+        console.log("Deleted podcast with title: ", podcast.title);
+        continue;
+      }
     }
 
     objectsToInsert.push(podcast);

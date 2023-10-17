@@ -34,7 +34,7 @@ const initializeApp = async () => {
     });
 
     // Workers
-    startIndexer(600)
+    startIndexer("*/5 * * * *");
     console.log("Indexer started!");
 
     // rsscrawler.start(3600);
