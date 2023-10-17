@@ -2,6 +2,7 @@ module.exports = {
   tabWidth: 2,
   singleQuote: false,
   htmlWhitespaceSensitivity: "ignore",
-  bracketSameLine: false,
+  bracketSameLine: true,
   printWidth: 1000,
+  
 };

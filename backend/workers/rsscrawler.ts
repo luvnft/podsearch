@@ -8,6 +8,7 @@ import axios from "axios";
 import tar from "tar";
 import path from "path";
 import * as readline from "readline";
+import cron from "node-cron";
 
 interface GuidAndFeedAndLangAndTitle {
   podcastGuid: string;
@@ -302,16 +303,21 @@ async function main() {
   console.log("Finished crawling the rss-feeds of the db.");
 }
 
-async function start(cronTimeInSeconds: number) {
-  try {
-    await main();
-    console.log(`Rsscrawler completed. Waiting for the next run in ${cronTimeInSeconds} seconds.`);
-  } catch (err) {
-    console.error("Failed to run the main function:", err);
-  } finally {
-    setTimeout(() => start(cronTimeInSeconds), cronTimeInSeconds * 1000);
+function start(cronExpression: string) {
+  console.log("Cron-job rsscrawler is turned ON.");
+  if (!cron.validate(cronExpression)) {
+    console.error("Invalid cron expression.");
+    return;
   }
+
+  cron.schedule(cronExpression, async () => {
+    try {
+      await main();
+      console.log(`Rss-crawling completed. Scheduled for next run as per ${cronExpression}.`);
+    } catch (err) {
+      console.error("Failed to run the main function:", err);
+    }
+  });
 }
 
 export { start };
-

@@ -1,10 +1,37 @@
 import * as fs from "fs";
 import { Episode, Podcast, Prisma, PrismaClient, PrismaPromise, Segment, Transcription } from "@prisma/client";
+import { spawn } from "child_process";
 
-const jsonPath: string = "../transcriber";
+async function getEpisodeWithLock(prisma: PrismaClient): Promise<Episode | null> {
+  let episode: Episode = undefined;
+  try {
+    // Start a transaction
+    await prisma.$executeRaw`START TRANSACTION;`;
+
+    // Fetch and lock an episode that hasn't been transcribed yet
+    episode = await prisma.$executeRawUnsafe<Episode[]>(`
+      SELECT * FROM episode WHERE transcribed = false LIMIT 1 FOR UPDATE SKIP LOCKED;
+    `);
+
+    if (episode && episode.length > 0) {
+      // Once done, update the episode as transcribed
+      await prisma.episode.update({
+        where: { id: episode[0].id },
+        data: { transcribed: true },
+      });
+    }
+
+    // Commit the transaction
+    await prisma.$executeRaw`COMMIT;`;
+  } catch (error) {
+    // If something went wrong, rollback the transaction
+    await prisma.$executeRaw`ROLLBACK;`;
+    throw error;
+  }
+  return episode;
+}
 
 async function insertJsonFilesToDb(prisma: PrismaClient) {
-  await prisma.$connect();
   console.log("Checking if any new jsons have been added");
 
   const files = fs.readdirSync("../transcriber/");
@@ -25,7 +52,7 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
     const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid } = data;
 
     // Assuming episodeGuid is provided from an external source and is available globally
-    console.log("EpisodeGuid: ", belongsToEpisodeGuid)
+    console.log("EpisodeGuid: ", belongsToEpisodeGuid);
     const episode: Episode | null = await prisma.episode.findUnique({
       where: { episodeGuid: belongsToEpisodeGuid },
     });
@@ -110,23 +137,46 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
   }
 }
 
-// Main Runner
-async function mainRunner() {
-  // Run every 1 min
-  const runDuration: number = 60 * 1000; // 60 seconds times 1000 milliseconds/second
+const transcribe = async () => {
+  // Establish connection
+  const prisma: PrismaClient = new PrismaClient();
 
-  // Prisma instance
-  const prisma = new PrismaClient();
+  // Grab an episode that has transcribedValue = false
+  // Lock the row such that no other scripts can grab it.
+  const episode: Episode | undefined = await getEpisodeWithLock(prisma);
 
-  try {
-    await insertJsonFilesToDb(prisma);
-    console.log(`Process completed. Waiting for the next run in ${runDuration / 1000} seconds.`);
-  } catch (err) {
-    console.error("Failed to run the main function:", err);
-  } finally {
-    setTimeout(mainRunner, runDuration);
+  // Is episode undefined
+  if (!episode) {
+    console.log("No episode found for transcription.");
+    return;
   }
-}
 
-// Invoke the main function
-mainRunner();
+  // Call the Python script and pass the necessary arguments
+  const pythonProcess = spawn("python3", ["transcriber.py", episode.enclosureUrl, episode.title, episode.guid, episode.podcast.guid, "en"]); // assuming language is 'en' for English
+  pythonProcess.stdout.on("data", (data) => {
+    console.log(`Python Output: ${data}`);
+  });
+  pythonProcess.stderr.on("data", (data) => {
+    console.error(`Python Error: ${data}`);
+  });
+  pythonProcess.on("close", async (code) => {
+    if (code !== 0) {
+      console.log(`Python script exited with code ${code}`);
+      // If the Python script failed, revert the 'transcribed' status back to false so that the episode can be processed again later.
+      await prisma.episode.update({
+        where: {
+          guid: episode.guid,
+        },
+        data: {
+          transcribed: false,
+        },
+      });
+    } else {
+      console.log("Transcription completed and JSON saved.");
+      // Process the saved JSON or perform any other necessary actions.
+    }
+  });
+
+  // Run insertJsonFilesToDb
+  insertJsonFilesToDb(prisma);
+};

@@ -1,4 +1,5 @@
 {
+  "name": "client",
   "private": true,
   "prettier": "../prettier.config.js",
   "engines": {

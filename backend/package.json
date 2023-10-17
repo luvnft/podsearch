@@ -27,6 +27,7 @@
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
     "natural": "^6.5.0",
+    "node-cron": "^3.0.2",
     "node-fetch": "^3.3.1",
     "node-ts": "^6.0.1",
     "pm2": "^5.3.0",
@@ -59,11 +60,11 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
-  "name": "pazambackend",
+  "name": "backend",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon app.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "generate-migration": "npx dotenv -e ../.env -- prisma migrate dev"
   },
   "author": "",
   "license": "ISC",

@@ -1,5 +1,6 @@
 import { meilisearchConnection } from "../connections/meilisearchConnection";
 import { prismaConnection } from "../connections/prismaConnection";
+import cron from "node-cron";
 
 async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -19,7 +20,6 @@ async function main() {
   console.log("Adding podcasts, the number to add is:", podcasts.length, "we're overwriting all of them essentially");
   await podcastsIndex.addDocumentsInBatches(podcasts, 500, {
     primaryKey: "id",
-
   });
   console.log("Adding episodes, the number to add is:", episodes.length, "we're overwriting all of them essentially.");
   await episodesIndex.updateDocumentsInBatches(episodes, 500, {
@@ -119,16 +119,21 @@ async function main() {
   }
 }
 
-async function start(cronTimeInSeconds: number) {
-  try {
-    await main();
-    console.log(`Indexing completed. Waiting for the next run in ${cronTimeInSeconds} seconds.`);
-  } catch (err) {
-    console.error("Failed to run the main function:", err);
-  } finally {
-    setTimeout(() => start(cronTimeInSeconds), cronTimeInSeconds * 1000);
+function start(cronExpression: string) {
+  console.log("Cron-job indexer is turned ON.")
+  if (!cron.validate(cronExpression)) {
+    console.error("Invalid cron expression.");
+    return;
   }
+
+  cron.schedule(cronExpression, async () => {
+    try {
+      await main();
+      console.log(`Indexing completed. Scheduled for next run as per ${cronExpression}.`);
+    } catch (err) {
+      console.error("Failed to run the main function:", err);
+    }
+  });
 }
 
 export { start };
-
