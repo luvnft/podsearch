@@ -11,4 +11,5 @@ nvm use 20
 cd /home/poddley/backend || exit 1  # Exit if the directory is not found
 git pull origin master
 npm install
+pm2 restart backend
 echo "Finished deploying PoddleyBackend" 
