@@ -1,14 +1,33 @@
 #!/bin/bash
 
-# Set environment variables
-export PATH="$PATH:/root/.nvm/versions/node/v20.3.1/bin:/root/.nvm/versions/node/v20.3.1/bin/node:/root/.nvm/versions/node/v20.3.1/bin/pm2:/root/.nvm"
+# Load NVM
 [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
 
+# Error Handling Function
+handle_error() {
+    echo "Error: $1"
+    # Add a notification here if you wish e.g., send an email or Slack message.
+    exit 1
+}
+
 echo "Deploying client!"
-nvm use 20
-cd /home/poddley/client || exit 1  # Exit if the directory is not found
-git pull origin master
-npm install
-npm run build
-pm2 restart client
-echo "Finished deploying PoddleyClient" 
+
+# Switch Node Version
+nvm use 20 || handle_error "Failed to switch Node version."
+
+# Navigate to client directory
+cd /home/poddley/client || handle_error "Directory /home/poddley/client not found."
+
+# Pull from the specified branch
+git pull origin master || handle_error "Failed to pull from master."
+
+# Install dependencies
+npm install || handle_error "npm install failed."
+
+# Build the project
+npm run build || handle_error "npm run build failed."
+
+# Restart the client
+pm2 restart client || handle_error "Failed to restart client using pm2."
+
+echo "Finished deploying PoddleyClient."

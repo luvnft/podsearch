@@ -1,15 +1,31 @@
 #!/bin/bash
 
-# Set environment variables
-export PATH="$PATH:/root/.nvm/versions/node/v20.3.1/bin:/root/.nvm/versions/node/v20.3.1/bin/node:/root/.nvm/versions/node/v20.3.1/bin/pm2:/root/.nvm"
+# Load NVM
 [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
 
+# Error Handling Function
+handle_error() {
+    echo "Error: $1"
+    # Add a notification here if you wish e.g., send an email or Slack message.
+    exit 1
+}
+
 echo "Deploying backend!"
-git clean -f
-git clean -f -d
-nvm use 20
-cd /home/poddley/backend || exit 1  # Exit if the directory is not found
-git pull origin master
-npm install
-pm2 restart backend
-echo "Finished deploying PoddleyBackend" 
+
+# Switch Node Version
+nvm use 20 || handle_error "Failed to switch Node version."
+
+# Navigate to backend directory
+cd /home/poddley/backend || handle_error "Directory /home/poddley/backend not found."
+
+# Clean the repo and pull from the specified branch
+git clean -fd
+git pull origin master || handle_error "Failed to pull from master."
+
+# Install dependencies
+npm install || handle_error "npm install failed."
+
+# Restart the backend
+pm2 restart backend || handle_error "Failed to restart backend using pm2."
+
+echo "Finished deploying PoddleyBackend."
