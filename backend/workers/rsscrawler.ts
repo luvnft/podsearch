@@ -97,7 +97,7 @@ function fixMacrolanguage(objectsToInsert: Array<{ [key: string]: any }>): Array
   return objectsToInsertCopy;
 }
 
-function gatherPodcastsFromJsonFile(filename: string): { [key: string]: any }[] {
+async function gatherPodcastsFromJsonFile(): Promise<{ [key: string]: any }[]> {
   // Connect to the sqlite database
   const db = new Database("./workers/podcasts.db");
   db.pragma("journal_mode = WAL");
@@ -117,12 +117,12 @@ function gatherPodcastsFromJsonFile(filename: string): { [key: string]: any }[] 
     console.log("====>Title: ", title);
 
     let stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title = ? LIMIT 1");
-    let podcast: Podcast = stmt.get(title) as Podcast;
+    let podcast: Podcast = (await stmt.get(title)) as Podcast;
 
     if (!podcast) {
       console.log("Trying LIKE query for title: ", title);
       stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title LIKE ? LIMIT 1");
-      podcast = stmt.get(`%${title}%`) as Podcast;
+      podcast = (await stmt.get(`%${title}%`)) as Podcast;
 
       if (!podcast) {
         console.log("Didn't find title with LIKE either: ", title);
@@ -278,7 +278,7 @@ async function main() {
   }
 
   // Get the top podcasts from the podcasts.db using the podcasts.json
-  let objectsToInsert: any[] = gatherPodcastsFromJsonFile(dbPath);
+  let objectsToInsert: any[] = await gatherPodcastsFromJsonFile();
 
   // Fix the macro language, standardizing them and not differentiating between en.ZH etc.
   objectsToInsert = fixMacrolanguage(objectsToInsert);
