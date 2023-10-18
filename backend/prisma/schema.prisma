@@ -20,10 +20,10 @@ model Episode {
   isTranscribed                  Boolean        @default(false)
   youtubeVideoLink               String?
   deviationTime                  Float?
-  errorCount                     Int            @default(0)
   indexed                        Boolean        @default(false)
   createdAt                      DateTime?      @default(now())
   updatedAt                      DateTime?      @updatedAt
+  errorCount                     Int            @default(0)
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")
