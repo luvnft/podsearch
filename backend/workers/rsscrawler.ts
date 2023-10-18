@@ -99,11 +99,11 @@ function fixMacrolanguage(objectsToInsert: Array<{ [key: string]: any }>): Array
 
 function gatherPodcastsFromJsonFile(filename: string): { [key: string]: any }[] {
   // Connect to the sqlite database
-  const db = new Database("./database/podcasts.db");
+  const db = new Database("./workers/podcasts.db");
   db.pragma("journal_mode = WAL");
 
   // Open JSON file
-  const jsonData = fs.readFileSync("../podcasts/podcasts.json", "utf8");
+  const jsonData = fs.readFileSync("./podcasts/podcasts.json", "utf8");
   const podcasts = JSON.parse(jsonData);
 
   // Create an index on the titles to make the query faster
@@ -117,12 +117,12 @@ function gatherPodcastsFromJsonFile(filename: string): { [key: string]: any }[] 
     console.log("====>Title: ", title);
 
     let stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title = ? LIMIT 1");
-    let podcast: Podcast = stmt.get(title);
+    let podcast: Podcast = stmt.get(title) as Podcast;
 
     if (!podcast) {
       console.log("Trying LIKE query for title: ", title);
       stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title LIKE ? LIMIT 1");
-      podcast = stmt.get(`%${title}%`);
+      podcast = stmt.get(`%${title}%`) as Podcast;
 
       if (!podcast) {
         console.log("Didn't find title with LIKE either: ", title);
@@ -213,7 +213,7 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
       id: uuidv4(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      
+      errorCount: 0,
     });
   }
   return episodes;
@@ -254,27 +254,27 @@ async function main() {
   await prisma.$connect();
 
   // Download the https://public.podcastindex.org/podcastindex_feeds.db.tgz and unzip it and rename it to podcasts.db if it doesnt exist in the ./database/podcasts.db folder
-  const dbPath = "./database/podcasts.db";
+  const dbPath = "./workers/podcasts.db";
 
   // If it doesn't exists.
   if (!fs.existsSync(dbPath)) {
     const downloadUrl = "https://public.podcastindex.org/podcastindex_feeds.db.tgz";
-    const tempPath = path.join("./podcastindex_feeds.db.tgz");
+    const tempPath = path.join("./workers/podcastindex_feeds.db.tgz");
     await downloadWithProgress(downloadUrl, tempPath);
     console.log("\nDownload finished. Extracting...");
 
     await tar.x({ file: tempPath, C: path.dirname(dbPath) }); // Extract the .tgz to its folder
     fs.renameSync(path.join(path.dirname(dbPath), "podcastindex_feeds.db"), dbPath); // Rename the file
     // Just double check taht the temp is gone:
-    if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
-      fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+    if (fs.existsSync("./workers/podcastindex_feeds.db.tgz")) {
+      fs.unlinkSync("./workers/podcastindex_feeds.db.tgz"); // Delete the .tgz file
     }
     console.log("Extraction complete.");
   }
 
   // Just double check that the temp is gone:
-  if (fs.existsSync("./podcastindex_feeds.db.tgz")) {
-    fs.unlinkSync("./podcastindex_feeds.db.tgz"); // Delete the .tgz file
+  if (fs.existsSync("./workers/podcastindex_feeds.db.tgz")) {
+    fs.unlinkSync("./workers/podcastindex_feeds.db.tgz"); // Delete the .tgz file
   }
 
   // Get the top podcasts from the podcasts.db using the podcasts.json

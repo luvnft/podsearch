@@ -20,13 +20,12 @@ module.exports = {
     {
       name: "backend",
       script: "/home/poddley/backend/app.ts",
+      cwd: "/home/poddley/backend/",
       interpreter: "/root/.nvm/versions/node/v20.3.1/bin/ts-node",
-      watch: ["/home/poddley/backend/"],
     },
     {
       name: "client",
       script: "/home/poddley/client/.output/server/index.mjs",
-      watch: ["/home/poddley/client/"],
       env: {
         PORT: 3001,
       },
