@@ -2,7 +2,7 @@ require("dotenv").config({ path: ".env" });
 
 module.exports = {
   apps: [
-    Starts the meilisearch instance on the machine
+    // Starts the meilisearch instance on the machine
     {
       name: "meilisearch",
       script: "/mnt/volume_nyc1_02/meilisearch",
@@ -19,7 +19,8 @@ module.exports = {
     {
       name: "backend",
       script: "npm",
-      args: "run 'production:runBackend'",
+      args: "run production:runBackend",
+      restart_delay: 3000,
       env: {
         PORT: 3000,
       },
@@ -27,7 +28,8 @@ module.exports = {
     {
       name: "client",
       script: "npm",
-      args: "run 'production:runClient'",
+      args: "run production:runClient",
+      restart_delay: 3000,
       env: {
         PORT: 3001,
       },

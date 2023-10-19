@@ -27,12 +27,13 @@ git pull origin master || handle_error "Failed to pull from master."
 npm install || handle_error "npm install failed."
 
 # Build the client
-npm run buildClient || handle_error "npm run build failed."
+npm run production:runClient || handle_error "npm run build failed."
+npm run production:runBackend || handle_error "npm run build failed."
 
 # Restart the backend
-pm2 restart backend 
+pm2 reload backend 
 
 # Restart the client
-pm2 restart client || handle_error "Failed to restart client using pm2."
+pm2 reload client || handle_error "Failed to restart client using pm2."
 
 echo "Finished deploying PoddleyClient."

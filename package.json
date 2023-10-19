@@ -132,8 +132,8 @@
   "scripts": {
     "development:runClient": "cd client && nuxt dev --modern=true",
     "development:runBackend": "nodemon --exec ts-node backend/app.ts",
-    "production:runClient": "cd client && nuxt build --modern=true && node ./client/.output/server/index.mjs",
-    "production:runBackend": "cd backend && tsc && node ./backend/dist/app.js",
+    "production:runClient": "cd client && nuxt build --modern=true && node ./.output/server/index.mjs",
+    "production:runBackend": "cd backend && tsc && node ./dist/app.js",
     "generateMigration": "npx dotenv -e ../.env -- prisma migrate dev"
   },
   "author": "Luka Momcilovic",
