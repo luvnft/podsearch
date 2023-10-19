@@ -1,24 +1,30 @@
 import * as fs from "fs";
-import { Episode, Podcast, Prisma, PrismaClient, PrismaPromise, Segment, Transcription } from "@prisma/client";
-import { spawn } from "child_process";
+import { PrismaClient, Episode, Segment, Transcription } from "@prisma/client";
+import { spawnSync } from "child_process";
 
 async function getEpisodeWithLock(prisma: PrismaClient): Promise<Episode | null> {
-  let episode: Episode = undefined;
+  let episode: Episode;
+
   try {
     // Start a transaction
     await prisma.$executeRaw`START TRANSACTION;`;
 
     // Fetch and lock an episode that hasn't been transcribed yet
-    episode = await prisma.$executeRawUnsafe<Episode[]>(`
-      SELECT * FROM episode WHERE transcribed = false LIMIT 1 FOR UPDATE SKIP LOCKED;
-    `);
+    const episodeResult: Episode[] = (await prisma.$executeRawUnsafe(`
+      SELECT * FROM episode WHERE transcribed = false AND errorCount < 1 LIMIT 1 FOR UPDATE SKIP LOCKED;
+    `)) as unknown as Episode[];
 
-    if (episode && episode.length > 0) {
+    if (episodeResult && episodeResult.length > 0) {
+      episode = episodeResult[0];
       // Once done, update the episode as transcribed
       await prisma.episode.update({
-        where: { id: episode[0].id },
-        data: { transcribed: true },
+        where: { id: episodeResult[0].id },
+        data: {
+          isTranscribed: true,
+        },
       });
+    } else {
+      return null;
     }
 
     // Commit the transaction
@@ -28,13 +34,13 @@ async function getEpisodeWithLock(prisma: PrismaClient): Promise<Episode | null>
     await prisma.$executeRaw`ROLLBACK;`;
     throw error;
   }
-  return episode;
+  return episode ? episode : null;
 }
 
 async function insertJsonFilesToDb(prisma: PrismaClient) {
   console.log("Checking if any new jsons have been added");
 
-  const files = fs.readdirSync("../transcriber/");
+  const files = fs.readdirSync("./");
 
   // Looping over all the files inside the ".jsons folder which is inside the ../transcriber "
   for (const filename of files) {
@@ -45,7 +51,7 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
 
     // Starting processing json
     console.log("Processing data from filename", filename);
-    const fileContent = fs.readFileSync(jsonPath + filename, "utf-8");
+    const fileContent = fs.readFileSync(filename, "utf-8");
     const data = JSON.parse(fileContent);
 
     // Extract data
@@ -59,12 +65,6 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
 
     // If episode is null continue:
     if (episode === null) continue;
-
-    // Updating that episode to have isTranscribed to true
-    await prisma.episode.update({
-      where: { id: episode.id },
-      data: { isTranscribed: true },
-    });
 
     // Try adding the transcription or update if it exists
     const transcriptionData: Transcription = await prisma.transcription.upsert({
@@ -133,7 +133,7 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
     );
 
     // Delete the file after it has been inserted into the database
-    fs.unlinkSync(jsonPath + filename);
+    fs.unlinkSync(filename);
   }
 }
 
@@ -143,7 +143,7 @@ const transcribe = async () => {
 
   // Grab an episode that has transcribedValue = false
   // Lock the row such that no other scripts can grab it.
-  const episode: Episode | undefined = await getEpisodeWithLock(prisma);
+  const episode: Episode | null = await getEpisodeWithLock(prisma);
 
   // Is episode undefined
   if (!episode) {
@@ -152,31 +152,24 @@ const transcribe = async () => {
   }
 
   // Call the Python script and pass the necessary arguments
-  const pythonProcess = spawn("python3", ["transcriber.py", episode.enclosureUrl, episode.title, episode.guid, episode.podcast.guid, "en"]); // assuming language is 'en' for English
-  pythonProcess.stdout.on("data", (data) => {
-    console.log(`Python Output: ${data}`);
-  });
-  pythonProcess.stderr.on("data", (data) => {
-    console.error(`Python Error: ${data}`);
-  });
-  pythonProcess.on("close", async (code) => {
-    if (code !== 0) {
-      console.log(`Python script exited with code ${code}`);
-      // If the Python script failed, revert the 'transcribed' status back to false so that the episode can be processed again later.
-      await prisma.episode.update({
-        where: {
-          guid: episode.guid,
-        },
-        data: {
-          transcribed: false,
-        },
-      });
-    } else {
-      console.log("Transcription completed and JSON saved.");
-      // Process the saved JSON or perform any other necessary actions.
-    }
-  });
+  const pythonProcess = spawnSync("python3", ["transcriber.py", episode.episodeEnclosure, episode.episodeTitle, episode.episodeGuid, episode.podcastGuid, "en"]);
 
-  // Run insertJsonFilesToDb
-  insertJsonFilesToDb(prisma);
+  // If it values we gotta set the isTranscribed back to fale and increment the errorCount value to keep track of how many times the script has failed in case we are doing this across many machines
+  if (pythonProcess.status !== 0) {
+    console.log(`Python script exited with code ${pythonProcess.status}`);
+    await prisma.episode.update({
+      where: {
+        episodeGuid: episode.episodeGuid,
+      },
+      data: {
+        isTranscribed: false,
+        errorCount: { increment: 1 }, // assuming errorCount is a field you want to increment
+        // This increment is important because we could face the scenario where lets say 3 machines are transcribing. First machine grabs an episode to transcribe it, and fails doing so for whatever reason, then another machine will pick it up again and transcribe it again causing meaningless work. So once an episode fail we can avoid trying it again. Also the SKIP LOCK makes sure there wont mbe many machines that are waiting for another machine to release the lock on a specific row.
+      },
+    });
+  } else {
+    console.log("Transcription completed and JSON saved.");
+    insertJsonFilesToDb(prisma);
+  }
 };
+

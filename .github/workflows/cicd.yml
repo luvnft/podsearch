@@ -1,10 +1,8 @@
-name: Frontend CI/CD Pipeline
+name: Backend CI/CD Pipeline
 on:
   push:
     branches:
       - master
-    paths:
-      - "client/**"
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,5 +22,5 @@ jobs:
         host: ${{ secrets.PODDLEY_DROPLET_IP }}
         username: ${{ secrets.PODDLEY_DROPLET_USER }}
         key: ${{ secrets.PODDLEY_SSH_KEY }}
-        script: bash /home/poddley/.github/client_deploy.sh
+        script: bash /home/poddley/.github/deploy.sh
         

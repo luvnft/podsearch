@@ -2,7 +2,7 @@ require("dotenv").config({ path: ".env" });
 
 module.exports = {
   apps: [
-    // Starts the meilisearch instance on the machine
+    Starts the meilisearch instance on the machine
     {
       name: "meilisearch",
       script: "/mnt/volume_nyc1_02/meilisearch",
@@ -16,20 +16,21 @@ module.exports = {
         MEILI_ENV: process.env.MEILI_ENV,
       },
     },
-    // Start the backend and listen to changes
     {
       name: "backend",
-      script: "/home/poddley/backend/app.ts",
-      cwd: "/home/poddley/backend/",
-      interpreter: "/root/.nvm/versions/node/v20.3.1/bin/ts-node",
+      script: "npm",
+      args: "run 'production:runBackend'",
+      env: {
+        PORT: 3000,
+      },
     },
     {
       name: "client",
-      script: "/home/poddley/client/.output/server/index.mjs",
+      script: "npm",
+      args: "run 'production:runClient'",
       env: {
         PORT: 3001,
       },
     },
   ],
 };
-

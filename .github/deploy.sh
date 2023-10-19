@@ -10,22 +10,29 @@ handle_error() {
     exit 1
 }
 
-echo "Deploying backend!"
+echo "Deploying client!"
 
 # Switch Node Version
 nvm use 20 || handle_error "Failed to switch Node version."
 
-# Navigate to backend directory
-cd /home/poddley/backend || handle_error "Directory /home/poddley/backend not found."
+# Navigate to client directory
+cd /home/poddley/client || handle_error "Directory /home/poddley/client not found."
 
-# Clean the repo and pull from the specified branch
-git clean -fd
+# Pull from the specified branch
+git clean -f -d
+git clean -f
 git pull origin master || handle_error "Failed to pull from master."
 
 # Install dependencies
 npm install || handle_error "npm install failed."
 
-# Restart the backend
-pm2 restart backend || handle_error "Failed to restart backend using pm2."
+# Build the client
+npm run buildClient || handle_error "npm run build failed."
 
-echo "Finished deploying PoddleyBackend."
+# Restart the backend
+pm2 restart backend 
+
+# Restart the client
+pm2 restart client || handle_error "Failed to restart client using pm2."
+
+echo "Finished deploying PoddleyClient."

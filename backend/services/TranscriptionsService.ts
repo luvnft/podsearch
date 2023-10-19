@@ -341,6 +341,7 @@ class TranscriptionsService {
   private createNgrams(text: string, n: number): string[] {
     const ngrams = [];
     for (let i = 0; i <= text.length - n; i++) {
+      //@ts-ignore
       ngrams.push(text.slice(i, i + n));
     }
     return ngrams;
