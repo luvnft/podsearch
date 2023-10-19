@@ -15,6 +15,9 @@ echo "Deploying client!"
 # Switch Node Version
 nvm use 20 || handle_error "Failed to switch Node version."
 
+# Navigate to client directory
+cd /home/poddley/ || handle_error "Directory /home/poddley/"
+
 # Pull from the specified branch
 git clean -f -d
 git clean -f
