@@ -8,24 +8,73 @@ import pandas as pd
 import subprocess
 import whisperx
 import asyncio
+import sys
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import uvicorn
+import spacy
+from audioOffsetFinder import find_offset_between_files
+from pytube import YouTube
+from moviepy.editor import *
+from youtubesearchpython import VideosSearch
+
+app = FastAPI()
+
+class TranscribeData(BaseModel):
+    episodeLink: str
+    episodeTitle: str
+    episodeGuid: str
+    podcastGuid: str
+    language: str
 
 # Vars
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
 device = "cuda"
-# change to "int8" if low on GPU mem (may reduce accuracy)
-compute_type = "float16"
+compute_type = "float16" # change to "int8" if low on GPU mem (may reduce accuracy)
 
+# 1. Transcribe with original whisper (batched)
+model = whisperx.load_model(model_size, device, compute_type=compute_type)
+nlp = spacy.load('spacy/en_core_web_sm')
 
+def getSimilarityScore(text1, text2):
+    # The texts to compare
+    text1 = sys.argv[1]
+    text2 = sys.argv[2]
+
+    # Process the texts
+    doc1 = nlp(text1)
+    doc2 = nlp(text2)
+
+    # Get the similarity between the two texts
+    similarity = doc1.similarity(doc2)
+    
+    return similarity
+    
+    
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     print("Converting the video file to audio file")
     command = f"ffmpeg -i {video_filename} -vn -acodec copy {audio_filename}"
     subprocess.call(command, shell=True)
     print("Finished converting video file to audio file")
 
+def download_and_convert_to_wav(youtube_link, output_path):
+    # Download the video
+    yt = YouTube(youtube_link)
+    stream = yt.streams.filter(progressive=True, file_extension='mp4').first()
+    video_file_path = stream.download(output_path)
 
-async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastGuid, language, model, batch_size, device):
-    audioFileName = ""
+    # Convert the video to WAV format
+    audio_file_path = video_file_path.replace('.mp4', '.wav')
+    video = VideoFileClip(video_file_path)
+    video.audio.write_audiofile(audio_file_path, codec='pcm_s16le')
+
+    return audio_file_path
+
+async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastGuid, language, batch_size, device):
+    print("Loading the model which is", model_size)
+
+    audioFileName = os.path.join(os.getcwd(), "audio.wav")
 
     # Delete any file that begins with 'audio' in the folder to avoid retranscribing
     for file in os.listdir():
@@ -74,7 +123,7 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
     # It's not a video just save the audiofile
     else:
         # Name of the audioFileName
-        audioFileName = "audio.wav"
+        print(os.getcwd())
 
         # Save the audio file
         with open(audioFileName, "wb") as f:
@@ -90,7 +139,8 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
 
         # Loading audio
         print("Loading audio")
-        audio = model.load_audio(audioFileName)
+        print("The audioFileName is: ", audioFileName);
+        audio = whisperx.load_audio(audioFileName)
 
         # Transcribing...
         print("Transcribing ...", episodeTitle,
@@ -117,7 +167,7 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         segments = filtered_segments
 
         # Load the model alignment model
-        model_a, metadata = model.load_align_model(
+        model_a, metadata = whisperx.load_align_model(
             language_code="en",
             device=device,
             model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english",
@@ -125,7 +175,7 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
 
         # Aligning the segments in accordance to the audio now
         print("Aligning the segments in accordance to the audio now")
-        result_aligned = model.align(
+        result_aligned = whisperx.align(
             segments,
             model_a,
             metadata,
@@ -133,8 +183,6 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
             device=device,
             return_char_alignments=False,
         )
-        # df = pd.DataFrame(result_aligned["segments"])
-        # jsonData = json.loads(df.to_json(orient="records"))
         print("Time elapsed in seconds: ", time.time() - startTime)
 
         # Save it
@@ -160,7 +208,30 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
     transcriptionData["belongsToEpisodeGuid"] = belongsToEpisodeGuid
     transcriptionData["text"] = text
     transcriptionData["language"] = language
+    
+    # Find the youtube link associated with the episodeTitle
+    videosSearch = VideosSearch(episodeTitle, limit = 1)
+    videosResult = videosSearch.result()
+    similarityScore = getSimilarityScore(episodeTitle, videosResult[0]["title"])
+    if similarityScore > 0.7:
+        transcriptionData["youtubeVideoLink"] = videosResult[0]["link"]
+    else:
+        transcriptionData["youtubeVideoLink"] = ""
 
+    results = {}
+    if transcriptionData["youtubeVideoLink"]:
+        # Download the youtube video
+        download_and_convert_to_wav(transcriptionData["youtubeVideoLink"], "videoAudio.wav")
+        
+        # Then find offset
+        results = find_offset_between_files("audio.wav", "videoAudio.wav", trim=2000)
+    
+    # To find the offset
+    if results["time_offset"]:
+        transcriptionData["deviationTime"] = results["time_offset"]
+    else:
+        transcriptionData["deviationTime"] = 0
+    
     # Save the transcriptionDataObject as a JSON
     transcriptionFileName = belongsToEpisodeGuid + ".json"
 
@@ -175,20 +246,17 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
     except Exception as e:
         print("Error with saving transcriptionData:", e)
 
-# Main transcriber function
-# We will rather pass the the url with some other info to the python function directly and do the locking inside with javascript as its more concice and allows us to lock in a better manner and that way we can also avoid having the extra prisma file here as well and we can avoid having the env file in two different places.
-async def main(episodeLink, episodeTitle, episodeGuid, podcastGuid, language):
-    # 1. Transcribe with original whisper (batched)
-    model = whisperx.load_model(model_size, device, compute_type=compute_type)
+# Main transcriber api route
+@app.post("/transcribe")
+async def transcribe(data: TranscribeData):
+    try:
+        print("Starting transcription of :", data.episodeTitle)
+        await transcribeAndSaveJson(data.episodeLink, data.episodeTitle, data.episodeGuid, data.podcastGuid, data.language, batch_size, device)
+        print("Done with episode: ", data.episodeTitle, "Next!")
+        
+        return {"status": "True"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    # Transcribe
-    print("Transcribing:", episodeTitle)
-    
-    # It just saves the transcriptionFile as a .json
-    await transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastGuid, language, model, batch_size, device)
-    print("Done with episode: ", episodeTitle, "Next!")
-
-
-# Run the transcriber
 if __name__ == "__main__":
-    asyncio.run(main())
+    uvicorn.run(app, host="0.0.0.0", port=5000)
