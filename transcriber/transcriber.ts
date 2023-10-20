@@ -1,9 +1,11 @@
 import * as fs from "fs";
 import { PrismaClient, Episode, Segment, Transcription } from "@prisma/client";
-import { spawn } from "child_process";
 import axios from "axios";
 
-async function getEpisodeWithLock(prisma: PrismaClient): Promise<Episode | null> {
+// Establish connection
+const prisma: PrismaClient = new PrismaClient();
+
+async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
     const results = await prisma.$transaction([
       prisma.$queryRawUnsafe(`
@@ -34,7 +36,7 @@ async function getEpisodeWithLock(prisma: PrismaClient): Promise<Episode | null>
   }
 }
 
-async function insertJsonFilesToDb(prisma: PrismaClient) {
+async function insertJsonFilesToDb() {
   try {
     console.log("Checking if any new jsons have been added");
 
@@ -113,7 +115,7 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
       });
 
       // Delete the file after it has been inserted into the database
-      fs.unlinkSync(filename);
+      // fs.unlinkSync(filename);
     }
   } catch (e) {
     console.log("Error: ", e);
@@ -121,13 +123,11 @@ async function insertJsonFilesToDb(prisma: PrismaClient) {
 }
 
 const transcribe = async () => {
-  // Establish connection
-  const prisma: PrismaClient = new PrismaClient();
-
+  
   // Grab an episode that has transcribedValue = false
   // Lock the row such that no other scripts can grab it.
   while (true) {
-    const episode: Episode | null = await getEpisodeWithLock(prisma);
+    const episode: Episode | null = await getEpisodeWithLock();
 
     // Is episode undefined
     if (!episode) {
@@ -138,8 +138,8 @@ const transcribe = async () => {
     // Call the Python script and pass the necessary arguments
     try {
       await runPythonScript(episode);
-      console.log("Transcription completed and JSON saved.");
-      await insertJsonFilesToDb(prisma);
+      console.log("<  ==  > Transcription completed and JSON saved <  ==  > ");
+      await insertJsonFilesToDb();
       console.log("Finished adding the json to the db. Running again:");
     } catch (e) {
       console.log(e);
@@ -166,10 +166,10 @@ async function runPythonScript(episode: Episode) {
       language: "en",
     });
 
-    console.log(`Response from Flask: ${response.data.result}`);
+    console.log(`Response from API: ${response.data.result}`);
     return Promise.resolve();
   } catch (error: any) {
-    console.error(`Error calling Flask API: ${error.message}`);
+    console.error(`Error calling API: ${error.message}`);
     console.log("Updating episode isTranscribed back to correct false value", episode.episodeGuid);
     return Promise.reject(error);
   }
