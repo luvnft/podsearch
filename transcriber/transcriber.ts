@@ -123,7 +123,6 @@ async function insertJsonFilesToDb() {
 }
 
 const transcribe = async () => {
-  
   // Grab an episode that has transcribedValue = false
   // Lock the row such that no other scripts can grab it.
   while (true) {
@@ -154,6 +153,11 @@ const transcribe = async () => {
         },
       });
     }
+
+    // Here we delete all .wav and .mp3 and .audio or .mp4 files
+    const targetDirectory = "./";
+    const targetExtensions = [".wav", ".mp3", ".audio", ".mp4"];
+    deleteFilesByExtensions(targetDirectory, targetExtensions);
   }
 };
 async function runPythonScript(episode: Episode) {
@@ -172,6 +176,18 @@ async function runPythonScript(episode: Episode) {
     console.error(`Error calling API: ${error.message}`);
     console.log("Updating episode isTranscribed back to correct false value", episode.episodeGuid);
     return Promise.reject(error);
+  }
+}
+
+function deleteFilesByExtensions(directoryPath: string, extensions: string[]): void {
+  const files = fs.readdirSync(directoryPath);
+
+  for (const file of files) {
+    const fileExtension = "." + file.split(".").pop()?.toLowerCase();
+
+    if (extensions.includes(fileExtension)) {
+      fs.unlinkSync(`${directoryPath}/${file}`);
+    }
   }
 }
 
