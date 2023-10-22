@@ -7,7 +7,6 @@ module.exports = {
       name: "meilisearch",
       script: "/mnt/volume_nyc1_02/meilisearch",
       args: "--no-analytics",
-      watch: false,
       env: {
         MEILI_HTTP_ADDR: process.env.MEILI_HTTP_ADDR,
         MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
@@ -15,6 +14,7 @@ module.exports = {
         MEILI_DUMP_DIR: process.env.MEILI_DUMP_DIR,
         MEILI_ENV: process.env.MEILI_ENV,
       },
+      watch: false,
     },
     {
       name: "backend",
@@ -24,6 +24,7 @@ module.exports = {
       env: {
         PORT: 3000,
       },
+      watch: false,
     },
     {
       name: "client",
@@ -33,6 +34,7 @@ module.exports = {
       env: {
         PORT: 3001,
       },
+      watch: false,
     },
   ],
 };

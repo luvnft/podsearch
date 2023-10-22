@@ -34,11 +34,11 @@ const initializeApp = async () => {
     });
 
     // Workers
-    startIndexer("*/5 * * * *");
     console.log("Indexer started!");
+    startIndexer("*/5 * * * *");
 
-    startRssCrawler("*/11 * * * *");
     console.log("RSS Crawler started!");
+    startRssCrawler("*/11 * * * *");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);

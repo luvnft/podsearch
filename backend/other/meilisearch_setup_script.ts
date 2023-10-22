@@ -1,9 +1,10 @@
 import { MeiliSearch } from "meilisearch";
+require("dotenv").config({ path: "../../.env" });
 
 // Load the environment variables from the .env file
 async function main() {
   console.log("Running getTasks");
-  const client = new MeiliSearch({ host: "https://meilisearch.poddley.com" });
+  const client = new MeiliSearch({ host: process.env.MEILI_HOST_URL as string, apiKey: process.env.MEILI_MASTER_KEY });
 
   const transcriptionsIndex = await client.index("transcriptions");
   const segmentsIndex = await client.index("segments");
