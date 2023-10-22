@@ -21,7 +21,7 @@ module.exports = {
       restart_delay: 3000,
       env: {
         PORT: 3000,
-      },
+      }, 
       watch: false,
     },
     {
