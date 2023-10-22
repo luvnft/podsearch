@@ -23,7 +23,7 @@ async function main() {
     primaryKey: "id",
   });
   console.log("Adding episodes, the number to add is:", episodes.length, "we're overwriting all of them essentially.");
-  await episodesIndex.deleteAllDocuments()
+  await episodesIndex.deleteAllDocuments();
   await episodesIndex.addDocumentsInBatches(episodes, 500, {
     primaryKey: "id",
   });
@@ -148,6 +148,16 @@ function start(cronExpression: string) {
     }
   });
 }
+process.on("SIGINT", () => {
+  console.log("Received SIGINT. Cleaning up...");
+  // Your cleanup code here, e.g., closing database connections, servers, etc.
+  process.exit(0);
+});
 
+process.on("SIGTERM", () => {
+  console.log("Received SIGTERM. Cleaning up...");
+  // Your cleanup code here.
+  process.exit(0);
+});
 
 export { start };

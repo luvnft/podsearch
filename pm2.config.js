@@ -15,23 +15,23 @@ module.exports = {
       },
       watch: false,
     },
-    // {
-    //   name: "backend",
-    //   script: "npm run production:runBackend",
-    //   restart_delay: 3000,
-    //   env: {
-    //     PORT: 3000,
-    //   },
-    //   watch: false,
-    // },
-    // {
-    //   name: "client",
-    //   script: "npm run production:runClient",
-    //   restart_delay: 3000,
-    //   env: {
-    //     PORT: 3001,
-    //   },
-    //   watch: false,
-    // },
+    {
+      name: "backend",
+      script: "npm run production:runBackend",
+      restart_delay: 3000,
+      env: {
+        PORT: 3000,
+      },
+      watch: false,
+    },
+    {
+      name: "client",
+      script: "npm run production:runClient",
+      restart_delay: 3000,
+      env: {
+        PORT: 3001,
+      },
+      watch: false,
+    },
   ],
 };
