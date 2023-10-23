@@ -62,7 +62,7 @@ async function main() {
     console.log("Adding transcriptions: ", transcriptions.length, "i is: ", i);
 
     var ids = transcriptions.map((e) => e.id);
-    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 50, {
+    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 10, {
       primaryKey: "id",
     });
 
@@ -85,7 +85,7 @@ async function main() {
   console.log("Now adding segments...");
 
   // Number of segments to index at a time
-  let segmentTake = 10000;
+  let segmentTake = 4000;
 
   //We loop through all the segments
   for (let i = 0; i < segmentCount; i = i + segmentTake) {
