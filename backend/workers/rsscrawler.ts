@@ -106,9 +106,6 @@ async function gatherPodcastsFromJsonFile(): Promise<{ [key: string]: any }[]> {
   const jsonData = fs.readFileSync("./podcasts/podcasts.json", "utf8");
   const podcasts = JSON.parse(jsonData);
 
-  // Create an index on the titles to make the query faster
-  db.exec("CREATE INDEX IF NOT EXISTS titleIndex ON podcasts (title)");
-
   // Array to store all objects to insert
   const objectsToInsert: any[] = [];
 
@@ -116,26 +113,11 @@ async function gatherPodcastsFromJsonFile(): Promise<{ [key: string]: any }[]> {
   for (const title of Object.keys(podcasts)) {
     console.log("====>Title: ", title);
 
-    let stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title = ? LIMIT 1");
+    let stmt = db.prepare("SELECT * FROM podcasts  WHERE title = ? LIMIT 1");
     let podcast: Podcast = (await stmt.get(title)) as Podcast;
 
     if (!podcast) {
-      console.log("Trying LIKE query for title: ", title);
-      stmt = db.prepare("SELECT * FROM podcasts INDEXED BY titleIndex WHERE title LIKE ? LIMIT 1");
-      podcast = (await stmt.get(`%${title}%`)) as Podcast;
-
-      if (!podcast) {
-        console.log("Didn't find title with LIKE either: ", title);
-        continue;
-      } else if (podcast.title !== title) {
-        console.log("Found title with LIKE but it's not an exact match: ", podcast.title);
-
-        // Delete the podcast from the database
-        const deleteStmt = db.prepare("DELETE FROM podcasts WHERE title = ?");
-        deleteStmt.run(podcast.title);
-        console.log("Deleted podcast with title: ", podcast.title);
-        continue;
-      }
+      continue;
     }
 
     objectsToInsert.push(podcast);
@@ -180,8 +162,9 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
 
   for (const episodeData of feed.items) {
     if (!episodeData) {
-      console.log(episodeData);
+      continue;
     }
+
     const episode = {
       title: episodeData?.title || "",
       link: episodeData?.link || episodeData?.enclosure?.url,
@@ -192,10 +175,6 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
       language: language || "en",
       duration: episodeData?.enclosure?.length || "0",
     };
-
-    if (Object.values(episode).some((value: any) => !value)) {
-      continue;
-    }
 
     episodes.push({
       episodeTitle: cleanString(episode.title),
@@ -216,6 +195,8 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
       errorCount: 0,
     });
   }
+
+  console.log("The number of returned episodes is: ", episodes.length);
   return episodes;
 }
 
@@ -291,12 +272,13 @@ async function main() {
 
   // Getting the RSS-FeedUrls and the podcastGuids
   const podcasts: GuidAndFeedAndLangAndTitle[] = await getGuidsAndFeedUrls(prisma);
-  const rssFeedUrls: string[] = podcasts.map((p: any) => p.originalUrl);
+  const rssFeedUrls: string[] = podcasts.map((p: any) => p.url);
   const rssFeedUrlsFallback: string[] = podcasts.map((p: any) => p.url);
   const podcastGuids: string[] = podcasts.map((p: any) => p.podcastGuid);
   const podcastLanguages: string[] = podcasts.map((p: any) => p.language);
   const podcastTitles: string[] = podcasts.map((p: any) => p.title);
 
+  console.log("List of podcasts: ", podcasts.length);
   // Now looping over the episodes
   for (let i = 0; i < podcasts.length; i++) {
     const podcastRssFeedUrl: string = rssFeedUrls[i];
@@ -306,33 +288,61 @@ async function main() {
     const podcastTitle: string = podcastTitles[i];
     console.log("Processing: ", podcastRssFeedUrl);
     const episodes: Episode[] | undefined = await processRssFeedUrl(podcastRssFeedUrl, podcastguid, podcastLanguage, podcastRssFeedUrlFallback);
-    if (!episodes) continue;
+    if (!episodes || episodes.length === 0) continue;
 
     //Add the episodes lolol'
     console.log("I: ", i);
     console.log("Adding episodes for podcast: ", JSON.stringify(podcastTitle));
-    await prisma.episode.createMany({ data: episodes, skipDuplicates: true });
+    console.log("Episodes to: ", episodes.length);
+
+    await prisma.episode.createMany({
+      data: episodes,
+      skipDuplicates: true,
+    });
     console.log("Done adding episodes for podcast: ", podcastTitle);
   }
 
   console.log("Finished crawling the rss-feeds of the db.");
 }
 
+let isRunning = false;
+
 function start(cronExpression: string) {
   console.log("Cron-job rsscrawler is turned ON.");
+
   if (!cron.validate(cronExpression)) {
     console.error("Invalid cron expression.");
     return;
   }
 
   cron.schedule(cronExpression, async () => {
+    if (isRunning) {
+      console.warn("Previous rss-crawling is still running. Skipping this run.");
+      return;
+    }
+
+    isRunning = true;
     try {
       await main();
       console.log(`Rss-crawling completed. Scheduled for next run as per ${cronExpression}.`);
     } catch (err) {
       console.error("Failed to run the main function:", err);
+    } finally {
+      isRunning = false; // Ensure that the flag is reset even if there's an error.
     }
   });
 }
+
+process.on('SIGINT', () => {
+  console.log('Received SIGINT. Cleaning up...');
+  // Your cleanup code here, e.g., closing database connections, servers, etc.
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. Cleaning up...');
+  // Your cleanup code here.
+  process.exit(0);
+});
 
 export { start };

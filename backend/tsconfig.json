@@ -1,5 +1,4 @@
 {
-  "extends": "./client/.nuxt/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "noImplicitAny": false,
@@ -14,6 +13,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "outDir": "./dist"
+  },
 }

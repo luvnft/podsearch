@@ -18,11 +18,13 @@ async function main() {
 
   //Always updating these as they have important values which may change
   console.log("Adding podcasts, the number to add is:", podcasts.length, "we're overwriting all of them essentially");
+  await podcastsIndex.deleteAllDocuments();
   await podcastsIndex.addDocumentsInBatches(podcasts, 500, {
     primaryKey: "id",
   });
   console.log("Adding episodes, the number to add is:", episodes.length, "we're overwriting all of them essentially.");
-  await episodesIndex.updateDocumentsInBatches(episodes, 500, {
+  await episodesIndex.deleteAllDocuments();
+  await episodesIndex.addDocumentsInBatches(episodes, 500, {
     primaryKey: "id",
   });
 
@@ -60,7 +62,7 @@ async function main() {
     console.log("Adding transcriptions: ", transcriptions.length, "i is: ", i);
 
     var ids = transcriptions.map((e) => e.id);
-    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 50, {
+    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 10, {
       primaryKey: "id",
     });
 
@@ -83,7 +85,7 @@ async function main() {
   console.log("Now adding segments...");
 
   // Number of segments to index at a time
-  let segmentTake = 10000;
+  let segmentTake = 4000;
 
   //We loop through all the segments
   for (let i = 0; i < segmentCount; i = i + segmentTake) {
@@ -119,21 +121,43 @@ async function main() {
   }
 }
 
+let isRunning = false;
+
 function start(cronExpression: string) {
-  console.log("Cron-job indexer is turned ON.")
+  console.log("Cron-job rsscrawler is turned ON.");
+
   if (!cron.validate(cronExpression)) {
     console.error("Invalid cron expression.");
     return;
   }
 
   cron.schedule(cronExpression, async () => {
+    if (isRunning) {
+      console.warn("Previous Indexer is still running. Skipping this run.");
+      return;
+    }
+
+    isRunning = true;
     try {
       await main();
-      console.log(`Indexing completed. Scheduled for next run as per ${cronExpression}.`);
+      console.log(`Indexer completed. Scheduled for next run as per ${cronExpression}.`);
     } catch (err) {
       console.error("Failed to run the main function:", err);
+    } finally {
+      isRunning = false; // Ensure that the flag is reset even if there's an error.
     }
   });
 }
+process.on("SIGINT", () => {
+  console.log("Received SIGINT. Cleaning up...");
+  // Your cleanup code here, e.g., closing database connections, servers, etc.
+  process.exit(0);
+});
+
+process.on("SIGTERM", () => {
+  console.log("Received SIGTERM. Cleaning up...");
+  // Your cleanup code here.
+  process.exit(0);
+});
 
 export { start };
