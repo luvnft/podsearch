@@ -151,7 +151,7 @@ async function insertJsonFilesToDb() {
       words.sort((a: TranscriptionWordType, b: TranscriptionWordType) => a.start - b.start);
 
       // Now we create the segments
-      let word: TranscriptionWordType;
+      let word: TranscriptionWordType | undefined = undefined;
       let concatenatedWord: string = "";
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
@@ -183,10 +183,10 @@ async function insertJsonFilesToDb() {
       }
 
       // Dealing with leftovers
-      if (word !== null && concatenatedWord) {
+      if (word && concatenatedWord) {
         newSegments.push({
           start: startTime,
-          end: word.end,
+          end: word?.end,
           language: language,
           belongsToPodcastGuid: belongsToPodcastGuid,
           belongsToEpisodeGuid: belongsToEpisodeGuid,
