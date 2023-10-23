@@ -245,7 +245,7 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
             print("Done downloading and converting it to audio.")
             
             # Then find offset
-            results = find_offset_between_files("audio.wav", "videoAudio.wav", trim=2000)
+            results = find_offset_between_files("audio.wav", "videoAudio.wav")
             print("Results from timeoffsetcalculation:", results)
             if hasattr(results, "time_offset"): 
                 transcriptionData["deviationTime"] = results["time_offset"]
