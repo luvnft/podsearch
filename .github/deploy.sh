@@ -23,6 +23,9 @@ git clean -f -d
 git clean -f
 git pull origin master || handle_error "Failed to pull from master."
 
+# Regenerate prisma client
+prisma generate --schema="./backend/prisma/schema.prisma"
+
 # Install dependencies
 npm install || handle_error "npm install failed."
 
@@ -36,4 +39,5 @@ pm2 restart client || handle_error "Failed to restart client using pm2."
 # Restart the client
 pm2 restart backend || handle_error "Failed to restart backend using pm2."
 
+# Print
 echo "Finished deploying Poddley"
