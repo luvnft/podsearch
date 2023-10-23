@@ -97,50 +97,19 @@ async function insertJsonFilesToDb() {
 
       const transcriptionId = transcriptionData.id;
 
-      // Prepare segments data for insertion
-      const segmentData: any[] = [];
-
-      for (let i = 0; i < segments.length; i++) {
-        const segment: Segment = segments[i];
-
-        if (segment.end - segment.start < 10) {
-          segmentData.push({
-            start: segment.start,
-            end: segment.end,
-            language,
-            belongsToPodcastGuid,
-            belongsToEpisodeGuid,
-            belongsToTranscriptId: transcriptionId,
-            text: segment.text,
-            indexed: false,
-          });
-        } else {
-          let segmentStart = segment.start;
-          const words = segment.text.split(" ");
-
-          while (segmentStart < segment.end) {
-            let segmentEnd = segmentStart + 10 > segment.end ? segment.end : segmentStart + 10;
-
-            // Determine the number of words for this fragment
-            let fragmentWordsCount = Math.round((words.length * (segmentEnd - segmentStart)) / (segment.end - segment.start));
-            let fragmentWords = words.splice(0, fragmentWordsCount);
-            let fragmentText = fragmentWords.join(" ");
-
-            segmentData.push({
-              start: segmentStart,
-              end: segmentEnd,
-              language,
-              belongsToPodcastGuid,
-              belongsToEpisodeGuid,
-              belongsToTranscriptId: transcriptionId,
-              text: fragmentText,
-              indexed: false,
-            });
-
-            segmentStart = segmentEnd;
-          }
-        }
-      }
+      // Prepare segments data for insertionsegment
+      const segmentData: any[] = segments.map((segment: Segment) => {
+        return {
+          start: segment.start,
+          end: segment.end,
+          language,
+          belongsToPodcastGuid,
+          belongsToEpisodeGuid,
+          belongsToTranscriptId: transcriptionId,
+          text: segment.text,
+          indexed: false,
+        };
+      });
 
       // Insert segments using createMany
       console.log("Adding segments to DB");

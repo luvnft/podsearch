@@ -1,9 +1,28 @@
+import { Segment } from "@prisma/client";
 import { meilisearchConnection } from "../connections/meilisearchConnection";
 import { prismaConnection } from "../connections/prismaConnection";
 import cron from "node-cron";
 
 async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function splitSegments(segments: Segment[], maxChars: number): Segment[] {
+  const newSegments: Segment[] = [];
+
+  for (let i = 0; i < segments.length; i++) {
+    const segment: Segment = segments[i];
+
+    // Another alternative is to use the wordtimestamps instead to generate the segments.
+
+    // Essentially. You loop through all the segments.
+    // For each segment you loop over the words within and you append the words to a new temporary array.
+
+    // You concatenate a string and you count the lenght of chars, if it's 38 then you generate a segment and you add it ot the generatedSegments list Where the startValue is the startValue of the wfirst wordTimeStamp segment and the last end value is the last wordTimeStamp value .
+
+    //  And then you just continue with thi and in this way ytou will get very nice segments for the entire thing :)))))) ) ) ) ) )
+  }
+  return newSegments;
 }
 
 async function main() {
@@ -99,6 +118,28 @@ async function main() {
 
     if (!segments || segments.length === 0) break;
     console.log("Number of segments now going to add is: ", segments.length, " and the i is: ", i);
+
+    // We gotta preprocess the segments to do the following:
+    // We gotta sort them by "start" from 0 => and up
+    // Then we gotta pick 1 segment, check if it has more than 5 words, if it doesnt we just add it to the segments
+    // If it doesn't we have to slice it down to 5 words and change the currentValue to the startValue to keep the correct
+
+    const segmentData: any[] = [];
+    segments.forEach((segment: Segment) => {
+      const subSegments = splitSegment(segment);
+      subSegments.forEach((subSegment) => {
+        segmentData.push({
+          start: subSegment.start,
+          end: subSegment.end,
+          language,
+          belongsToPodcastGuid,
+          belongsToEpisodeGuid,
+          belongsToTranscriptId: transcriptionId,
+          text: subSegment.text,
+          indexed: false,
+        });
+      });
+    });
 
     var ids = segments.map((e) => e.id);
     await segmentsIndex.addDocumentsInBatches(segments, segmentTake, {

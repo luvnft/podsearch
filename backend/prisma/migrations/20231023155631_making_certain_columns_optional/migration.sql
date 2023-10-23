@@ -1,0 +1,19 @@
+-- AlterTable
+ALTER TABLE `Episode` MODIFY `indexed` BOOLEAN NULL DEFAULT false,
+    MODIFY `errorCount` INTEGER NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE `Podcast` MODIFY `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `updatedAt` DATETIME(3) NULL,
+    MODIFY `youtubeChannel` VARCHAR(191) NULL DEFAULT '',
+    MODIFY `indexed` BOOLEAN NULL DEFAULT false;
+
+-- AlterTable
+ALTER TABLE `Segment` MODIFY `indexed` BOOLEAN NULL DEFAULT false,
+    MODIFY `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `Transcription` MODIFY `indexed` BOOLEAN NULL DEFAULT false,
+    MODIFY `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `updatedAt` DATETIME(3) NULL;
