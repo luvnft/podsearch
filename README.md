@@ -150,7 +150,6 @@ A meilisearch instance running with the following settings (all indexes use the 
 	    "limit": 20,
 	    "total": 4
 	}
-
 ```
 </details>
 
@@ -160,46 +159,46 @@ A meilisearch instance running with the following settings (all indexes use the 
 	
 ```
 	{
-    "displayedAttributes": [
-        "*"
-    ],
-    "searchableAttributes": [
-        "*"
-    ],
-    "filterableAttributes": [
-        "podcastGuid"
-    ],
-    "sortableAttributes": [],
-    "rankingRules": [
-        "words",
-        "typo",
-        "proximity",
-        "attribute",
-        "sort",
-        "exactness"
-    ],
-    "stopWords": [],
-    "synonyms": {},
-    "distinctAttribute": null,
-    "typoTolerance": {
-        "enabled": true,
-        "minWordSizeForTypos": {
-            "oneTypo": 5,
-            "twoTypos": 9
-        },
-        "disableOnWords": [],
-        "disableOnAttributes": []
-    },
-    "faceting": {
-        "maxValuesPerFacet": 100,
-        "sortFacetValuesBy": {
-            "*": "alpha"
-        }
-    },
-    "pagination": {
-        "maxTotalHits": 1000
-    }
-}
+	    "displayedAttributes": [
+	        "*"
+	    ],
+	    "searchableAttributes": [
+	        "*"
+	    ],
+	    "filterableAttributes": [
+	        "podcastGuid"
+	    ],
+	    "sortableAttributes": [],
+	    "rankingRules": [
+	        "words",
+	        "typo",
+	        "proximity",
+	        "attribute",
+	        "sort",
+	        "exactness"
+	    ],
+	    "stopWords": [],
+	    "synonyms": {},
+	    "distinctAttribute": null,
+	    "typoTolerance": {
+	        "enabled": true,
+	        "minWordSizeForTypos": {
+	            "oneTypo": 5,
+	            "twoTypos": 9
+	        },
+	        "disableOnWords": [],
+	        "disableOnAttributes": []
+	    },
+	    "faceting": {
+	        "maxValuesPerFacet": 100,
+	        "sortFacetValuesBy": {
+	            "*": "alpha"
+	        }
+	    },
+	    "pagination": {
+	        "maxTotalHits": 1000
+	    }
+	}
 ```
 
 </details>
@@ -210,48 +209,48 @@ A meilisearch instance running with the following settings (all indexes use the 
 	
 ```
 	{
-    "displayedAttributes": [
-        "*"
-    ],
-    "searchableAttributes": [
-        "*"
-    ],
-    "filterableAttributes": [
-        "episodeGuid"
-    ],
-    "sortableAttributes": [
-        "addedDate"
-    ],
-    "rankingRules": [
-        "words",
-        "typo",
-        "proximity",
-        "attribute",
-        "sort",
-        "exactness"
-    ],
-    "stopWords": [],
-    "synonyms": {},
-    "distinctAttribute": null,
-    "typoTolerance": {
-        "enabled": true,
-        "minWordSizeForTypos": {
-            "oneTypo": 5,
-            "twoTypos": 9
-        },
-        "disableOnWords": [],
-        "disableOnAttributes": []
-    },
-    "faceting": {
-        "maxValuesPerFacet": 100,
-        "sortFacetValuesBy": {
-            "*": "alpha"
-        }
-    },
-    "pagination": {
-        "maxTotalHits": 1000
-    }
-}
+	    "displayedAttributes": [
+	        "*"
+	    ],
+	    "searchableAttributes": [
+	        "*"
+	    ],
+	    "filterableAttributes": [
+	        "episodeGuid"
+	    ],
+	    "sortableAttributes": [
+	        "addedDate"
+	    ],
+	    "rankingRules": [
+	        "words",
+	        "typo",
+	        "proximity",
+	        "attribute",
+	        "sort",
+	        "exactness"
+	    ],
+	    "stopWords": [],
+	    "synonyms": {},
+	    "distinctAttribute": null,
+	    "typoTolerance": {
+	        "enabled": true,
+	        "minWordSizeForTypos": {
+	            "oneTypo": 5,
+	            "twoTypos": 9
+	        },
+	        "disableOnWords": [],
+	        "disableOnAttributes": []
+	    },
+	    "faceting": {
+	        "maxValuesPerFacet": 100,
+	        "sortFacetValuesBy": {
+	            "*": "alpha"
+	        }
+	    },
+	    "pagination": {
+	        "maxTotalHits": 1000
+	    }
+	}
 ```
 
 </details>
@@ -262,42 +261,42 @@ A meilisearch instance running with the following settings (all indexes use the 
 	
 ```
 	{
-    "displayedAttributes": [
-        "*"
-    ],
-    "searchableAttributes": [
-        "transcription"
-    ],
-    "filterableAttributes": [],
-    "sortableAttributes": [],
-    "rankingRules": [
-        "exactness",
-        "proximity",
-        "typo",
-        "words"
-    ],
-    "stopWords": [],
-    "synonyms": {},
-    "distinctAttribute": null,
-    "typoTolerance": {
-        "enabled": true,
-        "minWordSizeForTypos": {
-            "oneTypo": 5,
-            "twoTypos": 9
-        },
-        "disableOnWords": [],
-        "disableOnAttributes": []
-    },
-    "faceting": {
-        "maxValuesPerFacet": 100,
-        "sortFacetValuesBy": {
-            "*": "alpha"
-        }
-    },
-    "pagination": {
-        "maxTotalHits": 1000
-    }
-}
+	    "displayedAttributes": [
+	        "*"
+	    ],
+	    "searchableAttributes": [
+	        "transcription"
+	    ],
+	    "filterableAttributes": [],
+	    "sortableAttributes": [],
+	    "rankingRules": [
+	        "exactness",
+	        "proximity",
+	        "typo",
+	        "words"
+	    ],
+	    "stopWords": [],
+	    "synonyms": {},
+	    "distinctAttribute": null,
+	    "typoTolerance": {
+	        "enabled": true,
+	        "minWordSizeForTypos": {
+	            "oneTypo": 5,
+	            "twoTypos": 9
+	        },
+	        "disableOnWords": [],
+	        "disableOnAttributes": []
+	    },
+	    "faceting": {
+	        "maxValuesPerFacet": 100,
+	        "sortFacetValuesBy": {
+	            "*": "alpha"
+	        }
+	    },
+	    "pagination": {
+	        "maxTotalHits": 1000
+	    }
+	}
 ```
 
 </details>
@@ -308,52 +307,52 @@ A meilisearch instance running with the following settings (all indexes use the 
 	
 ```
 	{
-    "displayedAttributes": [
-        "*"
-    ],
-    "searchableAttributes": [
-        "text"
-    ],
-    "filterableAttributes": [
-        "belongsToEpisodeGuid",
-        "belongsToPodcastGuid",
-        "belongsToTranscriptGuid",
-        "end",
-        "id",
-        "start"
-    ],
-    "sortableAttributes": [
-        "start"
-    ],
-    "rankingRules": [
-        "exactness",
-        "sort",
-        "proximity",
-        "typo",
-        "words"
-    ],
-    "stopWords": [],
-    "synonyms": {},
-    "distinctAttribute": null,
-    "typoTolerance": {
-        "enabled": true,
-        "minWordSizeForTypos": {
-            "oneTypo": 5,
-            "twoTypos": 9
-        },
-        "disableOnWords": [],
-        "disableOnAttributes": []
-    },
-    "faceting": {
-        "maxValuesPerFacet": 200,
-        "sortFacetValuesBy": {
-            "*": "alpha"
-        }
-    },
-    "pagination": {
-        "maxTotalHits": 5000
-    }
-}
+	    "displayedAttributes": [
+	        "*"
+	    ],
+	    "searchableAttributes": [
+	        "text"
+	    ],
+	    "filterableAttributes": [
+	        "belongsToEpisodeGuid",
+	        "belongsToPodcastGuid",
+	        "belongsToTranscriptGuid",
+	        "end",
+	        "id",
+	        "start"
+	    ],
+	    "sortableAttributes": [
+	        "start"
+	    ],
+	    "rankingRules": [
+	        "exactness",
+	        "sort",
+	        "proximity",
+	        "typo",
+	        "words"
+	    ],
+	    "stopWords": [],
+	    "synonyms": {},
+	    "distinctAttribute": null,
+	    "typoTolerance": {
+	        "enabled": true,
+	        "minWordSizeForTypos": {
+	            "oneTypo": 5,
+	            "twoTypos": 9
+	        },
+	        "disableOnWords": [],
+	        "disableOnAttributes": []
+	    },
+	    "faceting": {
+	        "maxValuesPerFacet": 200,
+	        "sortFacetValuesBy": {
+	            "*": "alpha"
+	        }
+	    },
+	    "pagination": {
+	        "maxTotalHits": 5000
+	    }
+	}
 ```
 
 </details>
@@ -373,21 +372,22 @@ A meilisearch instance running with the following settings (all indexes use the 
 <details>
   <summary>Nginx Settings</summary>
 	
+# For meilisearch.poddley.com
 ```
-	# For meilisearch.poddley.com
 	server {
 	    listen 80;
-	    listen [::]:80;
-	
 	    server_name meilisearch.poddley.com;
 	
+	    # Add this line to increase max upload size
+	    client_max_body_size 30M;
+	
 	    location / {
-	        proxy_pass http://localhost:7700;
-	        proxy_http_version 1.1;
-	        proxy_set_header Upgrade $http_upgrade;
-	        proxy_set_header Connection 'upgrade';
-	        proxy_set_header Host $host;
-	        proxy_cache_bypass $http_upgrade;
+		proxy_pass http://localhost:7700;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
 	    }
 	
 	    listen 443 ssl;
@@ -397,23 +397,40 @@ A meilisearch instance running with the following settings (all indexes use the 
 	    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 	}
 	
-	# For all other routes (default server)
 	server {
-	    listen 80 default_server;
-	    listen [::]:80 default_server;
+	    listen 80;
+	    server_name poddley.com;
 	
+	    location / {
+		proxy_pass http://localhost:3001;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
+	    }
+	
+	    listen 443 ssl; # managed by Certbot
+	    ssl_certificate /etc/letsencrypt/live/poddley.com/fullchain.pem; # managed by Certbot
+	    ssl_certificate_key /etc/letsencrypt/live/poddley.com/privkey.pem; # managed by Certbot
+	    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+	}
+	
+	server {
+	    listen 80;
 	    server_name api.poddley.com;
 	
 	    # Add this line to increase max upload size
 	    client_max_body_size 30M;
 	
 	    location / {
-	        proxy_pass http://localhost:3000/;
-	        proxy_http_version 1.1;
-	        proxy_set_header Upgrade $http_upgrade;
-	        proxy_set_header Connection 'upgrade';
-	        proxy_set_header Host $host;
-	        proxy_cache_bypass $http_upgrade;
+		proxy_pass http://localhost:3000;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
 	    }
 	
 	    listen 443 ssl;
