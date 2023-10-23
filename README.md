@@ -3,6 +3,9 @@
 ## Main Goal:
 The main goal of the website/service is to be the "*Shazam*" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages and episode-links. Additionally, it aims to be a discovery platform, helping people explore and find a wide range of podcast content based on spoken word.
 
+## Project 
+[Link to Poddley](https://poddley.com)
+
 ## Status 
 Finished (with potential housekeeping)
 
@@ -11,9 +14,6 @@ Finished (with potential housekeeping)
 
 ## Status build
 [![CI/CD Pipeline](https://github.com/lukamo1996/poddley/actions/workflows/cicd.yml/badge.svg)](https://github.com/lukamo1996/poddley/actions/workflows/cicd.yml)
-
-## Project 
-[Link to Poddley](https://poddley.com)
 
 ## Design iterations
 <img src="https://github.com/lukamomc/poddley/assets/52632596/021db789-806d-4822-8621-3df6d737a34d" width="23%"></img>
