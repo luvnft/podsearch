@@ -170,10 +170,10 @@ async function insertJsonFilesToDb() {
             belongsToEpisodeGuid: belongsToEpisodeGuid,
             belongsToTranscriptId: transcriptionId,
             text: concatenatedWord,
-            createdAt: null,
+            createdAt: new Date(),
             id: uuidv4(),
             indexed: false,
-            updatedAt: null,
+            updatedAt: new Date(),
           });
 
           startTime = word.end;
@@ -186,25 +186,29 @@ async function insertJsonFilesToDb() {
       if (word && concatenatedWord) {
         newSegments.push({
           start: startTime,
-          end: word?.end,
+          end: word.end,
           language: language,
           belongsToPodcastGuid: belongsToPodcastGuid,
           belongsToEpisodeGuid: belongsToEpisodeGuid,
           belongsToTranscriptId: transcriptionId,
           text: concatenatedWord,
-          createdAt: null,
+          createdAt: new Date(),
           id: uuidv4(),
           indexed: false,
-          updatedAt: null,
+          updatedAt: new Date(),
         });
       }
 
       // Insert segments using createMany
       console.log("Adding segments to DB");
-      await prisma.segment.createMany({
-        data: newSegments,
-        skipDuplicates: true,
-      });
+      try {
+        await prisma.segment.createMany({
+          data: newSegments,
+          skipDuplicates: true,
+        });
+      } catch (e) {
+        console.log("E", e);
+      }
 
       // Delete the file after it has been inserted into the database successfully
       fs.unlinkSync(filename);
