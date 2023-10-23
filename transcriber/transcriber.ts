@@ -1,9 +1,34 @@
 import * as fs from "fs";
 import { PrismaClient, Episode, Segment, Transcription } from "@prisma/client";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 // Establish connection
 const prisma: PrismaClient = new PrismaClient();
+
+interface JsonTranscriptionObject {
+  segments: TranscriptionSegmentType[];
+  belongsToPodcastGuid: string;
+  belongsToEpisodeGuid: string;
+  text: string;
+  language: string;
+  youtubeVideoLink: string;
+  deviationTime: number;
+}
+
+interface TranscriptionSegmentType {
+  start: number;
+  end: number;
+  text: string;
+  words: TranscriptionWordType[];
+}
+
+interface TranscriptionWordType {
+  word: string;
+  start: number;
+  end: number;
+  score: number;
+}
 
 async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
@@ -52,10 +77,10 @@ async function insertJsonFilesToDb() {
       // Starting processing json
       console.log("Processing data from filename", filename);
       const fileContent = fs.readFileSync(filename, "utf-8");
-      const data = JSON.parse(fileContent);
+      const data: JsonTranscriptionObject = JSON.parse(fileContent) as JsonTranscriptionObject;
 
       // Extract data
-      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid } = data;
+      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, deviationTime, youtubeVideoLink }: JsonTranscriptionObject = data;
 
       // Delete the existing transcription with belongsToEpisodeGuid
       console.log("Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
@@ -84,6 +109,18 @@ async function insertJsonFilesToDb() {
 
       if (episode === null) continue;
 
+      // Update episode first
+      console.log("Updating episode with deviationTime and with YoutubeLink");
+      await prisma.episode.update({
+        where: {
+          episodeGuid: belongsToEpisodeGuid,
+        },
+        data: {
+          youtubeVideoLink: youtubeVideoLink,
+          deviationTime: deviationTime,
+        },
+      });
+
       // Add the transcription
       console.log("Adding transcription to DB");
       const transcriptionData: Transcription = await prisma.transcription.create({
@@ -98,23 +135,72 @@ async function insertJsonFilesToDb() {
       const transcriptionId = transcriptionData.id;
 
       // Prepare segments data for insertionsegment
-      const segmentData: any[] = segments.map((segment: Segment) => {
-        return {
-          start: segment.start,
-          end: segment.end,
-          language,
-          belongsToPodcastGuid,
-          belongsToEpisodeGuid,
-          belongsToTranscriptId: transcriptionId,
-          text: segment.text,
-          indexed: false,
-        };
+      const lengthOfSegments: number = segments.length;
+      const words: TranscriptionWordType[] = [];
+      const numberOfWords: number = words.length;
+      const newSegments: Segment[] = [];
+      const MAX_CHARS: number = 38;
+
+      // We loop over all the segments
+      for (let i = 0; i < lengthOfSegments; i++) {
+        const segment: TranscriptionSegmentType = segments[i];
+        words.push(...segment.words);
+      }
+
+      // Sort it just in case in spite of it most likely being sorted, but just to be certain
+      words.sort((a: TranscriptionWordType, b: TranscriptionWordType) => a.start - b.start);
+
+      // Now we create the segments
+      let word: TranscriptionWordType;
+      let concatenatedWord: string = "";
+      let startTime: number = words[0].start;
+      let endTime: number = words[0].end;
+
+      for (let j = 0; j > numberOfWords; j++) {
+        word = words[j];
+        if (concatenatedWord.length + word.word.length < MAX_CHARS + 1) {
+          concatenatedWord = concatenatedWord + " " + word.word;
+          endTime = word.end;
+        } else {
+          newSegments.push({
+            start: startTime,
+            end: endTime,
+            language: language,
+            belongsToPodcastGuid: belongsToPodcastGuid,
+            belongsToEpisodeGuid: belongsToEpisodeGuid,
+            belongsToTranscriptId: transcriptionId,
+            text: concatenatedWord,
+            createdAt: null,
+            id: uuidv4(),
+            indexed: false,
+            updatedAt: null,
+          });
+
+          startTime = word.end;
+          concatenatedWord = "";
+          endTime = word.end;
+        }
+      }
+
+      // Dealing with leftovers
+      newSegments.push({
+        start: startTime,
+        end: word.end,
+        language: language,
+        belongsToPodcastGuid: belongsToPodcastGuid,
+        belongsToEpisodeGuid: belongsToEpisodeGuid,
+        belongsToTranscriptId: transcriptionId,
+        text: concatenatedWord,
+        createdAt: null,
+        id: uuidv4(),
+        indexed: false,
+        updatedAt: null,
       });
 
       // Insert segments using createMany
       console.log("Adding segments to DB");
       await prisma.segment.createMany({
-        data: segmentData,
+        data: newSegments,
         skipDuplicates: true,
       });
 
