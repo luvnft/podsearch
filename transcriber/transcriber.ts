@@ -156,9 +156,9 @@ async function insertJsonFilesToDb() {
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
 
-      for (let j = 0; j > numberOfWords; j++) {
+      for (let j = 0; j < numberOfWords; j++) {
         word = words[j];
-        if (concatenatedWord.length + word.word.length < MAX_CHARS + 1) {
+        if (concatenatedWord.length + word.word.length <= MAX_CHARS) {
           concatenatedWord = concatenatedWord + " " + word.word;
           endTime = word.end;
         } else {
@@ -183,19 +183,21 @@ async function insertJsonFilesToDb() {
       }
 
       // Dealing with leftovers
-      newSegments.push({
-        start: startTime,
-        end: word.end,
-        language: language,
-        belongsToPodcastGuid: belongsToPodcastGuid,
-        belongsToEpisodeGuid: belongsToEpisodeGuid,
-        belongsToTranscriptId: transcriptionId,
-        text: concatenatedWord,
-        createdAt: null,
-        id: uuidv4(),
-        indexed: false,
-        updatedAt: null,
-      });
+      if (word !== null && concatenatedWord) {
+        newSegments.push({
+          start: startTime,
+          end: word.end,
+          language: language,
+          belongsToPodcastGuid: belongsToPodcastGuid,
+          belongsToEpisodeGuid: belongsToEpisodeGuid,
+          belongsToTranscriptId: transcriptionId,
+          text: concatenatedWord,
+          createdAt: null,
+          id: uuidv4(),
+          indexed: false,
+          updatedAt: null,
+        });
+      }
 
       // Insert segments using createMany
       console.log("Adding segments to DB");
