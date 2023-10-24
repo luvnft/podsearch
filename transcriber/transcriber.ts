@@ -169,11 +169,7 @@ async function insertJsonFilesToDb() {
 
       // Prepare segments data for insertionsegment
       const lengthOfSegments: number = segments.length;
-<<<<<<< HEAD
-      const words: TranscriptionWordType[] = [];
-=======
       let words: TranscriptionWordType[] = [];
->>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
       const newSegments: Segment[] = [];
       const MAX_CHARS: number = 38;
 
@@ -187,21 +183,15 @@ async function insertJsonFilesToDb() {
       words = interpolateTimestamps(words);
       console.dir(words, { maxArrayLength: null });
 
-      const numberOfWords: number = words.length;
-
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
       let concatenatedWord: string = "";
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
-<<<<<<< HEAD
-      console.log("numberOfWords", numberOfWords)
-=======
 
       // Num of words
       const numberOfWords: number = words.length;
 
->>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
       for (let j = 0; j < numberOfWords; j++) {
         word = words[j];
 
@@ -250,11 +240,8 @@ async function insertJsonFilesToDb() {
       }
 
       // Insert segments using createMany
-<<<<<<< HEAD
       console.log("Adding segments to DB");
       console.log("New Segments: ", newSegments.length)
-=======
->>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
       try {
         await prisma.segment.createMany({
           data: newSegments,
