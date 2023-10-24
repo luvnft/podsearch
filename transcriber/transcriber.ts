@@ -252,8 +252,8 @@ async function insertJsonFilesToDb() {
       }
 
       // Rename the file after it has been inserted into the database successfully
-      // const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
-      // fs.renameSync(filename, newFilename);
+      const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
+      fs.renameSync(filename, newFilename);
     }
   } catch (e) {
     console.log("Error: ", e);
