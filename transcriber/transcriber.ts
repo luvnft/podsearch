@@ -331,10 +331,5 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-<<<<<<< HEAD
 // transcribe();
 insertJsonFilesToDb()
-=======
-transcribe();
-// insertJsonFilesToDb();
->>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
