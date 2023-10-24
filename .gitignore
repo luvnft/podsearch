@@ -19,3 +19,4 @@ poddley_fulltext_indexer/segments_ndjson.ndjson
 **/uploads
 .env
 .vscode
+*_deleted

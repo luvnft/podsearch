@@ -241,9 +241,12 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
             print(transcriptionData["youtubeVideoLink"])
             # Download the youtube video
             print("Download youtube video and converting it to audio.")
-            download_and_convert_to_wav(transcriptionData["youtubeVideoLink"])
+            try:
+                download_and_convert_to_wav(transcriptionData["youtubeVideoLink"])
+            except Exception as e:
+                print("Some meaningless error e ", e)
+                
             print("Done downloading and converting it to audio.")
-            
             # Then find offset
             results = find_offset_between_files("audio.wav", "videoAudio.wav")
             print("Results from timeoffsetcalculation:", results)

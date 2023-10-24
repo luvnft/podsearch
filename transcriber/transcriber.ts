@@ -138,7 +138,6 @@ async function insertJsonFilesToDb() {
       // Prepare segments data for insertionsegment
       const lengthOfSegments: number = segments.length;
       const words: TranscriptionWordType[] = [];
-      const numberOfWords: number = words.length;
       const newSegments: Segment[] = [];
       const MAX_CHARS: number = 38;
 
@@ -151,12 +150,14 @@ async function insertJsonFilesToDb() {
       // Sort it just in case in spite of it most likely being sorted, but just to be certain
       words.sort((a: TranscriptionWordType, b: TranscriptionWordType) => a.start - b.start);
 
+      const numberOfWords: number = words.length;
+
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
       let concatenatedWord: string = "";
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
-
+      console.log("numberOfWords", numberOfWords)
       for (let j = 0; j < numberOfWords; j++) {
         word = words[j];
         if (concatenatedWord.length + word.word.length <= MAX_CHARS) {
@@ -183,6 +184,7 @@ async function insertJsonFilesToDb() {
         }
       }
 
+
       // Dealing with leftovers
       if (word && concatenatedWord) {
         newSegments.push({
@@ -202,6 +204,7 @@ async function insertJsonFilesToDb() {
 
       // Insert segments using createMany
       console.log("Adding segments to DB");
+      console.log("New Segments: ", newSegments.length)
       try {
         await prisma.segment.createMany({
           data: newSegments,
@@ -290,4 +293,5 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-transcribe();
+// transcribe();
+insertJsonFilesToDb()
