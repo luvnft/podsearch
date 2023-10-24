@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import { PrismaClient, Episode, Segment, Transcription } from "@prisma/client";
+import { Episode, PrismaClient, Segment, Transcription } from "@prisma/client";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import * as path from 'path';
+import * as path from "path";
 
 // Establish connection
 const prisma: PrismaClient = new PrismaClient();
@@ -61,6 +61,38 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
     throw error;
   }
 }
+
+const interpolateTimestamps = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].start === undefined || words[i].end === undefined) {
+      let startIdx = i;
+      let endIdx = i;
+
+      // Find the index of the word before the missing timestamps
+      while (startIdx > 0 && words[startIdx - 1].end === undefined) {
+        startIdx--;
+      }
+
+      // Find the index of the word after the missing timestamps
+      while (endIdx < words.length - 1 && words[endIdx + 1].start === undefined) {
+        endIdx++;
+      }
+
+      // Calculate the gap and the interval for each missing word
+      const gap = (words[endIdx + 1].start || 0) - (words[startIdx - 1].end || 0);
+      const interval = gap / (endIdx - startIdx + 2);
+
+      // Assign interpolated timestamps
+      for (let j = startIdx; j <= endIdx; j++) {
+        words[j].start = (words[startIdx - 1].end || 0) + interval * (j - startIdx + 1);
+        words[j].end = words[j].start + interval;
+      }
+
+      i = endIdx; // skip the processed words
+    }
+  }
+  return words;
+};
 
 async function insertJsonFilesToDb() {
   try {
@@ -137,18 +169,23 @@ async function insertJsonFilesToDb() {
 
       // Prepare segments data for insertionsegment
       const lengthOfSegments: number = segments.length;
+<<<<<<< HEAD
       const words: TranscriptionWordType[] = [];
+=======
+      let words: TranscriptionWordType[] = [];
+>>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
       const newSegments: Segment[] = [];
       const MAX_CHARS: number = 38;
 
-      // We loop over all the segments
+      // We loop over all the segments and gather all the words
       for (let i = 0; i < lengthOfSegments; i++) {
         const segment: TranscriptionSegmentType = segments[i];
         words.push(...segment.words);
       }
 
-      // Sort it just in case in spite of it most likely being sorted, but just to be certain
-      words.sort((a: TranscriptionWordType, b: TranscriptionWordType) => a.start - b.start);
+      // The words are already sorted in ascending order based on timestamp
+      words = interpolateTimestamps(words);
+      console.dir(words, { maxArrayLength: null });
 
       const numberOfWords: number = words.length;
 
@@ -157,14 +194,22 @@ async function insertJsonFilesToDb() {
       let concatenatedWord: string = "";
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
+<<<<<<< HEAD
       console.log("numberOfWords", numberOfWords)
+=======
+
+      // Num of words
+      const numberOfWords: number = words.length;
+
+>>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
       for (let j = 0; j < numberOfWords; j++) {
         word = words[j];
+
         if (concatenatedWord.length + word.word.length <= MAX_CHARS) {
           concatenatedWord = concatenatedWord + " " + word.word;
           endTime = word.end;
         } else {
-          newSegments.push({
+          const segment: Segment = {
             start: startTime,
             end: endTime,
             language: language,
@@ -172,14 +217,15 @@ async function insertJsonFilesToDb() {
             belongsToEpisodeGuid: belongsToEpisodeGuid,
             belongsToTranscriptId: transcriptionId,
             text: concatenatedWord,
-            createdAt: new Date(),
+            createdAt: null,
             id: uuidv4(),
             indexed: false,
-            updatedAt: new Date(),
-          });
+            updatedAt: null,
+          };
 
+          newSegments.push(segment);
           startTime = word.end;
-          concatenatedWord = "";
+          concatenatedWord = word.word;
           endTime = word.end;
         }
       }
@@ -187,7 +233,7 @@ async function insertJsonFilesToDb() {
 
       // Dealing with leftovers
       if (word && concatenatedWord) {
-        newSegments.push({
+        const segment: Segment = {
           start: startTime,
           end: word.end,
           language: language,
@@ -195,16 +241,20 @@ async function insertJsonFilesToDb() {
           belongsToEpisodeGuid: belongsToEpisodeGuid,
           belongsToTranscriptId: transcriptionId,
           text: concatenatedWord,
-          createdAt: new Date(),
+          createdAt: null,
           id: uuidv4(),
           indexed: false,
-          updatedAt: new Date(),
-        });
+          updatedAt: null,
+        };
+        newSegments.push(segment);
       }
 
       // Insert segments using createMany
+<<<<<<< HEAD
       console.log("Adding segments to DB");
       console.log("New Segments: ", newSegments.length)
+=======
+>>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
       try {
         await prisma.segment.createMany({
           data: newSegments,
@@ -215,8 +265,8 @@ async function insertJsonFilesToDb() {
       }
 
       // Rename the file after it has been inserted into the database successfully
-      const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
-      fs.renameSync(filename, newFilename);
+      // const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
+      // fs.renameSync(filename, newFilename);
     }
   } catch (e) {
     console.log("Error: ", e);
@@ -261,6 +311,7 @@ const transcribe = async () => {
     deleteFilesByExtensions(targetDirectory, targetExtensions);
   }
 };
+
 async function runPythonScript(episode: Episode) {
   try {
     const response = await axios.post("http://localhost:8000/transcribe", {
@@ -293,5 +344,10 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
+<<<<<<< HEAD
 // transcribe();
 insertJsonFilesToDb()
+=======
+transcribe();
+// insertJsonFilesToDb();
+>>>>>>> 8acd2930e7e1bd58ec60eea4529e8d79daead42c
