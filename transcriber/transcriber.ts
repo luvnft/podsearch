@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { PrismaClient, Episode, Segment, Transcription } from "@prisma/client";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import * as path from 'path';
+import * as path from "path";
 
 // Establish connection
 const prisma: PrismaClient = new PrismaClient();
@@ -171,10 +171,10 @@ async function insertJsonFilesToDb() {
             belongsToEpisodeGuid: belongsToEpisodeGuid,
             belongsToTranscriptId: transcriptionId,
             text: concatenatedWord,
-            createdAt: new Date(),
+            createdAt: null,
             id: uuidv4(),
             indexed: false,
-            updatedAt: new Date(),
+            updatedAt: null,
           });
 
           startTime = word.end;
@@ -193,10 +193,10 @@ async function insertJsonFilesToDb() {
           belongsToEpisodeGuid: belongsToEpisodeGuid,
           belongsToTranscriptId: transcriptionId,
           text: concatenatedWord,
-          createdAt: new Date(),
+          createdAt: null,
           id: uuidv4(),
           indexed: false,
-          updatedAt: new Date(),
+          updatedAt: null,
         });
       }
 
