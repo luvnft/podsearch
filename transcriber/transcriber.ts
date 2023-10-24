@@ -2,6 +2,7 @@ import * as fs from "fs";
 import { PrismaClient, Episode, Segment, Transcription } from "@prisma/client";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import * as path from 'path';
 
 // Establish connection
 const prisma: PrismaClient = new PrismaClient();
@@ -210,8 +211,9 @@ async function insertJsonFilesToDb() {
         console.log("E", e);
       }
 
-      // Delete the file after it has been inserted into the database successfully
-      fs.unlinkSync(filename);
+      // Rename the file after it has been inserted into the database successfully
+      const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
+      fs.renameSync(filename, newFilename);
     }
   } catch (e) {
     console.log("Error: ", e);
