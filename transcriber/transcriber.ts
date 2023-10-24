@@ -39,8 +39,6 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
           `),
     ]);
 
-    console.log("Results: ", results);
-
     const episodeResult: Episode[] = results[0] as unknown as Episode[];
 
     if (episodeResult && episodeResult.length > 0) {
@@ -116,7 +114,7 @@ async function insertJsonFilesToDb() {
       const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, deviationTime, youtubeVideoLink }: JsonTranscriptionObject = data;
 
       // Delete the existing transcription with belongsToEpisodeGuid
-      console.log("Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
+      console.log("==> 🗑️Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
       try {
         await prisma.transcription.delete({
           where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
@@ -126,7 +124,7 @@ async function insertJsonFilesToDb() {
       }
 
       // Delete the segments with belongsToEpisodeGuid
-      console.log("Deleting segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
+      console.log("==> 🗑️Deleting segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
       try {
         await prisma.segment.deleteMany({
           where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
@@ -143,7 +141,7 @@ async function insertJsonFilesToDb() {
       if (episode === null) continue;
 
       // Update episode first
-      console.log("Updating episode with deviationTime and with YoutubeLink");
+      console.log("==>👑Updating episode with deviationTime and with YoutubeLink");
       await prisma.episode.update({
         where: {
           episodeGuid: belongsToEpisodeGuid,
@@ -155,7 +153,7 @@ async function insertJsonFilesToDb() {
       });
 
       // Add the transcription
-      console.log("Adding transcription to DB");
+      console.log("==>👑Adding transcription to DB");
       const transcriptionData: Transcription = await prisma.transcription.create({
         data: {
           language,
@@ -181,7 +179,6 @@ async function insertJsonFilesToDb() {
 
       // The words are already sorted in ascending order based on timestamp
       words = interpolateTimestamps(words);
-      console.dir(words, { maxArrayLength: null });
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
@@ -240,8 +237,7 @@ async function insertJsonFilesToDb() {
       }
 
       // Insert segments using createMany
-      console.log("Adding segments to DB");
-      console.log("New Segments: ", newSegments.length)
+      console.log(`==>👑Adding ${newSegments.length} segments to DB`);
       try {
         await prisma.segment.createMany({
           data: newSegments,
@@ -331,5 +327,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-// transcribe();
-insertJsonFilesToDb()
+transcribe();
