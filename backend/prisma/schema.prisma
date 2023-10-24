@@ -28,6 +28,8 @@ model Episode {
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")
+
+  @@index([podcastGuid], map: "Episode_podcastGuid_fkey")
 }
 
 model Podcast {
@@ -93,6 +95,8 @@ model Segment {
   Transcription_belongsToTranscriptId Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
 
   @@unique([belongsToEpisodeGuid, start, end])
+  @@index([belongsToPodcastGuid], map: "Segment_belongsToPodcastGuid_fkey")
+  @@index([belongsToTranscriptId], map: "Segment_belongsToTranscriptId_fkey")
 }
 
 model Transcription {
@@ -107,4 +111,6 @@ model Transcription {
   Segment_hasSegments          Segment[] @relation("Transcription_belongsToTranscriptId")
   Episode_belongsToEpisodeGuid Episode   @relation("Episode_belongsToEpisodeGuid", fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   Podcast_belongsToPodcastGuid Podcast   @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
+
+  @@index([belongsToPodcastGuid], map: "Transcription_belongsToPodcastGuid_fkey")
 }
