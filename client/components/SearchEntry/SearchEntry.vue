@@ -130,7 +130,6 @@ const handleTimeChange = async (event: Event) => {
             if (lastAvailableElementIndex + 1 !== audioPlayer.value?.duration) {
                 hasSearched = true;
 
-
                 // Get entire transcript for that particular episode...
                 const searchResponse: ClientSearchResponse = await transcriptionService.search({
                     filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
@@ -138,7 +137,6 @@ const handleTimeChange = async (event: Event) => {
                     sort: ["start:asc"],
                     searchString: ""
                 });
-
 
                 // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
                 // Maybe casting is better, but dunno
