@@ -34,10 +34,10 @@ npm run production:buildClient || handle_error "npm build client failed."
 npm run production:buildBackend || handle_error "npm build client failed."
 
 # Restart the backend
-pm2 restart client || handle_error "Failed to restart client using pm2."
+pm2 reload client || handle_error "Failed to reload client using pm2."
 
 # Restart the client
-pm2 restart backend || handle_error "Failed to restart backend using pm2."
+pm2 reload backend || handle_error "Failed to reload backend using pm2."
 
 # Print
 echo "Finished deploying Poddley"
