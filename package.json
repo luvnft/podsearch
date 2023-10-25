@@ -138,7 +138,8 @@
     "production:runClient": "cd client && node ./.output/server/index.mjs",
     "production:buildBackend": "cd backend && tsc",
     "production:runBackend": "cd backend && node ./dist/app.js",
-    "generateMigration": "npx dotenv -e ../.env -- prisma migrate dev"
+    "generateMigration": "npx dotenv -e ../.env -- prisma migrate dev",
+    "dev": "cd client && nuxt dev --modern=server"
   },
   "author": "Luka Momcilovic",
   "license": "ISC",

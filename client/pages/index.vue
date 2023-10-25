@@ -53,8 +53,8 @@ onMounted(async () => {
 
                     payload.hits.forEach((hit: ClientSearchResponseHit) => {
                         if (hit.subHits) {
-                            const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                            hit.subHits = fragmentedSubHits;
+                            // const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                            // hit.subHits = fragmentedSubHits;
                         }
                     });
                     searchStore.setSearchResults(payload);
@@ -102,8 +102,8 @@ async function makeSearch() {
                 searchResults.value = await transcriptionService.search(query);
                 searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
                     if (hit.subHits) {
-                        const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                        hit.subHits = fragmentedSubHits;
+                        // const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
+                        // hit.subHits = fragmentedSubHits;
                     }
                 });
 
