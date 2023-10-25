@@ -41,7 +41,7 @@
                 :title="props.videoTitle" frameborder="0"
                 :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-                class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()" v-if="isVisible" />
+                class="aspect-video h-full w-full rounded-lg" @load="iFrameLoaded" v-show="loading === false" />
         </div>
     </div>
 </template>
@@ -54,12 +54,15 @@ type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 function iFrameLoaded() {
+    console.log("loaded")
     loading.value = false;
 }
 
 function toggleiFrame() {
+    console.log("OK");
     loading.value = true;
     showiFrame.value = true;
+    console.log("NOW???")
 }
 
 const props = defineProps({
