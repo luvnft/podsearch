@@ -1,6 +1,3 @@
-const colors = require("tailwindcss/colors");
-const plugin = require("tailwindcss/plugin");
-
 module.exports = {
   content: ["./components/**/*.{html,js,vue}", "./pages/**/*.{html,js,vue}"],
   variants: {
@@ -13,17 +10,23 @@ module.exports = {
   plugins: [
     require("nightwind"),
     require("tailwind-animatecss"),
-    require("tailwind-scrollbar")({ nocompatible: true }), // Need this nocompatible to enable rounded utilities in chrome/chromium-browsers
+    require("tailwind-scrollbar")({ nocompatible: true }), // Need this nocompatible to enable rounded utilities in chrome/chromium-browsers,
+    require("tailwind-bootstrap-grid")({
+      containerMaxWidths: { sm: "576px", md: "768px", lg: "992px", xl: "1200px", "2xl": "1500px" },
+    }),
   ],
   prefix: "",
   darkMode: "class",
+  corePlugins: {
+    container: false,
+  },
   theme: {
     screens: {
       sm: "576px",
       md: "768px",
       lg: "992px",
       xl: "1200px",
-      "2xl": "1400px",
+      "2xl": "1500px",
     },
     nightwind: {
       colorClasses: ["gradient", "ring", "ring-offset", "divide", "placeholder"],

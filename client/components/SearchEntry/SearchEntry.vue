@@ -2,15 +2,14 @@
     <div
         class="dark:bg-neutral-0 row mx-0 flex h-full flex-col items-start justify-start rounded-lg p-0 shadow-none dark:border-none dark:shadow-none md:gap-y-0">
         <div
-            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-lg px-0 py-0 pb-0 leading-normal sm:px-2">
+            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 flex flex-col items-center justify-between rounded-lg px-0 py-0 pb-0 leading-normal">
             <div class="border-1 h-full min-w-full rounded-lg shadow-lg dark:border-neutral-100">
                 <div v-if="props.searchEntry.youtubeVideoLink">
                     <LiteYoutubeEmbed @click="handleYoutubeClick"
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
                         :startTime="computedStartTime" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
-                        :pictureInPicture="true" :noCookie="true" posterQuality="hq720"
-                        :searchEntry="props.searchEntry" />
+                        :pictureInPicture="true" :noCookie="true" posterQuality="hq720" :searchEntry="props.searchEntry" />
                 </div>
                 <div v-if="!props.searchEntry.youtubeVideoLink && props.searchEntry.podcastImage"
                     class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
@@ -141,25 +140,9 @@ const handleTimeChange = async (event: Event) => {
                 });
 
 
-                // // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
-                // // Maybe casting is better, but dunno
-                // let segmentHits: ClientSegmentHit[] = searchResponse.hits.map((hit: ClientSegmentHit) => {
-                //     return {
-                //         text: hit.text,
-                //         id: hit.id,
-                //         start: hit.start,
-                //         end: hit.end,
-                //         language: hit.podcastLanguage,
-                //         belongsToPodcastGuid: hit.podcastGuid,
-                //         belongsToEpisodeGuid: hit.episodeGuid,
-                //         belongsToTranscriptId: hit.belongsToTranscriptId,
-                //     }
-                // })
-
-                // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
-
-                const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
-                searchResults.value.hits[props.index].subHits = segmentHits;
+                // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
+                // Maybe casting is better, but dunno
+                searchResults.value.hits[props.index].subHits = searchResponse.hits[0].subHits;
             }
 
         }

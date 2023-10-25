@@ -36,15 +36,12 @@
             <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
                 <IconsSpinnerIcon />
             </div>
-            <UseElementVisibility v-slot="{ isVisible }">
-                <iframe
-                    :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
-                    :title="props.videoTitle" frameborder="0"
-                    :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
-                    :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-                    class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()"
-                    v-if="isVisible" />
-            </UseElementVisibility>
+            <iframe
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
+                :title="props.videoTitle" frameborder="0"
+                :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
+                :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
+                class="aspect-video h-full w-full rounded-lg" v-show="!loading" @load="iFrameLoaded()" v-if="isVisible" />
         </div>
     </div>
 </template>
@@ -56,7 +53,6 @@ type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "
 
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
-const utils: Utils = useUtils();
 function iFrameLoaded() {
     loading.value = false;
 }

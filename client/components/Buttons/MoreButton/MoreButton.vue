@@ -104,30 +104,15 @@ const loadEntireTranscript = async (episodeGuid: string) => {
         searchString: ""
     });
 
-    // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
-    // Maybe casting is better, but dunno
-    // let segmentHits: ClientSegmentHit[] = searchResponse.hits.map((hit: ClientSearchResponseHit) => {
-    //     return {
-    //         text: hit.text,
-    //         id: hit.id,
-    //         start: hit.start,
-    //         end: hit.end,
-    //         language: hit.podcastLanguage,
-    //         belongsToPodcastGuid: hit.podcastGuid,
-    //         belongsToEpisodeGuid: hit.episodeGuid,
-    //         belongsToTranscriptId: hit.belongsToTranscriptId,
-    //     }
-    // })
+    console.log("Response: ", searchResponse);
 
     // We loop over all the hits and create new segmentHits for the ones which have words bigger than some 5, essentially this
-    const segmentHits = fragmentSegmentHits(searchResponse.hits[0].subHits)
-    searchResults.value.hits[props.index].subHits = segmentHits;
-
+    searchResults.value.hits[props.index].subHits = searchResponse.hits[0].subHits;
     emit("gettingFullTranscript", false);
 };
 
 const copySegmentLink = () => {
-    const rootPage: string = process.env.HOMEPAGE_URL;
+    const rootPage: string | undefined = process.env.HOMEPAGE_URL || undefined;
     const segmentId: string = props.searchEntry.subHits[0].id;
     const filter: string = `id='${segmentId}'`;
     const constructedSearchQuery: SearchQuery = {

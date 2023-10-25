@@ -48,15 +48,6 @@ onMounted(async () => {
 
             switch (action) {
                 case "searchCompleted":
-                    // searchResults.value = payload;
-
-
-                    payload.hits.forEach((hit: ClientSearchResponseHit) => {
-                        if (hit.subHits) {
-                            // const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                            // hit.subHits = fragmentedSubHits;
-                        }
-                    });
                     searchStore.setSearchResults(payload);
                     searchStore.setLoadingState(false);
                     break;
@@ -71,17 +62,10 @@ onMounted(async () => {
     // If we are arriving from some subpage the searchResults wont be populated
     if (!searchResults?.value?.hits) {
         searchResults.value = await transcriptionService.search(searchQuery.value);
-        searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
-            if (hit.subHits) {
-                const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                hit.subHits = fragmentedSubHits;
-            }
-        });
     }
 });
 
 function searchViaWorker() {
-
     searchStore.setLoadingState(true);
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
@@ -100,15 +84,6 @@ async function makeSearch() {
                 const decodedRouteBasedQuery: SearchQuery = utils.decodeQuery(routeBasedQuery);
                 const query: SearchQuery = decodedRouteBasedQuery ? (decodedRouteBasedQuery) : initialSearchQuery;
                 searchResults.value = await transcriptionService.search(query);
-                searchResults.value.hits.forEach((hit: ClientSearchResponseHit) => {
-                    if (hit.subHits) {
-                        // const fragmentedSubHits: ClientSegmentHit[] = utils.fragmentSegmentHits(hit.subHits);
-                        // hit.subHits = fragmentedSubHits;
-                    }
-                });
-
-
-
             } catch (e) { }
         }
     }

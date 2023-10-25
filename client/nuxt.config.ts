@@ -5,7 +5,7 @@ config({ path: "../.env" });
 
 export default defineNuxtConfig({
   ssr: true,
-  css: ["~/assets/css/imports/bootstrap.css", "~/assets/css/imports/global.css"],
+  css: ["~/assets/css/imports/global.css"],
   nitro: {
     compressPublicAssets: {
       brotli: true,
@@ -33,7 +33,12 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
- 
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.API_BASE_URL,
+      HOMEPAGE: process.env.HOMEPAGE === "development" ? "localhost:3000/" : "poddley.com/",
+    },
+  },
   modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt", "nuxt-delay-hydration"],
   googleFonts: {
     families: {
