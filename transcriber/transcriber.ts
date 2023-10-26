@@ -3,6 +3,10 @@ import { Episode, PrismaClient, Segment, Transcription } from "@prisma/client";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import * as path from "path";
+import { config } from "dotenv";
+
+const envPath = path.resolve(__dirname, "../.env");
+config({ path: envPath });
 
 // Establish connection
 const prisma: PrismaClient = new PrismaClient();
@@ -59,37 +63,68 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
     throw error;
   }
 }
+const DEFAULT_INTERVAL = 1; // A default interval duration, can be adjusted
+
+// const interpolateTimestamps = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
+//   let output = [...words];
+
+//   for (let i = 0; i < output.length; i++) {
+//     if (output[i].start === undefined && output[i].end === undefined) {
+//       // Loop backwards till we find the first word which has start and end value (backIndex)
+//       // Loop forward till you find the first word which has the start and end value (frontIndex)
+//       // Take the time difference between the frontIndex.start and the backIndex.start (absolute value) and divide it on the number of words from backIndex to frontIndex (front - back)
+//       // Then calculate the timePerWord based on these values and add the startValue and endValue to the given word we are processing now.
+//       // it can aoccur that we have multiple of these values after one another. in that case we dont really care because we will always proess 1 word at a time which will mean that multiple of these after one another isnt an issue
+
+//       // Edge cases
+//       // If there is not backIndex with start and end valu then we just count take the startValue of the frontIndex and divide it on the number of words up till it
+//       // If there is no frontIndex then we do ttake the last word before the rows of frontIndexes without start and end value and infer the startValues like for the other edge case
+
+//     }
+//   }
+
+//   return output;
+// };
 
 const interpolateTimestamps = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
-  for (let i = 0; i < words.length; i++) {
-    if (words[i].start === undefined || words[i].end === undefined) {
-      let startIdx = i;
-      let endIdx = i;
+  let output = [...words];
 
-      // Find the index of the word before the missing timestamps
-      while (startIdx > 0 && words[startIdx - 1].end === undefined) {
-        startIdx--;
+  for (let i = 0; i < output.length; i++) {
+    if (output[i].start === undefined && output[i].end === undefined) {
+      let backIndex = i - 1;
+      while (backIndex >= 0 && (output[backIndex].start === undefined || output[backIndex].end === undefined)) {
+        backIndex--;
       }
 
-      // Find the index of the word after the missing timestamps
-      while (endIdx < words.length - 1 && words[endIdx + 1].start === undefined) {
-        endIdx++;
+      let frontIndex = i + 1;
+      while (frontIndex < output.length && (output[frontIndex].start === undefined || output[frontIndex].end === undefined)) {
+        frontIndex++;
       }
 
-      // Calculate the gap and the interval for each missing word
-      const gap = (words[endIdx + 1].start || 0) - (words[startIdx - 1].end || 0);
-      const interval = gap / (endIdx - startIdx + 2);
-
-      // Assign interpolated timestamps
-      for (let j = startIdx; j <= endIdx; j++) {
-        words[j].start = (words[startIdx - 1].end || 0) + interval * (j - startIdx + 1);
-        words[j].end = words[j].start + interval;
+      let timePerWord = 0;
+      if (backIndex >= 0 && frontIndex < output.length) {
+        // Case where both backIndex and frontIndex are found
+        let timeDiff = output[frontIndex].start! - output[backIndex].end!;
+        let wordCount = frontIndex - backIndex - 1;
+        timePerWord = timeDiff / wordCount;
+        output[i].start = output[backIndex].end! + timePerWord * (i - backIndex);
+        output[i].end = output[i].start + timePerWord;
+      } else if (frontIndex < output.length) {
+        // Case where only frontIndex is found
+        timePerWord = output[frontIndex].start! / (frontIndex - i + 1);
+        output[i].start = timePerWord * i;
+        output[i].end = output[i].start + timePerWord;
+      } else if (backIndex >= 0) {
+        // Case where only backIndex is found
+        let remainingWords = output.length - backIndex - 1;
+        timePerWord = (output[backIndex].end! - output[backIndex].start!) / remainingWords;
+        output[i].start = output[backIndex].end! + timePerWord * (i - backIndex);
+        output[i].end = output[i].start + timePerWord;
       }
-
-      i = endIdx; // skip the processed words
     }
   }
-  return words;
+
+  return output;
 };
 
 function isStandardCharacter(word: string): boolean {
