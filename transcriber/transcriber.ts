@@ -63,69 +63,24 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
     throw error;
   }
 }
-const DEFAULT_INTERVAL = 1; // A default interval duration, can be adjusted
+function mergeStrangeSegments(segments) {
+  if (segments.length === 0) return [];
 
-// const interpolateTimestamps = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
-//   let output = [...words];
+  const merged = [segments[0]];
 
-//   for (let i = 0; i < output.length; i++) {
-//     if (output[i].start === undefined && output[i].end === undefined) {
-//       // Loop backwards till we find the first word which has start and end value (backIndex)
-//       // Loop forward till you find the first word which has the start and end value (frontIndex)
-//       // Take the time difference between the frontIndex.start and the backIndex.start (absolute value) and divide it on the number of words from backIndex to frontIndex (front - back)
-//       // Then calculate the timePerWord based on these values and add the startValue and endValue to the given word we are processing now.
-//       // it can aoccur that we have multiple of these values after one another. in that case we dont really care because we will always proess 1 word at a time which will mean that multiple of these after one another isnt an issue
+  for (let i = 1; i < segments.length; i++) {
+    const currentSegment = segments[i];
+    const lastMergedSegment = merged[merged.length - 1];
 
-//       // Edge cases
-//       // If there is not backIndex with start and end valu then we just count take the startValue of the frontIndex and divide it on the number of words up till it
-//       // If there is no frontIndex then we do ttake the last word before the rows of frontIndexes without start and end value and infer the startValues like for the other edge case
-
-//     }
-//   }
-
-//   return output;
-// };
-
-const interpolateTimestamps = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
-  let output = [...words];
-
-  for (let i = 0; i < output.length; i++) {
-    if (output[i].start === undefined && output[i].end === undefined) {
-      let backIndex = i - 1;
-      while (backIndex >= 0 && (output[backIndex].start === undefined || output[backIndex].end === undefined)) {
-        backIndex--;
-      }
-
-      let frontIndex = i + 1;
-      while (frontIndex < output.length && (output[frontIndex].start === undefined || output[frontIndex].end === undefined)) {
-        frontIndex++;
-      }
-
-      let timePerWord = 0;
-      if (backIndex >= 0 && frontIndex < output.length) {
-        // Case where both backIndex and frontIndex are found
-        let timeDiff = output[frontIndex].start! - output[backIndex].end!;
-        let wordCount = frontIndex - backIndex - 1;
-        timePerWord = timeDiff / wordCount;
-        output[i].start = output[backIndex].end! + timePerWord * (i - backIndex);
-        output[i].end = output[i].start + timePerWord;
-      } else if (frontIndex < output.length) {
-        // Case where only frontIndex is found
-        timePerWord = output[frontIndex].start! / (frontIndex - i + 1);
-        output[i].start = timePerWord * i;
-        output[i].end = output[i].start + timePerWord;
-      } else if (backIndex >= 0) {
-        // Case where only backIndex is found
-        let remainingWords = output.length - backIndex - 1;
-        timePerWord = (output[backIndex].end! - output[backIndex].start!) / remainingWords;
-        output[i].start = output[backIndex].end! + timePerWord * (i - backIndex);
-        output[i].end = output[i].start + timePerWord;
-      }
+    if (currentSegment.start === undefined && currentSegment.end === undefined) {
+      lastMergedSegment.text += " " + currentSegment.text;
+    } else {
+      merged.push(currentSegment);
     }
   }
 
-  return output;
-};
+  return merged;
+}
 
 function isStandardCharacter(word: string): boolean {
   // This regex matches standard Latin alphanumeric characters, feel free to modify as needed.
@@ -223,7 +178,7 @@ async function insertJsonFilesToDb() {
       const filteredWords = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
 
       // The words are already sorted in ascending order based on timestamp
-      words = interpolateTimestamps(filteredWords);
+      words = mergeStrangeSegments(filteredWords);
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
