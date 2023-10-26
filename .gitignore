@@ -21,3 +21,4 @@ poddley_fulltext_indexer/segments_ndjson.ndjson
 .vscode
 *_deleted
 *_deleted.json
+/transcriber/*.json

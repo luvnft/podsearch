@@ -92,6 +92,12 @@ const interpolateTimestamps = (words: TranscriptionWordType[]): TranscriptionWor
   return words;
 };
 
+function isStandardCharacter(word: string): boolean {
+  // This regex matches standard Latin alphanumeric characters, feel free to modify as needed.
+  const regex = /^[a-zA-Z0-9]*$/;
+  return regex.test(word);
+}
+
 async function insertJsonFilesToDb() {
   try {
     console.log("Checking if any new jsons have been added");
@@ -166,8 +172,8 @@ async function insertJsonFilesToDb() {
       const transcriptionId = transcriptionData.id;
 
       // Prepare segments data for insertionsegment
-      const lengthOfSegments: number = segments.length;
       let words: TranscriptionWordType[] = [];
+      const lengthOfSegments: number = segments.length;
       const newSegments: Segment[] = [];
       const MAX_CHARS: number = 38;
 
@@ -177,8 +183,12 @@ async function insertJsonFilesToDb() {
         words.push(...segment.words);
       }
 
+      // Filtered words
+      // This removes junk like this:  "word": "\u0443\u0432\u0430\u0436\u0430\u0435\u043c\u044b\u0435"
+      const filteredWords = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
+
       // The words are already sorted in ascending order based on timestamp
-      words = interpolateTimestamps(words);
+      words = interpolateTimestamps(filteredWords);
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
@@ -216,7 +226,6 @@ async function insertJsonFilesToDb() {
           endTime = word.end;
         }
       }
-
 
       // Dealing with leftovers
       if (word && concatenatedWord) {
@@ -327,4 +336,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-transcribe();
+insertJsonFilesToDb();
