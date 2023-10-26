@@ -63,28 +63,28 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
     throw error;
   }
 }
-function mergeStrangeSegments(segments) {
-  if (segments.length === 0) return [];
+const mergeStrangeSegments = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
+  if (words.length === 0) return [];
 
-  const merged = [segments[0]];
+  const merged: TranscriptionWordType[] = [words[0]];
 
-  for (let i = 1; i < segments.length; i++) {
-    const currentSegment = segments[i];
-    const lastMergedSegment = merged[merged.length - 1];
+  for (let i = 1; i < words.length; i++) {
+    const currentSegment: TranscriptionWordType = words[i];
+    const lastMergedSegment: TranscriptionWordType = merged[merged.length - 1];
 
     if (currentSegment.start === undefined && currentSegment.end === undefined) {
-      lastMergedSegment.text += " " + currentSegment.text;
+      lastMergedSegment.word += " " + currentSegment.word;
     } else {
       merged.push(currentSegment);
     }
   }
 
   return merged;
-}
+};
 
 function isStandardCharacter(word: string): boolean {
   // This regex matches standard Latin alphanumeric characters, feel free to modify as needed.
-  const regex = /^[a-zA-Z0-9]*$/;
+  const regex = /\u+[^a-zA-Z\s]+/gi;
   return regex.test(word);
 }
 
@@ -178,7 +178,7 @@ async function insertJsonFilesToDb() {
       const filteredWords = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
 
       // The words are already sorted in ascending order based on timestamp
-      words = mergeStrangeSegments(filteredWords);
+      words = mergeStrangeSegments(words);
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
@@ -237,6 +237,8 @@ async function insertJsonFilesToDb() {
 
       // Insert segments using createMany
       console.log(`==>👑Adding ${newSegments.length} segments to DB`);
+      console.dir(newSegments, { maxArrayLength: null });
+
       try {
         await prisma.segment.createMany({
           data: newSegments,
