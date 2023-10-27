@@ -64,7 +64,7 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
   }
 }
 
-function mergeSegments(segments) {
+function mergeStrangeSegments(segments) {
   if (segments.length === 0) return [];
 
   const merged = [];
@@ -99,7 +99,7 @@ function mergeSegments(segments) {
     // If the start and end value are present then we just add the segment really
     // If the start and end values are not prersent then we just add the text to the tempText and we keep saving that text till we find a currentSegment which has start and end value and then we add that text to that segment and save the segment
     // If it happens that we never find a segment which has start and end values then the tempText will be large
-    // In that case we
+    // In that case we will add the tempText to the last merged segment will either be the first one (if that is the one which has start and end), or it will be an empty array
   }
 
   // On some occasions we will reach a point where all the upcoming segments dont have start and end value and in that case the tempText will be truthy as we havent been able to add it to the lastSegmentHit before we finished looping
