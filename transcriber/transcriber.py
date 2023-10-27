@@ -15,9 +15,10 @@ from audioOffsetFinder import find_offset_between_files
 from pytube import YouTube
 from moviepy.editor import *
 from ytpy import YoutubeClient
-import aiohttp
+from googlesearch import search
 
 app = FastAPI()
+
 
 class TranscribeData(BaseModel):
     episodeLink: str
@@ -26,15 +27,46 @@ class TranscribeData(BaseModel):
     podcastGuid: str
     language: str
 
+
 # Vars
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
 device = "cuda"
-compute_type = "float16" # change to "int8" if low on GPU mem (may reduce accuracy)
+# change to "int8" if low on GPU mem (may reduce accuracy)
+compute_type = "float16"
 
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
 nlp = spacy.load('en_core_web_sm')
+
+
+async def search_youtube(episodeTitle: str) -> str:
+    """
+    Search YouTube for a given episode title and return the most relevant link.
+    """
+    # Using Google search to get youtube video links
+    query = episodeTitle + " site:youtube.com"
+    search_results = search(query, num=10, stop=10, pause=2)
+    youtube_links = [
+        link for link in search_results if "www.youtube.com/watch" in link]
+
+    maxScore = 0
+    bestLink = ""
+
+    for link in youtube_links:
+        # Assuming you extract title from YouTube link somehow
+        # (This would usually require fetching and parsing the page)
+        # For the sake of the example, I'll use the entire link as the title
+        title = link  # replace this line if you extract the title from the link
+
+        score = getSimilarityScore(episodeTitle, title)
+
+        if score > maxScore and score > 0.7:
+            maxScore = score
+            bestLink = link
+
+    return bestLink
+
 
 def getSimilarityScore(text1, text2):
     # Process the texts
@@ -43,15 +75,16 @@ def getSimilarityScore(text1, text2):
 
     # Get the similarity between the two texts
     similarity = doc1.similarity(doc2)
-    
+
     return similarity
-    
-    
+
+
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     print("Converting the video file to audio file")
     command = f"ffmpeg -i {video_filename} -vn -acodec copy {audio_filename}"
     subprocess.call(command, shell=True)
     print("Finished converting video file to audio file")
+
 
 def download_and_convert_to_wav(youtube_link):
     audio_file_path = ""
@@ -60,11 +93,12 @@ def download_and_convert_to_wav(youtube_link):
         # Download the video
         yt = YouTube(youtube_link)
         print("YouTube began")
-        stream = yt.streams.filter(progressive=True, file_extension='mp4').first()
+        stream = yt.streams.filter(
+            progressive=True, file_extension='mp4').first()
         print("stream began")
         video_file_path = stream.download(filename="videoAudio.mp4")
         print("video_file_path began")
-        
+
         # Convert the video to WAV format
         audio_file_path = "videoAudio.wav"
         print("audio_file_path began")
@@ -75,7 +109,8 @@ def download_and_convert_to_wav(youtube_link):
     except Exception as e:
         print("The error: ", e)
 
-    return audio_file_path 
+    return audio_file_path
+
 
 async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastGuid, language: str, batch_size, device):
     audioFileName = os.path.join(os.getcwd(), "audio.wav")
@@ -149,7 +184,8 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         # Transcribing...
         print("Transcribing ...", episodeTitle,
               "the link to the audioFile is: ", episodeLink)
-        result = model.transcribe(audio, batch_size=batch_size, language=language)
+        result = model.transcribe(
+            audio, batch_size=batch_size, language=language)
         segments = result["segments"]
 
         # Define a minimum duration (in seconds)
@@ -208,49 +244,34 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         transcriptionData["belongsToEpisodeGuid"] = belongsToEpisodeGuid
         transcriptionData["text"] = text
         transcriptionData["language"] = language
-        
+
         # Find the youtube link associated with the episodeTitle
         print("Preparing to search for the episodeTitle on youtube")
-        session = aiohttp.ClientSession()
-        client = YoutubeClient(session)
         print("Searching for: ", episodeTitle)
-        response = await client.search(episodeTitle)
-        await session.close()
-        maxScore = 0
-        bestLinkId = ""
-        
-        print(response)
+        bestYouTubeLink = search_youtube(episodeTitle)
+        print("BestLinkID: ,", bestYouTubeLink)
 
-        for res in response:
-            print("Checkingt : ", res["title"])
-            score = getSimilarityScore(episodeTitle, res["title"])
-            print("Returned value is: ", score)
-            if score > maxScore and score > 0.7:
-                maxScore = score
-                print("Setting value: ", score)
-                print("MaxScore is: ", maxScore)
-                bestLinkId = res["id"]
-                
-        print("BestLinkID: ,", bestLinkId)
         # Save the transcriptionDataObject as a JSON
         transcriptionFileName = str(int(time.time())) + ".json"
-        
-        if bestLinkId != "":
-            transcriptionData["youtubeVideoLink"] = f"https://www.youtube.com/watch?v={bestLinkId}"
+
+        if bestYouTubeLink != "":
+            transcriptionData[
+                "youtubeVideoLink"] = bestYouTubeLink
             results = {}
             print(transcriptionData["youtubeVideoLink"])
             # Download the youtube video
             print("Download youtube video and converting it to audio.")
             try:
-                download_and_convert_to_wav(transcriptionData["youtubeVideoLink"])
+                download_and_convert_to_wav(
+                    transcriptionData["youtubeVideoLink"])
             except Exception as e:
                 print("Some meaningless error e ", e)
-                
+
             print("Done downloading and converting it to audio.")
             # Then find offset
             results = find_offset_between_files("audio.wav", "videoAudio.wav")
             print("Results from timeoffsetcalculation:", results)
-            if hasattr(results, "time_offset"): 
+            if hasattr(results, "time_offset"):
                 transcriptionData["deviationTime"] = results["time_offset"]
             else:
                 transcriptionData["deviationTime"] = 0
@@ -265,20 +286,22 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
                 json.dump(transcriptionData, file, indent=4)
         except Exception as e:
             print("Error with saving transcriptionData:", e)
-        
+
     # Error return
     except Exception as e:
         print("Error with transcribing:", e)
         return None
 
 # Main transcriber api route
+
+
 @app.post("/transcribe")
 async def transcribe(data: TranscribeData):
     try:
         print("Starting transcription of :", data.episodeTitle)
         await transcribeAndSaveJson(data.episodeLink, data.episodeTitle, data.episodeGuid, data.podcastGuid, data.language, batch_size, device)
         print("Done with episode: ", data.episodeTitle, "Next!")
-        
+
         return {"status": "True"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
