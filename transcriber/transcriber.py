@@ -32,8 +32,7 @@ class TranscribeData(BaseModel):
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
 device = "cuda"
-# change to "int8" if low on GPU mem (may reduce accuracy)
-compute_type = "float16"
+compute_type = "float16" # change to "int8" if low on GPU mem (may reduce accuracy)
 
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
@@ -45,8 +44,8 @@ async def search_youtube(episodeTitle: str) -> str:
     Search YouTube for a given episode title and return the most relevant link.
     """
     # Using Google search to get youtube video links
-    query = episodeTitle + " site:youtube.com"
-    search_results = search(query, num=10, stop=10, pause=2)
+    query = episodeTitle + "site:youtube.com"
+    search_results = search(query, lang="en", num_results=5)
     youtube_links = [
         link for link in search_results if "www.youtube.com/watch" in link]
 
@@ -248,7 +247,7 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         # Find the youtube link associated with the episodeTitle
         print("Preparing to search for the episodeTitle on youtube")
         print("Searching for: ", episodeTitle)
-        bestYouTubeLink = search_youtube(episodeTitle)
+        bestYouTubeLink = await search_youtube(episodeTitle)
         print("BestLinkID: ,", bestYouTubeLink)
 
         # Save the transcriptionDataObject as a JSON
