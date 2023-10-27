@@ -63,24 +63,55 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
     throw error;
   }
 }
-const mergeStrangeSegments = (words: TranscriptionWordType[]): TranscriptionWordType[] => {
-  if (words.length === 0) return [];
 
-  const merged: TranscriptionWordType[] = [words[0]];
+function mergeSegments(segments) {
+  if (segments.length === 0) return [];
 
-  for (let i = 1; i < words.length; i++) {
-    const currentSegment: TranscriptionWordType = words[i];
-    const lastMergedSegment: TranscriptionWordType = merged[merged.length - 1];
+  const merged = [];
+  let tempText = ""; // Temporary storage for text of segments without start and end
 
+  // We are looping over all the words
+  for (let i = 0; i < segments.length; i++) {
+    // Setting the currentSegment to the one we are looping over
+    const currentSegment = segments[i];
+
+    // If the currentSegment doesnt have the start and end values
     if (currentSegment.start === undefined && currentSegment.end === undefined) {
-      lastMergedSegment.word += " " + currentSegment.word;
-    } else {
+      // Then we add the textvalue of that segment which is always present to the tempText.
+      // If the tempText is '' (falsy) then we just set the text to the value
+      // If the tempText is truthy then we set tempText to the tempText with the space and the new text and continue
+      tempText = tempText ? `${tempText} ${currentSegment.text}` : currentSegment.text;
+    }
+    // If the currentSegment does have start and end value then we are here
+    else {
+      // We check if tempText is defined, because if it is then we want to add the tempText to the text of that segment which has the start and end values
+      // And we reset the tempText and then we add it to the merged array
+      if (tempText) {
+        currentSegment.text = `${tempText} ${currentSegment.text}`;
+        tempText = "";
+      }
+      // Here we add it do the merged array
+      // If the tempText is '' falsy then this will still work because the point of tempText is to place tempText as part of the segment which has the start and end values
       merged.push(currentSegment);
     }
+    // Everything in this loop essentially makes it so tempText is saved up and then saved to the next segment which has start and end value
+    // It doesn't really matter if it's before or after.
+    // If the start and end value are present then we just add the segment really
+    // If the start and end values are not prersent then we just add the text to the tempText and we keep saving that text till we find a currentSegment which has start and end value and then we add that text to that segment and save the segment
+    // If it happens that we never find a segment which has start and end values then the tempText will be large
+    // In that case we
+  }
+
+  // On some occasions we will reach a point where all the upcoming segments dont have start and end value and in that case the tempText will be truthy as we havent been able to add it to the lastSegmentHit before we finished looping
+  // In that case we add the tempText to the lastElement of the merge
+  // If there are remaining segments without start and end after processing all segments
+  if (tempText && merged.length > 0) {
+    const lastMergedSegment = merged[merged.length - 1];
+    lastMergedSegment.text = lastMergedSegment.text + " " + tempText;
   }
 
   return merged;
-};
+}
 
 function isStandardCharacter(word: string): boolean {
   // This regex matches standard Latin alphanumeric characters, feel free to modify as needed.
@@ -178,6 +209,7 @@ async function insertJsonFilesToDb() {
       const filteredWords = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
 
       // The words are already sorted in ascending order based on timestamp
+      // Due to whisperx not being able to align numbers, special characters and such we have to merge these words which lack the start and end attribute with some previous word
       words = mergeStrangeSegments(filteredWords);
 
       // Now we create the segments
