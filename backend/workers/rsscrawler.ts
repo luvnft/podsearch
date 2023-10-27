@@ -1,21 +1,46 @@
 import * as fs from "fs";
-import { Episode, Podcast, Prisma, PrismaClient, PrismaPromise } from "@prisma/client";
+import { Episode, Podcast, PrismaClient } from "@prisma/client";
 import Database from "better-sqlite3";
-import tags from "language-tags";
 import Parser from "rss-parser";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import tar from "tar";
 import path from "path";
-import * as readline from "readline";
 import cron from "node-cron";
+import FormData from "form-data";
 
-interface GuidAndFeedAndLangAndTitle {
-  podcastGuid: string;
-  originalUrl: string;
-  url: string;
-  language: string;
-  title: string;
+const ACCOUNT_ID = "cc664ea0e464c8171ed71af53a1e3f5b";
+const API_KEY = process.env.API_KEY as string;
+
+async function uploadExternalImageToCloudflare(imageUrl: string, podcastTitle: string): Promise<any> {
+  try {
+    // Download the image into a buffer
+    const imageResponse = await axios.get(imageUrl, { responseType: "arraybuffer" });
+
+    // Prepare the form data
+    const formData = new FormData();
+    formData.append("file", Buffer.from(imageResponse.data), {
+      filename: `${podcastTitle}.jpg`, // You might want to determine the filename dynamically
+      contentType: "image/jpeg", // Change this based on the actual content type
+    });
+
+    // Set up the headers (including form data headers)
+    const headers = {
+      ...formData.getHeaders(),
+      Authorization: `Bearer ${API_KEY}`,
+    };
+
+    // Make the request to Cloudflare
+    const cloudflareResponse = await axios.post(`https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/images/v1`, formData, { headers });
+
+    console.log(cloudflareResponse.data);
+
+    return cloudflareResponse;
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+
+  return null;
 }
 
 function validateObjectsBeforeInsert(objectsToInsert: any[]): any[] {
@@ -102,7 +127,7 @@ async function gatherPodcastsFromJsonFile(): Promise<{ [key: string]: any }[]> {
   const db = new Database("./workers/podcasts.db");
   db.pragma("journal_mode = WAL");
 
-  // Open JSON file
+  // Open JSON file and grab the podcasts
   const jsonData = fs.readFileSync("./podcasts/podcasts.json", "utf8");
   const podcasts = JSON.parse(jsonData);
 
@@ -133,16 +158,8 @@ function cleanString(str: string) {
   return str.replace(/[^ -~]+/g, "");
 }
 
-async function getGuidsAndFeedUrls(prisma: PrismaClient) {
-  return await prisma.podcast.findMany({
-    select: {
-      originalUrl: true,
-      podcastGuid: true,
-      language: true,
-      title: true,
-      url: true,
-    },
-  });
+async function getPodcast(prisma: PrismaClient) {
+  return await prisma.podcast.findMany();
 }
 async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, language: string, podcastRssFeedUrlFallback: string): Promise<Episode[] | undefined> {
   const feedparser = new Parser();
@@ -270,8 +287,19 @@ async function main() {
   // Insert the podcasts validated etc to the database
   await insertPodcastsAndUpdate(objectsToInsert, prisma);
 
+  // Get podcast
+  const podcasts: Podcast[] = await getPodcast(prisma);
+
+  // Upload images if they dont exist.
+  for await (const podcast of podcasts) {
+    if (!podcast.imageUrl) {
+      const cloudflareImageId: string = await uploadExternalImageToCloudflare(podcast.imageUrl, podcast.podcastGuid);
+      if (cloudflareImageId) {
+      }
+    }
+  }
+
   // Getting the RSS-FeedUrls and the podcastGuids
-  const podcasts: GuidAndFeedAndLangAndTitle[] = await getGuidsAndFeedUrls(prisma);
   const rssFeedUrls: string[] = podcasts.map((p: any) => p.url);
   const rssFeedUrlsFallback: string[] = podcasts.map((p: any) => p.url);
   const podcastGuids: string[] = podcasts.map((p: any) => p.podcastGuid);
@@ -333,14 +361,14 @@ function start(cronExpression: string) {
   });
 }
 
-process.on('SIGINT', () => {
-  console.log('Received SIGINT. Cleaning up...');
+process.on("SIGINT", () => {
+  console.log("Received SIGINT. Cleaning up...");
   // Your cleanup code here, e.g., closing database connections, servers, etc.
   process.exit(0);
 });
 
-process.on('SIGTERM', () => {
-  console.log('Received SIGTERM. Cleaning up...');
+process.on("SIGTERM", () => {
+  console.log("Received SIGTERM. Cleaning up...");
   // Your cleanup code here.
   process.exit(0);
 });

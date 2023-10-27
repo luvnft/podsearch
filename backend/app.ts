@@ -1,18 +1,14 @@
 import { config } from 'dotenv';
 import path from "path";
-
-const envPath = path.resolve(__dirname, "../.env");
-
-console.log("envPath", envPath)
-config({ path: envPath });
-console.log(process.env);
-
 import express, { Express } from "express";
 import cors from "cors";
 import transcriptionsRouter from "./routes/transcriptions";
 import compression from "compression";
 import { start as startIndexer } from "./workers/indexer";
 import { start as startRssCrawler } from "./workers/rsscrawler";
+
+const envPath = path.resolve(__dirname, "../.env");
+config({ path: envPath });
 
 // Setup
 const app: Express = express();

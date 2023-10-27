@@ -44,7 +44,6 @@ nlp = spacy.load('en_core_web_sm')
 
 YOUTUBE_SEARCH_URL = "https://www.youtube.com/results?search_query="
 
-
 async def search_youtube(query):
     async with aiohttp.ClientSession() as session:
         response = await session.get(YOUTUBE_SEARCH_URL + query)
@@ -60,25 +59,32 @@ def get_video_title(video_id):
 async def find_youtube_link(episodeTitle):
     print("Preparing to search for the episodeTitle on youtube")
     print("Searching for:", episodeTitle)
+    
     video_ids = await search_youtube(episodeTitle)
-
+    video_ids = list(set(video_ids))[0:20]
+    print("Length of the videoIds: ", len(video_ids))
+    
     maxScore = 0
     bestLinkId = ""
+    
+    print(video_ids)
 
     for vid in video_ids:
+        print("Checking:", vid)
         title = get_video_title(vid)
         print("Checking:", title)
         score = getSimilarityScore(episodeTitle, title)
         print("Returned value is:", score)
 
-        if score > maxScore and score > 0.7:
+        if score > maxScore and score > 0.8:
             maxScore = score
             print("Setting value:", score)
             print("MaxScore is:", maxScore)
             bestLinkId = vid
 
     print("BestLinkID:", bestLinkId)
-
+    return bestLinkId
+    
 def getSimilarityScore(text1, text2):
     # Process the texts
     doc1 = nlp(text1)
@@ -88,7 +94,6 @@ def getSimilarityScore(text1, text2):
     similarity = doc1.similarity(doc2)
 
     return similarity
-
 
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     print("Converting the video file to audio file")
@@ -259,7 +264,8 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         # Find the youtube link associated with the episodeTitle
         print("Preparing to search for the episodeTitle on youtube")
         print("Searching for: ", episodeTitle)
-        bestYouTubeLink = await search_youtube(episodeTitle)
+        bestYouTubeLink = await find_youtube_link(episodeTitle)
+        bestYouTubeLink = f"https://www.youtube.com/watch?v={bestYouTubeLink}"
         print("BestLinkID: ,", bestYouTubeLink)
 
         # Save the transcriptionDataObject as a JSON
