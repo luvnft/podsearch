@@ -33,7 +33,7 @@ const initializeApp = async () => {
 
     // Workers
     console.log("Indexer started!");
-    startIndexer("*/5 * * * *");
+    startIndexer("* * * * *");
 
     console.log("RSS Crawler started!");
     startRssCrawler("*/11 * * * *");
