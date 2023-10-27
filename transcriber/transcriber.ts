@@ -178,7 +178,7 @@ async function insertJsonFilesToDb() {
       const filteredWords = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
 
       // The words are already sorted in ascending order based on timestamp
-      words = mergeStrangeSegments(words);
+      words = mergeStrangeSegments(filteredWords);
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
