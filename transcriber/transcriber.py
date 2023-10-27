@@ -14,8 +14,11 @@ import spacy
 from audioOffsetFinder import find_offset_between_files
 from pytube import YouTube
 from moviepy.editor import *
-from ytpy import YoutubeClient
 from googlesearch import search
+import aiohttp
+import re
+from pytube import YouTube
+import requests
 
 app = FastAPI()
 
@@ -32,40 +35,49 @@ class TranscribeData(BaseModel):
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
 device = "cuda"
-compute_type = "float16" # change to "int8" if low on GPU mem (may reduce accuracy)
+# change to "int8" if low on GPU mem (may reduce accuracy)
+compute_type = "float16"
 
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
 nlp = spacy.load('en_core_web_sm')
 
+YOUTUBE_SEARCH_URL = "https://www.youtube.com/results?search_query="
 
-async def search_youtube(episodeTitle: str) -> str:
-    """
-    Search YouTube for a given episode title and return the most relevant link.
-    """
-    # Using Google search to get youtube video links
-    query = episodeTitle + "site:youtube.com"
-    search_results = search(query, lang="en", num_results=5)
-    youtube_links = [
-        link for link in search_results if "www.youtube.com/watch" in link]
+
+async def search_youtube(query):
+    async with aiohttp.ClientSession() as session:
+        response = await session.get(YOUTUBE_SEARCH_URL + query)
+        page_content = await response.text()
+        video_ids = re.findall(r"watch\?v=(\S{11})", page_content)
+        return video_ids
+
+
+def get_video_title(video_id):
+    return YouTube(f"https://www.youtube.com/watch?v={video_id}").title
+
+
+async def find_youtube_link(episodeTitle):
+    print("Preparing to search for the episodeTitle on youtube")
+    print("Searching for:", episodeTitle)
+    video_ids = await search_youtube(episodeTitle)
 
     maxScore = 0
-    bestLink = ""
+    bestLinkId = ""
 
-    for link in youtube_links:
-        # Assuming you extract title from YouTube link somehow
-        # (This would usually require fetching and parsing the page)
-        # For the sake of the example, I'll use the entire link as the title
-        title = link  # replace this line if you extract the title from the link
-
+    for vid in video_ids:
+        title = get_video_title(vid)
+        print("Checking:", title)
         score = getSimilarityScore(episodeTitle, title)
+        print("Returned value is:", score)
 
         if score > maxScore and score > 0.7:
             maxScore = score
-            bestLink = link
+            print("Setting value:", score)
+            print("MaxScore is:", maxScore)
+            bestLinkId = vid
 
-    return bestLink
-
+    print("BestLinkID:", bestLinkId)
 
 def getSimilarityScore(text1, text2):
     # Process the texts
@@ -292,8 +304,6 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         return None
 
 # Main transcriber api route
-
-
 @app.post("/transcribe")
 async def transcribe(data: TranscribeData):
     try:
