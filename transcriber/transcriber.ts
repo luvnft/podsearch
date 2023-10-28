@@ -64,30 +64,30 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
   }
 }
 
-function mergeStrangeSegments(segments) {
+function mergeStrangeSegmentsAndCreateNewSegments(segments: TranscriptionWordType[]) {
   if (segments.length === 0) return [];
 
-  const merged = [];
-  let tempText = ""; // Temporary storage for text of segments without start and end
+  const merged: TranscriptionWordType[] = [];
+  let tempText: string = ""; // Temporary storage for text of segments without start and end
 
   // We are looping over all the words
   for (let i = 0; i < segments.length; i++) {
     // Setting the currentSegment to the one we are looping over
-    const currentSegment = segments[i];
+    const currentSegment: TranscriptionWordType = segments[i];
 
     // If the currentSegment doesnt have the start and end values
     if (currentSegment.start === undefined && currentSegment.end === undefined) {
       // Then we add the textvalue of that segment which is always present to the tempText.
       // If the tempText is '' (falsy) then we just set the text to the value
       // If the tempText is truthy then we set tempText to the tempText with the space and the new text and continue
-      tempText = tempText ? `${tempText} ${currentSegment.text}` : currentSegment.text;
+      tempText = tempText ? `${tempText} ${currentSegment.word}` : currentSegment.word;
     }
     // If the currentSegment does have start and end value then we are here
     else {
       // We check if tempText is defined, because if it is then we want to add the tempText to the text of that segment which has the start and end values
       // And we reset the tempText and then we add it to the merged array
       if (tempText) {
-        currentSegment.text = `${tempText} ${currentSegment.text}`;
+        currentSegment.word = `${tempText} ${currentSegment.word}`;
         tempText = "";
       }
       // Here we add it do the merged array
@@ -107,7 +107,7 @@ function mergeStrangeSegments(segments) {
   // If there are remaining segments without start and end after processing all segments
   if (tempText && merged.length > 0) {
     const lastMergedSegment = merged[merged.length - 1];
-    lastMergedSegment.text = lastMergedSegment.text + " " + tempText;
+    lastMergedSegment.word = lastMergedSegment.word + " " + tempText;
   }
 
   return merged;
@@ -206,11 +206,11 @@ async function insertJsonFilesToDb() {
 
       // Filtered words
       // This removes junk like this:  "word": "\u0443\u0432\u0430\u0436\u0430\u0435\u043c\u044b\u0435"
-      const filteredWords = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
+      const filteredWords: TranscriptionWordType[] = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
 
       // The words are already sorted in ascending order based on timestamp
       // Due to whisperx not being able to align numbers, special characters and such we have to merge these words which lack the start and end attribute with some previous word
-      words = mergeStrangeSegments(filteredWords);
+      const newWords: TranscriptionWordType[] = mergeStrangeSegmentsAndCreateNewSegments(filteredWords);
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
@@ -219,10 +219,10 @@ async function insertJsonFilesToDb() {
       let endTime: number = words[0].end;
 
       // Num of words
-      const numberOfWords: number = words.length;
+      const numberOfWords: number = newWords.length;
 
       for (let j = 0; j < numberOfWords; j++) {
-        word = words[j];
+        word = newWords[j];
 
         if (concatenatedWord.length + word.word.length <= MAX_CHARS) {
           concatenatedWord = concatenatedWord + " " + word.word;

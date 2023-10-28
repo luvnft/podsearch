@@ -295,9 +295,16 @@ async function main() {
     if (!podcast.imageUrl) {
       const cloudflareImageId: string = await uploadExternalImageToCloudflare(podcast.imageUrl, podcast.podcastGuid);
       if (cloudflareImageId) {
+        podcast.imageUrl = cloudflareImageId;
       }
     }
   }
+
+  // Updating them with images
+  console.log("Updating with images");
+  await prisma.podcast.updateMany({
+    data: podcasts,
+  });
 
   // Getting the RSS-FeedUrls and the podcastGuids
   const rssFeedUrls: string[] = podcasts.map((p: any) => p.url);
