@@ -36,7 +36,7 @@ const initializeApp = async () => {
     startIndexer("* * * * *");
 
     console.log("RSS Crawler started!");
-    startRssCrawler("*/11 * * * *");
+    startRssCrawler("* * * * *");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);

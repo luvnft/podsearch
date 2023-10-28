@@ -190,7 +190,7 @@ async function insertJsonFilesToDb() {
         },
       });
 
-      const transcriptionId = transcriptionData.id;
+      const transcriptionId = transcriptionData.id; 
 
       // Prepare segments data for insertionsegment
       let words: TranscriptionWordType[] = [];

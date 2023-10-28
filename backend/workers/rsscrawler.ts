@@ -35,7 +35,7 @@ async function uploadExternalImageToCloudflare(imageUrl: string, podcastTitle: s
 
     console.log(cloudflareResponse.data);
 
-    return cloudflareResponse;
+    return cloudflareResponse.data;
   } catch (error) {
     console.error("An error occurred:", error);
   }
@@ -79,6 +79,7 @@ function validateObjectsBeforeInsert(objectsToInsert: any[]): any[] {
 
 async function insertPodcastsAndUpdate(objectsToInsert: any[], prisma: PrismaClient): Promise<void> {
   console.log("HERE=======================>");
+  console.log("We are going to add: ", objectsToInsert);
 
   objectsToInsert.forEach((object) => {
     object.createdAt = new Date(object.createdOn * 1000).toISOString();
@@ -291,20 +292,29 @@ async function main() {
   const podcasts: Podcast[] = await getPodcast(prisma);
 
   // Upload images if they dont exist.
+  console.log("Updating with images");
+
   for await (const podcast of podcasts) {
-    if (!podcast.imageUrl) {
-      const cloudflareImageId: string = await uploadExternalImageToCloudflare(podcast.imageUrl, podcast.podcastGuid);
-      if (cloudflareImageId) {
-        podcast.imageUrl = cloudflareImageId;
+    console.log("Looping over: ", podcast);
+    if (isUrl(podcast.imageUrl) === true) {
+      console.log("Truthy);");
+      const cloudflareImageId: any = await uploadExternalImageToCloudflare(podcast.imageUrl, podcast.podcastGuid);
+      console.log("Halleluja", cloudflareImageId);
+      console.log(cloudflareImageId.result);
+      console.log(cloudflareImageId.result.id);
+      if (cloudflareImageId.result.id) {
+        console.log("Podcast: ", podcast);
+        await prisma.podcast.update({
+          data: {
+            imageUrl: cloudflareImageId.result.id,
+          },
+          where: {
+            podcastGuid: podcast.podcastGuid,
+          },
+        });
       }
     }
   }
-
-  // Updating them with images
-  console.log("Updating with images");
-  await prisma.podcast.updateMany({
-    data: podcasts,
-  });
 
   // Getting the RSS-FeedUrls and the podcastGuids
   const rssFeedUrls: string[] = podcasts.map((p: any) => p.url);
@@ -341,6 +351,16 @@ async function main() {
 }
 
 let isRunning = false;
+
+function isUrl(url: string): boolean {
+  try {
+    const urlTemp: any = new URL(url);
+  } catch (_) {
+    return false;
+  }
+
+  return true;
+}
 
 function start(cronExpression: string) {
   console.log("Cron-job rsscrawler is turned ON.");
