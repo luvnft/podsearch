@@ -17,7 +17,6 @@ from moviepy.editor import *
 from googlesearch import search
 import aiohttp
 import re
-from pytube import YouTube
 import requests
 
 app = FastAPI()
@@ -107,7 +106,7 @@ def download_and_convert_to_wav(youtube_link):
     try:
         print("youtube_link", youtube_link)
         # Download the video
-        yt = YouTube(youtube_link)
+        yt = YouTube(youtube_link, use_oauth=True,allow_oauth_cache=True)
         print("YouTube began")
         stream = yt.streams.filter(
             progressive=True, file_extension='mp4').first()
@@ -265,13 +264,13 @@ async def transcribeAndSaveJson(episodeLink, episodeTitle, episodeGuid, podcastG
         print("Preparing to search for the episodeTitle on youtube")
         print("Searching for: ", episodeTitle)
         bestYouTubeLink = await find_youtube_link(episodeTitle)
-        bestYouTubeLink = f"https://www.youtube.com/watch?v={bestYouTubeLink}"
-        print("BestLinkID: ,", bestYouTubeLink)
 
         # Save the transcriptionDataObject as a JSON
         transcriptionFileName = str(int(time.time())) + ".json"
 
-        if bestYouTubeLink != "":
+        if bestYouTubeLink != "" and bestYouTubeLink != None:
+            bestYouTubeLink = f"https://www.youtube.com/watch?v={bestYouTubeLink}"
+            print("BestLinkID: ,", bestYouTubeLink)
             transcriptionData[
                 "youtubeVideoLink"] = bestYouTubeLink
             results = {}

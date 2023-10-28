@@ -360,4 +360,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-insertJsonFilesToDb();
+transcribe();
