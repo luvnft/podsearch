@@ -110,13 +110,8 @@ function mergeStrangeSegmentsAndCreateNewSegments(segments: TranscriptionWordTyp
     lastMergedSegment.word = lastMergedSegment.word + " " + tempText;
   }
 
+  console.log("Returning merged: ", merged.length);
   return merged;
-}
-
-function isStandardCharacter(word: string): boolean {
-  // This regex matches standard Latin alphanumeric characters, feel free to modify as needed.
-  const regex = /\u+[^a-zA-Z\s]+/gi;
-  return regex.test(word);
 }
 
 async function insertJsonFilesToDb() {
@@ -174,8 +169,8 @@ async function insertJsonFilesToDb() {
           episodeGuid: belongsToEpisodeGuid,
         },
         data: {
-          youtubeVideoLink: youtubeVideoLink,
-          deviationTime: deviationTime,
+          youtubeVideoLink: data.youtubeVideoLink ? data.youtubeVideoLink : "",
+          deviationTime: data.deviationTime ? data.deviationTime : 0,
         },
       });
 
@@ -190,7 +185,7 @@ async function insertJsonFilesToDb() {
         },
       });
 
-      const transcriptionId = transcriptionData.id; 
+      const transcriptionId = transcriptionData.id;
 
       // Prepare segments data for insertionsegment
       let words: TranscriptionWordType[] = [];
@@ -205,12 +200,12 @@ async function insertJsonFilesToDb() {
       }
 
       // Filtered words
-      // This removes junk like this:  "word": "\u0443\u0432\u0430\u0436\u0430\u0435\u043c\u044b\u0435"
-      const filteredWords: TranscriptionWordType[] = words.filter((entry: TranscriptionWordType) => isStandardCharacter(entry.word));
+      console.log("Length of words: ", words.length);
 
       // The words are already sorted in ascending order based on timestamp
       // Due to whisperx not being able to align numbers, special characters and such we have to merge these words which lack the start and end attribute with some previous word
-      const newWords: TranscriptionWordType[] = mergeStrangeSegmentsAndCreateNewSegments(filteredWords);
+      const newWords: TranscriptionWordType[] = mergeStrangeSegmentsAndCreateNewSegments(words);
+      console.log("New words are: ", newWords.length);
 
       // Now we create the segments
       let word: TranscriptionWordType | undefined = undefined;
@@ -269,7 +264,6 @@ async function insertJsonFilesToDb() {
 
       // Insert segments using createMany
       console.log(`==>👑Adding ${newSegments.length} segments to DB`);
-      console.dir(newSegments, { maxArrayLength: null });
 
       try {
         await prisma.segment.createMany({
@@ -338,7 +332,6 @@ async function runPythonScript(episode: Episode) {
       language: "en",
     });
 
-    console.log(`Response from API: ${response.data.result}`);
     return Promise.resolve();
   } catch (error: any) {
     console.error(`Error calling API: ${error.message}`);
@@ -360,4 +353,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-transcribe();
+insertJsonFilesToDb();
