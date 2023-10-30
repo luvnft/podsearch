@@ -9,7 +9,8 @@
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
                         :startTime="computedStartTime" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
-                        :pictureInPicture="true" :noCookie="true" posterQuality="hq720" :searchEntry="props.searchEntry" />
+                        :pictureInPicture="true" :noCookie="true" posterQuality="hq720" :searchEntry="props.searchEntry"
+                        @timeupdate="handleYoutubeTimeChange" />
                 </div>
                 <div v-if="!props.searchEntry.youtubeVideoLink && props.searchEntry.podcastImage"
                     class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
@@ -108,6 +109,43 @@ const goToAudioTime = (moveToTime: number) => {
 
     if (audioPlayer.value) {
         audioPlayer.value.currentTime = moveToTime;
+    }
+}
+
+const handleYoutubeTimeChange = async (currentTime: number) => {
+    try {
+        const currentSeconds: number = parseFloat(currentTime.toFixed(1));
+
+        // Assuming currentPlayingTime and searchResults are reactive references
+        currentPlayingTime.value = currentSeconds;
+
+        const hits = searchResults.value.hits[props.index];
+        const lastAvailableElementIndex: number = hits.subHits.length - 1;
+        const lastAvailableElement: ClientSegmentHit = hits.subHits[lastAvailableElementIndex];
+
+        if ((currentSeconds / lastAvailableElement.start) > 0.96) {
+            // Assuming audioPlayer is a reactive reference
+            if (hasSearched) return;
+            if (lastAvailableElementIndex + 1 !== audioPlayer.value?.duration) {
+                hasSearched = true;
+
+                // Get entire transcript for that particular episode...
+                const searchResponse: ClientSearchResponse = await transcriptionService.search({
+                    filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
+                    getFullTranscript: true,
+                    sort: ["start:asc"],
+                    searchString: ""
+                });
+
+                // Since the received response hit has the type hit and not segmentHit, we gotta convert it to segmentHit first, reason for this is more or less just what is needed where, 
+                // Maybe casting is better, but dunno
+                searchResults.value.hits[props.index].subHits = searchResponse.hits[0].subHits;
+            }
+
+        }
+    } catch (error) {
+        console.error("Error in handleTimeChange: ", error);
+        hasSearched = false;
     }
 }
 

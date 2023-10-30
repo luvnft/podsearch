@@ -9,9 +9,8 @@ import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
-import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
-import { LocationQuery, Router } from "#build/.nuxt/vue-router";
-import { Device } from "@nuxtjs/device/runtime/types/index";
+import { LocationQuery, Router } from "vue-router";
+import { Device } from "@nuxtjs/device/dist/runtime/types"
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -38,6 +37,7 @@ onMounted(async () => {
 
     if (process.client) {
         // Creating a worker
+        //@ts-ignore
         worker = new Worker(new URL("../public/transcriptionServiceWorker.js?type=module&worker_file", import.meta.url), { type: "module" });
 
         // Listening for messages from worker
@@ -105,10 +105,10 @@ watch(searchQuery, debouncedSearch, {
 });
 
 const requestOngoing: Ref<boolean> = ref(false);
-    
+
 const debouncedOffsetIncrement = _Throttle(
     () => {
-        if(requestOngoing.value === true) return;
+        if (requestOngoing.value === true) return;
         requestOngoing.value = true;
 
         searchQuery.value = {
@@ -134,8 +134,6 @@ watch(y, () => {
 
 
     if (scrollY.value + visibleHeight >= 0.80 * windowHeight) {
-8
-
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
         let presence: boolean | undefined = undefined;

@@ -110,6 +110,12 @@ export default defineNuxtConfig({
         { rel: "icon", type: "image/svg+xml", href: "favicon.svg" },
         { rel: "icon", type: "image/png", href: "favicon.png" },
       ],
+      script: [
+        {
+          src: "https://www.youtube.com/iframe_api",
+          async: true, // The script can be loaded asynchronously
+        },
+      ],
     },
   },
 });

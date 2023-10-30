@@ -36,12 +36,13 @@
             <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
                 <IconsSpinnerIcon />
             </div>
-            <iframe
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1`"
+            <iframe v-if="props.searchEntry?.youtubeVideoLink"
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1&enablejsapi=1`"
                 :title="props.videoTitle" frameborder="0"
                 :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
-                class="aspect-video h-full w-full rounded-lg" @load="iFrameLoaded" v-show="loading === false" />
+                class="aspect-video h-full w-full rounded-lg" @load="iFrameLoaded" v-show="loading === false"
+                ref="iFramePlayer" :id="props.searchEntry?.episodeGuid" />
         </div>
     </div>
 </template>
@@ -50,21 +51,6 @@
 import { ClientSearchResponseHit } from "types/ClientSearchResponse";
 import { PropType } from "vue";
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
-
-const showiFrame: Ref<boolean> = ref(false);
-const loading: Ref<boolean> = ref(false);
-function iFrameLoaded() {
-    console.log("loaded")
-    loading.value = false;
-}
-
-function toggleiFrame() {
-    console.log("OK");
-    loading.value = true;
-    showiFrame.value = true;
-    console.log("NOW???")
-}
-
 const props = defineProps({
     videoId: {
         type: String as PropType<string>,
@@ -119,6 +105,64 @@ const props = defineProps({
         required: false,
     },
 });
+
+const emit = defineEmits<{
+    (e: "timeupdate", number: number): void;
+}>();
+
+let interval: any = undefined;
+let player: any = undefined;
+const showiFrame: Ref<boolean> = ref(false);
+const loading: Ref<boolean> = ref(false);
+const iFramePlayer: Ref<any> = ref(null);
+
+function iFrameLoaded() {
+    console.log("loaded")
+    loading.value = false;
+    // initPlayer(); // This function here lets the youtube stuff also be in sync with the subs but the issue is that this will not work if there is even 10 second deviation in the video. That would require me to transcribe the video and the podcast which seems super unnecessary. But then again, maybe in the future I could add some kind of deviationTime to each single segment, but not now
+}
+
+function toggleiFrame() {
+    console.log("OK");
+    loading.value = true;
+    showiFrame.value = true;
+}
+
+
+function initPlayer() {
+    console.log("iFramePlayer", iFramePlayer.value)
+    player = new (window as any).YT.Player(iFramePlayer.value, {
+        events: {
+            'onReady': onPlayerReady,
+        }
+    })
+}
+
+function onPlayerReady(event: any) {
+    console.log("SOmeone is ready baby")
+    startMonitoringPlayback();
+}
+
+function startMonitoringPlayback() {
+    if (interval) return;  // if already monitoring, just return
+
+    interval = setInterval(() => {
+        const currentTime = player?.playerInfo?.currentTime
+        console.log(currentTime); // you can replace this with any function or logic you want
+        emit("timeupdate", currentTime);
+    }, 300); // checks every second
+}
+
+function stopMonitoringPlayback() {
+    if (interval) {
+        clearInterval(interval);
+        interval = null;
+    }
+}
+
+onBeforeUnmount(() => {
+    stopMonitoringPlayback();
+})
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@
     "strictNullChecks": true,
     "alwaysStrict": true,
     "strict": true,
-    "target": "es2017",
+    "target": "es2020",
     "module": "commonjs",
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
