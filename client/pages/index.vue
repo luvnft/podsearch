@@ -10,8 +10,8 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
-import { LocationQuery, Router } from "#build/.nuxt/vue-router";
-import { Device } from "@nuxtjs/device/runtime/types/index";
+import { LocationQuery, Router } from "vue-router";
+import { Device } from "@nuxtjs/device/dist/runtime/types";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -105,10 +105,10 @@ watch(searchQuery, debouncedSearch, {
 });
 
 const requestOngoing: Ref<boolean> = ref(false);
-    
+
 const debouncedOffsetIncrement = _Throttle(
     () => {
-        if(requestOngoing.value === true) return;
+        if (requestOngoing.value === true) return;
         requestOngoing.value = true;
 
         searchQuery.value = {
@@ -134,7 +134,7 @@ watch(y, () => {
 
 
     if (scrollY.value + visibleHeight >= 0.80 * windowHeight) {
-8
+        8
 
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
