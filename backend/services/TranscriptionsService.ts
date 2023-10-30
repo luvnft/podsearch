@@ -4,7 +4,7 @@ import { ClientSearchResponse, ClientSearchResponseHit, ClientSegmentHit } from 
 import { SegmentResponse, SegmentHit } from "../types/SegmentResponse";
 import { PodcastResponse, PodcastHit } from "../types/PodcastResponse";
 import _ from "lodash";
-import { Index, MeiliSearch, MultiSearchParams, MultiSearchQuery, MultiSearchResponse, MultiSearchResult, SearchResponse } from "meilisearch";
+import { Index, MeiliSearch } from "meilisearch";
 import { EpisodeHit, EpisodeResponse } from "../types/EpisodeResponse";
 import { PrismaClient } from "@prisma/client";
 import { SearchQuery } from "../types/SearchQuery";
