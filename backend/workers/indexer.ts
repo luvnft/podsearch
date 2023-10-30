@@ -44,7 +44,7 @@ async function main() {
   console.log("Adding transcriptions first");
 
   // The number of transcriptions to take at a time due to the size of the responses
-  let transcriptionTake = 50;
+  let transcriptionTake = 10;
 
   //We loop through all the transcriptions
   for (let i = 0; i < transcriptionCount; i = i + transcriptionTake) {
@@ -62,7 +62,7 @@ async function main() {
     console.log("Adding transcriptions: ", transcriptions.length, "i is: ", i);
 
     var ids = transcriptions.map((e) => e.id);
-    await transcriptionsIndex.addDocumentsInBatches(transcriptions, 10, {
+    await transcriptionsIndex.addDocumentsInBatches(transcriptions, transcriptionTake, {
       primaryKey: "id",
     });
 
