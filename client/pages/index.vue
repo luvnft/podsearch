@@ -9,8 +9,9 @@ import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
+import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 import { LocationQuery, Router } from "vue-router";
-import { Device } from "@nuxtjs/device/dist/runtime/types"
+import { Device } from "@nuxtjs/device/dist/runtime/types";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -134,6 +135,11 @@ watch(y, () => {
 
 
     if (scrollY.value + visibleHeight >= 0.80 * windowHeight) {
+<<<<<<< HEAD
+=======
+        8
+
+>>>>>>> 5258211c316a5f1173646d81af415f3f2f8771d1
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
         let presence: boolean | undefined = undefined;

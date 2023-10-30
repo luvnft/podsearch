@@ -1,11 +1,13 @@
-import { Segment } from "@prisma/client";
 import { meilisearchConnection } from "../connections/meilisearchConnection";
 import { prismaConnection } from "../connections/prismaConnection";
-import cron from "node-cron";
+import { CronJob } from "cron";
+
+let isRunning: boolean = false;
 
 async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
 async function main() {
   const transcriptionsIndex = meilisearchConnection.index("transcriptions");
   const segmentsIndex = meilisearchConnection.index("segments");
@@ -18,12 +20,10 @@ async function main() {
 
   //Always updating these as they have important values which may change
   console.log("Adding podcasts, the number to add is:", podcasts.length, "we're overwriting all of them essentially");
-  await podcastsIndex.deleteAllDocuments();
   await podcastsIndex.addDocumentsInBatches(podcasts, 500, {
     primaryKey: "id",
   });
   console.log("Adding episodes, the number to add is:", episodes.length, "we're overwriting all of them essentially.");
-  await episodesIndex.deleteAllDocuments();
   await episodesIndex.addDocumentsInBatches(episodes, 500, {
     primaryKey: "id",
   });
@@ -99,7 +99,7 @@ async function main() {
 
     if (!segments || segments.length === 0) break;
     console.log("Number of segments now going to add is: ", segments.length, " and the i is: ", i);
-    
+
     var ids = segments.map((e) => e.id);
     await segmentsIndex.addDocumentsInBatches(segments, segmentTake, {
       primaryKey: "id",
@@ -121,43 +121,31 @@ async function main() {
   }
 }
 
-let isRunning = false;
+async function start(cronExpression: string) {
+  console.log("Cron-job indexer is turned ON.");
+  const job = new CronJob(cronExpression, cronJobRunner);
+  job.start();
+}
 
-function start(cronExpression: string) {
-  console.log("Cron-job rsscrawler is turned ON.");
-
-  if (!cron.validate(cronExpression)) {
-    console.error("Invalid cron expression.");
-    return;
-  }
-
-  cron.schedule(cronExpression, async () => {
+async function cronJobRunner() {
+  try {
+    // If the job is already running, just return
     if (isRunning) {
-      console.warn("Previous Indexer is still running. Skipping this run.");
+      console.log("indexer is already running. Skipping...");
       return;
     }
 
+    // Set the flag to true
     isRunning = true;
-    try {
-      await main();
-      console.log(`Indexer completed. Scheduled for next run as per ${cronExpression}.`);
-    } catch (err) {
-      console.error("Failed to run the main function:", err);
-    } finally {
-      isRunning = false; // Ensure that the flag is reset even if there's an error.
-    }
-  });
-}
-process.on("SIGINT", () => {
-  console.log("Received SIGINT. Cleaning up...");
-  // Your cleanup code here, e.g., closing database connections, servers, etc.
-  process.exit(0);
-});
+    console.log("Starting the indexer...");
 
-process.on("SIGTERM", () => {
-  console.log("Received SIGTERM. Cleaning up...");
-  // Your cleanup code here.
-  process.exit(0);
-});
+    await main();
+    isRunning = false;
+  } catch (e) {
+    console.log("Some kind of error with indexer ", e);
+  } finally {
+    isRunning = false;
+  }
+}
 
 export { start };

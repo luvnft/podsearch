@@ -6,11 +6,22 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import tar from "tar";
 import path from "path";
-import cron from "node-cron";
 import FormData from "form-data";
+import { CronJob } from "cron";
 
+let isRunning: boolean = false;
 const ACCOUNT_ID = "cc664ea0e464c8171ed71af53a1e3f5b";
 const API_KEY = process.env.API_KEY as string;
+
+function isUrl(url: string): boolean {
+  try {
+    const urlTemp: any = new URL(url);
+  } catch (_) {
+    return false;
+  }
+
+  return true;
+}
 
 async function uploadExternalImageToCloudflare(imageUrl: string, podcastTitle: string): Promise<any> {
   try {
@@ -211,6 +222,7 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
       createdAt: new Date(),
       updatedAt: new Date(),
       errorCount: 0,
+      deletedFromMeilisearch: false,
     });
   }
 
@@ -350,54 +362,31 @@ async function main() {
   console.log("Finished crawling the rss-feeds of the db.");
 }
 
-let isRunning = false;
-
-function isUrl(url: string): boolean {
-  try {
-    const urlTemp: any = new URL(url);
-  } catch (_) {
-    return false;
-  }
-
-  return true;
+async function start(cronExpression: string) {
+  console.log("Cron-job RSSCrawler is turned ON.");
+  const job = new CronJob(cronExpression, cronJobRunner);
+  job.start();
 }
 
-function start(cronExpression: string) {
-  console.log("Cron-job rsscrawler is turned ON.");
-
-  if (!cron.validate(cronExpression)) {
-    console.error("Invalid cron expression.");
-    return;
-  }
-
-  cron.schedule(cronExpression, async () => {
+async function cronJobRunner() {
+  try {
+    // If the job is already running, just return
     if (isRunning) {
-      console.warn("Previous rss-crawling is still running. Skipping this run.");
+      console.log("RSSCrawler is already running. Skipping...");
       return;
     }
 
+    // Set the flag to true
     isRunning = true;
-    try {
-      await main();
-      console.log(`Rss-crawling completed. Scheduled for next run as per ${cronExpression}.`);
-    } catch (err) {
-      console.error("Failed to run the main function:", err);
-    } finally {
-      isRunning = false; // Ensure that the flag is reset even if there's an error.
-    }
-  });
+    console.log("Starting the RSSCrawler...");
+
+    await main();
+    isRunning = false;
+  } catch (e) {
+    console.log("Some kind of error in RSSCrawler: ", e);
+  } finally {
+    isRunning = false;
+  }
 }
-
-process.on("SIGINT", () => {
-  console.log("Received SIGINT. Cleaning up...");
-  // Your cleanup code here, e.g., closing database connections, servers, etc.
-  process.exit(0);
-});
-
-process.on("SIGTERM", () => {
-  console.log("Received SIGTERM. Cleaning up...");
-  // Your cleanup code here.
-  process.exit(0);
-});
 
 export { start };
