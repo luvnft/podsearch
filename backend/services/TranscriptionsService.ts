@@ -11,6 +11,8 @@ import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 
+const SEGMENTS_TO_SEARCH: number = 25;
+
 class TranscriptionsService {
   public transcriptionsIndex: Index;
   public prismaConnection: PrismaClient = {} as PrismaClient;
@@ -32,10 +34,10 @@ class TranscriptionsService {
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
     // MainQuery
     let mainQuery: SearchParams = {
-      matchingStrategy: "last",
+      matchingStrategy: "all",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
-      limit: searchQuery.limit ? (searchQuery.limit > 12 ? 12 : searchQuery.limit) : 12,
+      limit: SEGMENTS_TO_SEARCH,
       offset: searchQuery.offset || 0,
     };
 
@@ -45,7 +47,7 @@ class TranscriptionsService {
         filter: searchQuery.filter,
         limit: 10000,
         q: "",
-        matchingStrategy: "last",
+        matchingStrategy: "all",
         sort: ["start:asc"],
       };
     }
@@ -151,7 +153,7 @@ class TranscriptionsService {
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
           limit: 50,
           sort: ["start:asc"],
-          matchingStrategy: "last",
+          matchingStrategy: "all",
           segmentId: segmentHit.id,
           segmentHit: segmentHit,
         });
@@ -170,13 +172,13 @@ class TranscriptionsService {
             indexUid: "episodes",
             q: "",
             filter: episodeFilter,
-            limit: 12,
+            limit: SEGMENTS_TO_SEARCH,
           },
           {
             indexUid: "podcasts",
             q: "",
             filter: podcastFilter,
-            limit: 12,
+            limit: SEGMENTS_TO_SEARCH,
           },
         ]
       );

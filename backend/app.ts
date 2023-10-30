@@ -27,16 +27,16 @@ app.use("/transcriptions", transcriptionsRouter);
 const initializeApp = async () => {
   try {
     // API Server
-    app.listen(port, () => {
+    app.listen(port, () => { 
       console.log(`API is listening at http://localhost:${port}`);
     });
 
     // Workers
-    console.log("Indexer started!");
-    startIndexer("* * * * *");
+    // console.log("Indexer started!");
+    // startIndexer("* * * * *");
 
-    console.log("RSS Crawler started!");
-    startRssCrawler("* * * * *");
+    // console.log("RSS Crawler started!");
+    // startRssCrawler("* * * * *");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);
