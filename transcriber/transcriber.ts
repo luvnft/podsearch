@@ -35,6 +35,22 @@ interface TranscriptionWordType {
   score: number;
 }
 
+async function retryOnConflict(fn: any, maxRetries = 3, delay = 1000) {
+  let retries = maxRetries;
+  let lastError;
+
+  while (retries > 0) {
+    try {
+      return await fn();
+    } catch (error) {
+      retries--;
+      await new Promise((res) => setTimeout(res, delay));
+    }
+  }
+
+  throw lastError; // If all retries exhausted, throw the last encountered error
+}
+
 async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
     const results = await prisma.$transaction([
@@ -272,9 +288,11 @@ async function insertJsonFilesToDb() {
       // Insert segments using createMany
       console.log(`==>👑Adding ${newSegments.length} segments to DB`);
 
-      await prisma.segment.createMany({
-        data: newSegments,
-        skipDuplicates: true,
+      await retryOnConflict(async () => {
+        await prisma.segment.createMany({
+          data: newSegments,
+          skipDuplicates: true,
+        });
       });
 
       // Rename the file after it has been inserted into the database successfully
