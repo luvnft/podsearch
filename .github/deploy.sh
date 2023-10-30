@@ -24,6 +24,7 @@ git clean -f
 git pull origin master || handle_error "Failed to pull from master."
 
 # Regenerate prisma client
+prisma db pull --schema="./backend/prisma/schema.prisma"
 prisma generate --schema="./backend/prisma/schema.prisma"
 
 # Install dependencies
