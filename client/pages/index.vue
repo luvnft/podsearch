@@ -132,33 +132,21 @@ watch(y, () => {
     scrollY.value = y.value;
     const windowHeight = document.documentElement.scrollHeight;
     const visibleHeight = window.innerHeight;
-
-
     if (scrollY.value + visibleHeight >= 0.80 * windowHeight) {
-<<<<<<< HEAD
-=======
-        8
-
->>>>>>> 5258211c316a5f1173646d81af415f3f2f8771d1
         // If the 
         const routePath: LocationQuery = router?.currentRoute?.value?.query;
         let presence: boolean | undefined = undefined;
 
         try {
-
             const routeBasedSearchQuery: SearchQuery = JSON.parse(routePath["searchQuery"] as unknown as string) as SearchQuery;
-
             presence = routeBasedSearchQuery.filter?.includes("id") ? routeBasedSearchQuery.filter.includes("id") : false;
         }
         catch (e) {
             presence = undefined;
         }
-
         if (presence === undefined) {
             debouncedOffsetIncrement();
         }
-
-
     }
 });
 </script>
