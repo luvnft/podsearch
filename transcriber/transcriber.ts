@@ -75,6 +75,9 @@ function mergeStrangeSegmentsAndCreateNewSegments(segments: TranscriptionWordTyp
     // Setting the currentSegment to the one we are looping over
     const currentSegment: TranscriptionWordType = segments[i];
 
+    // Strange situation where start value is undefined lol:
+    if (i === 0 && currentSegment.start === undefined) currentSegment.start = 0; // Dont blame me, blame whisperx and the dev of that repo
+
     // If the currentSegment doesnt have the start and end values
     if (currentSegment.start === undefined && currentSegment.end === undefined) {
       // Then we add the textvalue of that segment which is always present to the tempText.
@@ -121,7 +124,7 @@ async function insertJsonFilesToDb() {
     const files = fs.readdirSync("./");
 
     // Looping over all the files inside the ".jsons folder which is inside the ../transcriber "
-    for (const filename of files) {
+    for await (const filename of files) {
       //If file is not .json continue
       if (!filename.endsWith(".json") || filename.startsWith(".")) {
         continue;
@@ -134,26 +137,6 @@ async function insertJsonFilesToDb() {
 
       // Extract data
       const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, deviationTime, youtubeVideoLink }: JsonTranscriptionObject = data;
-
-      // Delete the existing transcription with belongsToEpisodeGuid
-      console.log("==> 🗑️Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
-      try {
-        await prisma.transcription.delete({
-          where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
-        });
-      } catch (e) {
-        console.log("Some error1: ", e);
-      }
-
-      // Delete the segments with belongsToEpisodeGuid
-      console.log("==> 🗑️Deleting segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
-      try {
-        await prisma.segment.deleteMany({
-          where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
-        });
-      } catch (e) {
-        console.log("Some error2: ", e);
-      }
 
       console.log("Getting EpisodeGuid from DB: ", belongsToEpisodeGuid);
       const episode: Episode | null = await prisma.episode.findUnique({
@@ -174,9 +157,31 @@ async function insertJsonFilesToDb() {
         },
       });
 
+      // Delete the existing transcription with belongsToEpisodeGuid
+      console.log("==> 🗑️Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
+      try {
+        await prisma.transcription.deleteMany({
+          where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
+        });
+        console.log("==> 🗑️✅Successfully deleted transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
+      } catch (e) {
+        console.log("⛔Some error1: ", e);
+      }
+
+      // Delete the segments with belongsToEpisodeGuid
+      console.log("==> 🗑️Deleting segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
+      try {
+        await prisma.segment.deleteMany({
+          where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
+        });
+        console.log("==> 🗑️✅Successfully deleted segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
+      } catch (e) {
+        console.log("⛔Some error2: ", e);
+      }
+
       // Add the transcription
       console.log("==>👑Adding transcription to DB");
-      const transcriptionData: Transcription = await prisma.transcription.create({
+      const transcriptionData = await prisma.transcription.create({
         data: {
           language,
           belongsToPodcastGuid,
@@ -235,6 +240,7 @@ async function insertJsonFilesToDb() {
             id: uuidv4(),
             indexed: false,
             updatedAt: null,
+            deletedFromMeilisearch: false,
           };
 
           newSegments.push(segment);
@@ -258,6 +264,7 @@ async function insertJsonFilesToDb() {
           id: uuidv4(),
           indexed: false,
           updatedAt: null,
+          deletedFromMeilisearch: false,
         };
         newSegments.push(segment);
       }
@@ -265,14 +272,10 @@ async function insertJsonFilesToDb() {
       // Insert segments using createMany
       console.log(`==>👑Adding ${newSegments.length} segments to DB`);
 
-      try {
-        await prisma.segment.createMany({
-          data: newSegments,
-          skipDuplicates: true,
-        });
-      } catch (e) {
-        console.log("E", e);
-      }
+      await prisma.segment.createMany({
+        data: newSegments,
+        skipDuplicates: true,
+      });
 
       // Rename the file after it has been inserted into the database successfully
       const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
@@ -297,7 +300,7 @@ const transcribe = async () => {
 
     // Call the Python script and pass the necessary arguments
     try {
-      await runPythonScript(episode);
+      await callPythonTranscribeAPI(episode);
       console.log("<  ==  > Transcription completed and JSON saved <  ==  > ");
       await insertJsonFilesToDb();
       console.log("Finished adding the json to the db. Running again:");
@@ -322,14 +325,14 @@ const transcribe = async () => {
   }
 };
 
-async function runPythonScript(episode: Episode) {
+async function callPythonTranscribeAPI(episode: Episode) {
   try {
     const response = await axios.post("http://localhost:8000/transcribe", {
       episodeLink: episode.episodeEnclosure,
       episodeTitle: episode.episodeTitle,
       episodeGuid: episode.episodeGuid,
       podcastGuid: episode.podcastGuid,
-      language: "en",
+      language: episode.episodeLanguage,
     });
 
     return Promise.resolve();

@@ -25,6 +25,7 @@ model Episode {
   createdAt                      DateTime?      @default(now())
   updatedAt                      DateTime?      @updatedAt
   errorCount                     Int?           @default(0)
+  deletedFromMeilisearch         Boolean        @default(false)
   Podcast_belongsToPodcast       Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   Segment                        Segment[]
   Transcription_hasTranscription Transcription? @relation("Episode_belongsToEpisodeGuid")
@@ -33,28 +34,29 @@ model Episode {
 }
 
 model Podcast {
-  id                              String          @id @default(uuid())
-  url                             String          @db.VarChar(500)
-  title                           String          @db.VarChar(500)
-  link                            String          @db.VarChar(500)
-  contentType                     String          @db.VarChar(500)
-  originalUrl                     String          @db.VarChar(500)
-  itunesAuthor                    String          @db.VarChar(500)
-  itunesOwnerName                 String          @db.VarChar(500)
-  itunesType                      String          @db.VarChar(500)
-  generator                       String          @db.VarChar(500)
-  language                        String          @db.VarChar(500)
-  chash                           String          @db.VarChar(500)
-  host                            String          @db.VarChar(500)
-  category1                       String          @db.VarChar(500)
-  category2                       String          @db.VarChar(500)
-  category3                       String          @db.VarChar(500)
-  category4                       String          @db.VarChar(500)
-  category5                       String          @db.VarChar(500)
-  category6                       String          @db.VarChar(500)
-  category7                       String          @db.VarChar(500)
-  category8                       String          @db.VarChar(500)
-  category9                       String          @db.VarChar(500)
+  id                     String  @id @default(uuid())
+  url                    String  @db.VarChar(500)
+  title                  String  @db.VarChar(500)
+  link                   String  @db.VarChar(500)
+  contentType            String  @db.VarChar(500)
+  originalUrl            String  @db.VarChar(500)
+  itunesAuthor           String  @db.VarChar(500)
+  itunesOwnerName        String  @db.VarChar(500)
+  itunesType             String  @db.VarChar(500)
+  generator              String  @db.VarChar(500)
+  language               String  @db.VarChar(500)
+  chash                  String  @db.VarChar(500)
+  host                   String  @db.VarChar(500)
+  category1              String  @db.VarChar(500)
+  category2              String  @db.VarChar(500)
+  category3              String  @db.VarChar(500)
+  category4              String  @db.VarChar(500)
+  category5              String  @db.VarChar(500)
+  category6              String  @db.VarChar(500)
+  category7              String  @db.VarChar(500)
+  category8              String  @db.VarChar(500)
+  category9              String  @db.VarChar(500)
+  deletedFromMeilisearch Boolean @default(false)
   category10                      String          @db.VarChar(500)
   imageUrl                        String          @db.VarChar(500)
   newestEnclosureUrl              String          @db.VarChar(500)
@@ -79,13 +81,14 @@ model Podcast {
 }
 
 model Segment {
-  id                                  String        @id @default(uuid())
-  start                               Float
-  end                                 Float
-  language                            String        @db.VarChar(500)
-  belongsToPodcastGuid                String        @db.VarChar(500)
-  belongsToEpisodeGuid                String        @db.VarChar(500)
-  belongsToTranscriptId               String        @db.VarChar(500)
+  id                     String  @id @default(uuid())
+  start                  Float
+  end                    Float
+  language               String  @db.VarChar(500)
+  belongsToPodcastGuid   String  @db.VarChar(500)
+  belongsToEpisodeGuid   String  @db.VarChar(500)
+  belongsToTranscriptId  String  @db.VarChar(500)
+  deletedFromMeilisearch Boolean @default(false)
   text                                String        @db.VarChar(500)
   indexed                             Boolean?      @default(false)
   createdAt                           DateTime?     @default(now())
@@ -100,11 +103,12 @@ model Segment {
 }
 
 model Transcription {
-  id                           String    @id @default(uuid())
-  language                     String    @db.VarChar(500)
-  belongsToPodcastGuid         String    @db.VarChar(500)
-  belongsToEpisodeGuid         String    @unique @db.VarChar(500)
-  transcription                String    @db.MediumText
+  id                     String  @id @default(uuid())
+  language               String  @db.VarChar(500)
+  belongsToPodcastGuid   String  @db.VarChar(500)
+  belongsToEpisodeGuid   String  @unique @db.VarChar(500)
+  transcription          String  @db.MediumText
+  deletedFromMeilisearch Boolean @default(false)
   indexed                      Boolean?  @default(false)
   createdAt                    DateTime? @default(now())
   updatedAt                    DateTime? @updatedAt
