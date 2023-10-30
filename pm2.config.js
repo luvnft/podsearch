@@ -6,13 +6,6 @@ module.exports = {
       name: "meilisearch",
       script: "/mnt/volume_nyc1_02/meilisearch",
       args: "--no-analytics",
-      env: {
-        MEILI_HTTP_ADDR: process.env.MEILI_HTTP_ADDR,
-        MEILI_MASTER_KEY: process.env.MEILI_MASTER_KEY,
-        MEILI_DB_PATH: process.env.MEILI_DB_PATH,
-        MEILI_DUMP_DIR: process.env.MEILI_DUMP_DIR,
-        MEILI_ENV: process.env.MEILI_ENV,
-      },
       watch: false,
     },
     {
