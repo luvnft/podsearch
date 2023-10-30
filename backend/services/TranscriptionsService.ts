@@ -32,7 +32,7 @@ class TranscriptionsService {
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
     // MainQuery
     let mainQuery: SearchParams = {
-      matchingStrategy: "all",
+      matchingStrategy: "last",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
       limit: searchQuery.limit ? (searchQuery.limit > 12 ? 12 : searchQuery.limit) : 12,
@@ -45,7 +45,7 @@ class TranscriptionsService {
         filter: searchQuery.filter,
         limit: 10000,
         q: "",
-        matchingStrategy: "all",
+        matchingStrategy: "last",
         sort: ["start:asc"],
       };
     }
@@ -151,7 +151,7 @@ class TranscriptionsService {
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
           limit: 50,
           sort: ["start:asc"],
-          matchingStrategy: "all",
+          matchingStrategy: "last",
           segmentId: segmentHit.id,
           segmentHit: segmentHit,
         });
