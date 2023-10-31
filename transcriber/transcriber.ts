@@ -52,23 +52,37 @@ async function retryOnConflict(fn: any, maxRetries = 3, delay = 1000) {
 async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
     const results = await prisma.$transaction([
-      prisma.$queryRawUnsafe(`
-              SELECT * FROM Episode WHERE isTranscribed = 0 AND errorCount < 1 LIMIT 1 FOR UPDATE SKIP LOCKED;
-          `),
+      prisma.$queryRaw`
+        DELIMITER;
+
+        START TRANSACTION;
+        
+        SET @episode_id = (
+          SELECT id
+          FROM Episode
+          WHERE processed = false AND errorCount < 1
+          LIMIT 1
+          FOR UPDATE SKIP LOCKED
+        );
+        
+        UPDATE Episode
+        SET processed = true
+        WHERE id = @episode_id;
+        
+        SELECT * FROM Episode WHERE id = @episode_id;
+    
+        COMMIT;
+      `,
     ]);
+
+    console.log(results);
+
+    return null;
 
     const episodeResult: Episode[] = results[0] as unknown as Episode[];
 
     if (episodeResult && episodeResult.length > 0) {
       const episode = episodeResult[0];
-
-      await prisma.$transaction([
-        prisma.episode.update({
-          where: { id: episode.id },
-          data: { isTranscribed: true },
-        }),
-      ]);
-
       return episode;
     } else {
       return null;
@@ -302,9 +316,10 @@ const transcribe = async () => {
 
     // Call the Python script and pass the necessary arguments
     try {
+      console.log("Going to transcribe: ", episode.episodeTitle);
       await callPythonTranscribeAPI(episode);
       console.log("<  ==  > Transcription completed and JSON saved <  ==  > ");
-      await insertJsonFilesToDb();
+      // await insertJsonFilesToDb();
       console.log("Finished adding the json to the db. Running again:");
     } catch (e) {
       console.log(e);
@@ -313,7 +328,6 @@ const transcribe = async () => {
           episodeGuid: episode.episodeGuid,
         },
         data: {
-          isTranscribed: false,
           errorCount: { increment: 1 }, // assuming errorCount is a field you want to increment
           // This increment is important because we could face the scenario where lets say 3 machines are transcribing. First machine grabs an episode to transcribe it, and fails doing so for whatever reason, then another machine will pick it up again and transcribe it again causing meaningless work. So once an episode fail we can avoid trying it again. Also the SKIP LOCK makes sure there wont mbe many machines that are waiting for another machine to release the lock on a specific row.
         },
@@ -340,7 +354,6 @@ async function callPythonTranscribeAPI(episode: Episode) {
     return Promise.resolve();
   } catch (error: any) {
     console.error(`Error calling API: ${error.message}`);
-    console.log("Updating episode isTranscribed back to correct false value", episode.episodeGuid);
     return Promise.reject(error);
   }
 }
@@ -358,4 +371,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-insertJsonFilesToDb();
+transcribe();

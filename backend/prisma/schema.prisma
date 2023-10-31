@@ -18,7 +18,7 @@ model Episode {
   podcastGuid          String         @db.VarChar(500)
   episodeGuid          String         @unique @db.VarChar(500)
   episodeDuration      Int
-  isTranscribed        Boolean        @default(false)
+  processed            Boolean        @default(false)
   youtubeVideoLink     String?
   indexed              Boolean?       @default(false)
   createdAt            DateTime?      @default(now())
