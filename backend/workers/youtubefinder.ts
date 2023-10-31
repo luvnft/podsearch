@@ -1,5 +1,5 @@
 import * as stringSimilarity from "string-similarity";
-import { Episode, Podcast, Prisma, PrismaClient } from '@prisma/client'
+import { Episode, Podcast, Prisma, PrismaClient } from "@prisma/client";
 import * as path from "path";
 import { config } from "dotenv";
 import puppeteer from "puppeteer";
@@ -10,11 +10,11 @@ const envPath = path.resolve(__dirname, "../.env");
 config({ path: envPath });
 const prisma: PrismaClient = new PrismaClient();
 
-async function searchYouTube(episode: Episode): Promise<any[]> {
+async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<any[]> {
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
 
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent("Lex Fridman " + episode.episodeTitle)}`;
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle)}`;
   console.log("Going to : ", searchUrl);
   await page.goto(searchUrl);
 
@@ -35,16 +35,14 @@ async function searchYouTube(episode: Episode): Promise<any[]> {
 }
 
 async function main() {
-  const episodes: Prisma.EpisodeInclude[] = await prisma.episode.findMany({
+  const episodes: (Episode & { podcast: Podcast })[] = await prisma.episode.findMany({
     include: {
       podcast: true,
-      segments: false,
-      transcription: false,
     },
   });
 
   for await (const episode of episodes) {
-    console.log("Processing: ", episode);
+    console.log("Processing: ", episode.episodeTitle);
 
     const results = await searchYouTube(episode);
 
@@ -68,6 +66,7 @@ async function main() {
       await prisma.episode.updateMany({
         data: {
           youtubeVideoLink: bestMatch.url,
+          indexed: false,
         },
         where: {
           episodeGuid: episode.episodeGuid,
@@ -82,7 +81,7 @@ async function main() {
 }
 
 async function start(cronExpression: string) {
-  console.log("Cron-job RSSCrawler is turned ON.");
+  console.log("Cron-job YouTubeFinder is turned ON.");
   const job = new CronJob(cronExpression, cronJobRunner);
   job.start();
 }
@@ -91,18 +90,18 @@ async function cronJobRunner() {
   try {
     // If the job is already running, just return
     if (isRunning) {
-      console.log("RSSCrawler is already running. Skipping...");
+      console.log("YouTubeFinder is already running. Skipping...");
       return;
     }
 
     // Set the flag to true
     isRunning = true;
-    console.log("Starting the RSSCrawler...");
+    console.log("Starting the YouTubeFinder...");
 
     await main();
     isRunning = false;
   } catch (e) {
-    console.log("Some kind of error in RSSCrawler: ", e);
+    console.log("Some kind of error in YouTubeFinder: ", e);
   } finally {
     isRunning = false;
   }

@@ -6,6 +6,7 @@ import transcriptionsRouter from "./routes/transcriptions";
 import compression from "compression";
 import { start as startIndexer } from "./workers/indexer";
 import { start as startRssCrawler } from "./workers/rsscrawler";
+import { start as startYoutubeFinder } from "./workers/rsscrawler";
 
 const envPath = path.resolve(__dirname, "../.env");
 config({ path: envPath });
@@ -35,8 +36,11 @@ const initializeApp = async () => {
     console.log("Indexer started!"); 
     startIndexer("* * * * *");
 
-    console.log("RSS Crawler started!");
+    console.log("RSSCrawler started!");
     startRssCrawler("* * * * *");
+
+    console.log("YoutubeFinder started!");
+    startYoutubeFinder("* * * * *");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1);
