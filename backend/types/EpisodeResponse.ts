@@ -27,7 +27,7 @@ export interface EpisodeHit {
   episodeGuid: string;
   episodePublished: string;
   episodeDuration: number;
-  isTranscribed: boolean;
+  processed: boolean;
   beingTranscribed: boolean;
   causedError: boolean;
   updatedAt: string;
