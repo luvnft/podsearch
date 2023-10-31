@@ -1,4 +1,4 @@
-import TranscriptionsServiceForServiceWorker  from "../utils/services/TranscriptionsServiceForServiceWorker ";
+import TranscriptionsServiceForServiceWorker  from "../utils/services/TranscriptionsServiceForServiceWorker";
 const transcriptionsServiceForServiceWorker  = new TranscriptionsServiceForServiceWorker ();
 
 self.addEventListener("message", async (event) => {

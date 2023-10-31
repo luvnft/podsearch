@@ -51,44 +51,37 @@ async function retryOnConflict(fn: any, maxRetries = 3, delay = 1000) {
 
 async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
-    const results = await prisma.$transaction([
-      prisma.$queryRaw`
-        DELIMITER;
+    return await prisma.$transaction(async (prisma) => {
+      const episodes: {
+        id: string;
+      }[] = await prisma.$queryRaw`
+        SELECT id
+        FROM Episode
+        WHERE processed = false AND errorCount < 1
+        LIMIT 1
+        FOR UPDATE SKIP LOCKED
+    `;
+      if (episodes.length > 0) {
+        const episodeId = episodes[0].id;
+        console.log("EpisodeID:", episodeId);
 
-        START TRANSACTION;
-        
-        SET @episode_id = (
-          SELECT id
-          FROM Episode
-          WHERE processed = false AND errorCount < 1
-          LIMIT 1
-          FOR UPDATE SKIP LOCKED
-        );
-        
-        UPDATE Episode
-        SET processed = true
-        WHERE id = @episode_id;
-        
-        SELECT * FROM Episode WHERE id = @episode_id;
-    
-        COMMIT;
-      `,
-    ]);
+        await prisma.$executeRaw`
+          UPDATE Episode
+          SET processed = true
+          WHERE id = ${episodeId};
+        `;
 
-    console.log(results);
+        const updatedEpisode: Episode = await prisma.$queryRaw`
+          SELECT * FROM Episode WHERE id = ${episodeId};
+        `;
 
-    return null;
+        return updatedEpisode;
+      }
 
-    const episodeResult: Episode[] = results[0] as unknown as Episode[];
-
-    if (episodeResult && episodeResult.length > 0) {
-      const episode = episodeResult[0];
-      return episode;
-    } else {
       return null;
-    }
-  } catch (error) {
-    throw error;
+    });
+  } catch (e) {
+    console.log(e);
   }
 }
 

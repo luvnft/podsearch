@@ -23,6 +23,7 @@ const searchStore = useSearchStore();
 const { searchQuery, searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
+
 const initialSearchQuery: SearchQuery = {
     searchString: "The following is a conversation",
     offset: 0,
@@ -31,7 +32,6 @@ const router: Router = useRouter();
 
 //Running
 onMounted(async () => {
-
     if (process.client) {
         // Creating a worker
         //@ts-ignore
@@ -40,9 +40,6 @@ onMounted(async () => {
         // Listening for messages from worker
         worker.onmessage = (event: any) => {
             const { action, payload } = event.data;
-
-
-
             switch (action) {
                 case "searchCompleted":
                     searchStore.setSearchResults(payload);
