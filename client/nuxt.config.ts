@@ -39,7 +39,7 @@ export default defineNuxtConfig({
       HOMEPAGE: process.env.HOMEPAGE === "development" ? "localhost:3000/" : "poddley.com/",
     },
   },
-  modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt", "nuxt-delay-hydration"],
+  modules: ["@nuxtjs/color-mode", "@nuxtjs/tailwindcss", "nuxt-headlessui", "@nuxtjs/svg-sprite", "@vueuse/nuxt", "nuxt-lodash", "@nuxtjs/google-fonts", "@nuxtjs/device", "@pinia/nuxt"],
   googleFonts: {
     families: {
       Lato: true,
@@ -56,9 +56,6 @@ export default defineNuxtConfig({
   },
   lodash: {
     prefix: "_",
-  },
-  delayHydration: {
-    mode: "mount",
   },
   experimental: {
     clientFallback: true,
