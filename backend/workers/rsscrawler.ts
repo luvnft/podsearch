@@ -216,7 +216,6 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
       episodeGuid: episode.guid,
       isTranscribed: false,
       youtubeVideoLink: null,
-      deviationTime: null,
       indexed: false,
       id: uuidv4(),
       createdAt: new Date(),

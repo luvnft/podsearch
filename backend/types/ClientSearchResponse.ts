@@ -21,7 +21,6 @@ export interface ClientSearchResponseHit {
   url: string;
   link: string;
   youtubeVideoLink?: string;
-  deviationTime?: number;
   subHits: ClientSegmentHit[];
   similarity?: number;
 }

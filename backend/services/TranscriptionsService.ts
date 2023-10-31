@@ -116,7 +116,6 @@ class TranscriptionsService {
         url: segmentHitPodcast.url,
         link: segmentHitPodcast.link,
         youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-        deviationTime: segmentHitEpisode.deviationTime || 0,
         subHits: initialSearchResponse.hits.flat(),
         belongsToTranscriptId: segmentHit.belongsToTranscriptId,
       };
@@ -261,7 +260,6 @@ class TranscriptionsService {
             url: segmentHitPodcast.url,
             link: segmentHitPodcast.link,
             youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-            deviationTime: segmentHitEpisode.deviationTime || 0,
             subHits: [
               {
                 text: segmentHit._formatted.text,

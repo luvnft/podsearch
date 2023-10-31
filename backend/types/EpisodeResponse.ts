@@ -33,7 +33,6 @@ export interface EpisodeHit {
   updatedAt: string;
   reAlignedWithBigModel: boolean;
   youtubeVideoLink?: string;
-  deviationTime?: number;
   highestSimilarityVideo: any;
   isRead: boolean;
   indexed: boolean;

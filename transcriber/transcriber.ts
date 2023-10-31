@@ -17,8 +17,6 @@ interface JsonTranscriptionObject {
   belongsToEpisodeGuid: string;
   text: string;
   language: string;
-  youtubeVideoLink: string;
-  deviationTime: number;
 }
 
 interface TranscriptionSegmentType {
@@ -152,7 +150,7 @@ async function insertJsonFilesToDb() {
       const data: JsonTranscriptionObject = JSON.parse(fileContent) as JsonTranscriptionObject;
 
       // Extract data
-      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, deviationTime, youtubeVideoLink }: JsonTranscriptionObject = data;
+      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid }: JsonTranscriptionObject = data;
 
       console.log("Getting EpisodeGuid from DB: ", belongsToEpisodeGuid);
       const episode: Episode | null = await prisma.episode.findUnique({
@@ -160,18 +158,6 @@ async function insertJsonFilesToDb() {
       });
 
       if (episode === null) continue;
-
-      // Update episode first
-      console.log("==>👑Updating episode with deviationTime and with YoutubeLink");
-      await prisma.episode.update({
-        where: {
-          episodeGuid: belongsToEpisodeGuid,
-        },
-        data: {
-          youtubeVideoLink: data.youtubeVideoLink ? data.youtubeVideoLink : "",
-          deviationTime: data.deviationTime ? data.deviationTime : 0,
-        },
-      });
 
       // Delete the existing transcription with belongsToEpisodeGuid
       console.log("==> 🗑️Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);

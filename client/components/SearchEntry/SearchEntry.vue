@@ -7,7 +7,7 @@
                 <div v-if="props.searchEntry.youtubeVideoLink">
                     <LiteYoutubeEmbed @click="handleYoutubeClick"
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-                        :startTime="computedStartTime" width="100%" height="auto"
+                        :startTime="0" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
                         :pictureInPicture="true" :noCookie="true" posterQuality="hq720" :searchEntry="props.searchEntry"
                         @timeupdate="handleYoutubeTimeChange" />
@@ -187,13 +187,6 @@ const handleTimeChange = async (event: Event) => {
         hasSearched = false;
     }
 };
-
-const computedStartTime = computed(() => {
-    const start = parseFloat(props.searchEntry.subHits[0].toString()) || 0;
-    const deviationTime = parseFloat((props.searchEntry.deviationTime || 0).toString()) || 0;
-    const val = start - deviationTime;
-    return val < 0 ? 0 : val;
-});
 
 const handleYoutubeClick = (event: any) => {
 
