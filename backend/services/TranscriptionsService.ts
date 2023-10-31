@@ -11,7 +11,7 @@ import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 
-const SEGMENTS_TO_SEARCH: number = 25;
+const SEGMENTS_TO_SEARCH: number = 100;
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
@@ -39,6 +39,10 @@ class TranscriptionsService {
       filter: searchQuery.filter,
       limit: SEGMENTS_TO_SEARCH,
       offset: searchQuery.offset || 0,
+      sort: ["start:asc"],
+      attributesToHighlight: ["text"],
+      highlightPreTag: '<span class="initialHightlight">',
+      highlightPostTag: "</span>",
     };
 
     // Modify mainQuery if we want a fullTranscript
@@ -179,7 +183,7 @@ class TranscriptionsService {
             filter: podcastFilter,
             limit: SEGMENTS_TO_SEARCH,
           },
-        ]
+        ],
       );
 
       // Declaring the Map<string, Hit> variables
@@ -201,7 +205,7 @@ class TranscriptionsService {
             segmentId: query.segmentId,
             segmentHit: query.segmentHit,
           };
-        })
+        }),
       );
 
       // last responses cached length
@@ -356,4 +360,3 @@ class TranscriptionsService {
 
 // Exporting the TranscriptionService as a class to avoid needing to create it everytime importing it somewhere
 export default TranscriptionsService;
-

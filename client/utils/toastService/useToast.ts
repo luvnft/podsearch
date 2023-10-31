@@ -1,16 +1,8 @@
 // useToast.ts
+import { Toast } from "types/Toast";
 import { ref, provide } from "vue";
 
 const toasts = ref([] as Toast[]);
-
-interface Toast {
-  id: number;
-  message: string;
-  type: string;
-  timeout: number;
-  removing?: boolean;
-  animationTime?: number;
-}
 
 function showToast(message: string, type = "success", timeout: number = 3000, animationTime = 1000) {
   const toast: Toast = {

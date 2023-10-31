@@ -1,5 +1,5 @@
-import TranscriptionsServiceSearch from "../utils/services/TranscriptionsServiceSearch";
-const transcriptionsServiceSearch = new TranscriptionsServiceSearch();
+import TranscriptionsServiceForServiceWorker  from "../utils/services/TranscriptionsServiceForServiceWorker ";
+const transcriptionsServiceForServiceWorker  = new TranscriptionsServiceForServiceWorker ();
 
 self.addEventListener("message", async (event) => {
   const { action, payload } = event.data;
@@ -7,15 +7,13 @@ self.addEventListener("message", async (event) => {
   switch (action) {
     case "search":
       try {
-        const res = await transcriptionsServiceSearch.search(parsedPayload);
+        const res = await transcriptionsServiceForServiceWorker.search(parsedPayload);
         
         self.postMessage({
           action: "searchCompleted",
           payload: res,
         });
       } catch (e) {
-        
-        
         self.postMessage({
           action: "searchFailed",
           payload: "",
