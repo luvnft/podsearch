@@ -16,7 +16,11 @@ async function main() {
 
   console.log("Starting: Getting episodes and podcasts, we always update all podcasts and episodes from db due to the small amount of rows and also due to the changes in the db most often being related to them and not the segments");
   const podcasts = await prismaConnection.podcast.findMany();
-  const episodes = await prismaConnection.episode.findMany();
+  const episodes = await prismaConnection.episode.findMany({
+    where: {
+      indexed: false,
+    },
+  });
 
   //Always updating these as they have important values which may change
   console.log("Adding podcasts, the number to add is:", podcasts.length, "we're overwriting all of them essentially");

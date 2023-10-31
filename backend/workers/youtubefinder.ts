@@ -10,6 +10,13 @@ const envPath = path.resolve(__dirname, "../.env");
 config({ path: envPath });
 const prisma: PrismaClient = new PrismaClient();
 
+function extractYoutubeURL(inputString: string) {
+  const regex = /https:\/\/www\.youtube\.com\/watch\?v=[^&]+/;
+  const match = inputString.match(regex);
+
+  return match ? match[0] : null; // Return the matched URL or null if not found
+}
+
 async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<any[]> {
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
@@ -39,6 +46,9 @@ async function main() {
     include: {
       podcast: true,
     },
+    where: {
+      youtubeVideoLink: null,
+    },
   });
 
   for await (const episode of episodes) {
@@ -63,9 +73,10 @@ async function main() {
 
     if (bestMatch) {
       console.log("Done processing that one, got youtubeLink", bestMatch.url);
+      const matchedUrl: string | null = extractYoutubeURL(bestMatch.url);
       await prisma.episode.updateMany({
         data: {
-          youtubeVideoLink: bestMatch.url,
+          youtubeVideoLink: matchedUrl ? matchedUrl : "",
           indexed: false,
         },
         where: {

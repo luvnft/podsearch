@@ -242,7 +242,6 @@ async function insertJsonFilesToDb() {
             id: uuidv4(),
             indexed: false,
             updatedAt: null,
-            deletedFromMeilisearch: false,
           };
 
           newSegments.push(segment);
@@ -266,7 +265,6 @@ async function insertJsonFilesToDb() {
           id: uuidv4(),
           indexed: false,
           updatedAt: null,
-          deletedFromMeilisearch: false,
         };
         newSegments.push(segment);
       }
