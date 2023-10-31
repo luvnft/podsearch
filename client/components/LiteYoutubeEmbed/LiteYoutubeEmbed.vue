@@ -10,12 +10,12 @@
                         :imageUrl="props.searchEntry?.podcastImage"
                         class="image-with-vignette h-full rounded-full brightness-75 after:rounded-lg" />
                 </div>
-                <div class="flex min-w-0 items-center">
+                <a class="flex min-w-0 items-center" :href="props.searchEntry?.youtubeVideoLink">
                     <p class="m-0 w-full flex-row items-center justify-start overflow-hidden overflow-ellipsis whitespace-nowrap p-0 text-base"
                         style="color: rgb(246, 246, 246)">
                         {{ props.videoTitle }}
                     </p>
-                </div>
+                </a>
             </div>
             <div>
                 <button name="youtubePlayButton" class="centered-button dark:stroke-slate-500 dark:stroke-1 dark:grayscale"
