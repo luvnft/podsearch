@@ -19,17 +19,13 @@ const { y } = useWindowScroll();
 //Vars
 let worker: Worker;
 const requestUrl: URL = useRequestURL();
-const nuxtApp: any = useNuxtApp();
-const { isMobileOrTablet }: Device = useDevice();
-
 const searchStore = useSearchStore();
 const { searchQuery, searchResults } = storeToRefs(searchStore);
 const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
-    searchString: "The following is a ",
+    searchString: "The following is a conversation",
     offset: 0,
-    limit: isMobileOrTablet ? 6 : 12,
 };
 const router: Router = useRouter();
 
