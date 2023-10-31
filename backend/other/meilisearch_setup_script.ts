@@ -15,7 +15,7 @@ async function main() {
   segmentsIndex.updateSettings({
     searchableAttributes: ["text"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptGuid", "belongsToPodcastGuid", "start", "end", "deletedFromMeilisearch"],
+    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptGuid", "belongsToPodcastGuid", "start", "end"],
     rankingRules: ["exactness", "sort", "proximity", "typo", "words"],
     sortableAttributes: ["start"],
     pagination: {
@@ -29,18 +29,17 @@ async function main() {
     pagination: {
       maxTotalHits: 1,
     },
-    filterableAttributes: ["deletedFromMeilisearch"],
   });
   podcastsIndex.updateSettings({
     searchableAttributes: ["*"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["podcastGuid", "deletedFromMeilisearch"],
+    filterableAttributes: ["podcastGuid"],
     rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
   });
   episodesIndex.updateSettings({
     searchableAttributes: ["*"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["episodeGuid", "deletedFromMeilisearch"],
+    filterableAttributes: ["episodeGuid"],
     sortableAttributes: ["addedDate"],
     rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
   });

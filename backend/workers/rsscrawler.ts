@@ -221,7 +221,6 @@ async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, langua
       createdAt: new Date(),
       updatedAt: new Date(),
       errorCount: 0,
-      deletedFromMeilisearch: false,
     });
   }
 
