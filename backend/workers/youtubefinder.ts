@@ -21,7 +21,7 @@ async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<a
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
 
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle)}`;
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle + " " + episode.podcast.title)}`;
   console.log("Going to : ", searchUrl);
   await page.goto(searchUrl);
 
@@ -46,9 +46,9 @@ async function main() {
     include: {
       podcast: true,
     },
-    where: {
-      youtubeVideoLink: null,
-    },
+    // where: {
+    //   youtubeVideoLink: null,
+    // },
   });
 
   for await (const episode of episodes) {
