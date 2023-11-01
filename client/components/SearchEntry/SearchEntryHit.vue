@@ -2,7 +2,7 @@
     <div ref="listRef" class="relative">
         <button v-for="(subHit, index) in props.searchEntry.subHits" @click="goToAudioTime(subHit.start)"
             class="text-start whitespace-normal m-0 cursor w-full h-6 italic pl-1 pr-0 rounded-md overflow-hidden"
-            :class="`${(((subHit.start - 0.5 <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime))) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`"
+            :class="`${(((subHit.start - 0.5 < props.currentPlayingTime) && (subHit.end - 0.5 > props.currentPlayingTime))) ? 'highlight' : props.currentPlayingTime <= props.searchEntry.subHits[0].end ? 'toggleDeepStyling' : ''}`"
             v-html="convertSegmentHitToFormattedText(subHit)">
         </button>
     </div>
@@ -21,6 +21,7 @@ const props = defineProps<{
     searchEntry: ClientSearchResponseHit;
     currentPlayingTime: number;
     subtitlesActivated: Ref<boolean>;
+    index: number;
 }>();
 
 const goToAudioTime = (moveToTime: number) => {
@@ -51,7 +52,7 @@ function setupWatcher() {
                     if (props.searchEntry.subHits) {
                         const subHit = props.searchEntry.subHits[index];
                         // 0.3 is just based on personal testing
-                        if (subHit.start - 0.5 <= props.currentPlayingTime && subHit.end - 0.5 >= props.currentPlayingTime) {
+                        if ((subHit.start - 0.5) <= props.currentPlayingTime && (subHit.end - 0.5) >= props.currentPlayingTime) {
                             scrollIntoView(item, {
                                 behavior: 'smooth',
                                 boundary: item.parentNode.parentNode
