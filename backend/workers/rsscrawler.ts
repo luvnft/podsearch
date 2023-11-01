@@ -295,7 +295,7 @@ async function main() {
   const podcasts: Podcast[] = await getPodcast(prisma);
 
   // Upload images if they dont exist.
-  console.log("Updating with images");
+  console.log("Updating with images if necessary");
 
   for await (const podcast of podcasts) {
     console.log("Looping over: ", podcast);
@@ -316,6 +316,8 @@ async function main() {
           },
         });
       }
+    } else {
+      console.log("Podcast: ", podcast.title, "has an image: ", podcast.imageUrl);
     }
   }
 

@@ -128,7 +128,7 @@ class TranscriptionsService {
       return searchResponse;
     } else {
       // Perform initial search on the segmentsIndex to get the segments
-      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search("", {
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
         ...searchParams,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
@@ -159,7 +159,8 @@ class TranscriptionsService {
           matchingStrategy: "all",
           segmentId: segmentHit.id,
           segmentHit: segmentHit,
-        });
+
+        }); 
       });
 
       // Ids and filters
