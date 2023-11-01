@@ -107,13 +107,6 @@ async function insertPodcastsAndUpdate(objectsToInsert: any[], prisma: PrismaCli
     } catch (e: any) {
       // For now I've decided to not consistently update the podcast and episodes that get inserted from the sqlite db from podcastindex regularly.
       console.log("ERROR: ", e.message);
-      // console.log("Trying to update");
-      // await prisma.podcast.update({
-      //   data: object,
-      //   where: {
-      //     podcastGuid: object.podcastGuid,
-      //   },
-      // });
     }
   }
 }
