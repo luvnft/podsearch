@@ -9,9 +9,7 @@ import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
-import { ClientSearchResponseHit, ClientSegmentHit } from "../types/ClientSearchResponse";
 import { LocationQuery, Router } from "vue-router";
-import { Device } from "@nuxtjs/device/dist/runtime/types";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -104,11 +102,12 @@ const debouncedOffsetIncrement = _Throttle(
     () => {
         if (requestOngoing.value === true) return;
         requestOngoing.value = true;
-
         searchQuery.value = {
             ...searchQuery.value,
             offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
         };
+        console.log("SearchQuery value is now: ", searchQuery.value);
+
         setTimeout(() => {
             requestOngoing.value = false;
         }, 2000);

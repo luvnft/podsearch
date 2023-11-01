@@ -32,12 +32,12 @@
         </div>
 
         <div v-if="showiFrame"
-            :class="`bg-gray-8 m-0 mb-1.5 flex aspect-video h-full w-full items-center justify-center rounded-lg p-0 pb-0 ${loading ? 'rounded-none border' : ''}`">
+            :class="`bg-gray-8 m-0 mb-1.5 flex aspect-video h-full w-full items-center justify-center rounded-lg p-0 pb-0 ${loading ? 'rounded-lg border border-gray-200' : ''}`">
             <div class="flex aspect-video w-full items-center justify-center p-0" v-if="loading">
                 <IconsSpinnerIcon />
             </div>
             <iframe v-if="props.searchEntry?.youtubeVideoLink"
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1&enablejsapi=1`"
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1&enablejsapi=1${showiFrame ? muted : ''}`"
                 :title="props.videoTitle" frameborder="0"
                 :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
@@ -115,7 +115,7 @@ let player: any = undefined;
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 const iFramePlayer: Ref<any> = ref(null);
-
+const muted: Ref<string> = ref("'&mute=1'");
 function iFrameLoaded() {
     console.log("loaded")
     loading.value = false;

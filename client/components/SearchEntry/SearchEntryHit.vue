@@ -2,7 +2,7 @@
     <div ref="listRef" class="relative">
         <button v-for="(subHit, index) in props.searchEntry.subHits" @click="goToAudioTime(subHit.start)"
             class="text-start whitespace-normal m-0 cursor w-full h-6 italic pl-1 pr-0 rounded-md overflow-hidden"
-            :class="`${(((subHit.start - 0.5 <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime)) && (props.currentPlayingTime > 0.3)) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`"
+            :class="`${(((subHit.start - 0.5 <= props.currentPlayingTime) && (subHit.end >= props.currentPlayingTime))) ? 'highlight' : props.currentPlayingTime < 0.1 ? 'toggleDeepStyling' : ''}`"
             v-html="convertSegmentHitToFormattedText(subHit)">
         </button>
     </div>

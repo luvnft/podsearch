@@ -52,10 +52,8 @@ async function retryOnConflict(fn: any, maxRetries = 3, delay = 1000) {
 async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
     return await prisma.$transaction(async (prisma) => {
-      const episodes: {
-        id: string;
-      }[] = await prisma.$queryRaw`
-        SELECT id
+      const episodes: Episode[] = await prisma.$queryRaw`
+        SELECT *
         FROM Episode
         WHERE processed = false AND errorCount < 1
         LIMIT 1
@@ -71,17 +69,20 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
           WHERE id = ${episodeId};
         `;
 
-        const updatedEpisode: Episode = await prisma.$queryRaw`
+        const updatedEpisode: Episode[] = await prisma.$queryRaw`
           SELECT * FROM Episode WHERE id = ${episodeId};
         `;
 
-        return updatedEpisode;
+        console.log("Returned updatedEpisode: ", updatedEpisode);
+
+        return updatedEpisode[0] || null;
       }
 
       return null;
     });
   } catch (e) {
     console.log(e);
+    return null;
   }
 }
 
@@ -300,6 +301,8 @@ const transcribe = async () => {
   // Lock the row such that no other scripts can grab it.
   while (true) {
     const episode: Episode | null = await getEpisodeWithLock();
+
+    console.log("Received episode: ", episode);
 
     // Is episode undefined
     if (!episode) {
