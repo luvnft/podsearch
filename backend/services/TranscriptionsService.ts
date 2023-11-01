@@ -11,7 +11,7 @@ import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 
-const SEGMENTS_TO_SEARCH: number = 100;
+const SEGMENTS_TO_SEARCH: number = 16;
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
@@ -39,10 +39,7 @@ class TranscriptionsService {
       filter: searchQuery.filter,
       limit: SEGMENTS_TO_SEARCH,
       offset: searchQuery.offset || 0,
-      sort: ["start:asc"],
-      attributesToHighlight: ["text"],
-      highlightPreTag: '<span class="initialHightlight">',
-      highlightPostTag: "</span>",
+      sort: searchQuery.sort ? searchQuery.sort : undefined,
     };
 
     // Modify mainQuery if we want a fullTranscript
@@ -65,7 +62,7 @@ class TranscriptionsService {
 
   private async segmentSearch(searchParams: SearchParams, getFullTranscript: boolean): Promise<ClientSearchResponse> {
     if (getFullTranscript) {
-      // Perform initial search on the segmentsIndex to get the segments
+      // Perform initial search on the segme ntsIndex to get the segments
       let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search("", searchParams);
 
       // Final ClientSearchResponse object
@@ -136,13 +133,16 @@ class TranscriptionsService {
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
         highlightPostTag: "</span>",
+        sort: ["start:asc"],
+        matchingStrategy: "all",
       });
+
       // Final ClientSearchResponse object
       let searchResponse: ClientSearchResponse = {
         query: searchParams.q || "",
         hits: [],
       };
-
+ 
       // MultiSearchQuery object
       let multiSearchParams: any = {
         queries: [],
@@ -190,7 +190,7 @@ class TranscriptionsService {
       let podcastsMap: Map<string, PodcastHit> | "" = "";
       let episodesMap: Map<string, EpisodeHit> | "" = "";
 
-      // Performing queries using promise awaitlast possibly faster
+      // Performing queries using promise await last possibly faster
       const lastResponses: any = await Promise.all(
         multiSearchParams.queries.map(async (query: any) => {
           return {

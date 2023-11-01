@@ -18,12 +18,12 @@ model Episode {
   podcastGuid          String         @db.VarChar(500)
   episodeGuid          String         @unique @db.VarChar(500)
   episodeDuration      Int
-  processed            Boolean        @default(false)
   youtubeVideoLink     String?
   indexed              Boolean?       @default(false)
   createdAt            DateTime?      @default(now())
   updatedAt            DateTime?      @updatedAt
   errorCount           Int?           @default(0)
+  processed            Boolean        @default(false)
   podcast              Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   segments             Segment[]
   transcription        Transcription? @relation("Episode_belongsToEpisodeGuid")
