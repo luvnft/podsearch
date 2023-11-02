@@ -2,21 +2,17 @@ import mimetypes
 import requests
 import os
 import json
-import re
 import time
-import pandas as pd
 import subprocess
 import whisperx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
 from moviepy.editor import *
-import re
 import requests
 import json
 
 app = FastAPI()
-
 
 class TranscribeData(BaseModel):
     episodeLink: str
@@ -24,7 +20,6 @@ class TranscribeData(BaseModel):
     episodeGuid: str
     podcastGuid: str
     language: str
-
 
 # Vars
 batch_size = 16  # reduce if low on GPU mem
@@ -35,17 +30,6 @@ compute_type = "float16"
 
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
-
-def getSimilarityScore(text1, text2):
-    # Process the texts
-    doc1 = nlp(text1)
-    doc2 = nlp(text2)
-
-    # Get the similarity between the two texts
-    similarity = doc1.similarity(doc2)
-
-    return similarity
-
 
 def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
     print("Converting the video file to audio file")
@@ -212,7 +196,6 @@ async def transcribeAndSaveJson(
         print("Error with transcribing:", e)
         return None
 
-
 # Main transcriber api route
 @app.post("/transcribe")
 async def transcribe(data: TranscribeData):
@@ -232,7 +215,6 @@ async def transcribe(data: TranscribeData):
         return {"status": "True"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

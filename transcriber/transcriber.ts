@@ -250,6 +250,8 @@ async function insertJsonFilesToDb() {
             id: uuidv4(),
             indexed: false,
             updatedAt: null,
+            endYoutube: 0,
+            startYoutube: 0,
           };
 
           newSegments.push(segment);
@@ -273,6 +275,8 @@ async function insertJsonFilesToDb() {
           id: uuidv4(),
           indexed: false,
           updatedAt: null,
+          endYoutube: 0,
+          startYoutube: 0,
         };
         newSegments.push(segment);
       }
