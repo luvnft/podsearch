@@ -105,7 +105,7 @@ async function main() {
     console.log("Number of segments now going to add is: ", segments.length, " and the i is: ", i);
 
     var ids = segments.map((e) => e.id);
-    await segmentsIndex.addDocumentsInBatches(segments, segmentTake, {
+    await segmentsIndex.updateDocumentsInBatches(segments, segmentTake, {
       primaryKey: "id",
     });
     await prismaConnection.segment.updateMany({

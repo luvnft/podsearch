@@ -46,45 +46,49 @@ async function main() {
     include: {
       podcast: true,
     },
-    // where: {
-    //   youtubeVideoLink: null,
-    // },
+    where: {
+      youtubeVideoLink: null,
+    },
   });
 
-  for await (const episode of episodes) {
-    console.log("Processing: ", episode.episodeTitle);
+  console.log("Episodes: ", episodes.length);
 
-    const results = await searchYouTube(episode);
+  if (episodes.length) {
+    for await (const episode of episodes) {
+      console.log("Processing: ", episode.episodeTitle);
 
-    let bestMatch: {
-      title: string;
-      url: string;
-    } | null = null;
-    let highestScore = 0;
+      const results = await searchYouTube(episode);
 
-    for (const result of results) {
-      const similarity = stringSimilarity.compareTwoStrings(episode.episodeTitle, result.title);
-      console.log("Episode: ", result.title, " has score: ", similarity);
-      if (similarity > highestScore) {
-        highestScore = similarity;
-        bestMatch = result;
+      let bestMatch: {
+        title: string;
+        url: string;
+      } | null = null;
+      let highestScore = 0;
+
+      for (const result of results) {
+        const similarity = stringSimilarity.compareTwoStrings(episode.episodeTitle, result.title);
+        console.log("Episode: ", result.title, " has score: ", similarity);
+        if (similarity > highestScore) {
+          highestScore = similarity;
+          bestMatch = result;
+        }
       }
-    }
 
-    if (bestMatch) {
-      console.log("Done processing that one, got youtubeLink", bestMatch.url);
-      const matchedUrl: string | null = extractYoutubeURL(bestMatch.url);
-      await prisma.episode.updateMany({
-        data: {
-          youtubeVideoLink: matchedUrl ? matchedUrl : "",
-          indexed: false,
-        },
-        where: {
-          episodeGuid: episode.episodeGuid,
-        },
-      });
-    } else {
-      console.log("No suitable match found for", episode.episodeTitle);
+      if (bestMatch) {
+        console.log("Done processing that one, got youtubeLink", bestMatch.url);
+        const matchedUrl: string | null = extractYoutubeURL(bestMatch.url);
+        await prisma.episode.updateMany({
+          data: {
+            youtubeVideoLink: matchedUrl ? matchedUrl : "",
+            indexed: false,
+          },
+          where: {
+            episodeGuid: episode.episodeGuid,
+          },
+        });
+      } else {
+        console.log("No suitable match found for", episode.episodeTitle);
+      }
     }
   }
 
@@ -117,7 +121,5 @@ async function cronJobRunner() {
     isRunning = false;
   }
 }
-
-main();
 
 export { start };

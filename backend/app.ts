@@ -6,7 +6,7 @@ import transcriptionsRouter from "./routes/transcriptions";
 import compression from "compression";
 import { start as startIndexer } from "./workers/indexer";
 import { start as startRssCrawler } from "./workers/rsscrawler";
-import { start as startYoutubeFinder } from "./workers/rsscrawler";
+import { start as startYoutubeFinder } from "./workers/youtubefinder";
 
 const envPath = path.resolve(__dirname, "../.env");
 config({ path: envPath });
