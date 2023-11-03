@@ -167,32 +167,19 @@ async function insertJsonFilesToDb() {
 
       if (episode === null) continue;
 
-      // Delete the existing transcription with belongsToEpisodeGuid
-      console.log("==> 🗑️Deleting transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
-      try {
-        await prisma.transcription.deleteMany({
-          where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
-        });
-        console.log("==> 🗑️✅Successfully deleted transcription with belongsToEpisodeGuid:", belongsToEpisodeGuid);
-      } catch (e) {
-        console.log("⛔Some error1: ", e);
-      }
-
-      // Delete the segments with belongsToEpisodeGuid
-      console.log("==> 🗑️Deleting segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
-      try {
-        await prisma.segment.deleteMany({
-          where: { belongsToEpisodeGuid: belongsToEpisodeGuid },
-        });
-        console.log("==> 🗑️✅Successfully deleted segments with belongsToEpisodeGuid:", belongsToEpisodeGuid);
-      } catch (e) {
-        console.log("⛔Some error2: ", e);
-      }
-
       // Add the transcription
       console.log("==>👑Adding transcription to DB");
-      const transcriptionData = await prisma.transcription.create({
-        data: {
+      const transcriptionData = await prisma.transcription.upsert({
+        create: {
+          language,
+          belongsToPodcastGuid,
+          belongsToEpisodeGuid,
+          transcription,
+        },
+        where: {
+          belongsToEpisodeGuid: episode.episodeGuid,
+        },
+        update: {
           language,
           belongsToPodcastGuid,
           belongsToEpisodeGuid,
@@ -371,4 +358,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-transcribe();
+insertJsonFilesToDb();

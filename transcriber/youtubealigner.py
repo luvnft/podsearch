@@ -68,8 +68,6 @@ async def youtube_aligner():
         # Update the segments with the aligned values
         print(result_aligned["segments"])
         
-        
-
     db.disconnect()
 
 
