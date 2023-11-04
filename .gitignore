@@ -22,3 +22,4 @@ poddley_fulltext_indexer/segments_ndjson.ndjson
 *_deleted
 *_deleted.json
 /transcriber/*.json
+/transcriber/*.mp4

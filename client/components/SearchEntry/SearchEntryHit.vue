@@ -21,7 +21,6 @@ const props = defineProps<{
     searchEntry: ClientSearchResponseHit;
     currentPlayingTime: number;
     subtitlesActivated: Ref<boolean>;
-    index: number;
 }>();
 
 const goToAudioTime = (moveToTime: number) => {

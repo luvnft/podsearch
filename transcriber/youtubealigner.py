@@ -5,21 +5,24 @@ import yt_dlp
 import asyncio
 from prisma import Prisma
 import whisperx
+from pprint import pprint
 
 # Load environment variables
 load_dotenv("../.env")
 
+
 def download_youtube_audio(youtube_link):
     ydl_opts = {
-        'format': 'bestaudio/best',
-        'geo_bypass': True,
-        'nocheckcertificate': True,
-        'quiet': True,
-        'no_warnings': True,
-        'outtmpl': './youtubeAudio.mp4'  # Set output filename to "youtubeAudio" with appropriate extension
+        "format": "bestaudio/best",
+        "geo_bypass": True,
+        "nocheckcertificate": True,
+        "quiet": True,
+        "no_warnings": True,
+        "outtmpl": "./youtubeAudio.mp4",  # Set output filename to "youtubeAudio" with appropriate extension
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([youtube_link])
+
 
 async def youtube_aligner():
     db = Prisma()
@@ -40,7 +43,12 @@ async def youtube_aligner():
 
         # Prepare segments
         prepared_segments = [
-            {"start": segment.start, "end": segment.end, "text": segment.text}
+            {
+                "start": segment.start,
+                "end": segment.end,
+                "text": segment.text,
+                "id": segment.id,
+            }
             for segment in segments
         ]
 
@@ -62,12 +70,43 @@ async def youtube_aligner():
             "youtubeAudio.mp4",
             device="cuda",
             return_char_alignments=False,
-            print_progress=True
+            combined_progress=True,
         )
 
+        alignedSegments = result_aligned["segments"]
+
         # Update the segments with the aligned values
-        print(result_aligned["segments"])
-        
+        for index, segment in enumerate(prepared_segments):
+            segment["startYoutube"] = alignedSegments[index]["start"]
+            segment["endYoutube"] = alignedSegments[index]["end"]
+
+        # I'm not sure why the original array is being mutated, but regardless need to remove some stuff from it .
+        finishedSegments = [
+            {
+                "start": prepared_segment["start"],
+                "end": prepared_segment["end"],
+                "text": prepared_segment["text"],
+                "startYoutube": prepared_segment["startYoutube"],
+                "endYoutube": prepared_segment["endYoutube"],
+                "id": prepared_segment["id"],
+            }
+            for prepared_segment in prepared_segments
+        ]
+
+        print("finishedSegments", finishedSegments[0])
+
+        # Updating the segments with youtube alignment
+        for finishedSegment in finishedSegments:
+            print(finishedSegment)
+            try:
+                await db.segment.update(
+                    data=finishedSegment, where={"id": finishedSegment["id"]}
+                )
+            except Exception as e:
+                print("Some error: ", e)
+
+        print("Finished updating the segments for : ", episode.episodeTitle)
+
     db.disconnect()
 
 
