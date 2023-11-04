@@ -52,7 +52,6 @@ const cleanSearchString = () => {
 
 const handleSearch = (event: any) => {
     const searchQ: SearchQuery = {
-        ...searchQuery.value,
         searchString: event?.target?.value || "",
     };
     searchQuery.value = searchQ;
