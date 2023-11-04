@@ -101,7 +101,10 @@ async function main() {
       },
     });
 
-    if (!segments || segments.length === 0) break;
+    if (!segments || segments.length === 0){
+      console.log("No segments to add breaking out of loop")
+      break;
+    }
     console.log("Number of segments now going to add is: ", segments.length, " and the i is: ", i);
 
     var ids = segments.map((e) => e.id);

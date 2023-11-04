@@ -18,10 +18,10 @@ function extractYoutubeURL(inputString: string) {
 }
 
 async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<any[]> {
-  const browser = await puppeteer.launch({ headless: "new" });
+  const browser = await puppeteer.launch({ headless: "new", args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle + " " + episode.podcast.title)}`;
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle)}`;
   console.log("Going to : ", searchUrl);
   await page.goto(searchUrl);
 
@@ -29,16 +29,16 @@ async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<a
   const videoResults = await page.$$eval("ytd-video-renderer,ytd-grid-video-renderer", (nodes) =>
     nodes.slice(0, 5).map((node: any) => {
       const videoTitle = node.querySelector("#video-title").innerText;
-      const videoLink = node.querySelector("#video-title").getAttribute("href");
+      const videoLink = node.querySelector("#video-title").getAttribute("href"); 
       return {
         title: videoTitle,
         url: `https://www.youtube.com${videoLink}`,
-      };
+      }; 
     }),
   );
 
   await browser.close();
-  return videoResults;
+  return videoResults; 
 }
 
 async function main() {
@@ -96,9 +96,9 @@ async function main() {
 }
 
 async function start(cronExpression: string) {
-  console.log("Cron-job YouTubeFinder is turned ON.");
   const job = new CronJob(cronExpression, cronJobRunner);
   job.start();
+  console.log("Cron-job YouTubeFinder is turned ON.");
 }
 
 async function cronJobRunner() {
@@ -116,7 +116,7 @@ async function cronJobRunner() {
     await main();
     isRunning = false;
   } catch (e) {
-    console.log("Some kind of error in YouTubeFinder: ", e);
+    console.log("Some kind of error in YouTubeFinder: ", e); 
   } finally {
     isRunning = false;
   }
