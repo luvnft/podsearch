@@ -29,4 +29,6 @@ export interface ClientSegmentHit {
   id: string;
   start: number;
   end: number;
+  startYoutube: number;
+  endYoutube: number;
 }

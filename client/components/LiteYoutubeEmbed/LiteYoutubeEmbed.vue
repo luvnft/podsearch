@@ -37,7 +37,7 @@
                 <IconsSpinnerIcon />
             </div>
             <iframe v-if="props.searchEntry?.youtubeVideoLink"
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startTime}&autoplay=1&enablejsapi=1${showiFrame ? muted : ''}`"
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startYoutube}&autoplay=1&enablejsapi=1${showiFrame ? muted : ''}`"
                 :title="props.videoTitle" frameborder="0"
                 :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"
@@ -60,7 +60,7 @@ const props = defineProps({
         type: String as PropType<PosterQuality>,
         required: true,
     },
-    startTime: {
+    startYoutube: {
         type: Number as PropType<number>,
         required: false,
         default: 0,
@@ -119,7 +119,7 @@ const muted: Ref<string> = ref("'&mute=1'");
 function iFrameLoaded() {
     console.log("loaded")
     loading.value = false;
-    // initPlayer(); // This function here lets the youtube stuff also be in sync with the subs but the issue is that this will not work if there is even 10 second deviation in the video. That would require me to transcribe the video and the podcast which seems super unnecessary. But then again, maybe in the future I could add some kind of deviationTime to each single segment, but not now
+    initPlayer(); // This function here lets the youtube stuff also be in sync with the subs but the issue is that this will not work if there is even 10 second deviation in the video. That would require me to transcribe the video and the podcast which seems super unnecessary. But then again, maybe in the future I could add some kind of deviationTime to each single segment, but not now
 }
 
 function toggleiFrame() {

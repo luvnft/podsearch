@@ -7,7 +7,7 @@
                 <div v-if="props.searchEntry.youtubeVideoLink">
                     <LiteYoutubeEmbed @click="handleYoutubeClick"
                         :videoId="(props.searchEntry.youtubeVideoLink.match(/v=([^&]+)/gi) || [''])[0].toString().slice(2)"
-                        :startTime="0" width="100%" height="auto"
+                        :startYoutube="props.searchEntry.subHits[0].startYoutube" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
                         :pictureInPicture="true" :noCookie="true" posterQuality="hq720" :searchEntry="props.searchEntry"
                         @timeupdate="handleYoutubeTimeChange" />

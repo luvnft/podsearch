@@ -5,11 +5,10 @@ import yt_dlp
 import asyncio
 from prisma import Prisma
 import whisperx
-from pprint import pprint
+import json
 
 # Load environment variables
 load_dotenv("../.env")
-
 
 def download_youtube_audio(youtube_link):
     ydl_opts = {
@@ -25,44 +24,34 @@ def download_youtube_audio(youtube_link):
 
 
 async def youtube_aligner():
-    db = Prisma()
-    await db.connect()
+    # List all JSON files in the current directory
+    json_files = [f for f in os.listdir('.') if f.endswith('.json')]
 
-    # Get all of the episodes which have a youtubeLink
-    episodes = await db.episode.find_many(
-        where={"youtubeVideoLink": {"not_in": ["Null"]}}
-    )
+    for json_file in json_files:
+        # Open and read the JSON file
+        with open(json_file, 'r') as file:
+            episode = json.loads(file.read())
 
-    for episode in episodes:
-        print("Doing episode: ", episode.episodeTitle)
+        print("Doing episode: ", episode['belongsToEpisodeGuid'])
 
-        # Fetch the segments for that episode
-        segments = await db.segment.find_many(
-            where={"belongsToEpisodeGuid": episode.episodeGuid}
-        )
-
-        # Prepare segments
+        # Prepare segments assuming segments are stored in the JSON
         prepared_segments = [
             {
-                "start": segment.start,
-                "end": segment.end,
-                "text": segment.text,
-                "id": segment.id,
+                "start": segment['start'],
+                "end": segment['end'],
+                "text": segment['text'],
             }
-            for segment in segments
+            for segment in episode['segments']
         ]
 
         # Download the youtubeAudio from the episode.youtubeLink
-        download_youtube_audio(episode.youtubeVideoLink)
-
+        download_youtube_audio(episode["youtubeVideoLink"])
         # Align the segments with the youtubeAudio
-        # Load the model alignment model
         model_a, metadata = whisperx.load_align_model(
-            language_code=episode.episodeLanguage,
+            language_code=episode['language'],
             device="cuda",
         )
         print("Aligning the segments with the youtubeAudioFile")
-        # Assuming whisperx is a module or library you have
         result_aligned = whisperx.align(
             prepared_segments,
             model_a,
@@ -76,39 +65,21 @@ async def youtube_aligner():
         alignedSegments = result_aligned["segments"]
 
         # Update the segments with the aligned values
-        for index, segment in enumerate(prepared_segments):
-            segment["startYoutube"] = alignedSegments[index]["start"]
-            segment["endYoutube"] = alignedSegments[index]["end"]
+        for index, prepared_segment in enumerate(prepared_segments):
+            prepared_segment["startYoutube"] = alignedSegments[index]["start"]
+            prepared_segment["endYoutube"] = alignedSegments[index]["end"]
+            del prepared_segment["clean_wdx"]
+            del prepared_segment["sentence_spans"]
+            del prepared_segment["clean_char"]
+            del prepared_segment["clean_cdx"]
 
-        # I'm not sure why the original array is being mutated, but regardless need to remove some stuff from it .
-        finishedSegments = [
-            {
-                "start": prepared_segment["start"],
-                "end": prepared_segment["end"],
-                "text": prepared_segment["text"],
-                "startYoutube": prepared_segment["startYoutube"],
-                "endYoutube": prepared_segment["endYoutube"],
-                "id": prepared_segment["id"],
-            }
-            for prepared_segment in prepared_segments
-        ]
+        # Update the JSON file with the aligned segments
+        with open(json_file, 'w') as file:
+            episode['segments'] = prepared_segments
+            file.write(json.dumps(episode, indent=4))
 
-        print("finishedSegments", finishedSegments[0])
-
-        # Updating the segments with youtube alignment
-        for finishedSegment in finishedSegments:
-            print(finishedSegment)
-            try:
-                await db.segment.update(
-                    data=finishedSegment, where={"id": finishedSegment["id"]}
-                )
-            except Exception as e:
-                print("Some error: ", e)
-
-        print("Finished updating the segments for : ", episode.episodeTitle)
-
-    db.disconnect()
-
+        print(f"Finished updating the segments for: {episode['belongsToEpisodeGuid']}")
+    print("Finished!")
 
 if __name__ == "__main__":
     asyncio.run(youtube_aligner())
