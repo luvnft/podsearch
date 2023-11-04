@@ -25,9 +25,11 @@ export interface ClientSearchResponseHit {
   similarity?: number;
 }
 
-export interface ClientSegmentHit { 
+export interface ClientSegmentHit {
   text: string;
   id: string;
   start: number;
   end: number;
+  startYoutube: number;
+  endYoutube: number;
 }

@@ -21,4 +21,6 @@ export interface SegmentHit {
   similarity: number;
   createdAt: Date;
   updatedAt: Date;
+  startYoutube: number;
+  endYoutube: number;
 }

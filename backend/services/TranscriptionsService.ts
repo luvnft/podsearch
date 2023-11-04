@@ -271,6 +271,8 @@ class TranscriptionsService {
                 start: segmentHit.start,
                 end: segmentHit.end,
                 id: segmentId,
+                startYoutube: segmentHit.startYoutube,
+                endYoutube: segmentHit.endYoutube,
               },
               ...convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
             ],
