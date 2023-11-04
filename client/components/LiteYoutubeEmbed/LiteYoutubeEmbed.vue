@@ -37,7 +37,7 @@
                 <IconsSpinnerIcon />
             </div>
             <iframe v-if="props.searchEntry?.youtubeVideoLink"
-                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${props.startYoutube}&autoplay=1&enablejsapi=1${showiFrame ? muted : ''}`"
+                :src="`https://www.youtube${props.noCookie ? '-nocookie' : ''}.com/embed/${props.videoId}?start=${parseInt(props.startYoutube)}&autoplay=1&enablejsapi=1${showiFrame ? muted : ''}`"
                 :title="props.videoTitle" frameborder="0"
                 :allow="`accelerometer; ${props.autoplay ? 'autoplay' : 'autoplay'}; clipboard-write; encrypted-media; gyroscope; ${props.pictureInPicture ? 'picture-in-picture' : ''}; web-share`"
                 :allowFullscreen="props.allowFullscreen ? 'allowfullscreen' : null"

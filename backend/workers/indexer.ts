@@ -91,6 +91,8 @@ async function main() {
   // Number of segments to index at a time
   let segmentTake = 4000;
 
+  if ( segmentCount === 0) console.log("Nothing to add")
+
   //We loop through all the segments
   for (let i = 0; i < segmentCount; i = i + segmentTake) {
     let segments = await prismaConnection.segment.findMany({
