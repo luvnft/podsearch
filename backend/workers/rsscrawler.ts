@@ -24,7 +24,7 @@ function isUrl(url: string): boolean {
   return true;
 }
 
-async function uploadExternalImageToCloudflare(imageUrl: string, podcastTitle: string): Promise<any> {
+async function uploadExternalImageToCloudflare(imageUrl: string, podcastGuid: string): Promise<any> {
   try {
     // Download the image into a buffer
     const imageResponse = await axios.get(imageUrl, { responseType: "arraybuffer" });
@@ -32,7 +32,7 @@ async function uploadExternalImageToCloudflare(imageUrl: string, podcastTitle: s
     // Prepare the form data
     const formData = new FormData();
     formData.append("file", Buffer.from(imageResponse.data), {
-      filename: `${podcastTitle}.jpg`, // You might want to determine the filename dynamically
+      filename: `${podcastGuid}.jpg`, // You might want to determine the filename dynamically
       contentType: "image/jpeg", // Change this based on the actual content type
     });
 
