@@ -4,7 +4,7 @@ import * as path from "path";
 import { config } from "dotenv";
 import puppeteer from "puppeteer";
 import { CronJob } from "cron";
-import { prismaConnection } from "connections/prismaConnection";
+import { prismaConnection } from "../connections/prismaConnection";
 
 let isRunning: boolean = false;
 const envPath = path.resolve(__dirname, "../.env");
