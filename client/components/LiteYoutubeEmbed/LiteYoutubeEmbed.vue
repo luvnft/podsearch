@@ -115,7 +115,7 @@ let player: any = undefined;
 const showiFrame: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 const iFramePlayer: Ref<any> = ref(null);
-const muted: Ref<string> = ref("'&mute=1'");
+const muted: Ref<string> = ref("&mute=1");
 function iFrameLoaded() {
     console.log("loaded")
     loading.value = false;
