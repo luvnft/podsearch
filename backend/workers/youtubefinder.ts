@@ -4,11 +4,11 @@ import * as path from "path";
 import { config } from "dotenv";
 import puppeteer from "puppeteer";
 import { CronJob } from "cron";
+import { prismaConnection } from "connections/prismaConnection";
 
 let isRunning: boolean = false;
 const envPath = path.resolve(__dirname, "../.env");
 config({ path: envPath });
-const prisma: PrismaClient = new PrismaClient();
 
 function extractYoutubeURL(inputString: string) {
   const regex = /https:\/\/www\.youtube\.com\/watch\?v=[^&]+/;
@@ -42,7 +42,7 @@ async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<a
 }
 
 async function main() {
-  const episodes: (Episode & { podcast: Podcast })[] = await prisma.episode.findMany({
+  const episodes: (Episode & { podcast: Podcast })[] = await prismaConnection.episode.findMany({
     include: {
       podcast: true,
     },
@@ -77,7 +77,7 @@ async function main() {
       if (bestMatch) {
         console.log("Done processing that one, got youtubeLink", bestMatch.url);
         const matchedUrl: string | null = extractYoutubeURL(bestMatch.url);
-        await prisma.episode.updateMany({
+        await prismaConnection.episode.updateMany({
           data: {
             youtubeVideoLink: matchedUrl ? matchedUrl : "",
             indexed: false,

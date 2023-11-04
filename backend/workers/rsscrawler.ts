@@ -8,6 +8,7 @@ import tar from "tar";
 import path from "path";
 import FormData from "form-data";
 import { CronJob } from "cron";
+import { prismaConnection } from "../connections/prismaConnection";
 
 let isRunning: boolean = false;
 const ACCOUNT_ID = "cc664ea0e464c8171ed71af53a1e3f5b";
@@ -88,7 +89,7 @@ function validateObjectsBeforeInsert(objectsToInsert: any[]): any[] {
   return objectsToInsertCopy;
 }
 
-async function insertPodcastsAndUpdate(objectsToInsert: any[], prisma: PrismaClient): Promise<void> {
+async function insertPodcastsAndUpdate(objectsToInsert: any[]): Promise<void> {
   console.log("HERE=======================>");
   console.log("We are going to add: ", objectsToInsert);
 
@@ -103,7 +104,7 @@ async function insertPodcastsAndUpdate(objectsToInsert: any[], prisma: PrismaCli
   for (const object of objectsToInsert) {
     try {
       console.log("Inserting podcast: ", object.title);
-      await prisma.podcast.create({ data: object });
+      await prismaConnection.podcast.create({ data: object });
     } catch (e: any) {
       // For now I've decided to not consistently update the podcast and episodes that get inserted from the sqlite db from podcastindex regularly.
       console.log("ERROR: ", e.message);
@@ -163,8 +164,8 @@ function cleanString(str: string) {
   return str.replace(/[^ -~]+/g, "");
 }
 
-async function getPodcast(prisma: PrismaClient) {
-  return await prisma.podcast.findMany();
+async function getPodcast() {
+  return await prismaConnection.podcast.findMany();
 }
 async function processRssFeedUrl(rssFeedUrl: string, podcastGuid: string, language: string, podcastRssFeedUrlFallback: string): Promise<Episode[] | undefined> {
   const feedparser = new Parser();
@@ -252,9 +253,6 @@ async function downloadWithProgress(url: string, outputPath: string) {
 
 // Main function
 async function main() {
-  const prisma = new PrismaClient();
-  await prisma.$connect();
-
   // Download the https://public.podcastindex.org/podcastindex_feeds.db.tgz and unzip it and rename it to podcasts.db if it doesnt exist in the ./database/podcasts.db folder
   const dbPath = "./workers/podcasts.db";
 
@@ -289,10 +287,10 @@ async function main() {
   objectsToInsert = validateObjectsBeforeInsert(objectsToInsert);
 
   // Insert the podcasts validated etc to the database
-  await insertPodcastsAndUpdate(objectsToInsert, prisma);
+  await insertPodcastsAndUpdate(objectsToInsert);
 
   // Get podcast
-  const podcasts: Podcast[] = await getPodcast(prisma);
+  const podcasts: Podcast[] = await getPodcast();
 
   // Upload images if they dont exist.
   console.log("Updating with images if necessary");
@@ -307,7 +305,7 @@ async function main() {
       console.log(cloudflareImageId.result.id);
       if (cloudflareImageId.result.id) {
         console.log("Podcast: ", podcast);
-        await prisma.podcast.update({
+        await prismaConnection.podcast.update({
           data: {
             imageUrl: cloudflareImageId.result.id,
           },
@@ -345,7 +343,7 @@ async function main() {
     console.log("Adding episodes for podcast: ", JSON.stringify(podcastTitle));
     console.log("Episodes to: ", episodes.length);
 
-    await prisma.episode.createMany({
+    await prismaConnection.episode.createMany({
       data: episodes,
       skipDuplicates: true,
     });

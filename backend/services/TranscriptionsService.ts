@@ -127,40 +127,40 @@ class TranscriptionsService {
       // Return the entire transcript
       return searchResponse;
     } else {
-      // Perform initial search on the segmentsIndex to get the segments
-      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
-        ...searchParams,
-        attributesToHighlight: ["text"],
-        highlightPreTag: '<span class="initialHightlight">',
-        highlightPostTag: "</span>",
-        sort: ["start:asc"],
-        matchingStrategy: "all",
-      });
-
       // Final ClientSearchResponse object
       let searchResponse: ClientSearchResponse = {
         query: searchParams.q || "",
         hits: [],
       };
- 
+
       // MultiSearchQuery object
       let multiSearchParams: any = {
         queries: [],
       };
 
+      // Perform initial search on the segmentsIndex to get the segments for a particular search q param
+      let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
+        ...searchParams,
+        attributesToHighlight: ["text"],
+        highlightPreTag: '<span class="initialHightlight">',
+        highlightPostTag: "</span>",
+        sort: searchParams.sort,
+        matchingStrategy: searchParams.matchingStrategy,
+        q: searchParams.q,
+      });
+
       // Create the queries for the multiSearch route on meilisearch
       initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
         multiSearchParams.queries.push({
-          indexUid: "segments", // Replace with the actual index name
-          q: "",
+          indexUid: "segments",
+          q: null,
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
           limit: 50,
           sort: ["start:asc"],
           matchingStrategy: "all",
           segmentId: segmentHit.id,
           segmentHit: segmentHit,
-
-        }); 
+        });
       });
 
       // Ids and filters
@@ -195,7 +195,7 @@ class TranscriptionsService {
       const lastResponses: any = await Promise.all(
         multiSearchParams.queries.map(async (query: any) => {
           return {
-            result: await meilisearchConnection.index(query.indexUid).search("", {
+            result: await meilisearchConnection.index(query.indexUid).search(query.q, {
               q: query.q,
               filter: query.filter,
               limit: query.limit,
@@ -209,7 +209,7 @@ class TranscriptionsService {
         }),
       );
 
-      // last responses cached length
+      // Last responses cached length
       const lastResponsesLength: number = lastResponses.length;
 
       // Found bools to avoid unnecessary looping
