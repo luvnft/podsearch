@@ -1,20 +1,16 @@
-import mimetypes
 import requests
 import os
 import json
 import time
-import subprocess
 import whisperx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
-from moviepy.editor import *
 import requests
 import json
 import yt_dlp
 
 app = FastAPI()
-
 
 class TranscribeData(BaseModel):
     episodeLink: str
@@ -26,7 +22,6 @@ class TranscribeData(BaseModel):
     audioProcessed: bool
     youtubeProcessed: bool
 
-
 # Vars
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
@@ -35,7 +30,6 @@ compute_type = "float16"
 
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
-
 
 def download_youtube_audio(youtube_link):
     ydl_opts = {
@@ -48,7 +42,6 @@ def download_youtube_audio(youtube_link):
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([youtube_link])
-
 
 async def transcribeAndSaveJson(
     episodeLink,
@@ -179,12 +172,10 @@ async def transcribeAndSaveJson(
         print("Error with transcribing:", e)
         return None
 
-
 # Main transcriber api route
 @app.post("/transcribe")
 # Downloads the audioPodcast
 # Transcribes it aligns it and saves it as a json
-# Finds the correct
 # Downloads the youtubeVideo
 # Transcribes it aligns it and saves it as a json
 async def transcribe(data: TranscribeData):
@@ -223,7 +214,6 @@ async def transcribe(data: TranscribeData):
         return {"status": "True"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
