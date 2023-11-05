@@ -17,6 +17,7 @@ interface JsonTranscriptionObject {
   belongsToEpisodeGuid: string;
   text: string;
   language: string;
+  isYoutube: boolean;
 }
 
 interface TranscriptionSegmentType {
@@ -158,7 +159,7 @@ async function insertJsonFilesToDb() {
       const data: JsonTranscriptionObject = JSON.parse(fileContent) as JsonTranscriptionObject;
 
       // Extract data
-      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid }: JsonTranscriptionObject = data;
+      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, isYoutube }: JsonTranscriptionObject = data;
 
       console.log("Getting EpisodeGuid from DB: ", belongsToEpisodeGuid);
       const episode: Episode | null = await prisma.episode.findUnique({
@@ -237,8 +238,7 @@ async function insertJsonFilesToDb() {
             id: uuidv4(),
             indexed: false,
             updatedAt: null,
-            endYoutube: 0,
-            startYoutube: 0,
+            isYoutube: isYoutube,
           };
 
           newSegments.push(segment);
@@ -262,8 +262,7 @@ async function insertJsonFilesToDb() {
           id: uuidv4(),
           indexed: false,
           updatedAt: null,
-          endYoutube: 0,
-          startYoutube: 0,
+          isYoutube: isYoutube,
         };
         newSegments.push(segment);
       }

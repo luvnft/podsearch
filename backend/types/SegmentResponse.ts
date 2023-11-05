@@ -5,6 +5,7 @@ export interface SegmentResponse {
   limit?: number | undefined;
   offset?: number | undefined;
   estimatedTotalHits?: number;
+  isYoutube: boolean;
 }
 
 export interface SegmentHit {
@@ -21,6 +22,4 @@ export interface SegmentHit {
   similarity: number;
   createdAt: Date;
   updatedAt: Date;
-  startYoutube: number;
-  endYoutube: number;
 }

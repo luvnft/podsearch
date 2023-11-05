@@ -22,6 +22,7 @@ export interface ClientSearchResponseHit {
   link: string;
   youtubeVideoLink?: string;
   subHits: ClientSegmentHit[];
+  isYoutube: boolean;
 }
 
 export interface ClientSegmentHit {
@@ -29,6 +30,4 @@ export interface ClientSegmentHit {
   id: string;
   start: number;
   end: number;
-  startYoutube: number;
-  endYoutube: number;
 }

@@ -8,8 +8,6 @@ export const convertSegmentHitToClientSegmentHit = (segmentHits: SegmentHit[]): 
       id: hit.id,
       start: hit.start,
       end: hit.end,
-      startYoutube: hit.startYoutube,
-      endYoutube: hit.endYoutube,
     };
   });
 };

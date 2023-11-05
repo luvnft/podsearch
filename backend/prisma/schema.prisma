@@ -89,8 +89,7 @@ model Segment {
   indexed               Boolean?      @default(false)
   createdAt             DateTime?     @default(now())
   updatedAt             DateTime?     @updatedAt
-  endYoutube            Float?
-  startYoutube          Float?
+  isYoutube             Boolean?      @default(false)
   episode               Episode       @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   podcast               Podcast       @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
   transcription         Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)

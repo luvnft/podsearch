@@ -20,6 +20,7 @@ class TranscribeData(BaseModel):
     episodeGuid: str
     podcastGuid: str
     language: str
+    episodeYoutubeLink: str
 
 # Vars
 batch_size = 16  # reduce if low on GPU mem
@@ -31,11 +32,17 @@ compute_type = "float16"
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
 
-def convert_video_to_audio_ffmpeg(video_filename, audio_filename):
-    print("Converting the video file to audio file")
-    command = f"ffmpeg -i {video_filename} -vn -acodec copy {audio_filename}"
-    subprocess.call(command, shell=True)
-    print("Finished converting video file to audio file")
+def download_youtube_audio(youtube_link):
+    ydl_opts = {
+        "format": "bestaudio/best",
+        "geo_bypass": True,
+        "nocheckcertificate": True,
+        "quiet": True,
+        "no_warnings": True,
+        "outtmpl": "./youtubeAudio.mp4",  # Set output filename to "youtubeAudio" with appropriate extension
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([youtube_link])
 
 
 async def transcribeAndSaveJson(
@@ -46,6 +53,7 @@ async def transcribeAndSaveJson(
     language: str,
     batch_size,
     device,
+    isYoutube: bool
 ):
     audioFileName = os.path.join(os.getcwd(), "audio.wav")
 
@@ -55,14 +63,18 @@ async def transcribeAndSaveJson(
             print("Deleted the last 'audio' prefixed file")
             os.remove(file)
 
-    # Download the podcast
+    # Download the podcast/yottube
     try:
-        audioFile = requests.get(episodeLink)
+        if isYoutube == False:
+            print("Downloading Audio")
+            audioFile = requests.get(episodeLink)
+        else:
+            print("Download YouTube")
+            await download_youtube_audio(episodeLink)
     except Exception as e:
         print(f"Error downloading the file: {e}")
         return None
 
-    # Determine the content type based on the headers from the response
     try:
         content_type = audioFile.headers["content-type"]
         extension = mimetypes.guess_extension(content_type)
@@ -75,32 +87,9 @@ async def transcribeAndSaveJson(
         print("No extension found, exiting.")
         return None
 
-    # If it's a video, we need to convert it to audio first
-    if "video" in content_type:
-        video_filename = (
-            "temp_video_file"  # You can modify this to fit a suitable naming convention
-        )
-        audio_filename = "audio.wav"
-
-        with open(video_filename, "wb") as f:
-            f.write(audioFile.content)
-
-        # Convert video to audio
-        print("Converting video file to audio file")
-        convert_video_to_audio_ffmpeg(video_filename, audio_filename)
-
-        # Delete the temporary video file
-        print("Printing the temp video file")
-        os.remove(video_filename)
-
-    # It's not a video just save the audiofile
-    else:
-        # Name of the audioFileName
-        print(os.getcwd())
-
-        # Save the audio file
-        with open(audioFileName, "wb") as f:
-            f.write(audioFile.content)
+    # Save the audio file
+    with open(audioFileName, "wb") as f:
+        f.write(audioFile.content)
 
     # Transcribe the downloaded episode
     print("Transcribing the episode with title:", episodeTitle)
@@ -147,7 +136,6 @@ async def transcribeAndSaveJson(
         model_a, metadata = whisperx.load_align_model(
             language_code=language,
             device=device,
-            model_name="jonatasgrosman/wav2vec2-large-xlsr-53-english",
         )
 
         # Aligning the segments in accordance to the audio now
@@ -181,6 +169,7 @@ async def transcribeAndSaveJson(
         transcriptionData["belongsToEpisodeGuid"] = belongsToEpisodeGuid
         transcriptionData["text"] = text
         transcriptionData["language"] = language
+        transcriptionData["isYoutube"] = isYoutube
 
         # Save the transcriptionDataObject as a JSON
         transcriptionFileName = str(int(time.time())) + ".json"
@@ -200,17 +189,31 @@ async def transcribeAndSaveJson(
 @app.post("/transcribe")
 async def transcribe(data: TranscribeData):
     try:
-        print("Starting transcription of :", data.episodeTitle)
-        await transcribeAndSaveJson(
-            data.episodeLink,
-            data.episodeTitle,
-            data.episodeGuid,
-            data.podcastGuid,
-            data.language,
-            batch_size,
-            device,
-        )
-        print("Done with episode: ", data.episodeTitle, "Next!")
+        # print("🔊Starting transcription of audio podcast for:", data.episodeTitle)
+        # await transcribeAndSaveJson(
+        #     episodeLink=data.episodeLink,
+        #     episodeTitle=data.episodeTitle,
+        #     episodeGuid=data.episodeGuid,
+        #     podcastGuid=data.podcastGuid,
+        #     language=data.language,
+        #     batch_size=batch_size,
+        #     device=device,
+        #     isYoutube=False,
+        # )
+        # print("🔊Done with transcription of audio podcast for:", data.episodeTitle)
+        if data.episodeYoutubeLink:
+            print("📺Starting transcription of youtube podcast for:", data.episodeTitle)
+            await transcribeAndSaveJson(
+                episodeLink=data.episodeYoutubeLink,
+                episodeTitle=data.episodeTitle,
+                episodeGuid=data.episodeGuid,
+                podcastGuid=data.podcastGuid,
+                language=data.language,
+                batch_size=batch_size,
+                device=device,
+                isYoutube=True,
+            )
+            print("📺Starting transcription of youtube podcast for:", data.episodeTitle)
 
         return {"status": "True"}
     except Exception as e:
