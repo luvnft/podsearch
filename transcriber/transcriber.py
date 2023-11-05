@@ -11,6 +11,7 @@ import uvicorn
 from moviepy.editor import *
 import requests
 import json
+import yt_dlp
 
 app = FastAPI()
 
@@ -55,12 +56,15 @@ async def transcribeAndSaveJson(
     device,
     isYoutube: bool
 ):
-    audioFileName = os.path.join(os.getcwd(), "audio.wav")
+    audioFileName = "audio.wav" if isYoutube == False else "youtubeAudio.mp4"
 
     # Delete any file that begins with 'audio' in the folder to avoid retranscribing
     for file in os.listdir():
         if file.startswith("audio.wav"):
             print("Deleted the last 'audio' prefixed file")
+            os.remove(file)
+        if file.startswith("youtubeAudio.mp4"):
+            print("Deleted the last 'youtubeAudio' prefixed file")
             os.remove(file)
 
     # Download the podcast/yottube
@@ -68,28 +72,14 @@ async def transcribeAndSaveJson(
         if isYoutube == False:
             print("Downloading Audio")
             audioFile = requests.get(episodeLink)
+            with open(audioFileName, "wb") as f:
+                f.write(audioFile.content)  
         else:
             print("Download YouTube")
-            await download_youtube_audio(episodeLink)
+            download_youtube_audio(episodeLink)
     except Exception as e:
         print(f"Error downloading the file: {e}")
         return None
-
-    try:
-        content_type = audioFile.headers["content-type"]
-        extension = mimetypes.guess_extension(content_type)
-    except Exception as e:
-        print("Error determining content type:", e)
-        return None
-
-    # If there's no extension, exit the function
-    if not extension:
-        print("No extension found, exiting.")
-        return None
-
-    # Save the audio file
-    with open(audioFileName, "wb") as f:
-        f.write(audioFile.content)
 
     # Transcribe the downloaded episode
     print("Transcribing the episode with title:", episodeTitle)
@@ -201,6 +191,7 @@ async def transcribe(data: TranscribeData):
         #     isYoutube=False,
         # )
         # print("🔊Done with transcription of audio podcast for:", data.episodeTitle)
+        print("Received: ", data)
         if data.episodeYoutubeLink:
             print("📺Starting transcription of youtube podcast for:", data.episodeTitle)
             await transcribeAndSaveJson(
@@ -213,7 +204,7 @@ async def transcribe(data: TranscribeData):
                 device=device,
                 isYoutube=True,
             )
-            print("📺Starting transcription of youtube podcast for:", data.episodeTitle)
+            print("📺Finished transcription of youtube podcast for:", data.episodeTitle)
 
         return {"status": "True"}
     except Exception as e:

@@ -335,6 +335,7 @@ async function callPythonTranscribeAPI(episode: Episode) {
       episodeGuid: episode.episodeGuid,
       podcastGuid: episode.podcastGuid,
       language: episode.episodeLanguage,
+      episodeYoutubeLink: episode.youtubeVideoLink,
     });
 
     return Promise.resolve();
@@ -357,4 +358,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-insertJsonFilesToDb();
+transcribe();
