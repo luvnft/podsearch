@@ -5,7 +5,7 @@ export interface SegmentResponse {
   limit?: number | undefined;
   offset?: number | undefined;
   estimatedTotalHits?: number;
-  isYoutube: boolean;
+  isYoutube?: boolean;
 }
 
 export interface SegmentHit {
