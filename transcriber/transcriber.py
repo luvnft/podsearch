@@ -15,6 +15,7 @@ import yt_dlp
 
 app = FastAPI()
 
+
 class TranscribeData(BaseModel):
     episodeLink: str
     episodeTitle: str
@@ -22,16 +23,19 @@ class TranscribeData(BaseModel):
     podcastGuid: str
     language: str
     episodeYoutubeLink: str
+    audioProcessed: bool
+    youtubeProcessed: bool
+
 
 # Vars
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
 device = "cuda"
-# change to "int8" if low on GPU mem (may reduce accuracy)
 compute_type = "float16"
 
 # 1. Transcribe with original whisper (batched)
 model = whisperx.load_model(model_size, device, compute_type=compute_type)
+
 
 def download_youtube_audio(youtube_link):
     ydl_opts = {
@@ -54,7 +58,7 @@ async def transcribeAndSaveJson(
     language: str,
     batch_size,
     device,
-    isYoutube: bool
+    isYoutube: bool,
 ):
     audioFileName = "audio.wav" if isYoutube == False else "youtubeAudio.mp4"
 
@@ -73,7 +77,7 @@ async def transcribeAndSaveJson(
             print("Downloading Audio")
             audioFile = requests.get(episodeLink)
             with open(audioFileName, "wb") as f:
-                f.write(audioFile.content)  
+                f.write(audioFile.content)
         else:
             print("Download YouTube")
             download_youtube_audio(episodeLink)
@@ -175,24 +179,32 @@ async def transcribeAndSaveJson(
         print("Error with transcribing:", e)
         return None
 
+
 # Main transcriber api route
 @app.post("/transcribe")
+# Downloads the audioPodcast
+# Transcribes it aligns it and saves it as a json
+# Finds the correct
+# Downloads the youtubeVideo
+# Transcribes it aligns it and saves it as a json
 async def transcribe(data: TranscribeData):
     try:
-        # print("🔊Starting transcription of audio podcast for:", data.episodeTitle)
-        # await transcribeAndSaveJson(
-        #     episodeLink=data.episodeLink,
-        #     episodeTitle=data.episodeTitle,
-        #     episodeGuid=data.episodeGuid,
-        #     podcastGuid=data.podcastGuid,
-        #     language=data.language,
-        #     batch_size=batch_size,
-        #     device=device,
-        #     isYoutube=False,
-        # )
-        # print("🔊Done with transcription of audio podcast for:", data.episodeTitle)
-        print("Received: ", data)
-        if data.episodeYoutubeLink:
+        if data.audioProcessed:
+            print("🔊Starting transcription of audio podcast for:", data.episodeTitle)
+            await transcribeAndSaveJson(
+                episodeLink=data.episodeLink,
+                episodeTitle=data.episodeTitle,
+                episodeGuid=data.episodeGuid,
+                podcastGuid=data.podcastGuid,
+                language=data.language,
+                batch_size=batch_size,
+                device=device,
+                isYoutube=False,
+                audioProcessed=data.audioProcessed,
+                youtubeProcessed=data.youtubeProcessed,
+            )
+            print("🔊Done with transcription of audio podcast for:", data.episodeTitle)
+        if data.youtubeProcessed and data.episodeYoutubeLink:
             print("📺Starting transcription of youtube podcast for:", data.episodeTitle)
             await transcribeAndSaveJson(
                 episodeLink=data.episodeYoutubeLink,
@@ -203,12 +215,15 @@ async def transcribe(data: TranscribeData):
                 batch_size=batch_size,
                 device=device,
                 isYoutube=True,
+                audioProcessed=data.audioProcessed,
+                youtubeProcessed=data.youtubeProcessed,
             )
             print("📺Finished transcription of youtube podcast for:", data.episodeTitle)
 
         return {"status": "True"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

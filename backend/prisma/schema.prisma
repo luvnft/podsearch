@@ -23,7 +23,8 @@ model Episode {
   createdAt            DateTime?      @default(now())
   updatedAt            DateTime?      @updatedAt
   errorCount           Int?           @default(0)
-  processed            Boolean        @default(false)
+  audioProcessed       Boolean        @default(false)
+  youtubeProcessed     Boolean        @default(false)
   podcast              Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   segments             Segment[]
   transcription        Transcription? @relation("Episode_belongsToEpisodeGuid")

@@ -52,33 +52,58 @@ async function retryOnConflict(fn: any, maxRetries = 3, delay = 1000) {
 
 async function getEpisodeWithLock(): Promise<Episode | null> {
   try {
+    // Begin transcription
     return await prisma.$transaction(async (prisma) => {
-      const episodes: Episode[] = await prisma.$queryRaw`
+      // AudioEpisode first check
+      const audioEpisodes: Episode[] = await prisma.$queryRaw`
         SELECT *
         FROM Episode
-        WHERE processed = false AND errorCount < 1
+        WHERE audioProcessed = false AND errorCount < 3
         LIMIT 1
         FOR UPDATE SKIP LOCKED
-    `;
-      if (episodes.length > 0) {
-        const episodeId = episodes[0].id;
+      `;
+      // Return if available audio.
+      if (audioEpisodes.length > 0) {
+        const episodeId = audioEpisodes[0].id;
         console.log("EpisodeID:", episodeId);
-
         await prisma.$executeRaw`
           UPDATE Episode
-          SET processed = true
+          SET audioProcessed = true
           WHERE id = ${episodeId};
         `;
-
         const updatedEpisode: Episode[] = await prisma.$queryRaw`
           SELECT * FROM Episode WHERE id = ${episodeId};
         `;
-
         console.log("Returned updatedEpisode: ", updatedEpisode);
-
         return updatedEpisode[0] || null;
       }
 
+      // YoutubeEpisode second check
+      const youtubeEpisodes: Episode[] = await prisma.$queryRaw`
+        SELECT *
+        FROM Episode
+        WHERE youtubeProcessed = false AND errorCount < 1
+        LIMIT 1
+        FOR UPDATE SKIP LOCKED
+      `;
+
+      // Return if available youtube.
+      if (youtubeEpisodes.length > 0) {
+        const episodeId = youtubeEpisodes[0].id;
+        console.log("EpisodeID:", episodeId);
+        await prisma.$executeRaw`
+          UPDATE Episode
+          SET youtubeProcessed = true
+          WHERE id = ${episodeId};
+        `;
+        const updatedEpisode: Episode[] = await prisma.$queryRaw`
+          SELECT * FROM Episode WHERE id = ${episodeId};
+        `;
+        console.log("Returned updatedEpisode: ", updatedEpisode);
+        return updatedEpisode[0] || null;
+      }
+
+      // Return null if nothing
       return null;
     });
   } catch (e) {
@@ -336,6 +361,8 @@ async function callPythonTranscribeAPI(episode: Episode) {
       podcastGuid: episode.podcastGuid,
       language: episode.episodeLanguage,
       episodeYoutubeLink: episode.youtubeVideoLink,
+      audioProcessed: episode.audioProcessed,
+      youtubeProcessed: episode.youtubeProcessed,
     });
 
     return Promise.resolve();

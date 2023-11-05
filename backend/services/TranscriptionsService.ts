@@ -239,7 +239,7 @@ class TranscriptionsService {
           // Result var
           const { result, indexUid, segmentId, segmentHit } = lastResponses[i];
 
-          // Skip if wrong index we already processed them further up
+          // Skip if wrong index we already them further up
           if (indexUid === "podcasts" || indexUid === "episodes") continue;
 
           // Setting more readable vars
