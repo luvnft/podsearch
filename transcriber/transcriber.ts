@@ -55,14 +55,16 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
     // Begin transcription
     return await prisma.$transaction(async (prisma) => {
       // AudioEpisode first check
+      console.log("Checking audio first.");
       const audioEpisodes: Episode[] = await prisma.$queryRaw`
         SELECT *
         FROM Episode
-        WHERE audioProcessed = false AND errorCount < 3
+        WHERE audioProcessed = 0 AND errorCount < 3
         LIMIT 1
         FOR UPDATE SKIP LOCKED
       `;
       // Return if available audio.
+      console.log("Is audioEpisodes bigger than 0?");
       if (audioEpisodes.length > 0) {
         const episodeId = audioEpisodes[0].id;
         console.log("EpisodeID:", episodeId);
@@ -79,16 +81,19 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
       }
 
       // YoutubeEpisode second check
+      console.log("Checking youtube second.");
       const youtubeEpisodes: Episode[] = await prisma.$queryRaw`
         SELECT *
         FROM Episode
-        WHERE youtubeProcessed = false AND errorCount < 1
+        WHERE youtubeProcessed = 0 AND errorCount < 3
         LIMIT 1
         FOR UPDATE SKIP LOCKED
       `;
 
+      console.log("Is youtubeAudio bigger than 0?", youtubeEpisodes);
       // Return if available youtube.
       if (youtubeEpisodes.length > 0) {
+        console.log("Youtube is bigger, let's transcribe youtube then.");
         const episodeId = youtubeEpisodes[0].id;
         console.log("EpisodeID:", episodeId);
         await prisma.$executeRaw`
@@ -103,6 +108,7 @@ async function getEpisodeWithLock(): Promise<Episode | null> {
         return updatedEpisode[0] || null;
       }
 
+      console.log("Nothing, returning null");
       // Return null if nothing
       return null;
     });
@@ -353,17 +359,47 @@ const transcribe = async () => {
 };
 
 async function callPythonTranscribeAPI(episode: Episode) {
+  console.log("Calling python transcribe API with episode: ", episode);
   try {
-    const response = await axios.post("http://localhost:8000/transcribe", {
-      episodeLink: episode.episodeEnclosure,
-      episodeTitle: episode.episodeTitle,
-      episodeGuid: episode.episodeGuid,
-      podcastGuid: episode.podcastGuid,
-      language: episode.episodeLanguage,
-      episodeYoutubeLink: episode.youtubeVideoLink,
-      audioProcessed: episode.audioProcessed,
-      youtubeProcessed: episode.youtubeProcessed,
+    const audioSegments: Segment | null = await prisma.segment.findFirst({
+      where: {
+        belongsToEpisodeGuid: episode.episodeGuid,
+        isYoutube: false,
+      },
     });
+    const youtubeSegments: Segment | null = await prisma.segment.findFirst({
+      where: {
+        belongsToEpisodeGuid: episode.episodeGuid,
+        isYoutube: true,
+      },
+    });
+    const hasAudioSegments: any = Object.keys(audioSegments || {}).length > 0;
+    const hasYoutubeSegments: any = Object.keys(youtubeSegments || {}).length > 0;
+
+    console.log("hasAudioSegments", hasAudioSegments);
+    console.log("hasYoutubeSegments", hasYoutubeSegments);
+    if (hasAudioSegments === true && hasYoutubeSegments === true) return;
+    if (hasAudioSegments === false) {
+      const response = await axios.post("http://localhost:8000/transcribe", {
+        episodeLink: episode.episodeEnclosure,
+        episodeTitle: episode.episodeTitle,
+        episodeGuid: episode.episodeGuid,
+        podcastGuid: episode.podcastGuid,
+        language: episode.episodeLanguage,
+        episodeYoutubeLink: episode.youtubeVideoLink,
+        processingYoutube: false,
+      });
+    } else if (hasYoutubeSegments === false) {
+      const response = await axios.post("http://localhost:8000/transcribe", {
+        episodeLink: episode.youtubeVideoLink,
+        episodeTitle: episode.episodeTitle,
+        episodeGuid: episode.episodeGuid,
+        podcastGuid: episode.podcastGuid,
+        language: episode.episodeLanguage,
+        episodeYoutubeLink: episode.youtubeVideoLink,
+        processingYoutube: true,
+      });
+    }
 
     return Promise.resolve();
   } catch (error: any) {

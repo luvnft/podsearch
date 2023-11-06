@@ -19,9 +19,8 @@ class TranscribeData(BaseModel):
     podcastGuid: str
     language: str
     episodeYoutubeLink: str
-    audioProcessed: bool
-    youtubeProcessed: bool
-
+    processingYoutube: bool
+    
 # Vars
 batch_size = 16  # reduce if low on GPU mem
 model_size = "large-v2"
@@ -51,9 +50,9 @@ async def transcribeAndSaveJson(
     language: str,
     batch_size,
     device,
-    isYoutube: bool,
+    processingYoutube: bool,
 ):
-    audioFileName = "audio.wav" if isYoutube == False else "youtubeAudio.mp4"
+    audioFileName = "audio.wav" if processingYoutube == False else "youtubeAudio.mp4"
 
     # Delete any file that begins with 'audio' in the folder to avoid retranscribing
     for file in os.listdir():
@@ -66,7 +65,7 @@ async def transcribeAndSaveJson(
 
     # Download the podcast/yottube
     try:
-        if isYoutube == False:
+        if processingYoutube == False:
             print("Downloading Audio")
             audioFile = requests.get(episodeLink)
             with open(audioFileName, "wb") as f:
@@ -156,7 +155,7 @@ async def transcribeAndSaveJson(
         transcriptionData["belongsToEpisodeGuid"] = belongsToEpisodeGuid
         transcriptionData["text"] = text
         transcriptionData["language"] = language
-        transcriptionData["isYoutube"] = isYoutube
+        transcriptionData["processingYoutube"] = processingYoutube
 
         # Save the transcriptionDataObject as a JSON
         transcriptionFileName = str(int(time.time())) + ".json"
@@ -180,37 +179,19 @@ async def transcribeAndSaveJson(
 # Transcribes it aligns it and saves it as a json
 async def transcribe(data: TranscribeData):
     try:
-        if data.audioProcessed:
-            print("🔊Starting transcription of audio podcast for:", data.episodeTitle)
-            await transcribeAndSaveJson(
-                episodeLink=data.episodeLink,
-                episodeTitle=data.episodeTitle,
-                episodeGuid=data.episodeGuid,
-                podcastGuid=data.podcastGuid,
-                language=data.language,
-                batch_size=batch_size,
-                device=device,
-                isYoutube=False,
-                audioProcessed=data.audioProcessed,
-                youtubeProcessed=data.youtubeProcessed,
-            )
-            print("🔊Done with transcription of audio podcast for:", data.episodeTitle)
-        if data.youtubeProcessed and data.episodeYoutubeLink:
-            print("📺Starting transcription of youtube podcast for:", data.episodeTitle)
-            await transcribeAndSaveJson(
-                episodeLink=data.episodeYoutubeLink,
-                episodeTitle=data.episodeTitle,
-                episodeGuid=data.episodeGuid,
-                podcastGuid=data.podcastGuid,
-                language=data.language,
-                batch_size=batch_size,
-                device=device,
-                isYoutube=True,
-                audioProcessed=data.audioProcessed,
-                youtubeProcessed=data.youtubeProcessed,
-            )
-            print("📺Finished transcription of youtube podcast for:", data.episodeTitle)
-
+        print("Received data: ", data)
+        print("🔊Starting transcription for:", data.episodeTitle)
+        await transcribeAndSaveJson(
+            episodeLink=data.episodeLink,
+            episodeTitle=data.episodeTitle,
+            episodeGuid=data.episodeGuid,
+            podcastGuid=data.podcastGuid,
+            language=data.language,
+            batch_size=batch_size,
+            device=device,
+            processingYoutube=data.processingYoutube,
+        )
+        print("🔊Done with transcription of audio podcast for:", data.episodeTitle)
         return {"status": "True"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
