@@ -1,13 +1,34 @@
-# Poddley - "*Shazam*" for podcasts
+<br />
 
-## Main Goal:
-The main goal of the website/service is to be the "*Shazam*" for podcasts. Therefore it's main purpose is to be a search engine for all podcast transcriptions and provide a mapping between podcast-resources like youtube, apple podcasts, transcriptions, time-location of quotes, rss-feeds, podcast homepages and episode-links. Additionally, it aims to be a discovery platform, helping people explore and find a wide range of podcast content based on spoken word.
+<p align="center">
+  <img src="https://github.com/lukamomc/poddley/assets/52632596/a9874764-8c98-46f1-b227-abdfc9d3e194" width="200">
+  <h1 align="center">Poddley</h1>
+  <h2 align="center">Your Audio Discovery Engine</h2>
+  <h4 align="center">"Shazam for Podcasts"</h4>
+</p>
+
+---
+
+Experience Poddley: [Explore Now](https://poddley.com)
+
+---
+
+## 🎙️ About Poddley
+Poddley is the "Shazam for podcasts," an innovative service designed to be a comprehensive search engine for podcast transcriptions. It provides a nexus between various podcast resources, including YouTube, Apple Podcasts, transcripts, time-stamped quotes, RSS feeds, homepages, and episode links. More than just a search tool, Poddley is a discovery platform, empowering users to unearth and enjoy a vast array of podcast content based on the spoken word.
+
+## 🔍 Main Features
+- 📜 **Transcription Search:** Instantly find podcasts through searchable transcriptions.
+- 🔗 **Resource Mapping:** Seamless integration with platforms like YouTube and Apple Podcasts.
+- 🕓 **Time-Location Quotes:** Locate the exact moment a phrase was spoken in a podcast episode.
+- 🌐 **Discovery Platform:** Explore new podcasts with ease, tailored to your interests.
+
+## 💡 Vision
+The vision for Poddley is to transform how people discover and interact with podcast content. By bridging the gap between various podcasting platforms and enriching the search experience, Poddley aspires to be the go-to resource for podcast enthusiasts and casual listeners alike.
+
+---
 
 ## Project 
 [Link to Poddley](https://poddley.com)
-
-## Status 
-Finished (with potential housekeeping)
 
 ## Project duration (ca.)
 24.11.2022 - 23.10.2023
