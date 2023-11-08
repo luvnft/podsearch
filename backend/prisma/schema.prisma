@@ -95,7 +95,7 @@ model Segment {
   podcast               Podcast       @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
   transcription         Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
 
-  @@unique([belongsToEpisodeGuid, start, end])
+  @@unique([belongsToEpisodeGuid, start, end, isYoutube])
   @@index([belongsToPodcastGuid], map: "Segment_belongsToPodcastGuid_fkey")
   @@index([belongsToTranscriptId], map: "Segment_belongsToTranscriptId_fkey")
 }
