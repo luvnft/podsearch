@@ -9,7 +9,7 @@
 
 ---
 
-Experience Poddley: [Explore Now](https://poddley.com)
+Link: [](https://poddley.com)
 
 ---
 
