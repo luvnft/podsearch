@@ -15,7 +15,7 @@ async function main() {
   segmentsIndex.updateSettings({
     searchableAttributes: ["text"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptGuid", "belongsToPodcastGuid", "start", "end"],
+    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptId", "belongsToPodcastGuid", "start", "end"],
     rankingRules: ["exactness", "sort", "proximity", "typo", "words"],
     sortableAttributes: ["start"],
     pagination: {

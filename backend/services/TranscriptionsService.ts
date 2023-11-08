@@ -10,6 +10,7 @@ import { PrismaClient } from "@prisma/client";
 import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
+import { TranscriptionResponse, TranscriptionResponseHit } from "..types/TranscriptionResponse";
 
 const SEGMENTS_TO_SEARCH: number = 16;
 
@@ -138,22 +139,37 @@ class TranscriptionsService {
         queries: [],
       };
 
+      // First transcription search
+      const transcriptionSearchResponse: any = await this.transcriptionsIndex.search(null, {
+        q: searchParams.q,
+        limit: 25,
+      }); 
+
+      console.log(transcriptionSearchResponse)
+      //@ts-ignore
+      const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: any) => `${transcriptionSearchResponseHit.id}`))];
+      console.log("transcriptionIds", transcriptionIds)
+      const transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
+      console.log("KOOOK", transcriptionFilter)
       // Perform initial search on the segmentsIndex to get the segments for a particular search q param
       let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
         ...searchParams,
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
-        highlightPostTag: "</span>",
+        highlightPostTag: "</span>", 
         sort: searchParams.sort,
         matchingStrategy: searchParams.matchingStrategy,
         q: searchParams.q,
+        filter: transcriptionFilter, 
       });
+ 
+      console.log("KIIIK", initialSearchResponse)
 
       // Create the queries for the multiSearch route on meilisearch
-      initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
-        multiSearchParams.queries.push({
+      initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => { 
+        multiSearchParams.queries.push({ 
           indexUid: "segments",
-          q: null,
+          q: null, 
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
           limit: 50,
           sort: ["start:asc"],
