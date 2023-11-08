@@ -9,13 +9,13 @@ CREATE TABLE `Episode` (
     `podcastGuid` VARCHAR(500) NOT NULL,
     `episodeGuid` VARCHAR(500) NOT NULL,
     `episodeDuration` INTEGER NOT NULL,
-    `isTranscribed` BOOLEAN NOT NULL DEFAULT false,
     `youtubeVideoLink` VARCHAR(191) NULL,
-    `deviationTime` DOUBLE NULL,
     `indexed` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `errorCount` INTEGER NULL DEFAULT 0,
+    `audioProcessed` BOOLEAN NOT NULL DEFAULT false,
+    `youtubeProcessed` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `Episode_episodeGuid_key`(`episodeGuid`),
     INDEX `Episode_podcastGuid_fkey`(`podcastGuid`),
@@ -82,10 +82,11 @@ CREATE TABLE `Segment` (
     `indexed` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
+    `isYoutube` BOOLEAN NULL DEFAULT false,
 
     INDEX `Segment_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
     INDEX `Segment_belongsToTranscriptId_fkey`(`belongsToTranscriptId`),
-    UNIQUE INDEX `Segment_belongsToEpisodeGuid_start_end_key`(`belongsToEpisodeGuid`, `start`, `end`),
+    UNIQUE INDEX `Segment_belongsToEpisodeGuid_start_end_isYoutube_key`(`belongsToEpisodeGuid`, `start`, `end`, `isYoutube`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
