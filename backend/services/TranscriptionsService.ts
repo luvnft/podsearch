@@ -10,7 +10,7 @@ import { PrismaClient } from "@prisma/client";
 import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
-import { TranscriptionResponse, TranscriptionResponseHit } from "..types/TranscriptionResponse";
+// import { TranscriptionResponse, TranscriptionResponseHit } from "..types/TranscriptionResponse";
 
 const SEGMENTS_TO_SEARCH: number = 16;
 
