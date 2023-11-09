@@ -27,7 +27,7 @@ async function main() {
     displayedAttributes: ["*"],
     rankingRules: ["exactness", "proximity", "typo", "words"],
     pagination: {
-      maxTotalHits: 1,
+      maxTotalHits: 25,
     },
   });
   podcastsIndex.updateSettings({
