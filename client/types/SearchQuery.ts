@@ -6,9 +6,10 @@ export interface SearchQuery {
   hitsPerPage?: number;
   offset?: number;
   getFullTranscript?: boolean;
+  matchingStrategy?: string;
 }
 export enum Category {
   EPISODE = "episode",
   PODCAST = "podcast",
-  QUOTE = "quote"
+  QUOTE = "quote",
 }
