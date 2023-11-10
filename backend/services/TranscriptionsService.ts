@@ -190,8 +190,8 @@ class TranscriptionsService {
 
       // Sort them and then return them
       // @ts-ignore
-      initialSearchResponse.hits = initialSearchResponse.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
-      initialSearchResponse.hits = initialSearchResponse.hits.slice(0, SEGMENTS_TO_SEARCH);
+      // initialSearchResponse.hits = initialSearchResponse.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
+      // initialSearchResponse.hits = initialSearchResponse.hits.slice(0, SEGMENTS_TO_SEARCH);
 
       console.log("Number of segments returned is: ", initialSearchResponse.hits.length);
 
@@ -229,7 +229,7 @@ class TranscriptionsService {
             indexUid: "episodes",
             filter: episodeFilter,
             limit: SEGMENTS_TO_SEARCH,
-            q: "",
+            q: "", // This is very important, we need the placeholder search to be an empty string because empty string exists in all strings, null and undefiend will not work for some reason, meilisearch has some strange behaviour at some sections, it's been frequencly reported
           },
           {
             indexUid: "podcasts",
@@ -251,8 +251,8 @@ class TranscriptionsService {
           if (query.indexUid === "episodes") {
             console.log("Time for an episodes");
             return {
-              result: await meilisearchConnection.index(query.indexUid).search(null, {
-                q: null,
+              result: await meilisearchConnection.index(query.indexUid).search(query.q, {
+                q: query.q,
                 filter: episodeFilter,
                 limit: SEGMENTS_TO_SEARCH,
               }),
@@ -267,7 +267,7 @@ class TranscriptionsService {
                 filter: query.filter,
                 limit: query.limit,
                 sort: query.sort,
-                matchingStrategy: query.matchingStrategy || "all",
+                matchingStrategy: searchParams.matchingStrategy || "last",
               }),
               indexUid: query.indexUid,
               segmentId: query.segmentId,
