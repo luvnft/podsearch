@@ -11,6 +11,7 @@ import { SearchQuery } from "../types/SearchQuery";
 import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 import { TranscriptionResponse, TranscriptionResponseHit } from "types/TranscriptionResponse";
+import { MultiSearchQueryType } from "types/MultiSearchQueryType";
 
 const SEGMENTS_TO_SEARCH: number = 25;
 
@@ -135,9 +136,7 @@ class TranscriptionsService {
       };
 
       // MultiSearchQuery object
-      let multiSearchParams: any = {
-        queries: [],
-      };
+      let multiSearchParams: MultiSearchQueryType[] = [];
 
       // First we search transcriptions to get the  ids of the belonging transcript
       const transcriptionSearchResponse: TranscriptionResponse = await this.transcriptionsIndex.search(searchParams.q, {
@@ -152,7 +151,6 @@ class TranscriptionsService {
       //@ts-ignore We get the ids and construct a filter
       const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: any) => `${transcriptionSearchResponseHit.id}`))];
       let transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
-      const splittedSearchParams: string[] = searchParams.q?.split(" ") || [""];
       console.log("Number of transcriptionIds: ", transcriptionIds.length);
       console.log("The transcriptionfilter is: ", transcriptionFilter);
 
@@ -166,50 +164,50 @@ class TranscriptionsService {
         limit: SEGMENTS_TO_SEARCH,
         q: searchParams.q,
       });
-      // // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
-      // let initialSearchResponse2: SegmentResponse = await this.segmentsIndex.search(searchParams.q?.split(" ").slice(1).join(" "), {
-      //   attributesToHighlight: ["text"],
-      //   highlightPreTag: '<span class="initialHightlight">',
-      //   highlightPostTag: "</span>",
-      //   matchingStrategy: "last",
-      //   filter: transcriptionFilter,
-      //   limit: SEGMENTS_TO_SEARCH,
-      //   q: searchParams.q?.split(" ").slice(1).join(" "),
-      // });
+      // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
+      let initialSearchResponse2: SegmentResponse = await this.segmentsIndex.search(searchParams.q?.split(" ").slice(1).join(" "), {
+        attributesToHighlight: ["text"],
+        highlightPreTag: '<span class="initialHightlight">',
+        highlightPostTag: "</span>",
+        matchingStrategy: searchParams.matchingStrategy || "last",
+        filter: transcriptionFilter,
+        limit: SEGMENTS_TO_SEARCH,
+        q: searchParams.q?.split(" ").slice(1).join(" "),
+      });
 
-      // const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
-      // const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
-      // initialSearchResponse.hits = uniqueSegmentHits.slice(0, SEGMENTS_TO_SEARCH);
+      const segmentHits: SegmentHit[] = [...initialSearchResponse.hits, ...initialSearchResponse2.hits];
+      const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
+      initialSearchResponse.hits = uniqueSegmentHits.slice(0, 100);
 
-      // // about meeting someone
-      // // Before returning the response we need to sort the hits using some jaccard string similarity checks.
-      // for (let i = 0; i < initialSearchResponse.hits.length; i++) {
-      //   const segmentHit: SegmentHit = initialSearchResponse.hits[i];
-      //   segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
-      // }
+      // about meeting someone
+      // Before returning the response we need to sort the hits using some jaccard string similarity checks.
+      for (let i = 0; i < initialSearchResponse.hits.length; i++) {
+        const segmentHit: SegmentHit = initialSearchResponse.hits[i];
+        segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
+      }
 
       // Sort them and then return them
       // @ts-ignore
-      // initialSearchResponse.hits = initialSearchResponse.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
-      // initialSearchResponse.hits = initialSearchResponse.hits.slice(0, SEGMENTS_TO_SEARCH);
-
-      console.log("Number of segments returned is: ", initialSearchResponse.hits.length);
+      initialSearchResponse.hits = initialSearchResponse.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
+      initialSearchResponse.hits = initialSearchResponse.hits.slice(0, SEGMENTS_TO_SEARCH);
 
       // Create the queries for the multiSearch route on meilisearch
       initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
-        multiSearchParams.queries.push({
-          indexUid: "segments",
-          q: "",
-          filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToTranscriptId = '${segmentHit.belongsToTranscriptId}' AND id != '${segmentHit.id}'`,
-          limit: 50,
-          sort: ["start:asc"],
-          matchingStrategy: "last",
+        multiSearchParams.push({
+          query: {
+            q: "",
+            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToTranscriptId = '${segmentHit.belongsToTranscriptId}' AND id != '${segmentHit.id}'`,
+            limit: 50,
+            sort: ["start:asc"],
+            matchingStrategy: "last",
+          },
           segmentId: segmentHit.id,
           segmentHit: segmentHit,
+          indexUid: "segments",
         });
       });
 
-      console.log("Number of queries inside multiSearchParams.queries: ", multiSearchParams.queries.length);
+      console.log("Number of queries inside multiSearchParams.queries: ", multiSearchParams.length);
 
       // Ids and filters
       const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToPodcastGuid}'`))];
@@ -223,19 +221,23 @@ class TranscriptionsService {
       console.log("The episodesFilter is: ", episodeFilter);
 
       // Adding extra queries to multiparam object
-      multiSearchParams.queries.push(
+      multiSearchParams.push(
         ...[
           {
+            query: {
+              filter: episodeFilter,
+              limit: episodeIds.length,
+              q: "", // This is very important, we need the placeholder search to be an empty string because empty string exists in all strings, null and undefiend will not work for some reason, meilisearch has some strange behaviour at some sections, it's been frequencly reported
+            },
             indexUid: "episodes",
-            filter: episodeFilter,
-            limit: SEGMENTS_TO_SEARCH,
-            q: "", // This is very important, we need the placeholder search to be an empty string because empty string exists in all strings, null and undefiend will not work for some reason, meilisearch has some strange behaviour at some sections, it's been frequencly reported
           },
           {
+            query: {
+              filter: podcastFilter,
+              limit: podcastIds.length,
+              q: "",
+            },
             indexUid: "podcasts",
-            filter: podcastFilter,
-            limit: SEGMENTS_TO_SEARCH,
-            q: "",
           },
         ],
       );
@@ -244,30 +246,26 @@ class TranscriptionsService {
       let podcastsMap: Map<string, PodcastHit> | "" = "";
       let episodesMap: Map<string, EpisodeHit> | "" = "";
 
+      // First we process the podcast and episodes
       const lastResponses: any = await Promise.all(
-        multiSearchParams.queries.map(async (query: any) => {
-          console.log("Filter is: ", query.filter);
-          console.log("Limit is: ", query.limit);
-          if (query.indexUid === "episodes") {
-            console.log("Time for an episodes");
+        multiSearchParams.map(async (query: MultiSearchQueryType) => {
+          console.log("Filter is: ", query.query.filter);
+          console.log("Limit is: ", query.query.limit);
+
+          console.log(query);
+          if (query.indexUid === "podcasts" || query.indexUid === "episodes") {
             return {
-              result: await meilisearchConnection.index(query.indexUid).search(query.q, {
-                q: query.q,
-                filter: episodeFilter,
-                limit: SEGMENTS_TO_SEARCH,
+              result: await meilisearchConnection.index(query.indexUid).search(query.query.q, {
+                ...query.query,
               }),
               indexUid: query.indexUid,
               segmentId: query.segmentId,
               segmentHit: query.segmentHit,
             };
-          } else {
+          } else if (query.indexUid === "segments") {
             return {
-              result: await meilisearchConnection.index(query.indexUid).search(query.q, {
-                q: query.q,
-                filter: query.filter,
-                limit: query.limit,
-                sort: query.sort,
-                matchingStrategy: searchParams.matchingStrategy || "last",
+              result: await meilisearchConnection.index(query.indexUid).search(query.query.q, {
+                ...query.query,
               }),
               indexUid: query.indexUid,
               segmentId: query.segmentId,
@@ -314,7 +312,7 @@ class TranscriptionsService {
           // Result var
           const { result, indexUid, segmentId, segmentHit } = lastResponses[i];
 
-          // Skip if wrong index we already them furthe r up
+          // Skip if wrong index we already them further up
           if (indexUid === "podcasts" || indexUid === "episodes") {
             continue;
           }
@@ -408,7 +406,7 @@ class TranscriptionsService {
   }
 
   private calculateSimilarity(text: string, originalSearchString: string) {
-    const n = 10; // Adjust the value of n for the desired n-gram length
+    const n = 5; // Adjust the value of n for the desired n-gram length
     const originalNgrams = this.createNgrams(originalSearchString, n);
     const textNgrams = this.createNgrams(text, n);
     const windowSize = originalNgrams.length;

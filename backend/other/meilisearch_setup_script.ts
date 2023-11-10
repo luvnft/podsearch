@@ -16,7 +16,7 @@ async function main() {
     searchableAttributes: ["text"],
     displayedAttributes: ["*"],
     filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptId", "belongsToPodcastGuid", "start", "end"],
-    rankingRules: ["proximity", "exactness", "words", "typo", "sort"],
+    rankingRules: ["exactness", "proximity",  "words", "typo", "sort"],
     sortableAttributes: ["start"],
     pagination: {
       maxTotalHits: 5000,
