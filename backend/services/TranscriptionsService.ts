@@ -12,7 +12,7 @@ import { SearchParams } from "../types/SearchParams";
 import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 import { TranscriptionResponse, TranscriptionResponseHit } from "types/TranscriptionResponse";
 
-const SEGMENTS_TO_SEARCH: number = 10;
+const SEGMENTS_TO_SEARCH: number = 25;
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
@@ -35,7 +35,7 @@ class TranscriptionsService {
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
     // MainQuery
     let mainQuery: SearchParams = {
-      matchingStrategy: "all",
+      matchingStrategy: searchQuery?.matchingStrategy || "all",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
       limit: SEGMENTS_TO_SEARCH,
@@ -47,7 +47,7 @@ class TranscriptionsService {
       mainQuery = {
         filter: searchQuery.filter,
         limit: 10000,
-        q: "",
+        q: "", 
         sort: ["start:asc"],
       };
     }
@@ -137,20 +137,20 @@ class TranscriptionsService {
         queries: [],
       };
 
-      // First we search transcriptions to get the ids of the belonging transcript
+      // First we search transcriptions to get the  ids of the belonging transcript
       const transcriptionSearchResponse: TranscriptionResponse = await this.transcriptionsIndex.search(searchParams.q, {
         q: searchParams.q,
         attributesToRetrieve: ["id"],
         limit: SEGMENTS_TO_SEARCH,
-        matchingStrategy: "all",
+        matchingStrategy: searchParams.matchingStrategy || "last",
       });
 
       console.log("Number of transcriptions is: ", transcriptionSearchResponse.hits.length);
 
       //@ts-ignore We get the ids and construct a filter
       const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: any) => `${transcriptionSearchResponseHit.id}`))];
-      const transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
-
+      let transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
+      const splittedSearchParams: string[] = searchParams.q?.split(" ") || [""];
       console.log("Number of transcriptionIds: ", transcriptionIds.length);
       console.log("The transcriptionfilter is: ", transcriptionFilter);
 
@@ -159,12 +159,37 @@ class TranscriptionsService {
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
         highlightPostTag: "</span>",
-        sort: searchParams.sort,
-        matchingStrategy: "all",
-        q: searchParams.q,
+        matchingStrategy: "last",
         filter: transcriptionFilter,
         limit: SEGMENTS_TO_SEARCH,
+        q: searchParams.q,
       });
+      // // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
+      // let initialSearchResponse2: SegmentResponse = await this.segmentsIndex.search(searchParams.q?.split(" ").slice(1).join(" "), {
+      //   attributesToHighlight: ["text"],
+      //   highlightPreTag: '<span class="initialHightlight">',
+      //   highlightPostTag: "</span>",
+      //   matchingStrategy: "last",
+      //   filter: transcriptionFilter,
+      //   limit: SEGMENTS_TO_SEARCH,
+      //   q: searchParams.q?.split(" ").slice(1).join(" "),
+      // });
+
+      const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
+      const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
+      initialSearchResponse.hits = uniqueSegmentHits.slice(0, SEGMENTS_TO_SEARCH);
+
+      // about meeting someone
+      // Before returning the response we need to sort the hits using some jaccard string similarity checks.
+      for (let i = 0; i < initialSearchResponse.hits.length; i++) {
+        const segmentHit: SegmentHit = initialSearchResponse.hits[i];
+        segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
+      }
+
+      // Sort them and then return them
+      // @ts-ignore
+      initialSearchResponse.hits = initialSearchResponse.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
+      initialSearchResponse.hits = initialSearchResponse.hits.slice(0, SEGMENTS_TO_SEARCH);
 
       console.log("Number of segments returned is: ", initialSearchResponse.hits.length);
 
@@ -172,11 +197,11 @@ class TranscriptionsService {
       initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
         multiSearchParams.queries.push({
           indexUid: "segments",
-          q: null,
+          q: "",
           filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToTranscriptId = '${segmentHit.belongsToTranscriptId}' AND id != '${segmentHit.id}'`,
           limit: 50,
           sort: ["start:asc"],
-          matchingStrategy: "all",
+          matchingStrategy: "last",
           segmentId: segmentHit.id,
           segmentHit: segmentHit,
         });
@@ -202,13 +227,13 @@ class TranscriptionsService {
             indexUid: "episodes",
             filter: episodeFilter,
             limit: SEGMENTS_TO_SEARCH,
-            q: null,
+            q: "",
           },
           {
             indexUid: "podcasts",
             filter: podcastFilter,
             limit: SEGMENTS_TO_SEARCH,
-            q: null,
+            q: "",
           },
         ],
       );
@@ -217,19 +242,12 @@ class TranscriptionsService {
       let podcastsMap: Map<string, PodcastHit> | "" = "";
       let episodesMap: Map<string, EpisodeHit> | "" = "";
 
-      // Performing queries using promise await as it's faster
-      const episodes: EpisodeResponse = await this.episodesIndex.search(null, {
-        q: null,
-        filter: episodeFilter,
-        limit: SEGMENTS_TO_SEARCH,
-      });
-      console.log("EPisodes: ", episodes.hits.length);
       const lastResponses: any = await Promise.all(
         multiSearchParams.queries.map(async (query: any) => {
           console.log("Filter is: ", query.filter);
           console.log("Limit is: ", query.limit);
           if (query.indexUid === "episodes") {
-            console.log("Time for an episodes")
+            console.log("Time for an episodes");
             return {
               result: await meilisearchConnection.index(query.indexUid).search(null, {
                 q: null,
@@ -294,7 +312,7 @@ class TranscriptionsService {
           // Result var
           const { result, indexUid, segmentId, segmentHit } = lastResponses[i];
 
-          // Skip if wrong index we already them further up
+          // Skip if wrong index we already them furthe r up
           if (indexUid === "podcasts" || indexUid === "episodes") {
             continue;
           }
@@ -308,54 +326,56 @@ class TranscriptionsService {
             console.log("We found a segment which has an episodeGuid which doesn't exist apparently");
             console.log(" The episodeGuid is:  ", result.hits[0].belongsToEpisodeGuid);
           }
-          // // We are setting the first element to be container of last the hits since
-          // const clientSearchResponseHit: ClientSearchResponseHit = {
-          //   id: segmentId,
-          //   podcastTitle: segmentHitPodcast.title,
-          // episodeTitle: segmentHitEpisode.episodeTitle,
-          // podcastSummary: segmentHitPodcast.description,
-          // episodeSummary: segmentHitEpisode.episodeSummary,
-          // description: segmentHitPodcast.description,
-          //   podcastAuthor: segmentHitPodcast.itunesAuthor,
-          //   episodeLinkToEpisode: segmentHitEpisode.episodeLinkToEpisode,
-          //   episodeEnclosure: segmentHitEpisode.episodeEnclosure,
-          //   podcastLanguage: segmentHitPodcast.language,
-          //   podcastGuid: segmentHitPodcast.podcastGuid,
-          //   podcastImage: segmentHitPodcast.imageUrl,
-          //   episodeGuid: segmentHitEpisode.episodeGuid,
-          //   url: segmentHitPodcast.url,
-          //   link: segmentHitPodcast.link,
-          //   youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-          //   subHits: [
-          //     {
-          //       text: segmentHit._formatted.text,
-          //       start: segmentHit.start,
-          //       end: segmentHit.end,
-          //       id: segmentId,
-          //     },
-          //     ...convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
-          //   ],
-          //   belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
-          // };
+          // We are setting the first element to be container of last the hits since
+          const clientSearchResponseHit: ClientSearchResponseHit | any = {
+            id: segmentId,
+            podcastTitle: segmentHitPodcast?.title,
+            episodeTitle: segmentHitEpisode?.episodeTitle,
+            podcastSummary: segmentHitPodcast?.description,
+            episodeSummary: segmentHitEpisode?.episodeSummary,
+            description: segmentHitPodcast?.description,
+            podcastAuthor: segmentHitPodcast?.itunesAuthor,
+            episodeLinkToEpisode: segmentHitEpisode?.episodeLinkToEpisode,
+            episodeEnclosure: segmentHitEpisode?.episodeEnclosure,
+            podcastLanguage: segmentHitPodcast?.language,
+            podcastGuid: segmentHitPodcast?.podcastGuid,
+            podcastImage: segmentHitPodcast?.imageUrl,
+            episodeGuid: segmentHitEpisode?.episodeGuid,
+            url: segmentHitPodcast?.url,
+            link: segmentHitPodcast?.link,
+            youtubeVideoLink: segmentHitEpisode?.youtubeVideoLink || "",
+            subHits: [
+              {
+                text: segmentHit._formatted.text,
+                start: segmentHit.start,
+                end: segmentHit.end,
+                id: segmentId,
+              },
+              ...convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
+            ],
+            belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
+          };
 
-          // searchResponse.hits.push(clientSearchResponseHit);
+          const someValueIsUndefined = Object.values(clientSearchResponseHit).some((value) => value === undefined);
+          if (!someValueIsUndefined) searchResponse.hits.push(clientSearchResponseHit);
+          else continue;
         }
 
-        //   console.log("Leaved", searchResponse);
+        console.log("Leaved", searchResponse);
 
-        //   // Before returning the response we need to sort the hits using some jaccard string similarity checks.
-        //   for (let i = 0; i < searchResponse.hits.length; i++) {
-        //     const searchResponseHit: ClientSearchResponseHit = searchResponse.hits[i];
-        //     const miniSubHits: ClientSegmentHit[] = searchResponseHit.subHits.slice(0, 5);
-        //     const concatenated: string = miniSubHits.map((clientSegmentHit: ClientSegmentHit) => clientSegmentHit.text).join(" ");
-        //     searchResponseHit.similarity = this.calculateSimilarity(concatenated, searchParams.q || "");
-        //   }
-        //   // Sort them and then return them
-        //   // @ts-ignore
-        //   searchResponse.hits = searchResponse.hits.sort((a: ClientSearchResponseHit, b: ClientSearchResponseHit) => b.similarity - a.similarity);
+        // Before returning the response we need to sort the hits using some jaccard string similarity checks.
+        for (let i = 0; i < searchResponse.hits.length; i++) {
+          const searchResponseHit: ClientSearchResponseHit = searchResponse.hits[i];
+          const miniSubHits: ClientSegmentHit[] = searchResponseHit.subHits.slice(0, 5);
+          const concatenated: string = miniSubHits.map((clientSegmentHit: ClientSegmentHit) => clientSegmentHit.text).join(" ");
+          searchResponseHit.similarity = this.calculateSimilarity(concatenated, searchParams.q || "");
+        }
+        // Sort them and then return them
+        // @ts-ignore
+        searchResponse.hits = searchResponse.hits.sort((a: ClientSearchResponseHit, b: ClientSearchResponseHit) => b.similarity - a.similarity);
 
-        //   // Return that response
-        //   return searchResponse as ClientSearchResponse;
+        // Return that response
+        return searchResponse as ClientSearchResponse;
       }
     }
     return {} as ClientSearchResponse;
@@ -386,7 +406,7 @@ class TranscriptionsService {
   }
 
   private calculateSimilarity(text: string, originalSearchString: string) {
-    const n = 5; // Adjust the value of n for the desired n-gram length
+    const n = 10; // Adjust the value of n for the desired n-gram length
     const originalNgrams = this.createNgrams(originalSearchString, n);
     const textNgrams = this.createNgrams(text, n);
     const windowSize = originalNgrams.length;

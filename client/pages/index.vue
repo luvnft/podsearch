@@ -25,6 +25,7 @@ const utils: Utils = useUtils();
 const initialSearchQuery: SearchQuery = {
     searchString: "The following is a conversation",
     offset: 0,
+    matchingStrategy: "all",
 };
 const router: Router = useRouter();
 

@@ -16,11 +16,12 @@ async function main() {
     searchableAttributes: ["text"],
     displayedAttributes: ["*"],
     filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptId", "belongsToPodcastGuid", "start", "end"],
-    rankingRules: ["exactness", "sort", "proximity", "typo", "words"],
+    rankingRules: ["proximity", "exactness", "words", "typo", "sort"],
     sortableAttributes: ["start"],
     pagination: {
       maxTotalHits: 5000,
     },
+    distinctAttribute: "id",
   });
   transcriptionsIndex.updateSettings({
     searchableAttributes: ["transcription"],
@@ -29,12 +30,14 @@ async function main() {
     pagination: {
       maxTotalHits: 25,
     },
+    distinctAttribute: "id",
   });
   podcastsIndex.updateSettings({
     searchableAttributes: ["*"],
     displayedAttributes: ["*"],
     filterableAttributes: ["podcastGuid"],
     rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+    distinctAttribute: "podcastGuid",
   });
   episodesIndex.updateSettings({
     searchableAttributes: ["*"],
@@ -42,6 +45,7 @@ async function main() {
     filterableAttributes: ["episodeGuid"],
     sortableAttributes: ["addedDate"],
     rankingRules: ["words", "typo", "proximity", "attribute", "sort", "exactness"],
+    distinctAttribute: "episodeGuid",
   });
 }
 
