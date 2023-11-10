@@ -47,10 +47,12 @@ class TranscriptionsService {
       mainQuery = {
         filter: searchQuery.filter,
         limit: 10000,
-        q: "", 
+        q: "",
         sort: ["start:asc"],
       };
     }
+
+    console.log("searchQuery", searchQuery);
 
     // Initial search
     let response: ClientSearchResponse = await this.segmentSearch(mainQuery, searchQuery?.getFullTranscript || false);
@@ -159,7 +161,7 @@ class TranscriptionsService {
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
         highlightPostTag: "</span>",
-        matchingStrategy: "last",
+        matchingStrategy: searchParams.matchingStrategy || "last",
         filter: transcriptionFilter,
         limit: SEGMENTS_TO_SEARCH,
         q: searchParams.q,
@@ -175,16 +177,16 @@ class TranscriptionsService {
       //   q: searchParams.q?.split(" ").slice(1).join(" "),
       // });
 
-      const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
-      const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
-      initialSearchResponse.hits = uniqueSegmentHits.slice(0, SEGMENTS_TO_SEARCH);
+      // const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
+      // const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
+      // initialSearchResponse.hits = uniqueSegmentHits.slice(0, SEGMENTS_TO_SEARCH);
 
-      // about meeting someone
-      // Before returning the response we need to sort the hits using some jaccard string similarity checks.
-      for (let i = 0; i < initialSearchResponse.hits.length; i++) {
-        const segmentHit: SegmentHit = initialSearchResponse.hits[i];
-        segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
-      }
+      // // about meeting someone
+      // // Before returning the response we need to sort the hits using some jaccard string similarity checks.
+      // for (let i = 0; i < initialSearchResponse.hits.length; i++) {
+      //   const segmentHit: SegmentHit = initialSearchResponse.hits[i];
+      //   segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
+      // }
 
       // Sort them and then return them
       // @ts-ignore
