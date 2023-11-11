@@ -71,7 +71,6 @@ model Podcast {
   updateFrequency         Int
   createdAt               DateTime?       @default(now())
   updatedAt               DateTime?       @updatedAt
-  youtubeChannel          String?         @default("")
   indexed                 Boolean?        @default(false)
   episode                 Episode[]       @relation("Podcast_belongsToPodcast")
   segment                 Segment[]       @relation("Podcast_belongsToPodcastGuid")
@@ -109,6 +108,7 @@ model Transcription {
   indexed              Boolean?  @default(false)
   createdAt            DateTime? @default(now())
   updatedAt            DateTime? @updatedAt
+  isYoutube            Boolean?  @default(false)
   segments             Segment[] @relation("Transcription_belongsToTranscriptId")
   episode              Episode   @relation("Episode_belongsToEpisodeGuid", fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   podcast              Podcast   @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)

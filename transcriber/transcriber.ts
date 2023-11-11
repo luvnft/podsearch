@@ -17,7 +17,8 @@ interface JsonTranscriptionObject {
   belongsToEpisodeGuid: string;
   text: string;
   language: string;
-  isYoutube: boolean;
+  processingYoutube: boolean;
+  youtubeVideoLink: string;
 }
 
 interface TranscriptionSegmentType {
@@ -34,7 +35,7 @@ interface TranscriptionWordType {
   score: number;
 }
 
-async function retryOnConflict(fn: any, maxRetries = 3, delay = 1000) {
+async function retryOnConflict(fn: any, maxRetries = 3, delay = 5000) {
   let retries = maxRetries;
   let lastError;
 
@@ -190,7 +191,7 @@ async function insertJsonFilesToDb() {
       const data: JsonTranscriptionObject = JSON.parse(fileContent) as JsonTranscriptionObject;
 
       // Extract data
-      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, isYoutube }: JsonTranscriptionObject = data;
+      const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, processingYoutube, youtubeVideoLink }: JsonTranscriptionObject = data;
 
       console.log("Getting EpisodeGuid from DB: ", belongsToEpisodeGuid);
       const episode: Episode | null = await prisma.episode.findUnique({
@@ -199,23 +200,28 @@ async function insertJsonFilesToDb() {
 
       if (episode === null) continue;
 
+      // If the transcriptionObject contains the youtubeVideLink from the json structure then we need to update the episode with that, this is primarily due to legacy code as the json objects contain more information than the db, and my jsons function as a backup of the db at this moment
+      if (youtubeVideoLink) {
+        await prisma.episode.update({
+          data: {
+            youtubeVideoLink: youtubeVideoLink,
+          },
+          where: {
+            episodeGuid: belongsToEpisodeGuid,
+          },
+          // It's not necessary to set indexed on episodes due to them being synced on every run to meilisearch. We set indexed to false to trigger the meilisearch indexer to know what to sync.
+        });
+      }
+
       // Add the transcription
       console.log("==>👑Adding transcription to DB");
-      const transcriptionData = await prisma.transcription.upsert({
-        create: {
-          language,
+      const transcriptionData = await prisma.transcription.create({
+        data: {
           belongsToPodcastGuid,
           belongsToEpisodeGuid,
           transcription,
-        },
-        where: {
-          belongsToEpisodeGuid: episode.episodeGuid,
-        },
-        update: {
           language,
-          belongsToPodcastGuid,
-          belongsToEpisodeGuid,
-          transcription,
+          isYoutube: processingYoutube ? processingYoutube : false,
         },
       });
 
@@ -269,7 +275,7 @@ async function insertJsonFilesToDb() {
             id: uuidv4(),
             indexed: false,
             updatedAt: null,
-            isYoutube: isYoutube,
+            isYoutube: processingYoutube,
           };
 
           newSegments.push(segment);
@@ -293,7 +299,7 @@ async function insertJsonFilesToDb() {
           id: uuidv4(),
           indexed: false,
           updatedAt: null,
-          isYoutube: isYoutube,
+          isYoutube: processingYoutube ? processingYoutube : false,
         };
         newSegments.push(segment);
       }
@@ -421,4 +427,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-transcribe();
+insertJsonFilesToDb();

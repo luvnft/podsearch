@@ -139,8 +139,9 @@
     "production:runClient": "cd client && node ./.output/server/index.mjs",
     "production:buildBackend": "cd backend && tsc",
     "production:runBackend": "fuser -k 3000/tcp || true && cd backend && node ./dist/app.js",
-    "generateMigration": "npx dotenv -e ../.env -- prisma migrate dev",
-    "dev": "cd client && nuxt dev --modern=server"
+    "migrate": "npx prisma migrate dev --schema=./backend/prisma/schema.prisma",
+    "dev": "cd client && nuxt dev --modern=server",
+    "generateprismaclient": "npx prisma generate --schema=./backend/prisma/schema.prisma"
   }, 
   "author": "Luka Momcilovic",
   "license": "ISC",
