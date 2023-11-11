@@ -48,6 +48,7 @@ async function main() {
     },
     where: {
       youtubeVideoLink: null,
+      youtubeProcessed: false
     },
   });
 

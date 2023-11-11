@@ -36,11 +36,11 @@ const initializeApp = async () => {
     console.log("Indexer started!"); 
     startIndexer("* * * * *");
 
-    // console.log("RSSCrawler started!");
-    // startRssCrawler("* * * * *");
+    console.log("RSSCrawler started!");
+    startRssCrawler("* * * * *");
 
-    // console.log("YoutubeFinder started!");
-    // startYoutubeFinder("* * * * *");
+    console.log("YoutubeFinder started!");
+    startYoutubeFinder("* * * * *");
   } catch (error) {
     console.error("Error during initialization:", error);
     process.exit(1); 

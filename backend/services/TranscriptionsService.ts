@@ -141,12 +141,13 @@ class TranscriptionsService {
       // First we search transcriptions to get the  ids of the belonging transcript
       const transcriptionSearchResponse: TranscriptionResponse = await this.transcriptionsIndex.search(searchParams.q, {
         q: searchParams.q,
-        attributesToRetrieve: ["id"],
+        // attributesToRetrieve: ["id"],
         limit: SEGMENTS_TO_SEARCH,
         matchingStrategy: searchParams.matchingStrategy || "last",
+        showMatchesPosition: true,
       });
 
-      console.log("Number of transcriptions is: ", transcriptionSearchResponse.hits.length);
+      console.log("Number of transcriptions is: ", JSON.stringify(transcriptionSearchResponse.hits))
 
       //@ts-ignore We get the ids and construct a filter
       const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: any) => `${transcriptionSearchResponseHit.id}`))];
