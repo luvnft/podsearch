@@ -11,4 +11,14 @@ export interface TranscriptionResponseHit {
   id: string;
   belongsToPodcastGuid: string;
   belongsToEpisodeGuid: string;
+  _matchesPosition: MatchesPositions;
+}
+
+export interface MatchesPositions {
+  transcription: TranscriptionMatch[];
+}
+
+export interface TranscriptionMatch {
+  start: number;
+  length: number;
 }

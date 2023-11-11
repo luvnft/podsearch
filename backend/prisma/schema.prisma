@@ -90,11 +90,11 @@ model Segment {
   createdAt             DateTime?     @default(now())
   updatedAt             DateTime?     @updatedAt
   isYoutube             Boolean?      @default(false)
+  bytesPosition         Int
   episode               Episode       @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   podcast               Podcast       @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
   transcription         Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
-  bytesPosition         Int
-  
+
   @@unique([belongsToEpisodeGuid, start, end, isYoutube])
   @@index([belongsToPodcastGuid], map: "Segment_belongsToPodcastGuid_fkey")
   @@index([belongsToTranscriptId], map: "Segment_belongsToTranscriptId_fkey")

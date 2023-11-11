@@ -263,6 +263,7 @@ async function insertJsonFilesToDb() {
         word = newWords[j];
 
         if (concatenatedWord.length + word.word.length <= MAX_CHARS) {
+          bytesPosition = bytesPosition + 1;
           concatenatedWord = concatenatedWord + " " + word.word;
           endTime = word.end;
         } else {

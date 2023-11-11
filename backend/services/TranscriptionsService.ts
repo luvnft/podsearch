@@ -141,56 +141,35 @@ class TranscriptionsService {
       // First we search transcriptions to get the  ids of the belonging transcript
       const transcriptionSearchResponse: TranscriptionResponse = await this.transcriptionsIndex.search(searchParams.q, {
         q: searchParams.q,
-        // attributesToRetrieve: ["id"],
+        attributesToRetrieve: ["id", "belongsToPodcastGuid", "belongsToEpisodeGuid"],
         limit: SEGMENTS_TO_SEARCH,
         matchingStrategy: searchParams.matchingStrategy || "last",
         showMatchesPosition: true,
       });
 
-      console.log("Number of transcriptions is: ", JSON.stringify(transcriptionSearchResponse.hits))
-
       //@ts-ignore We get the ids and construct a filter
-      const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: any) => `${transcriptionSearchResponseHit.id}`))];
-      let transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
-      console.log("Number of transcriptionIds: ", transcriptionIds.length);
-      console.log("The transcriptionfilter is: ", transcriptionFilter);
+      const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: TranscriptionResponseHit) => `'${transcriptionSearchResponseHit.id}'`))];
+      const bestBytesNumbers: string[] = transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: TranscriptionResponseHit) => `'${transcriptionSearchResponseHit._matchesPosition.transcription[0].start}'`);
 
+      // let transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
+      console.log("Number of transcriptionIds: ", transcriptionIds.length);
+      // console.log("The transcriptionfilter is: ", transcriptionFilter);
+      const searchFilter: string = `belongsToTranscriptId IN [${transcriptionIds.join(", ")}] AND bytesPosition IN [${bestBytesNumbers.join(", ")}]`;
+      console.log("SearchFilter: ", searchFilter);
       // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
       let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
         highlightPostTag: "</span>",
         matchingStrategy: searchParams.matchingStrategy || "last",
-        filter: transcriptionFilter,
+        filter: searchFilter,
         limit: SEGMENTS_TO_SEARCH,
         q: searchParams.q,
       });
-      // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
-      let initialSearchResponse2: SegmentResponse = await this.segmentsIndex.search(searchParams.q?.split(" ").slice(1).join(" "), {
-        attributesToHighlight: ["text"],
-        highlightPreTag: '<span class="initialHightlight">',
-        highlightPostTag: "</span>",
-        matchingStrategy: searchParams.matchingStrategy || "last",
-        filter: transcriptionFilter,
-        limit: SEGMENTS_TO_SEARCH,
-        q: searchParams.q?.split(" ").slice(1).join(" "),
-      });
 
-      const segmentHits: SegmentHit[] = [...initialSearchResponse.hits, ...initialSearchResponse2.hits];
+      const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
       const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
       initialSearchResponse.hits = uniqueSegmentHits.slice(0, 100);
-
-      // about meeting someone
-      // Before returning the response we need to sort the hits using some jaccard string similarity checks.
-      for (let i = 0; i < initialSearchResponse.hits.length; i++) {
-        const segmentHit: SegmentHit = initialSearchResponse.hits[i];
-        segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
-      }
-
-      // Sort them and then return them
-      // @ts-ignore
-      initialSearchResponse.hits = initialSearchResponse.hits.sort((a: SegmentHit, b: SegmentHit) => b.similarity - a.similarity);
-      initialSearchResponse.hits = initialSearchResponse.hits.slice(0, SEGMENTS_TO_SEARCH);
 
       // Create the queries for the multiSearch route on meilisearch
       initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
