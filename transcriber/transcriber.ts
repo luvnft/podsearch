@@ -255,7 +255,10 @@ async function insertJsonFilesToDb() {
 
       // Num of words
       const numberOfWords: number = newWords.length;
+      let bytesPosition: number = 0;
 
+      // Creating the segments and making all segments same length to not have to deal with this on the client side MAX_CHARS is the decision maker here
+      // Further up we were merging the strange segments, here we are 
       for (let j = 0; j < numberOfWords; j++) {
         word = newWords[j];
 
@@ -275,9 +278,14 @@ async function insertJsonFilesToDb() {
             id: uuidv4(),
             indexed: false,
             updatedAt: null,
-            isYoutube: processingYoutube,
+            isYoutube: processingYoutube ? processingYoutube : false,
+            bytesPosition: bytesPosition,
           };
 
+          // Updating bytesPosition variable
+          bytesPosition = bytesPosition + Buffer.byteLength(concatenatedWord, "utf8");
+
+          // Adding to arr and updating time values
           newSegments.push(segment);
           startTime = word.end;
           concatenatedWord = word.word;
@@ -300,6 +308,7 @@ async function insertJsonFilesToDb() {
           indexed: false,
           updatedAt: null,
           isYoutube: processingYoutube ? processingYoutube : false,
+          bytesPosition: bytesPosition,
         };
         newSegments.push(segment);
       }
@@ -315,8 +324,8 @@ async function insertJsonFilesToDb() {
       });
 
       // Rename the file after it has been inserted into the database successfully
-      const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
-      fs.renameSync(filename, newFilename);
+      // const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
+      // fs.renameSync(filename, newFilename);
     }
   } catch (e) {
     console.log("Error: ", e);
@@ -396,7 +405,7 @@ async function callPythonTranscribeAPI(episode: Episode) {
         processingYoutube: false,
       });
     } else if (hasYoutubeSegments === false) {
-      const response = await axios.post("http://localhost:8000/transcribe", {
+      const response = await axios.post("http://localhost:8000/transcribe", { // This API endpoint has to be run using uvicorn app:transcribe in a different terminal on the transcription machine 
         episodeLink: episode.youtubeVideoLink,
         episodeTitle: episode.episodeTitle,
         episodeGuid: episode.episodeGuid,
