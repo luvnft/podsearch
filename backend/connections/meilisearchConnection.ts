@@ -5,7 +5,6 @@ const meilisearchConnection: MeiliSearch = new MeiliSearch({
   // apiKey: process.env.MEILI_MASTER_KEY as string,
 });
 
-console.log(process.env.MEILI_HOST_URL)
 
 export { meilisearchConnection };
  

@@ -23,10 +23,11 @@ async function main() {
   transcriptionsIndex.updateSettings({
     searchableAttributes: ["transcription"],
     displayedAttributes: ["*"],
-    rankingRules: ["exactness", "proximity", "typo", "words"],
+    rankingRules: ["exactness", "proximity", "words"],
     pagination: {
       maxTotalHits: 25,
     },
+    stopWords: ["a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"],
   });
   podcastsIndex.updateSettings({
     searchableAttributes: ["*"],

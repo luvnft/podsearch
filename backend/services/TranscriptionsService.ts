@@ -143,18 +143,19 @@ class TranscriptionsService {
         q: searchParams.q,
         attributesToRetrieve: ["id", "belongsToPodcastGuid", "belongsToEpisodeGuid"],
         limit: SEGMENTS_TO_SEARCH,
-        matchingStrategy: searchParams.matchingStrategy || "last",
+        matchingStrategy: searchParams.matchingStrategy || "all",
         showMatchesPosition: true,
       });
 
       //@ts-ignore We get the ids and construct a filter
       const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: TranscriptionResponseHit) => `'${transcriptionSearchResponseHit.id}'`))];
-      const bestBytesNumbers: string[] = transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: TranscriptionResponseHit) => `'${transcriptionSearchResponseHit._matchesPosition.transcription[0].start}'`);
+      const bestBytesNumbers: string[] = transcriptionSearchResponse.hits.flatMap((transcriptionSearchResponseHit: TranscriptionResponseHit) => transcriptionSearchResponseHit._matchesPosition.transcription.map((transcription) => `'${transcription.start}'`));
+      console.log("BBB", JSON.stringify(bestBytesNumbers));
 
       // let transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
       console.log("Number of transcriptionIds: ", transcriptionIds.length);
       // console.log("The transcriptionfilter is: ", transcriptionFilter);
-      const searchFilter: string = `belongsToTranscriptId IN [${transcriptionIds.join(", ")}] AND bytesPosition IN [${bestBytesNumbers.join(", ")}]`;
+      const searchFilter: string = `belongsToTranscriptId IN [${transcriptionIds.join(", ")}] AND (${bestBytesNumbers.map(byte => `bytesPosition <= ${byte}`).join(" OR ")})`;
       console.log("SearchFilter: ", searchFilter);
       // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
       let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
@@ -167,12 +168,21 @@ class TranscriptionsService {
         q: searchParams.q,
       });
 
-      const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
-      const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
-      initialSearchResponse.hits = uniqueSegmentHits.slice(0, 100);
+      // // about meeting someone
+      // // Before returning the response we need to sort the hits using some jaccard string similarity checks.
+      // for (let i = 0; i < initialSearchResponse.hits.length; i++) {
+      //   const segmentHit: SegmentHit = initialSearchResponse.hits[i];
+      //   segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
+      // }
+
+      // const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
+      // const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
+      // initialSearchResponse.hits = uniqueSegmentHits.slice(0, 10)
+ 
 
       // Create the queries for the multiSearch route on meilisearch
       initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
+        console.log("segmentHit")
         multiSearchParams.push({
           query: {
             q: "",
