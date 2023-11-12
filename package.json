@@ -142,7 +142,7 @@
     "migrate": "npx prisma migrate dev --schema=./backend/prisma/schema.prisma",
     "dev": "cd client && nuxt dev --modern=server",
     "generateprismaclient": "npx prisma generate --schema=./backend/prisma/schema.prisma",
-    "deleteeverythinglol": "dotenv -- sh -c 'cd backend/other && ts-node database_drop_all_tables.ts && ts-node meilisearch_purge_everything_script.ts && npm run migrate'"
+    "deleteeverythinglol": "dotenv -- sh -c 'cd backend/other && ts-node database_drop_all_tables.ts && ts-node meilisearch_purge_everything_script.ts && ts-node meilisearch_setup_script.ts && npm run migrate && npm run generateprismaclient'"
   },
   "author": "Luka Momcilovic",
   "license": "ISC",
