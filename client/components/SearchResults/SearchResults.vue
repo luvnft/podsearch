@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ClientSegmentHit, ClientSearchResponse, ClientSearchResponseHit } from "../../types/ClientSearchResponse";
+import { ClientSearchResponseHit } from "../../types/ClientSearchResponse";
 import { useSearchStore } from "../../store/searchStore";
 import { storeToRefs } from "pinia";
 

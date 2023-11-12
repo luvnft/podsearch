@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-// Key-binding
+// Key-binding for the spacebutton and a-tag
 onMounted(() => {
     const handleSpacebarClick = (event) => {
         if (event.code === "Space" && (event.target.tagName === "BUTTON" || event.target.tagName === "A")) {

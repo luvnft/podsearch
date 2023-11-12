@@ -279,6 +279,9 @@ async function insertJsonFilesToDb() {
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
       let word: TranscriptionWordType | undefined = undefined;
+      let normalizedConcatenatedWord: string = "";
+      let indexLocationOfConcatenatedWord: number = 0;
+      let bytesLocationOfConcatenatedWord: number = 0;
 
       // Looping over every new word
       for (let j = 0; j < newWords.length; j++) {
@@ -297,9 +300,9 @@ async function insertJsonFilesToDb() {
           // The next time around we can do the same thing. We dont really need to keep track of anything else
           // In some situations we will get -1 due to the mergeStrangeSegmentsAndCrateNewSegments function which modifes some of the words, creating new words.
           // In this situation we will get -1 back I'm going to print that out here and see the result and figure out how to deal with it then
-          const normalizedConcatenatedWord: string = normalizeString(concatenatedWord).trim();
-          const indexLocationOfConcatenatedWord: number = normalizedTranscription.indexOf(normalizedConcatenatedWord);
-          const bytesLocationOfConcatenatedWord: number = Buffer.byteLength(normalizedTranscription.substring(0, indexLocationOfConcatenatedWord));
+          normalizedConcatenatedWord = normalizeString(concatenatedWord).trim();
+          indexLocationOfConcatenatedWord = normalizedTranscription.indexOf(normalizedConcatenatedWord);
+          bytesLocationOfConcatenatedWord = Buffer.byteLength(normalizedTranscription.substring(0, indexLocationOfConcatenatedWord));
 
           if (indexLocationOfConcatenatedWord === -1) {
             console.log("Location is1: ", -1);
@@ -321,7 +324,7 @@ async function insertJsonFilesToDb() {
             belongsToPodcastGuid: belongsToPodcastGuid,
             belongsToEpisodeGuid: belongsToEpisodeGuid,
             belongsToTranscriptId: transcriptionId,
-            text: concatenatedWord,
+            text: normalizedConcatenatedWord,
             createdAt: null,
             id: uuidv4(),
             indexed: false,
@@ -338,7 +341,7 @@ async function insertJsonFilesToDb() {
       }
 
       // Dealing with leftovers
-      if (word && concatenatedWord) {
+      if (word && normalizedConcatenatedWord) {
         // Dealing with leftovers
         const segment: Segment = {
           start: startTime,
@@ -347,13 +350,13 @@ async function insertJsonFilesToDb() {
           belongsToPodcastGuid: belongsToPodcastGuid,
           belongsToEpisodeGuid: belongsToEpisodeGuid,
           belongsToTranscriptId: transcriptionId,
-          text: concatenatedWord,
+          text: normalizedConcatenatedWord,
           createdAt: null,
           id: uuidv4(),
           indexed: false,
           updatedAt: null,
           isYoutube: processingYoutube ? processingYoutube : false,
-          bytesPosition: 999,
+          bytesPosition: 999, // Fix this at the end.
         };
         newSegments.push(segment);
       }

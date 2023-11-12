@@ -276,18 +276,21 @@ const handleYoutubeClick = (event: any) => {
 @keyframes moveRainbow {
     0% {
         background-position: 0% 50%;
+        background-size: 200% auto;
+
     }
 
     100% {
-        background-position: 100% 50%;
+        background-position: 100% 0%;
+        
     }
+
 }
 
 .rainbow-border {
-    @apply p-[1px] !important;
+    @apply p-[2px] !important;
     @apply rounded-lg !important;
 
-    background-size: 200% auto;
     background-image: linear-gradient(to right,
             violet,
             indigo,
@@ -297,7 +300,7 @@ const handleYoutubeClick = (event: any) => {
             orange,
             red,
             violet);
-    animation: moveRainbow 5s linear infinite;
+    animation: moveRainbow 10s linear infinite;
     display: flex;
     align-items: center;
     justify-content: center;

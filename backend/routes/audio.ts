@@ -9,7 +9,7 @@ const audioServiceRouter: express.Router = express.Router();
 const audioController: AudioController = new AudioController();
 
 //Get Routes
-audioServiceRouter.post("/uploadAudio", upload.single("audio"), audioController.uploadAudio);
+// audioServiceRouter.post("/uploadAudio", upload.single("audio"), audioController.uploadAudio);
 
 //Export it
 export default audioServiceRouter;
