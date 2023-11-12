@@ -23,7 +23,7 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 
 const initialSearchQuery: SearchQuery = {
-    searchString: "The following is a conversation",
+    searchString: "'The following is a conversation'",
     offset: 0,
     matchingStrategy: "all",
 };

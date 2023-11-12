@@ -138,55 +138,22 @@ class TranscriptionsService {
       // MultiSearchQuery object
       let multiSearchParams: MultiSearchQueryType[] = [];
 
-      // First we search transcriptions to get the  ids of the belonging transcript
-      const transcriptionSearchResponse: TranscriptionResponse = await this.transcriptionsIndex.search(searchParams.q, {
-        q: searchParams.q,
-        attributesToRetrieve: ["id", "belongsToPodcastGuid", "belongsToEpisodeGuid"],
-        limit: SEGMENTS_TO_SEARCH,
-        matchingStrategy: searchParams.matchingStrategy || "all",
-        showMatchesPosition: true,
-      });
-
-      //@ts-ignore We get the ids and construct a filter
-      const transcriptionIds: string[] = [...new Set(transcriptionSearchResponse.hits.map((transcriptionSearchResponseHit: TranscriptionResponseHit) => `'${transcriptionSearchResponseHit.id}'`))];
-      const bestBytesNumbers: string[] = transcriptionSearchResponse.hits.flatMap((transcriptionSearchResponseHit: TranscriptionResponseHit) => transcriptionSearchResponseHit._matchesPosition.transcription.map((transcription) => `'${transcription.start}'`));
-      console.log("BBB", JSON.stringify(bestBytesNumbers));
-
-      // let transcriptionFilter: string = `belongsToTranscriptId=${transcriptionIds.join(" OR belongsToTranscriptId=")}`;
-      console.log("Number of transcriptionIds: ", transcriptionIds.length);
-      // console.log("The transcriptionfilter is: ", transcriptionFilter);
-      const searchFilter: string = `belongsToTranscriptId IN [${transcriptionIds.join(", ")}] AND (${bestBytesNumbers.map(byte => `bytesPosition <= ${byte}`).join(" OR ")})`;
-      console.log("SearchFilter: ", searchFilter);
-      // We perform initial search on the segmentsIndex to get the segments for a particular search q param with these transcriptionIds as filter
+      // We perform initial search on the segmentsIndex to get the segments for a particular search q param
       let initialSearchResponse: SegmentResponse = await this.segmentsIndex.search(searchParams.q, {
         attributesToHighlight: ["text"],
         highlightPreTag: '<span class="initialHightlight">',
         highlightPostTag: "</span>",
         matchingStrategy: searchParams.matchingStrategy || "last",
-        filter: searchFilter,
         limit: SEGMENTS_TO_SEARCH,
         q: searchParams.q,
       });
 
-      // // about meeting someone
-      // // Before returning the response we need to sort the hits using some jaccard string similarity checks.
-      // for (let i = 0; i < initialSearchResponse.hits.length; i++) {
-      //   const segmentHit: SegmentHit = initialSearchResponse.hits[i];
-      //   segmentHit.similarity = this.calculateSimilarity(segmentHit.text, searchParams.q || "");
-      // }
-
-      // const segmentHits: SegmentHit[] = [...initialSearchResponse.hits];
-      // const uniqueSegmentHits: SegmentHit[] = [...new Map(segmentHits.map((item) => [item.id, item])).values()];
-      // initialSearchResponse.hits = uniqueSegmentHits.slice(0, 10)
- 
-
       // Create the queries for the multiSearch route on meilisearch
       initialSearchResponse.hits.forEach((segmentHit: SegmentHit) => {
-        console.log("segmentHit")
         multiSearchParams.push({
           query: {
             q: "",
-            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToTranscriptId = '${segmentHit.belongsToTranscriptId}' AND id != '${segmentHit.id}'`,
+            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
             limit: 50,
             sort: ["start:asc"],
             matchingStrategy: "last",
@@ -204,11 +171,6 @@ class TranscriptionsService {
       const podcastFilter: string = `podcastGuid=${podcastIds.join(" OR podcastGuid=")}`;
       const episodeIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToEpisodeGuid}'`))];
       const episodeFilter: string = `episodeGuid=${episodeIds.join(" OR episodeGuid=")}`;
-
-      console.log("The Number of PodcastIds is: ", podcastIds.length);
-      console.log("The number of episodeIds is: ", episodeIds.length);
-      console.log("The podcastFilter is : ", podcastFilter);
-      console.log("The episodesFilter is: ", episodeFilter);
 
       // Adding extra queries to multiparam object
       multiSearchParams.push(
@@ -239,10 +201,6 @@ class TranscriptionsService {
       // First we process the podcast and episodes
       const lastResponses: any = await Promise.all(
         multiSearchParams.map(async (query: MultiSearchQueryType) => {
-          console.log("Filter is: ", query.query.filter);
-          console.log("Limit is: ", query.query.limit);
-
-          console.log(query);
           if (query.indexUid === "podcasts" || query.indexUid === "episodes") {
             return {
               result: await meilisearchConnection.index(query.indexUid).search(query.query.q, {
@@ -280,12 +238,6 @@ class TranscriptionsService {
           podcastsMap = new Map(result.hits.map((podcast: PodcastHit) => [podcast.podcastGuid, podcast]));
           finishedWithPodcasts = true;
         } else if (indexUid === "episodes" && !finishedWithEpisodes) {
-          console.log("The size of the result.hits for the episodes is : ", result.hits.length);
-          result.hits.forEach((episode: EpisodeHit, index: number) => {
-            console.log("Index is: ", index, " and episodeGuid is: ", episode.episodeGuid);
-          });
-          console.log("These are all the episodeGuids for the segments gathered");
-
           episodesMap = new Map(result.hits.map((episode: EpisodeHit) => [episode.episodeGuid, episode]));
           finishedWithEpisodes = true;
         }
@@ -389,10 +341,10 @@ class TranscriptionsService {
     const filter: string = `episodeGuid=${episodesIds.join(" OR episodeGuid=")}`;
     const resData: EpisodeResponse = await this.episodesIndex.search("", {
       limit: episodesIds.length || 5,
-      filter: filter,
+      filter: filter,   
     });
     // Return data
-    return resData;
+    return resData; 
   }
 
   private calculateSimilarity(text: string, originalSearchString: string) {
