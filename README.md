@@ -3,8 +3,7 @@
 <p align="center">
   <img src="https://github.com/lukamomc/poddley/assets/52632596/a9874764-8c98-46f1-b227-abdfc9d3e194" width="200">
   <h1 align="center">Poddley</h1>
-  <h2 align="center">Your Audio Discovery Engine</h2>
-  <h4 align="center">"Shazam for Podcasts"</h4>
+  <h4 align="center">"<i>Shazam</i>" for Podcasts</h4>
 </p>
 
 ---
