@@ -176,6 +176,10 @@ function normalizeString(str: string) {
   // Normalize spacing before and after punctuation marks
   return (
     str
+      // Remove all \" stuff from the string
+      .replace(/\\\"/gi, "")
+      // Remove all " stuff from the string
+      .replace(/\"/gi, "")
       // Remove space before punctuation marks
       .replace(/\s+([,.!?;:])/g, "$1")
       // Add space after punctuation marks if not present
@@ -204,7 +208,7 @@ async function insertJsonFilesToDb() {
       // Extract data
       const { text: transcription, segments, language, belongsToPodcastGuid, belongsToEpisodeGuid, processingYoutube, youtubeVideoLink }: JsonTranscriptionObject = data;
 
-      console.log("Getting EpisodeGuid from DB: ", belongsToEpisodeGuid);
+      console.log("Getting EpisodeGuid from DBF: ", belongsToEpisodeGuid);
       const episode: Episode | null = await prisma.episode.findUnique({
         where: { episodeGuid: belongsToEpisodeGuid },
       });
@@ -299,13 +303,15 @@ async function insertJsonFilesToDb() {
 
           if (indexLocationOfConcatenatedWord === -1) {
             console.log("Location is1: ", -1);
-            console.log("ConcatenatedWord is: ", concatenatedWord);
-            continue;
+            console.log("normalizedConcatenatedWord is: ", normalizedConcatenatedWord);
+            console.log("NormalizedString is:", JSON.stringify(normalizedConcatenatedWord));
+
+            break;
           }
           if (bytesLocationOfConcatenatedWord === -1) {
             console.log("Location is2: ", -1);
             console.log("ConcatenatedWord is: ", concatenatedWord);
-            continue;
+            break;
           }
 
           const segment: Segment = {
