@@ -266,9 +266,6 @@ async function insertJsonFilesToDb() {
         words.push(...segment.words);
       }
 
-      // Filtered words
-      console.log("Length of words: ", words.length);
-
       // The words are already sorted in ascending order based on timestamp
       // Due to whisperx not being able to align numbers, special characters and such we have to merge these words which lack the start and end attribute with some previous word
       const newWords: TranscriptionWordType[] = mergeStrangeSegmentsAndCreateNewSegments(words);
@@ -280,8 +277,6 @@ async function insertJsonFilesToDb() {
       let endTime: number = words[0].end;
       let word: TranscriptionWordType | undefined = undefined;
       let normalizedConcatenatedWord: string = "";
-      let indexLocationOfConcatenatedWord: number = 0;
-      let bytesLocationOfConcatenatedWord: number = 0;
 
       // Looping over every new word
       for (let j = 0; j < newWords.length; j++) {
@@ -291,31 +286,7 @@ async function insertJsonFilesToDb() {
           concatenatedWord = concatenatedWord + " " + word.word;
           endTime = word.end;
         } else {
-          // Every time we plan to add the segment to the newSegments array we need to find the location of the segment in relation to the transcription
-          // That is why we do an indexOf here to find the location of the concatenatedWord
-          // Once we find the location of the concatedWord in relation to the transcriptionDocument
-          // When we have this location we gotta find out the bytesLocation of this location
-          // So the only thing we need to do then is to do const bytesLocation: number = Buffer.byteLength(transcription.substring(0, the location of the indexOf))
-          // Because that is the location we are looking for
-          // The next time around we can do the same thing. We dont really need to keep track of anything else
-          // In some situations we will get -1 due to the mergeStrangeSegmentsAndCrateNewSegments function which modifes some of the words, creating new words.
-          // In this situation we will get -1 back I'm going to print that out here and see the result and figure out how to deal with it then
           normalizedConcatenatedWord = normalizeString(concatenatedWord).trim();
-          indexLocationOfConcatenatedWord = normalizedTranscription.indexOf(normalizedConcatenatedWord);
-          bytesLocationOfConcatenatedWord = Buffer.byteLength(normalizedTranscription.substring(0, indexLocationOfConcatenatedWord));
-
-          if (indexLocationOfConcatenatedWord === -1) {
-            console.log("Location is1: ", -1);
-            console.log("normalizedConcatenatedWord is: ", normalizedConcatenatedWord);
-            console.log("NormalizedString is:", JSON.stringify(normalizedConcatenatedWord));
-
-            break;
-          }
-          if (bytesLocationOfConcatenatedWord === -1) {
-            console.log("Location is2: ", -1);
-            console.log("ConcatenatedWord is: ", concatenatedWord);
-            break;
-          }
 
           const segment: Segment = {
             start: startTime,
@@ -330,7 +301,7 @@ async function insertJsonFilesToDb() {
             indexed: false,
             updatedAt: null,
             isYoutube: processingYoutube ? processingYoutube : false,
-            bytesPosition: bytesLocationOfConcatenatedWord,
+            surroundingText: "",
           };
 
           newSegments.push(segment);
@@ -356,11 +327,23 @@ async function insertJsonFilesToDb() {
           indexed: false,
           updatedAt: null,
           isYoutube: processingYoutube ? processingYoutube : false,
-          bytesPosition: 999, // Fix this at the end.
+          surroundingText: "",
         };
         newSegments.push(segment);
       }
 
+      // First we sort all the segments in ascending order based on the startValue
+      // Then we take the segment to the left -1, the current segment text and the segment to the right +1 and add that text as part of the segment.surroundingtext attribute
+      // that's all
+      // Sorting segments in ascending order based on the start time
+      newSegments.sort((a, b) => a.start - b.start);
+
+      // Adding surrounding text to each segment
+      for (let i = 0; i < newSegments.length; i++) {
+        const prevText = i > 0 ? newSegments[i - 1].text : "";
+        const nextText = i < newSegments.length - 1 ? newSegments[i + 1].text : "";
+        newSegments[i].surroundingText = `${prevText} ${newSegments[i].text} ${nextText}`.trim();
+      }
       // Insert segments using createMany
       console.log(`==>👑Adding ${newSegments.length} segments to DB`);
 
