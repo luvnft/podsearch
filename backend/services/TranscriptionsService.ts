@@ -316,6 +316,22 @@ class TranscriptionsService {
         // @ts-ignore
         searchResponse.hits = searchResponse.hits.sort((a: ClientSearchResponseHit, b: ClientSearchResponseHit) => b.similarity - a.similarity);
 
+        const uniqueEpisodeGuids: Set<string> = new Set();
+        // Filter hits to only include unique episodeGuids
+        const uniqueHits = searchResponse.hits.filter((hit: ClientSearchResponseHit) => {
+          if (uniqueEpisodeGuids.has(hit.episodeGuid)) {
+            // If episodeGuid already exists in the Set, filter it out
+            return false;
+          } else {
+            // If episodeGuid is new, add it to the Set and keep the hit
+            uniqueEpisodeGuids.add(hit.episodeGuid);
+            return true;
+          }
+        });
+
+        // Now uniqueHits contains only unique hits based on episodeGuid
+        searchResponse.hits = uniqueHits;
+
         // Return that response
         return searchResponse as ClientSearchResponse;
       }
@@ -341,14 +357,14 @@ class TranscriptionsService {
     const filter: string = `episodeGuid=${episodesIds.join(" OR episodeGuid=")}`;
     const resData: EpisodeResponse = await this.episodesIndex.search("", {
       limit: episodesIds.length || 5,
-      filter: filter,   
+      filter: filter,
     });
     // Return data
-    return resData; 
+    return resData;
   }
 
   private calculateSimilarity(text: string, originalSearchString: string) {
-    const n = 5; // Adjust the value of n for the desired n-gram length
+    const n = 3; // Adjust the value of n for the desired n-gram length
     const originalNgrams = this.createNgrams(originalSearchString, n);
     const textNgrams = this.createNgrams(text, n);
     const windowSize = originalNgrams.length;

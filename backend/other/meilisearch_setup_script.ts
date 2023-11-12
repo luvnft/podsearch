@@ -11,10 +11,10 @@ async function main() {
 
   //Update indexes
   segmentsIndex.updateSettings({
-    searchableAttributes: ["text", "surroundingText"],
+    searchableAttributes: ["surroundingText", "text"],
     displayedAttributes: ["*"],
     filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptId", "belongsToPodcastGuid", "start", "end"],
-    rankingRules: ["exactness", "proximity", "words", "typo", "sort"],
+    rankingRules: ["words", "proximity", "exactness", "typo", "sort"],
     sortableAttributes: ["start"],
     pagination: {
       maxTotalHits: 5000,
