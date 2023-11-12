@@ -11,10 +11,10 @@ async function main() {
 
   //Update indexes
   segmentsIndex.updateSettings({
-    searchableAttributes: ["text", "bytesPosition"],
+    searchableAttributes: ["surroundingText", "text"],
     displayedAttributes: ["*"],
-    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptId", "belongsToPodcastGuid", "start", "end", "bytesPosition"],
-    rankingRules: ["exactness", "words", "proximity", "typo", "sort"],
+    filterableAttributes: ["belongsToEpisodeGuid", "id", "belongsToTranscriptId", "belongsToPodcastGuid", "start", "end"],
+    rankingRules: ["proximity", "words", "exactness", "typo", "sort"],
     sortableAttributes: ["start"],
     pagination: {
       maxTotalHits: 5000,
@@ -27,7 +27,6 @@ async function main() {
     pagination: {
       maxTotalHits: 25,
     },
-    stopWords: ["a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"],
   });
   podcastsIndex.updateSettings({
     searchableAttributes: ["*"],
