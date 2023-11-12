@@ -53,7 +53,7 @@ class TranscriptionsService {
       };
     }
 
-    console.log("searchQuery", searchQuery);
+    
 
     // Initial search
     let response: ClientSearchResponse = await this.segmentSearch(mainQuery, searchQuery?.getFullTranscript || false);
@@ -164,7 +164,7 @@ class TranscriptionsService {
         });
       });
 
-      console.log("Number of queries inside multiSearchParams.queries: ", multiSearchParams.length);
+      
 
       // Ids and filters
       const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToPodcastGuid}'`))];
@@ -231,7 +231,7 @@ class TranscriptionsService {
       for (let i = 0; i < lastResponses.length; i++) {
         // Result var
         const { result, indexUid } = lastResponses[i];
-        console.log(i);
+        
 
         // Work
         if (indexUid === "podcasts" && !finishedWithPodcasts) {
@@ -244,8 +244,8 @@ class TranscriptionsService {
         if (finishedWithEpisodes && finishedWithPodcasts) break;
       }
 
-      console.log("The size of the podcastsMap is: ", podcastsMap);
-      console.log("The size of the episodesMap is: ", episodesMap);
+      
+      
 
       // If both are truthy we go further
       if (podcastsMap && episodesMap) {
@@ -303,7 +303,7 @@ class TranscriptionsService {
           else continue;
         }
 
-        console.log("Leaved", searchResponse);
+        
 
         // Before returning the response we need to sort the hits using some jaccard string similarity checks.
         for (let i = 0; i < searchResponse.hits.length; i++) {
