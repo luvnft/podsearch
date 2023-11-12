@@ -172,6 +172,17 @@ function mergeStrangeSegmentsAndCreateNewSegments(segments: TranscriptionWordTyp
   return merged;
 }
 
+function normalizeString(str: string) {
+  // Normalize spacing before and after punctuation marks
+  return (
+    str
+      // Remove space before punctuation marks
+      .replace(/\s+([,.!?;:])/g, "$1")
+      // Add space after punctuation marks if not present
+      .replace(/([,.!?;:])(?![\s|$])/g, "$1 ")
+  );
+}
+
 async function insertJsonFilesToDb() {
   try {
     console.log("Checking if any new jsons have been added");
@@ -215,17 +226,29 @@ async function insertJsonFilesToDb() {
 
       // Add the transcription
       console.log("==>👑Adding transcription to DB");
-      const transcriptionData = await prisma.transcription.create({
-        data: {
-          belongsToPodcastGuid,
-          belongsToEpisodeGuid,
-          transcription,
-          language,
-          isYoutube: processingYoutube ? processingYoutube : false,
-        },
-      });
+      let transcriptionData: Transcription | null = null;
+      const normalizedTranscription: string = normalizeString(transcription).trim();
+      try {
+        transcriptionData = await prisma.transcription.create({
+          data: {
+            belongsToPodcastGuid,
+            belongsToEpisodeGuid,
+            transcription: normalizedTranscription,
+            language,
+            isYoutube: processingYoutube ? processingYoutube : false,
+          },
+        });
+      } catch (e) {
+        console.log("erra", e);
+        transcriptionData = await prisma.transcription.findFirst({
+          where: {
+            belongsToEpisodeGuid: belongsToEpisodeGuid,
+            isYoutube: processingYoutube ? processingYoutube : false,
+          },
+        });
+      }
 
-      const transcriptionId = transcriptionData.id;
+      const transcriptionId: string = transcriptionData?.id || "";
 
       // Prepare segments data for insertionsegment
       let words: TranscriptionWordType[] = [];
@@ -248,25 +271,43 @@ async function insertJsonFilesToDb() {
       console.log("New words are: ", newWords.length);
 
       // Now we create the segments
-      let word: TranscriptionWordType | undefined = undefined;
       let concatenatedWord: string = "";
       let startTime: number = words[0].start;
       let endTime: number = words[0].end;
+      let word: TranscriptionWordType | undefined = undefined;
 
-      // Num of words
-      const numberOfWords: number = newWords.length;
-      let bytesPosition: number = 0;
-
-      // Creating the segments and making all segments same length to not have to deal with this on the client side MAX_CHARS is the decision maker here
-      // Further up we were merging the strange segments, here we are 
-      for (let j = 0; j < numberOfWords; j++) {
+      // Looping over every new word
+      for (let j = 0; j < newWords.length; j++) {
         word = newWords[j];
 
         if (concatenatedWord.length + word.word.length <= MAX_CHARS) {
-          bytesPosition = bytesPosition + 1;
           concatenatedWord = concatenatedWord + " " + word.word;
           endTime = word.end;
         } else {
+          // Every time we plan to add the segment to the newSegments array we need to find the location of the segment in relation to the transcription
+          // That is why we do an indexOf here to find the location of the concatenatedWord
+          // Once we find the location of the concatedWord in relation to the transcriptionDocument
+          // When we have this location we gotta find out the bytesLocation of this location
+          // So the only thing we need to do then is to do const bytesLocation: number = Buffer.byteLength(transcription.substring(0, the location of the indexOf))
+          // Because that is the location we are looking for
+          // The next time around we can do the same thing. We dont really need to keep track of anything else
+          // In some situations we will get -1 due to the mergeStrangeSegmentsAndCrateNewSegments function which modifes some of the words, creating new words.
+          // In this situation we will get -1 back I'm going to print that out here and see the result and figure out how to deal with it then
+          const normalizedConcatenatedWord: string = normalizeString(concatenatedWord).trim();
+          const indexLocationOfConcatenatedWord: number = normalizedTranscription.indexOf(normalizedConcatenatedWord);
+          const bytesLocationOfConcatenatedWord: number = Buffer.byteLength(normalizedTranscription.substring(0, indexLocationOfConcatenatedWord));
+
+          if (indexLocationOfConcatenatedWord === -1) {
+            console.log("Location is1: ", -1);
+            console.log("ConcatenatedWord is: ", concatenatedWord);
+            continue;
+          }
+          if (bytesLocationOfConcatenatedWord === -1) {
+            console.log("Location is2: ", -1);
+            console.log("ConcatenatedWord is: ", concatenatedWord);
+            continue;
+          }
+
           const segment: Segment = {
             start: startTime,
             end: endTime,
@@ -280,13 +321,9 @@ async function insertJsonFilesToDb() {
             indexed: false,
             updatedAt: null,
             isYoutube: processingYoutube ? processingYoutube : false,
-            bytesPosition: bytesPosition,
+            bytesPosition: bytesLocationOfConcatenatedWord,
           };
 
-          // Updating bytesPosition variable
-          bytesPosition = bytesPosition + Buffer.byteLength(concatenatedWord, "utf8");
-
-          // Adding to arr and updating time values
           newSegments.push(segment);
           startTime = word.end;
           concatenatedWord = word.word;
@@ -296,6 +333,7 @@ async function insertJsonFilesToDb() {
 
       // Dealing with leftovers
       if (word && concatenatedWord) {
+        // Dealing with leftovers
         const segment: Segment = {
           start: startTime,
           end: word.end,
@@ -309,7 +347,7 @@ async function insertJsonFilesToDb() {
           indexed: false,
           updatedAt: null,
           isYoutube: processingYoutube ? processingYoutube : false,
-          bytesPosition: bytesPosition,
+          bytesPosition: 999,
         };
         newSegments.push(segment);
       }
@@ -406,7 +444,8 @@ async function callPythonTranscribeAPI(episode: Episode) {
         processingYoutube: false,
       });
     } else if (hasYoutubeSegments === false) {
-      const response = await axios.post("http://localhost:8000/transcribe", { // This API endpoint has to be run using uvicorn app:transcribe in a different terminal on the transcription machine 
+      const response = await axios.post("http://localhost:8000/transcribe", {
+        // This API endpoint has to be run using uvicorn app:transcribe in a different terminal on the transcription machine
         episodeLink: episode.youtubeVideoLink,
         episodeTitle: episode.episodeTitle,
         episodeGuid: episode.episodeGuid,
