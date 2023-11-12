@@ -90,10 +90,10 @@ model Segment {
   createdAt             DateTime?     @default(now())
   updatedAt             DateTime?     @updatedAt
   isYoutube             Boolean?      @default(false)
+  surroundingText       String        @db.VarChar(500)
   episode               Episode       @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   podcast               Podcast       @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
   transcription         Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
-  surroundingText       String        @db.VarChar(500)
 
   @@unique([belongsToEpisodeGuid, start, end, isYoutube])
   @@index([belongsToPodcastGuid], map: "Segment_belongsToPodcastGuid_fkey")
