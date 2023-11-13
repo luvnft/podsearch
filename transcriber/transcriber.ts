@@ -224,7 +224,7 @@ async function insertJsonFilesToDb() {
           where: {
             episodeGuid: belongsToEpisodeGuid,
           },
-          // It's not necessary to set indexed on episodes due to them being synced on every run to meilisearch. We set indexed to false to trigger the meilisearch indexer to know what to sync.
+          // It's not necessary to set indexed on episodes due to them being synced on every run to meilisearch. We set indexed to false to trigger the meilisearch indexer to know what to sync in the case of segments and transcriptions
         });
       }
 
@@ -355,8 +355,8 @@ async function insertJsonFilesToDb() {
       });
 
       // Rename the file after it has been inserted into the database successfully
-      // const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
-      // fs.renameSync(filename, newFilename);
+      const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
+      fs.renameSync(filename, newFilename);
     }
   } catch (e) {
     console.log("Error: ", e);

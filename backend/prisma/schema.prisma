@@ -9,27 +9,25 @@ datasource db {
 }
 
 model Episode {
-  id                   String         @id @default(uuid())
-  episodeTitle         String         @db.VarChar(500)
-  episodeLinkToEpisode String         @db.VarChar(500)
-  episodeSummary       String         @db.Text
-  episodeEnclosure     String         @db.VarChar(500)
-  episodeLanguage      String         @db.VarChar(500)
-  podcastGuid          String         @db.VarChar(500)
-  episodeGuid          String         @unique @db.VarChar(500)
+  id                   String          @id @default(uuid())
+  episodeTitle         String          @db.VarChar(500)
+  episodeLinkToEpisode String          @db.VarChar(500)
+  episodeSummary       String          @db.Text
+  episodeEnclosure     String          @db.VarChar(500)
+  episodeLanguage      String          @db.VarChar(500)
+  podcastGuid          String          @db.VarChar(500)
+  episodeGuid          String          @unique @db.VarChar(500)
   episodeDuration      Int
   youtubeVideoLink     String?
-  indexed              Boolean?       @default(false)
-  createdAt            DateTime?      @default(now())
-  updatedAt            DateTime?      @updatedAt
-  errorCount           Int?           @default(0)
-  audioProcessed       Boolean        @default(false)
-  youtubeProcessed     Boolean        @default(false)
-  podcast              Podcast        @relation("Podcast_belongsToPodcast", fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
+  indexed              Boolean?        @default(false)
+  createdAt            DateTime?       @default(now())
+  updatedAt            DateTime?       @updatedAt
+  errorCount           Int?            @default(0)
+  audioProcessed       Boolean         @default(false)
+  youtubeProcessed     Boolean         @default(false)
+  podcast              Podcast         @relation(fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   segments             Segment[]
-  transcription        Transcription? @relation("Episode_belongsToEpisodeGuid")
-
-  @@index([podcastGuid], map: "Episode_podcastGuid_fkey")
+  transcription        Transcription[]
 }
 
 model Podcast {
@@ -72,9 +70,9 @@ model Podcast {
   createdAt               DateTime?       @default(now())
   updatedAt               DateTime?       @updatedAt
   indexed                 Boolean?        @default(false)
-  episode                 Episode[]       @relation("Podcast_belongsToPodcast")
-  segment                 Segment[]       @relation("Podcast_belongsToPodcastGuid")
-  transcription           Transcription[] @relation("Podcast_belongsToPodcastGuid")
+  episode                 Episode[]
+  segment                 Segment[]
+  transcription           Transcription[]
 }
 
 model Segment {
@@ -104,15 +102,16 @@ model Transcription {
   id                   String    @id @default(uuid())
   language             String    @db.VarChar(500)
   belongsToPodcastGuid String    @db.VarChar(500)
-  belongsToEpisodeGuid String    @unique @db.VarChar(500)
+  belongsToEpisodeGuid String    @db.VarChar(500)
   transcription        String    @db.MediumText
   indexed              Boolean?  @default(false)
   createdAt            DateTime? @default(now())
   updatedAt            DateTime? @updatedAt
   isYoutube            Boolean?  @default(false)
   segments             Segment[] @relation("Transcription_belongsToTranscriptId")
-  episode              Episode   @relation("Episode_belongsToEpisodeGuid", fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
+  episode              Episode   @relation("Episode_belongsToEpisodeGuid", fields: ["episodeGuidYoutubeId"], references: [episodeGuid, youtubeProcessed], onDelete: Cascade)
   podcast              Podcast   @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
 
+  @@unique([belongsToEpisodeGuid, isYoutube], name: "episodeGuidYoutubeId", map: "episodeGuidYoutubeId")
   @@index([belongsToPodcastGuid], map: "Transcription_belongsToPodcastGuid_fkey")
 }
