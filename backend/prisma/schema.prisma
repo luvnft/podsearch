@@ -72,7 +72,7 @@ model Podcast {
   indexed                 Boolean?        @default(false)
   episode                 Episode[]
   segment                 Segment[]
-  transcription           Transcription[]
+  Transcription           Transcription[]
 }
 
 model Segment {
@@ -90,12 +90,10 @@ model Segment {
   isYoutube             Boolean?      @default(false)
   surroundingText       String        @db.VarChar(500)
   episode               Episode       @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
-  podcast               Podcast       @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
-  transcription         Transcription @relation("Transcription_belongsToTranscriptId", fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
+  podcast               Podcast       @relation(fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
+  transcription         Transcription @relation(fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
 
   @@unique([belongsToEpisodeGuid, start, end, isYoutube])
-  @@index([belongsToPodcastGuid], map: "Segment_belongsToPodcastGuid_fkey")
-  @@index([belongsToTranscriptId], map: "Segment_belongsToTranscriptId_fkey")
 }
 
 model Transcription {
@@ -108,10 +106,9 @@ model Transcription {
   createdAt            DateTime? @default(now())
   updatedAt            DateTime? @updatedAt
   isYoutube            Boolean?  @default(false)
-  segments             Segment[] @relation("Transcription_belongsToTranscriptId")
-  episode              Episode   @relation("Episode_belongsToEpisodeGuid", fields: ["episodeGuidYoutubeId"], references: [episodeGuid, youtubeProcessed], onDelete: Cascade)
-  podcast              Podcast   @relation("Podcast_belongsToPodcastGuid", fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
+  segments             Segment[]
+  episode              Episode   @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
+  Podcast              Podcast?  @relation(fields: [belongsToPodcastGuid], references: [podcastGuid])
 
-  @@unique([belongsToEpisodeGuid, isYoutube], name: "episodeGuidYoutubeId", map: "episodeGuidYoutubeId")
-  @@index([belongsToPodcastGuid], map: "Transcription_belongsToPodcastGuid_fkey")
+  @@unique([belongsToEpisodeGuid, isYoutube])
 }
