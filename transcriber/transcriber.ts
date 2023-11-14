@@ -233,6 +233,7 @@ async function insertJsonFilesToDb() {
       let transcriptionData: Transcription | null = null;
       const normalizedTranscription: string = normalizeString(transcription).trim();
       try {
+        console.log("First we try to find it!");
         transcriptionData = await prisma.transcription.create({
           data: {
             belongsToPodcastGuid,
@@ -244,7 +245,9 @@ async function insertJsonFilesToDb() {
         });
       } catch (e) {
         console.log("erra", e);
-        transcriptionData = await prisma.transcription.findFirst({
+        console.log("belongsToEpisodeGuid: ", belongsToEpisodeGuid);
+        console.log("ProcessingYoutube: ", processingYoutube);
+        transcriptionData = await prisma.transcription.findUnique({
           where: {
             belongsToEpisodeGuid: belongsToEpisodeGuid,
             isYoutube: processingYoutube ? processingYoutube : false,
@@ -354,9 +357,9 @@ async function insertJsonFilesToDb() {
         });
       });
 
-      // Rename the file after it has been inserted into the database successfully
-      const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
-      fs.renameSync(filename, newFilename);
+      // // Rename the file after it has been inserted into the database successfully
+      // const newFilename = path.join(path.dirname(filename), new Date().getTime() + "_deleted");
+      // fs.renameSync(filename, newFilename);
     }
   } catch (e) {
     console.log("Error: ", e);

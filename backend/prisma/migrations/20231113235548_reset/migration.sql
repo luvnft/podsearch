@@ -18,7 +18,6 @@ CREATE TABLE `Episode` (
     `youtubeProcessed` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `Episode_episodeGuid_key`(`episodeGuid`),
-    INDEX `Episode_podcastGuid_fkey`(`podcastGuid`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -62,7 +61,6 @@ CREATE TABLE `Podcast` (
     `updateFrequency` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
-    `youtubeChannel` VARCHAR(191) NULL DEFAULT '',
     `indexed` BOOLEAN NULL DEFAULT false,
 
     UNIQUE INDEX `Podcast_podcastGuid_key`(`podcastGuid`),
@@ -83,9 +81,8 @@ CREATE TABLE `Segment` (
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `isYoutube` BOOLEAN NULL DEFAULT false,
+    `surroundingText` VARCHAR(500) NOT NULL,
 
-    INDEX `Segment_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
-    INDEX `Segment_belongsToTranscriptId_fkey`(`belongsToTranscriptId`),
     UNIQUE INDEX `Segment_belongsToEpisodeGuid_start_end_isYoutube_key`(`belongsToEpisodeGuid`, `start`, `end`, `isYoutube`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -100,9 +97,9 @@ CREATE TABLE `Transcription` (
     `indexed` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
+    `isYoutube` BOOLEAN NOT NULL DEFAULT false,
 
-    UNIQUE INDEX `Transcription_belongsToEpisodeGuid_key`(`belongsToEpisodeGuid`),
-    INDEX `Transcription_belongsToPodcastGuid_fkey`(`belongsToPodcastGuid`),
+    UNIQUE INDEX `Transcription_belongsToEpisodeGuid_isYoutube_key`(`belongsToEpisodeGuid`, `isYoutube`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -122,4 +119,4 @@ ALTER TABLE `Segment` ADD CONSTRAINT `Segment_belongsToTranscriptId_fkey` FOREIG
 ALTER TABLE `Transcription` ADD CONSTRAINT `Transcription_belongsToEpisodeGuid_fkey` FOREIGN KEY (`belongsToEpisodeGuid`) REFERENCES `Episode`(`episodeGuid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Transcription` ADD CONSTRAINT `Transcription_belongsToPodcastGuid_fkey` FOREIGN KEY (`belongsToPodcastGuid`) REFERENCES `Podcast`(`podcastGuid`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Transcription` ADD CONSTRAINT `Transcription_belongsToPodcastGuid_fkey` FOREIGN KEY (`belongsToPodcastGuid`) REFERENCES `Podcast`(`podcastGuid`) ON DELETE RESTRICT ON UPDATE CASCADE;

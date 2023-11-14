@@ -18,11 +18,11 @@ model Episode {
   podcastGuid          String          @db.VarChar(500)
   episodeGuid          String          @unique @db.VarChar(500)
   episodeDuration      Int
-  youtubeVideoLink     String?
-  indexed              Boolean?        @default(false)
-  createdAt            DateTime?       @default(now())
-  updatedAt            DateTime?       @updatedAt
-  errorCount           Int?            @default(0)
+  youtubeVideoLink     String
+  indexed              Boolean         @default(false)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  errorCount           Int             @default(0)
   audioProcessed       Boolean         @default(false)
   youtubeProcessed     Boolean         @default(false)
   podcast              Podcast         @relation(fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
@@ -67,9 +67,9 @@ model Podcast {
   newestEnclosureDuration Int
   priority                Int
   updateFrequency         Int
-  createdAt               DateTime?       @default(now())
-  updatedAt               DateTime?       @updatedAt
-  indexed                 Boolean?        @default(false)
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  indexed                 Boolean         @default(false)
   episode                 Episode[]
   segment                 Segment[]
   Transcription           Transcription[]
@@ -84,10 +84,10 @@ model Segment {
   belongsToEpisodeGuid  String        @db.VarChar(500)
   belongsToTranscriptId String        @db.VarChar(500)
   text                  String        @db.VarChar(500)
-  indexed               Boolean?      @default(false)
-  createdAt             DateTime?     @default(now())
-  updatedAt             DateTime?     @updatedAt
-  isYoutube             Boolean?      @default(false)
+  indexed               Boolean       @default(false)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  isYoutube             Boolean       @default(false)
   surroundingText       String        @db.VarChar(500)
   episode               Episode       @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
   podcast               Podcast       @relation(fields: [belongsToPodcastGuid], references: [podcastGuid], onDelete: Cascade)
@@ -102,13 +102,13 @@ model Transcription {
   belongsToPodcastGuid String    @db.VarChar(500)
   belongsToEpisodeGuid String    @db.VarChar(500)
   transcription        String    @db.MediumText
-  indexed              Boolean?  @default(false)
-  createdAt            DateTime? @default(now())
-  updatedAt            DateTime? @updatedAt
-  isYoutube            Boolean?  @default(false)
+  indexed              Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  isYoutube            Boolean   @default(false)
   segments             Segment[]
   episode              Episode   @relation(fields: [belongsToEpisodeGuid], references: [episodeGuid], onDelete: Cascade)
-  Podcast              Podcast?  @relation(fields: [belongsToPodcastGuid], references: [podcastGuid])
+  Podcast              Podcast   @relation(fields: [belongsToPodcastGuid], references: [podcastGuid])
 
   @@unique([belongsToEpisodeGuid, isYoutube])
 }
