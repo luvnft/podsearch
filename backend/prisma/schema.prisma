@@ -18,7 +18,7 @@ model Episode {
   podcastGuid          String          @db.VarChar(500)
   episodeGuid          String          @unique @db.VarChar(500)
   episodeDuration      Int
-  youtubeVideoLink     String
+  youtubeVideoLink     String?
   indexed              Boolean         @default(false)
   createdAt            DateTime?       @default(now())
   updatedAt            DateTime?       @updatedAt
