@@ -28,6 +28,8 @@ model Episode {
   podcast              Podcast         @relation(fields: [podcastGuid], references: [podcastGuid], onDelete: Cascade)
   segments             Segment[]
   transcription        Transcription[]
+
+  @@index([podcastGuid], map: "Episode_podcastGuid_fkey")
 }
 
 model Podcast {
@@ -94,6 +96,8 @@ model Segment {
   transcription         Transcription @relation(fields: [belongsToTranscriptId], references: [id], onDelete: Cascade)
 
   @@unique([belongsToEpisodeGuid, start, end, isYoutube])
+  @@index([belongsToPodcastGuid], map: "Segment_belongsToPodcastGuid_fkey")
+  @@index([belongsToTranscriptId], map: "Segment_belongsToTranscriptId_fkey")
 }
 
 model Transcription {
@@ -111,4 +115,5 @@ model Transcription {
   Podcast              Podcast   @relation(fields: [belongsToPodcastGuid], references: [podcastGuid])
 
   @@unique([belongsToEpisodeGuid, isYoutube])
+  @@index([belongsToPodcastGuid], map: "Transcription_belongsToPodcastGuid_fkey")
 }
