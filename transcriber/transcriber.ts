@@ -249,8 +249,10 @@ async function insertJsonFilesToDb() {
         console.log("ProcessingYoutube: ", processingYoutube);
         transcriptionData = await prisma.transcription.findUnique({
           where: {
-            belongsToEpisodeGuid: belongsToEpisodeGuid,
-            isYoutube: processingYoutube ? processingYoutube : false,
+            belongsToEpisodeGuid_isYoutube: {
+              belongsToEpisodeGuid: belongsToEpisodeGuid,
+              isYoutube: processingYoutube ? processingYoutube : false,
+            },
           },
         });
       }
