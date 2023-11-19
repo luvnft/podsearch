@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { ClientSearchResponse } from "../types/ClientSearchResponse";
-import { SearchQuery } from "../types/SearchQuery";
+import type { ClientSearchResponse } from "../types/ClientSearchResponse";
+import type { SearchQuery } from "../types/SearchQuery";
 const utils: Utils = useUtils();
 
 export const useSearchStore = defineStore("searchStore", () => {

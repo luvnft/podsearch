@@ -24,6 +24,7 @@ export interface ClientSearchResponseHit {
   subHits: ClientSegmentHit[];
   youtubeSubHits: ClientSegmentHit[];
   isYoutube: boolean;
+  similarity?: number;
 }
 
 export interface ClientSegmentHit {

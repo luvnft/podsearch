@@ -22,4 +22,5 @@ export interface SegmentHit {
   similarity: number;
   createdAt: Date;
   updatedAt: Date;
+  isYoutube: boolean;
 }
