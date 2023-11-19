@@ -1,5 +1,5 @@
 // useToast.ts
-import { Toast } from "types/Toast";
+import type { Toast } from "types/Toast";
 import { ref, provide } from "vue";
 
 const toasts = ref([] as Toast[]);

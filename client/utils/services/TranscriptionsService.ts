@@ -1,6 +1,6 @@
-import { ClientSearchResponse } from "../../types/ClientSearchResponse";
+import type { ClientSearchResponse } from "../../types/ClientSearchResponse";
 import ApiService from "./ApiService";
-import { SearchQuery } from "../../types/SearchQuery";
+import type { SearchQuery } from "../../types/SearchQuery";
 
 export default class TranscriptionService extends ApiService {
   public constructor() {

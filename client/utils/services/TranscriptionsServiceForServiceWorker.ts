@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { SearchQuery } from "../../types/SearchQuery";
-import { ClientSearchResponse } from "../../types/ClientSearchResponse";
+import axios, { type AxiosResponse } from "axios";
+import type { SearchQuery } from "../../types/SearchQuery";
+import type { ClientSearchResponse } from "../../types/ClientSearchResponse";
 
 export default class TranscriptionsServiceForServiceWorker {
     protected readonly API_BASE_URL = "https://api.poddley.com";

@@ -1,4 +1,4 @@
-import { ClientSearchResponseHit, ClientSegmentHit, ClientSearchResponse } from "../types/ClientSearchResponse";
+import type { ClientSearchResponseHit, ClientSegmentHit, ClientSearchResponse } from "../types/ClientSearchResponse";
 
 export type Utils = ReturnType<typeof useUtils>;
 

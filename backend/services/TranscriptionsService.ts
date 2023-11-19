@@ -13,7 +13,7 @@ import { convertSegmentHitToClientSegmentHit } from "../utils/helpers";
 import { TranscriptionResponse, TranscriptionResponseHit } from "types/TranscriptionResponse";
 import { MultiSearchQueryType } from "types/MultiSearchQueryType";
 
-const SEGMENTS_TO_SEARCH: number = 25;
+const SEGMENTS_TO_SEARCH: number = 16;
 
 class TranscriptionsService {
   public transcriptionsIndex: Index;
@@ -52,8 +52,6 @@ class TranscriptionsService {
         sort: ["start:asc"],
       };
     }
-
-    
 
     // Initial search
     let response: ClientSearchResponse = await this.segmentSearch(mainQuery, searchQuery?.getFullTranscript || false);
@@ -102,6 +100,7 @@ class TranscriptionsService {
       }
 
       // We are setting the first element to be container of last the hits since
+      const subHitsArr = initialSearchResponse.hits.flat();
       searchResponse.hits[0] = {
         id: segmentHit.id,
         podcastTitle: segmentHitPodcast.title,
@@ -119,8 +118,10 @@ class TranscriptionsService {
         url: segmentHitPodcast.url,
         link: segmentHitPodcast.link,
         youtubeVideoLink: segmentHitEpisode.youtubeVideoLink || "",
-        subHits: initialSearchResponse.hits.flat(),
+        subHits: subHitsArr.filter((segmentHit: SegmentHit) => !segmentHit.isYoutube),
+        youtubeSubHits: subHitsArr.filter((segmentHit: SegmentHit) => segmentHit.isYoutube),
         belongsToTranscriptId: segmentHit.belongsToTranscriptId,
+        isYoutube: segmentHit.isYoutube,
       };
 
       // Removing last the other hits as they were initilasty part of the .hits of the initialSearchResponse, but since they last share a common episodeGuid ID then I shoved them into the subHits.
@@ -153,7 +154,7 @@ class TranscriptionsService {
         multiSearchParams.push({
           query: {
             q: "",
-            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != '${segmentHit.id}'`,
+            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
             limit: 50,
             sort: ["start:asc"],
             matchingStrategy: "last",
@@ -163,8 +164,6 @@ class TranscriptionsService {
           indexUid: "segments",
         });
       });
-
-      
 
       // Ids and filters
       const podcastIds: string[] = [...new Set(initialSearchResponse.hits.map((hit: SegmentHit) => `'${hit.belongsToPodcastGuid}'`))];
@@ -231,7 +230,6 @@ class TranscriptionsService {
       for (let i = 0; i < lastResponses.length; i++) {
         // Result var
         const { result, indexUid } = lastResponses[i];
-        
 
         // Work
         if (indexUid === "podcasts" && !finishedWithPodcasts) {
@@ -243,9 +241,6 @@ class TranscriptionsService {
         }
         if (finishedWithEpisodes && finishedWithPodcasts) break;
       }
-
-      
-      
 
       // If both are truthy we go further
       if (podcastsMap && episodesMap) {
@@ -269,6 +264,7 @@ class TranscriptionsService {
             console.log(" The episodeGuid is:  ", result.hits[0].belongsToEpisodeGuid);
           }
           // We are setting the first element to be container of last the hits since
+          const segmentHitsArr = segmentPostHits.flat();
           const clientSearchResponseHit: ClientSearchResponseHit | any = {
             id: segmentId,
             podcastTitle: segmentHitPodcast?.title,
@@ -286,15 +282,8 @@ class TranscriptionsService {
             url: segmentHitPodcast?.url,
             link: segmentHitPodcast?.link,
             youtubeVideoLink: segmentHitEpisode?.youtubeVideoLink || "",
-            subHits: [
-              {
-                text: segmentHit._formatted.text,
-                start: segmentHit.start,
-                end: segmentHit.end,
-                id: segmentId,
-              },
-              ...convertSegmentHitToClientSegmentHit(segmentPostHits.flat()),
-            ],
+            subHits: [...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => !segmentHit.isYoutube))],
+            youtubeSubHits: [...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => segmentHit.isYoutube))],
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
@@ -302,8 +291,6 @@ class TranscriptionsService {
           if (!someValueIsUndefined) searchResponse.hits.push(clientSearchResponseHit);
           else continue;
         }
-
-        
 
         // Before returning the response we need to sort the hits using some jaccard string similarity checks.
         for (let i = 0; i < searchResponse.hits.length; i++) {
