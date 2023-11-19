@@ -1,16 +1,15 @@
 <template>
     <div ref="listRef" class="relative">
-        <button v-for="(subHit, index) in (playingYoutube ? props.searchEntry.youtubeSubHits : props.searchEntry.subHits)"
-            @click="goToAudioTime(subHit.start)"
+        <button v-for="(subHit, index) in autoSubHits" @click="goToAudioTime(subHit.start)"
             class="text-start whitespace-normal m-0 cursor w-full h-6 italic pl-1 pr-0 rounded-md overflow-hidden"
-            :class="`${(((subHit.start - 0.5 < props.currentPlayingTime) && (subHit.end - 0.5 > props.currentPlayingTime))) ? 'highlight' : props.currentPlayingTime <= props.searchEntry.subHits[0].end ? 'toggleDeepStyling' : ''}`"
+            :class="`${(((subHit.start < props.currentPlayingTime) && (subHit.end > props.currentPlayingTime))) ? 'highlight' : props.currentPlayingTime <= props.searchEntry.subHits[0].end ? 'toggleDeepStyling' : ''}`"
             v-html="convertSegmentHitToFormattedText(subHit)">
         </button>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ClientSearchResponseHit } from '../../types/ClientSearchResponse';
+import { ClientSearchResponseHit, ClientSegmentHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
 const listRef: Ref<HTMLElement | null> = ref(null);
 
@@ -28,6 +27,13 @@ const props = defineProps<{
 const goToAudioTime = (moveToTime: number) => {
     emit("goToAudioTime", moveToTime)
 }
+
+const autoSubHits: Ref<ClientSegmentHit[]> = ref([]);
+
+watchEffect(() => {
+    if (props.playingYoutube.value) autoSubHits.value = props.searchEntry.youtubeSubHits;
+    else autoSubHits.value = props.searchEntry.subHits;
+});
 
 watch(
     () => props.subtitlesActivated,
@@ -52,8 +58,7 @@ function setupWatcher() {
                 Array.from(listRef.value.children).forEach((item: any, index) => {
                     if (props.searchEntry.subHits) {
                         const subHit = props.searchEntry.subHits[index];
-                        // 0.3 is just based on personal testing
-                        if ((subHit.start - 0.5) <= props.currentPlayingTime && (subHit.end - 0.5) >= props.currentPlayingTime) {
+                        if ((subHit.start) <= props.currentPlayingTime && (subHit.end) >= props.currentPlayingTime) {
                             scrollIntoView(item, {
                                 behavior: 'smooth',
                                 boundary: item.parentNode.parentNode

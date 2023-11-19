@@ -10,7 +10,7 @@
                         :start="props.searchEntry.subHits[0].start" width="100%" height="auto"
                         :videoTitle="props.searchEntry.episodeTitle" :autoplay="false" :allowFullscreen="true"
                         :pictureInPicture="true" :noCookie="true" posterQuality="hq720" :searchEntry="props.searchEntry"
-                        @timeupdate="handleYoutubeTimeChange" />
+                        @timeupdate="handleYoutubeTimeChange" :ref="props.searchEntry.id" />
                 </div>
                 <div v-if="!props.searchEntry.youtubeVideoLink && props.searchEntry.podcastImage"
                     class="aspect-video rounded-lg bg-cover bg-top bg-no-repeat"
@@ -99,11 +99,7 @@ const playingYoutube: Ref<boolean> = ref(false);
 const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 const subtitlesActivated: Ref<boolean> = ref(true);
 const loadingFullTranscript: Ref<boolean> = ref(false);
-const handlePlaying = () => {
-    playing.value = !playing.value;
-};
 const currentPlayingTime: Ref<number> = ref(props.searchEntry.subHits[0].start);
-
 const unmodifiableStartValue: number = currentPlayingTime.value;
 
 const goToAudioTime = (moveToTime: number) => {
@@ -193,9 +189,16 @@ const handleTimeChange = async (event: Event) => {
 };
 
 const handleYoutubeClick = (event: any) => {
-    // Set searchResults to be the youtubeHits
-    playingYoutube.value = true;
+    playingYoutube.value = !playingYoutube.value;
+    playing.value = false;
 }
+
+const handlePlaying = () => {
+    playing.value = !playing.value;
+    playingYoutube.value = false;
+    const youtubePlayer: HTMLVideoElement | null = document.querySelector(props.searchEntry.id);
+    if (youtubePlayer) youtubePlayer.pause();
+};
 
 </script>
 
