@@ -1,6 +1,7 @@
 <template>
     <div ref="listRef" class="relative">
-        <button v-for="(subHit, index) in props.searchEntry.subHits" @click="goToAudioTime(subHit.start)"
+        <button v-for="(subHit, index) in (playingYoutube ? props.searchEntry.youtubeSubHits : props.searchEntry.subHits)"
+            @click="goToAudioTime(subHit.start)"
             class="text-start whitespace-normal m-0 cursor w-full h-6 italic pl-1 pr-0 rounded-md overflow-hidden"
             :class="`${(((subHit.start - 0.5 < props.currentPlayingTime) && (subHit.end - 0.5 > props.currentPlayingTime))) ? 'highlight' : props.currentPlayingTime <= props.searchEntry.subHits[0].end ? 'toggleDeepStyling' : ''}`"
             v-html="convertSegmentHitToFormattedText(subHit)">
@@ -21,6 +22,7 @@ const props = defineProps<{
     searchEntry: ClientSearchResponseHit;
     currentPlayingTime: number;
     subtitlesActivated: Ref<boolean>;
+    playingYoutube: Ref<boolean>;
 }>();
 
 const goToAudioTime = (moveToTime: number) => {

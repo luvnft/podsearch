@@ -56,7 +56,8 @@
                             <div v-if="!loadingFullTranscript"
                                 :class="`${subtitlesActivated ? '' : ''} dark:scrollbar-track-gray-800 text-gray-800 ml-0 mr-0 flex-grow w-full overflow-y-auto overflow-x-hidden pb-0 text-sm sm:text-base scrollbar-track-gray-100`">
                                 <SearchEntryHit @goToAudioTime="goToAudioTime" :searchEntry="props.searchEntry"
-                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated" />
+                                    :currentPlayingTime="currentPlayingTime" :subtitlesActivated="subtitlesActivated"
+                                    :playingYoutube="playingYoutube" />
                             </div>
                             <div class="w-full flex h-44 items-center justify-center" v-if="loadingFullTranscript">
                                 <IconsSpinnerIcon />
@@ -94,11 +95,11 @@ const props = defineProps<{
 }>();
 const { isFirefox, isSafari, isIos, } = useDevice();
 const playing: Ref<boolean> = ref(false);
+const playingYoutube: Ref<boolean> = ref(false);
 const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 const subtitlesActivated: Ref<boolean> = ref(true);
 const loadingFullTranscript: Ref<boolean> = ref(false);
 const handlePlaying = () => {
-
     playing.value = !playing.value;
 };
 const currentPlayingTime: Ref<number> = ref(props.searchEntry.subHits[0].start);
@@ -112,8 +113,10 @@ const goToAudioTime = (moveToTime: number) => {
     }
 }
 
+console.log(searchResults.value)
 const handleYoutubeTimeChange = async (currentTime: number) => {
     try {
+        console.log("baby:", currentTime)
         const currentSeconds: number = parseFloat(currentTime.toFixed(1));
 
         // Assuming currentPlayingTime and searchResults are reactive references
@@ -131,7 +134,7 @@ const handleYoutubeTimeChange = async (currentTime: number) => {
 
                 // Get entire transcript for that particular episode...
                 const searchResponse: ClientSearchResponse = await transcriptionService.search({
-                    filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
+                    filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid} AND isYoutube=1'`,
                     getFullTranscript: true,
                     sort: ["start:asc"],
                     searchString: ""
@@ -151,6 +154,7 @@ const handleYoutubeTimeChange = async (currentTime: number) => {
 
 const handleTimeChange = async (event: Event) => {
     try {
+        console.log("nocco")
         // Assuming event is of type Event, we need to cast it to any 
         // to access the non-standard properties like target.currentTime
         const currentSeconds: number = parseFloat((event as any).target.currentTime.toFixed(1));
@@ -170,7 +174,7 @@ const handleTimeChange = async (event: Event) => {
 
                 // Get entire transcript for that particular episode...
                 const searchResponse: ClientSearchResponse = await transcriptionService.search({
-                    filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}'`,
+                    filter: `belongsToEpisodeGuid='${props.searchEntry.episodeGuid}' AND isYoutube=0`,
                     getFullTranscript: true,
                     sort: ["start:asc"],
                     searchString: ""
@@ -189,7 +193,8 @@ const handleTimeChange = async (event: Event) => {
 };
 
 const handleYoutubeClick = (event: any) => {
-
+    // Set searchResults to be the youtubeHits
+    playingYoutube.value = true;
 }
 
 </script>
@@ -282,7 +287,7 @@ const handleYoutubeClick = (event: any) => {
 
     100% {
         background-position: 100% 0%;
-        
+
     }
 
 }
