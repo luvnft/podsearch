@@ -19,6 +19,7 @@ async function main() {
     pagination: {
       maxTotalHits: 5000,
     },
+    stopWords: [],
   });
   transcriptionsIndex.updateSettings({
     searchableAttributes: ["transcription"],
