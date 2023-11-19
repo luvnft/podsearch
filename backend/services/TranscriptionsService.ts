@@ -154,7 +154,7 @@ class TranscriptionsService {
         multiSearchParams.push({
           query: {
             q: "",
-            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}'`,
+            filter: `start ${segmentHit.start} TO ${segmentHit.start + 300} AND belongsToEpisodeGuid = '${segmentHit.belongsToEpisodeGuid}' AND id != ${segmentHit.id}`,
             limit: 50,
             sort: ["start:asc"],
             matchingStrategy: "last",
@@ -264,6 +264,7 @@ class TranscriptionsService {
             console.log(" The episodeGuid is:  ", result.hits[0].belongsToEpisodeGuid);
           }
           // We are setting the first element to be container of last the hits since
+          console.log("SegmentHit is : ", segmentHit);
           const segmentHitsArr = segmentPostHits.flat();
           const clientSearchResponseHit: ClientSearchResponseHit | any = {
             id: segmentId,
@@ -282,8 +283,24 @@ class TranscriptionsService {
             url: segmentHitPodcast?.url,
             link: segmentHitPodcast?.link,
             youtubeVideoLink: segmentHitEpisode?.youtubeVideoLink || "",
-            subHits: [...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => !segmentHit.isYoutube))],
-            youtubeSubHits: [...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => segmentHit.isYoutube))],
+            subHits: [
+              {
+                text: segmentHit._formatted.text,
+                id: segmentHit.id,
+                start: segmentHit.start,
+                end: segmentHit.end,
+              },
+              ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => !segmentHit.isYoutube)),
+            ],
+            youtubeSubHits: [
+              {
+                text: segmentHit._formatted.text,
+                id: segmentHit.id,
+                start: segmentHit.start,
+                end: segmentHit.end,
+              },
+              ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => segmentHit.isYoutube)),
+            ],
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
