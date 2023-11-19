@@ -26,6 +26,7 @@ const initialSearchQuery: SearchQuery = {
     searchString: "'The following is a conversation'",
     offset: 0,
     matchingStrategy: "all",
+    filter: "isYoutube=0"
 };
 const router: Router = useRouter();
 
