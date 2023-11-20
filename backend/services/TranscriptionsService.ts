@@ -35,12 +35,13 @@ class TranscriptionsService {
   //The search function (main one main use)
   public async search(searchQuery: SearchQuery): Promise<ClientSearchResponse> {
     // MainQuery
+    console.log("Received searchQuery: ", searchQuery);
     let mainQuery: SearchParams = {
       matchingStrategy: searchQuery?.matchingStrategy || "all",
       q: searchQuery.searchString,
       filter: searchQuery.filter,
       limit: SEGMENTS_TO_SEARCH,
-      offset: searchQuery.offset || 0,
+      offset: searchQuery.offset
     };
 
     // Modify mainQuery if we want a fullTranscript
@@ -147,6 +148,7 @@ class TranscriptionsService {
         matchingStrategy: searchParams.matchingStrategy || "last",
         limit: SEGMENTS_TO_SEARCH,
         q: searchParams.q,
+        offset: searchParams.offset,
       });
 
       // Create the queries for the multiSearch route on meilisearch
@@ -247,7 +249,17 @@ class TranscriptionsService {
         // We take last the multisearchResponses segments and construct a clientResponseObject
         for (let i = 0; i < lastResponses.length; i++) {
           // Result var
-          const { result, indexUid, segmentId, segmentHit } = lastResponses[i];
+          const {
+            result,
+            indexUid,
+            segmentId,
+            segmentHit,
+          }: {
+            result: any;
+            indexUid: string;
+            segmentId: string;
+            segmentHit: SegmentHit;
+          } = lastResponses[i];
 
           // Skip if wrong index we already them further up
           if (indexUid === "podcasts" || indexUid === "episodes") {
@@ -266,6 +278,7 @@ class TranscriptionsService {
           // We are setting the first element to be container of last the hits since
           console.log("SegmentHit is : ", segmentHit);
           const segmentHitsArr = segmentPostHits.flat();
+
           const clientSearchResponseHit: ClientSearchResponseHit | any = {
             id: segmentId,
             podcastTitle: segmentHitPodcast?.title,
@@ -289,6 +302,7 @@ class TranscriptionsService {
                 id: segmentHit.id,
                 start: segmentHit.start,
                 end: segmentHit.end,
+                isYoutube: segmentHit.isYoutube,
               },
               ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => !segmentHit.isYoutube)),
             ],
@@ -298,6 +312,7 @@ class TranscriptionsService {
                 id: segmentHit.id,
                 start: segmentHit.start,
                 end: segmentHit.end,
+                isYoutube: segmentHit.isYoutube,
               },
               ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => segmentHit.isYoutube)),
             ],
