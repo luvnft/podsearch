@@ -41,7 +41,7 @@ class TranscriptionsService {
       q: searchQuery.searchString,
       filter: searchQuery.filter,
       limit: SEGMENTS_TO_SEARCH,
-      offset: searchQuery.offset
+      offset: searchQuery.offset,
     };
 
     // Modify mainQuery if we want a fullTranscript
@@ -279,6 +279,32 @@ class TranscriptionsService {
           console.log("SegmentHit is : ", segmentHit);
           const segmentHitsArr = segmentPostHits.flat();
 
+          const subHitsCondition = segmentHit._formatted.text === segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube)[0].text;
+          const subHitsArray = subHitsCondition
+            ? []
+            : [
+                {
+                  text: segmentHit._formatted.text,
+                  id: segmentHit.id,
+                  start: segmentHit.start,
+                  end: segmentHit.end,
+                  isYoutube: segmentHit.isYoutube,
+                },
+              ];
+
+          const youtubeSubHitsCondition = segmentHit._formatted.text === segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube)[0].text;
+          const youtubeSubHitsArray = youtubeSubHitsCondition
+            ? []
+            : [
+                {
+                  text: segmentHit._formatted.text,
+                  id: segmentHit.id,
+                  start: segmentHit.start,
+                  end: segmentHit.end,
+                  isYoutube: segmentHit.isYoutube,
+                },
+              ];
+
           const clientSearchResponseHit: ClientSearchResponseHit | any = {
             id: segmentId,
             podcastTitle: segmentHitPodcast?.title,
@@ -296,26 +322,8 @@ class TranscriptionsService {
             url: segmentHitPodcast?.url,
             link: segmentHitPodcast?.link,
             youtubeVideoLink: segmentHitEpisode?.youtubeVideoLink || "",
-            subHits: [
-              {
-                text: segmentHit._formatted.text,
-                id: segmentHit.id,
-                start: segmentHit.start,
-                end: segmentHit.end,
-                isYoutube: segmentHit.isYoutube,
-              },
-              ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => !segmentHit.isYoutube)),
-            ],
-            youtubeSubHits: [
-              {
-                text: segmentHit._formatted.text,
-                id: segmentHit.id,
-                start: segmentHit.start,
-                end: segmentHit.end,
-                isYoutube: segmentHit.isYoutube,
-              },
-              ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit: SegmentHit) => segmentHit.isYoutube)),
-            ],
+            subHits: [...subHitsArray, ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube))],
+            youtubeSubHits: [...youtubeSubHitsArray, ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube))],
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 

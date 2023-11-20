@@ -10,6 +10,13 @@ let isRunning: boolean = false;
 const envPath = path.resolve(__dirname, "../.env");
 config({ path: envPath });
 
+function extractYoutubeURL(inputString: string) {
+  const regex = /https:\/\/www\.youtube\.com\/watch\?v=[^&]+/;
+  const match = inputString.match(regex);
+
+  return match ? match[0] : null; // Return the matched URL or null if not found
+}
+
 async function makeSearchInYoutubePage(page) {
   return await page.$eval("ytd-item-section-renderer a", (node: any) => {
     const videoLink = node.getAttribute("href");
@@ -89,9 +96,10 @@ async function main() {
     include: {
       podcast: true,
     },
-    where: {
-      youtubeVideoLink: null,
-    },
+    // where: {
+    //   youtubeVideoLink: null,
+    //   youtubeProcessed: false,
+    // },
   });
 
   console.log("Episodes: ", episodes.length);
@@ -108,13 +116,13 @@ async function main() {
 
       if (youtubeVideoLink) {
         if (youtubeVideoLink !== episode.youtubeVideoLink) {
-          console.log("🅾️No match therefore updating...: ", youtubeVideoLink, " and youtubeVideoLink: ", episode.youtubeVideoLink);
+          console.log("🅾️No match: ", youtubeVideoLink, " and youtubeVideoLink: ", episode.youtubeVideoLink);
           try {
             console.log("Updating...");
-            await prismaConnection.episode.update({
+            await prismaConnection.episode.updateMany({
               data: {
                 youtubeVideoLink: youtubeVideoLink ? youtubeVideoLink : "",
-                indexed: false, // Not really necessary due to always indexing episodes and podcasts, but good practise nonetheless
+                indexed: false,
               },
               where: {
                 episodeGuid: episode.episodeGuid,
