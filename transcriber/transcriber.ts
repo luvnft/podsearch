@@ -233,7 +233,7 @@ async function insertJsonFilesToDb() {
       let transcriptionData: Transcription | null = null;
       const normalizedTranscription: string = normalizeString(transcription).trim();
       try {
-        console.log("First we try to find it!");
+        console.log("Creating the transcription");
         transcriptionData = await prisma.transcription.create({
           data: {
             belongsToPodcastGuid,
