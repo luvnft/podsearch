@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ClientSearchResponseHit, ClientSegmentHit } from '../../types/ClientSearchResponse';
+import type { ClientSearchResponseHit, ClientSegmentHit } from '../../types/ClientSearchResponse';
 import scrollIntoView from 'scroll-into-view-if-needed';
 const listRef: Ref<HTMLElement | null> = ref(null);
 

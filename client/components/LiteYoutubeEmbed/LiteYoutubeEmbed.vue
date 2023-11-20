@@ -48,8 +48,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ClientSearchResponseHit } from "types/ClientSearchResponse";
-import { PropType } from "vue";
+import type { ClientSearchResponseHit } from "types/ClientSearchResponse";
+import type { PropType } from "vue";
 type PosterQuality = "default" | "maxresdefault" | "sddefault" | "mqdefault" | "hqdefault" | "hq720";
 const props = defineProps({
     videoId: {

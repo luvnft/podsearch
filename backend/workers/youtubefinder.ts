@@ -28,7 +28,7 @@ async function makeSearchInYoutubePage(page) {
 
 async function searchYouTube(episodes: (Episode & { podcast: Podcast })[]): Promise<(string | null)[]> {
   const noCookiesExtension: string = path.join(process.cwd(), "./puppeteerExtensions/IDontCareAboutCookies/");
-  const browser = await puppeteer.launch({ headless: false, args: ["--no-sandbox", `--disable-extensions-except=${noCookiesExtension}`, `--load-extension=${noCookiesExtension}`] });
+  const browser = await puppeteer.launch({ headless: "new", args: ["--no-sandbox", `--disable-extensions-except=${noCookiesExtension}`, `--load-extension=${noCookiesExtension}`] });
   const page = await browser.newPage();
   const youtubeUrls: (string | null)[] = [];
   let index: number = 0;
@@ -57,11 +57,10 @@ async function searchYouTube(episodes: (Episode & { podcast: Podcast })[]): Prom
       });
     }
 
-    await page.waitForSelector("ytd-item-section-renderer a", {
-      timeout: 30000,
-    });
-
     try {
+      await page.waitForSelector("ytd-item-section-renderer a", {
+        timeout: 10000,
+      });
       const youtubeUrl = await makeSearchInYoutubePage(page);
       youtubeUrls.push(youtubeUrl);
     } catch (e) {
@@ -77,7 +76,7 @@ async function searchYouTube(episodes: (Episode & { podcast: Podcast })[]): Prom
       });
 
       await page.waitForSelector("ytd-item-section-renderer a", {
-        timeout: 30000,
+        timeout: 10000,
       });
 
       const youtubeUrl = await makeSearchInYoutubePage(page);
@@ -108,7 +107,7 @@ async function main() {
   if (episodes.length) {
     // Gather youtubeLinks
     const youtubeVideoLinks: (string | null)[] = await searchYouTube(episodes);
-    console.log(youtubeVideoLinks);
+    console.log("Length of youtubeVideoLinks is : ", youtubeVideoLinks.length, " and length fo episodes is: ", episodes.length);
 
     for (let i = 0; i < episodes.length; i++) {
       const youtubeVideoLink: string | null = youtubeVideoLinks[i];
@@ -116,41 +115,62 @@ async function main() {
       console.log("Processing: ", episode.episodeTitle);
 
       if (youtubeVideoLink) {
-        console.log("Done processing that one, got youtubeLink", youtubeVideoLink);
         if (youtubeVideoLink !== episode.youtubeVideoLink) {
           console.log("🅾️No match: ", youtubeVideoLink, " and youtubeVideoLink: ", episode.youtubeVideoLink);
-          await prismaConnection.episode.updateMany({
-            data: {
-              youtubeVideoLink: youtubeVideoLink ? youtubeVideoLink : "",
-              indexed: false,
-            },
-            where: {
-              episodeGuid: episode.episodeGuid,
-            },
-          });
-          // Delete all segments and transcriptions that are for this episode.
-          await prismaConnection.transcription.delete({
-            where: {
-              belongsToEpisodeGuid_isYoutube: {
-                isYoutube: true,
-                belongsToEpisodeGuid: episode.episodeGuid,
+          try {
+            console.log("Updating...");
+            await prismaConnection.episode.updateMany({
+              data: {
+                youtubeVideoLink: youtubeVideoLink ? youtubeVideoLink : "",
+                indexed: false,
               },
-            },
-          });
-          await prismaConnection.segment.deleteMany({
-            where: {
-              belongsToEpisodeGuid: episode.episodeGuid,
-              isYoutube: true,
-            },
-          });
-          await prismaConnection.episode.update({
-            where: {
-              episodeGuid: episode.episodeGuid,
-            },
-            data: {
-              youtubeProcessed: false,
-            },
-          });
+              where: {
+                episodeGuid: episode.episodeGuid,
+              },
+            });
+          } catch (e) {
+            console.log(e);
+          }
+          // Delete all segments and transcriptions that are for this episode.
+          try {
+            console.log("Delete-ing 1...");
+            await prismaConnection.transcription.delete({
+              where: {
+                belongsToEpisodeGuid_isYoutube: {
+                  isYoutube: true,
+                  belongsToEpisodeGuid: episode.episodeGuid,
+                },
+              },
+            });
+          } catch (e) {
+            console.log(e);
+          }
+          try {
+            console.log("Deleting many...");
+
+            await prismaConnection.segment.deleteMany({
+              where: {
+                belongsToEpisodeGuid: episode.episodeGuid,
+                isYoutube: true,
+              },
+            });
+          } catch (e) {
+            console.log(e);
+          }
+          try {
+            console.log("Updating-ing 1...");
+
+            await prismaConnection.episode.update({
+              where: {
+                episodeGuid: episode.episodeGuid,
+              },
+              data: {
+                youtubeProcessed: false,
+              },
+            });
+          } catch (e) {
+            console.log(e);
+          }
         } else {
           console.log("✅Found a match, so not updating...");
         }

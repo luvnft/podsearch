@@ -150,7 +150,7 @@ async function gatherPodcastsFromJsonFile(): Promise<{ [key: string]: any }[]> {
   for (const podcastJson of podcasts) {
     console.log("====>Title: ", podcastJson.podcastName);
 
-    let stmt = db.prepare("SELECT * FROM podcasts  WHERE title = ? LIMIT 1");
+    let stmt = db.prepare("SELECT * FROM podcasts WHERE title = ? LIMIT 1");
     let podcast: Podcast = (await stmt.get(podcastJson.podcastName)) as Podcast;
 
     if (!podcast) {

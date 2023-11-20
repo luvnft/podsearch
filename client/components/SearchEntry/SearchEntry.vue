@@ -79,7 +79,7 @@
 
 <script lang="ts" setup>
 import TranscriptionService from "../../utils/services/TranscriptionsService";
-import { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
+import type { ClientSearchResponseHit, ClientSearchResponse, ClientSegmentHit } from "../../types/ClientSearchResponse";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../../store/searchStore";
 

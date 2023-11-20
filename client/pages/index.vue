@@ -8,8 +8,8 @@
 import TranscriptionService from "../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
-import { SearchQuery } from "types/SearchQuery";
-import { LocationQuery, Router } from "vue-router";
+import type { SearchQuery } from "types/SearchQuery";
+import type { LocationQuery, Router } from "vue-router";
 import { search } from "language-tags";
 
 const scrollY = ref(0);

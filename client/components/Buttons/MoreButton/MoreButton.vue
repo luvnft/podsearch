@@ -70,8 +70,8 @@
 
 <script setup lang="ts">
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
-import { ClientSegmentHit, ClientSearchResponse, ClientSearchResponseHit } from "../../../types/ClientSearchResponse";
-import { SearchQuery } from "types/SearchQuery";
+import type { ClientSegmentHit, ClientSearchResponse, ClientSearchResponseHit } from "../../../types/ClientSearchResponse";
+import type { SearchQuery } from "types/SearchQuery";
 import GenericButton from "../../../components/Buttons/GenericButton/GenericButton.vue";
 import TranscriptionService from "../../../utils/services/TranscriptionsService";
 import { storeToRefs } from "pinia";

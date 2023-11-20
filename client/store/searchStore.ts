@@ -15,7 +15,7 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchResults: Ref<ClientSearchResponse> = ref({} as ClientSearchResponse);
   const setLoadingState = (loadingState: boolean) => (loading.value = loadingState);
   const setSearchResults = (searchResponse: ClientSearchResponse) => {
-    if (searchResponse.query === previousSearchString.value) {
+    if (searchResponse.query === previousSearchString.value && previousSearchString.value !== "") {
       searchResults.value.hits = utils.removeDuplicates([...searchResults.value.hits, ...searchResponse.hits], "id");
     } else {
       searchResults.value = searchResponse;
