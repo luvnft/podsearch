@@ -288,7 +288,7 @@ class TranscriptionsService {
               end: segmentHit.end,
               isYoutube: segmentHit.isYoutube,
             },
-            ...segmentHitsArr.slice(1)
+            ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube).slice(1))
           ] : [
             {
               text: segmentHit._formatted.text,
@@ -297,7 +297,7 @@ class TranscriptionsService {
               end: segmentHit.end,
               isYoutube: segmentHit.isYoutube,
             },
-            ...segmentHitsArr.slice(0)
+            ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube))
           ]
 
           const youtubeSubHitsCondition = segmentHit.text === segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube)[0].text;
@@ -309,7 +309,7 @@ class TranscriptionsService {
               end: segmentHit.end,
               isYoutube: segmentHit.isYoutube,
             },
-            ...segmentHitsArr.slice(1)
+            ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube).slice(1))
           ] : [
             {
               text: segmentHit._formatted.text,
@@ -318,7 +318,7 @@ class TranscriptionsService {
               end: segmentHit.end,
               isYoutube: segmentHit.isYoutube,
             },
-            ...segmentHitsArr.slice(0)
+            ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube))
           ]
 
           const clientSearchResponseHit: ClientSearchResponseHit | any = {
@@ -338,8 +338,8 @@ class TranscriptionsService {
             url: segmentHitPodcast?.url,
             link: segmentHitPodcast?.link,
             youtubeVideoLink: segmentHitEpisode?.youtubeVideoLink || "",
-            subHits: subHitsArray,
-            youtubeSubHits: youtubeSubHitsArray,
+            subHits: [...subHitsArray, ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube))],
+            youtubeSubHits: [...youtubeSubHitsArray, ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube))],
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
