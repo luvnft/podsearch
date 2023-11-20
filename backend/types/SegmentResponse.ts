@@ -23,4 +23,5 @@ export interface SegmentHit {
   createdAt: Date;
   updatedAt: Date;
   isYoutube: boolean;
+  _formatted: any;
 }

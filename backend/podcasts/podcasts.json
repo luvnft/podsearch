@@ -1,3 +1,7 @@
-{
-  "Lex Fridman Podcast": "Lex Fridman"
-}
+[
+  {
+    "podcastName": "Lex Fridman Podcast",
+    "podcastAuthor": "Lex Fridman",
+    "podcastYoutubeChannelId": "@lexfridman"
+  }
+]
