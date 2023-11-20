@@ -10,6 +10,12 @@ import FormData from "form-data";
 import { CronJob } from "cron";
 import { prismaConnection } from "../connections/prismaConnection";
 
+type PodcastsJson = {
+  podcastName: string;
+  podcastAuthor: string;
+  podcastYoutubeChannelId: string;
+};
+
 let isRunning: boolean = false;
 const ACCOUNT_ID = "cc664ea0e464c8171ed71af53a1e3f5b";
 const API_KEY = process.env.API_KEY as string;
@@ -134,24 +140,27 @@ async function gatherPodcastsFromJsonFile(): Promise<{ [key: string]: any }[]> {
   db.pragma("journal_mode = WAL");
 
   // Open JSON file and grab the podcasts
-  const jsonData = fs.readFileSync("./podcasts/podcasts.json", "utf8");
-  const podcasts = JSON.parse(jsonData);
+  const jsonData: any = fs.readFileSync("./podcasts/podcasts.json", "utf8");
+  const podcasts: PodcastsJson[] = JSON.parse(jsonData);
 
   // Array to store all objects to insert
   const objectsToInsert: any[] = [];
 
   // Loop through the podcasts.json file and get the podcasts from the database with the correct information
-  for (const title of Object.keys(podcasts)) {
-    console.log("====>Title: ", title);
+  for (const podcastJson of podcasts) {
+    console.log("====>Title: ", podcastJson.podcastName);
 
     let stmt = db.prepare("SELECT * FROM podcasts  WHERE title = ? LIMIT 1");
-    let podcast: Podcast = (await stmt.get(title)) as Podcast;
+    let podcast: Podcast = (await stmt.get(podcastJson.podcastName)) as Podcast;
 
     if (!podcast) {
       continue;
     }
 
-    objectsToInsert.push(podcast);
+    objectsToInsert.push({
+      ...podcast,
+      youtubeChannelId: podcastJson.podcastYoutubeChannelId,
+    });
   }
 
   db.close(); // Close the database connection
