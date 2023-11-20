@@ -280,30 +280,46 @@ class TranscriptionsService {
           const segmentHitsArr = segmentPostHits.flat();
 
           const subHitsCondition = segmentHit.text === segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube)[0].text;
-          const subHitsArray = !subHitsCondition
-            ? []
-            : [
-                {
-                  text: segmentHit._formatted.text,
-                  id: segmentHit.id,
-                  start: segmentHit.start,
-                  end: segmentHit.end,
-                  isYoutube: segmentHit.isYoutube,
-                },
-              ];
+          const subHitsArray = subHitsCondition ? [
+            {
+              text: segmentHit._formatted.text,
+              id: segmentHit.id,
+              start: segmentHit.start,
+              end: segmentHit.end,
+              isYoutube: segmentHit.isYoutube,
+            },
+            ...segmentHitsArr.slice(1)
+          ] : [
+            {
+              text: segmentHit._formatted.text,
+              id: segmentHit.id,
+              start: segmentHit.start,
+              end: segmentHit.end,
+              isYoutube: segmentHit.isYoutube,
+            },
+            ...segmentHitsArr.slice(0)
+          ]
 
           const youtubeSubHitsCondition = segmentHit.text === segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube)[0].text;
-          const youtubeSubHitsArray = !youtubeSubHitsCondition
-            ? []
-            : [
-                {
-                  text: segmentHit._formatted.text,
-                  id: segmentHit.id,
-                  start: segmentHit.start,
-                  end: segmentHit.end,
-                  isYoutube: segmentHit.isYoutube,
-                },
-              ];
+          const youtubeSubHitsArray = youtubeSubHitsCondition ? [
+            {
+              text: segmentHit._formatted.text,
+              id: segmentHit.id,
+              start: segmentHit.start,
+              end: segmentHit.end,
+              isYoutube: segmentHit.isYoutube,
+            },
+            ...segmentHitsArr.slice(1)
+          ] : [
+            {
+              text: segmentHit._formatted.text,
+              id: segmentHit.id,
+              start: segmentHit.start,
+              end: segmentHit.end,
+              isYoutube: segmentHit.isYoutube,
+            },
+            ...segmentHitsArr.slice(0)
+          ]
 
           const clientSearchResponseHit: ClientSearchResponseHit | any = {
             id: segmentId,
@@ -322,8 +338,8 @@ class TranscriptionsService {
             url: segmentHitPodcast?.url,
             link: segmentHitPodcast?.link,
             youtubeVideoLink: segmentHitEpisode?.youtubeVideoLink || "",
-            subHits: [...subHitsArray, ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube))],
-            youtubeSubHits: [...youtubeSubHitsArray, ...convertSegmentHitToClientSegmentHit(segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube))],
+            subHits: subHitsArray,
+            youtubeSubHits: youtubeSubHitsArray,
             belongsToTranscriptId: segmentPostHits[0].belongsToTranscriptId,
           };
 
