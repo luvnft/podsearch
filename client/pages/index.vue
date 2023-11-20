@@ -10,6 +10,7 @@ import { storeToRefs } from "pinia";
 import { useSearchStore } from "../store/searchStore";
 import { SearchQuery } from "types/SearchQuery";
 import { LocationQuery, Router } from "vue-router";
+import { search } from "language-tags";
 
 const scrollY = ref(0);
 const { y } = useWindowScroll();
@@ -23,12 +24,11 @@ const transcriptionService: TranscriptionService = new TranscriptionService();
 const utils: Utils = useUtils();
 
 const initialSearchQuery: SearchQuery = {
-    searchString: "'The following is a conversation'",
+    searchString: "The following is a conversation with",
     offset: 0,
-    matchingStrategy: "all",
-    filter: "isYoutube=0"
 };
 const router: Router = useRouter();
+const userSearchPerformed: Ref<boolean> = ref(false);
 
 //Running
 onMounted(async () => {
@@ -40,6 +40,7 @@ onMounted(async () => {
         // Listening for messages from worker
         worker.onmessage = (event: any) => {
             const { action, payload } = event.data;
+            console.log("Received payload: ", payload)
             switch (action) {
                 case "searchCompleted":
                     searchStore.setSearchResults(payload);
@@ -60,6 +61,8 @@ onMounted(async () => {
 });
 
 function searchViaWorker() {
+    console.log("Searchgin via worker");
+    userSearchPerformed.value = true;
     searchStore.setLoadingState(true);
     worker.postMessage({ action: "search", payload: JSON.stringify(searchQuery.value) });
 }
@@ -104,10 +107,20 @@ const debouncedOffsetIncrement = _Throttle(
     () => {
         if (requestOngoing.value === true) return;
         requestOngoing.value = true;
-        searchQuery.value = {
-            ...searchQuery.value,
-            offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
-        };
+        if (userSearchPerformed.value === false) {
+            console.log("Here")
+            searchQuery.value = {
+                searchString: initialSearchQuery.searchString,
+                offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 12,
+            };
+            console.log(searchQuery.value)
+        }
+        else {
+            searchQuery.value = {
+                ...searchQuery.value,
+                offset: searchQuery.value.offset !== undefined ? searchQuery.value.offset + 12 : 0,
+            };
+        }
         console.log("SearchQuery value is now: ", searchQuery.value);
 
         setTimeout(() => {

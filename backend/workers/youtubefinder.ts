@@ -17,28 +17,79 @@ function extractYoutubeURL(inputString: string) {
   return match ? match[0] : null; // Return the matched URL or null if not found
 }
 
-async function searchYouTube(episode: Episode & { podcast: Podcast }): Promise<any[]> {
-  const browser = await puppeteer.launch({ headless: "new", args: ["--no-sandbox"] });
+async function makeSearchInYoutubePage(page) {
+  return await page.$eval("ytd-item-section-renderer a", (node: any) => {
+    const videoLink = node.getAttribute("href");
+    const fullVideoLink: string = "https://www.youtube.com" + videoLink;
+    console.log("fullVideoLink: ", fullVideoLink);
+    return fullVideoLink || null;
+  });
+}
+
+async function searchYouTube(episodes: (Episode & { podcast: Podcast })[]): Promise<(string | null)[]> {
+  const noCookiesExtension: string = path.join(process.cwd(), "./puppeteerExtensions/IDontCareAboutCookies/");
+  const browser = await puppeteer.launch({ headless: false, args: ["--no-sandbox", `--disable-extensions-except=${noCookiesExtension}`, `--load-extension=${noCookiesExtension}`] });
   const page = await browser.newPage();
+  const youtubeUrls: (string | null)[] = [];
+  let index: number = 0;
 
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle)}`;
-  console.log("Going to : ", searchUrl);
-  await page.goto(searchUrl);
+  // I need this just so tbat I can see what the hell is going on inside the $eval lol
+  page.on("console", async (msg) => {
+    const msgArgs = msg.args();
+    for (let i = 0; i < msgArgs.length; ++i) {
+      console.log(await msgArgs[i].jsonValue());
+    }
+  });
 
-  // You can adjust the selector based on the structure of YouTube's search results page.
-  const videoResults = await page.$$eval("ytd-video-renderer,ytd-grid-video-renderer", (nodes) =>
-    nodes.slice(0, 5).map((node: any) => {
-      const videoTitle = node.querySelector("#video-title").innerText;
-      const videoLink = node.querySelector("#video-title").getAttribute("href"); 
-      return {
-        title: videoTitle,
-        url: `https://www.youtube.com${videoLink}`,
-      }; 
-    }),
-  );
+  for await (const episode of episodes) {
+    console.log("Index is: ", index);
+    const searchUrl = `https://www.youtube.com/${episode.podcast.youtubeChannelId}/search?query=${encodeURIComponent(episode.podcast.title + " " + episode.episodeTitle)}`;
+    console.log("Going to : ", searchUrl);
+
+    await page.goto(searchUrl, {
+      waitUntil: "domcontentloaded",
+    });
+
+    // First time youtube page loads it shows a cookie banner which will block normal flow, no thanks for cookies extensions takes about 5 seconsd to click on the banner and cause youtube to renavigate.
+    if (index === 0) {
+      await page.waitForNetworkIdle({
+        idleTime: 5000,
+      });
+    }
+
+    await page.waitForSelector("ytd-item-section-renderer a", {
+      timeout: 30000,
+    });
+
+    try {
+      const youtubeUrl = await makeSearchInYoutubePage(page);
+      youtubeUrls.push(youtubeUrl);
+    } catch (e) {
+      console.log("Failed, but trying again");
+      // If it fails we do something stupid. We split the string in 2 and take the last bit and search for that trololo
+      const splittedString: string[] = episode.episodeTitle.split(" ");
+      const newSearchString: string = splittedString.slice(splittedString.length / 2).join(" ");
+      const searchUrl = `https://www.youtube.com/${episode.podcast.youtubeChannelId}/search?query=${encodeURIComponent(newSearchString)}`;
+      console.log("Going to : ", searchUrl);
+
+      await page.goto(searchUrl, {
+        waitUntil: "domcontentloaded",
+      });
+
+      await page.waitForSelector("ytd-item-section-renderer a", {
+        timeout: 30000,
+      });
+
+      const youtubeUrl = await makeSearchInYoutubePage(page);
+      youtubeUrls.push(youtubeUrl);
+      console.log(e);
+    }
+
+    index = index + 1;
+  }
 
   await browser.close();
-  return videoResults; 
+  return youtubeUrls;
 }
 
 async function main() {
@@ -46,47 +97,63 @@ async function main() {
     include: {
       podcast: true,
     },
-    where: {
-      youtubeVideoLink: null,
-      youtubeProcessed: false
-    },
+    // where: {
+    //   youtubeVideoLink: null,
+    //   youtubeProcessed: false,
+    // },
   });
 
   console.log("Episodes: ", episodes.length);
 
   if (episodes.length) {
-    for await (const episode of episodes) {
+    // Gather youtubeLinks
+    const youtubeVideoLinks: (string | null)[] = await searchYouTube(episodes);
+    console.log(youtubeVideoLinks);
+
+    for (let i = 0; i < episodes.length; i++) {
+      const youtubeVideoLink: string | null = youtubeVideoLinks[i];
+      const episode: Episode = episodes[i];
       console.log("Processing: ", episode.episodeTitle);
 
-      const results = await searchYouTube(episode);
-
-      let bestMatch: {
-        title: string;
-        url: string;
-      } | null = null;
-      let highestScore = 0;
-
-      for (const result of results) {
-        const similarity = stringSimilarity.compareTwoStrings(episode.episodeTitle, result.title);
-        console.log("Episode: ", result.title, " has score: ", similarity);
-        if (similarity > highestScore) {
-          highestScore = similarity;
-          bestMatch = result;
+      if (youtubeVideoLink) {
+        console.log("Done processing that one, got youtubeLink", youtubeVideoLink);
+        if (youtubeVideoLink !== episode.youtubeVideoLink) {
+          console.log("🅾️No match: ", youtubeVideoLink, " and youtubeVideoLink: ", episode.youtubeVideoLink);
+          await prismaConnection.episode.updateMany({
+            data: {
+              youtubeVideoLink: youtubeVideoLink ? youtubeVideoLink : "",
+              indexed: false,
+            },
+            where: {
+              episodeGuid: episode.episodeGuid,
+            },
+          });
+          // Delete all segments and transcriptions that are for this episode.
+          await prismaConnection.transcription.delete({
+            where: {
+              belongsToEpisodeGuid_isYoutube: {
+                isYoutube: true,
+                belongsToEpisodeGuid: episode.episodeGuid,
+              },
+            },
+          });
+          await prismaConnection.segment.deleteMany({
+            where: {
+              belongsToEpisodeGuid: episode.episodeGuid,
+              isYoutube: true,
+            },
+          });
+          await prismaConnection.episode.update({
+            where: {
+              episodeGuid: episode.episodeGuid,
+            },
+            data: {
+              youtubeProcessed: false,
+            },
+          });
+        } else {
+          console.log("✅Found a match, so not updating...");
         }
-      }
-
-      if (bestMatch) {
-        console.log("Done processing that one, got youtubeLink", bestMatch.url);
-        const matchedUrl: string | null = extractYoutubeURL(bestMatch.url);
-        await prismaConnection.episode.updateMany({
-          data: {
-            youtubeVideoLink: matchedUrl ? matchedUrl : "",
-            indexed: false,
-          },
-          where: {
-            episodeGuid: episode.episodeGuid,
-          },
-        });
       } else {
         console.log("No suitable match found for", episode.episodeTitle);
       }
@@ -117,10 +184,11 @@ async function cronJobRunner() {
     await main();
     isRunning = false;
   } catch (e) {
-    console.log("Some kind of error in YouTubeFinder: ", e); 
+    console.log("Some kind of error in YouTubeFinder: ", e);
   } finally {
     isRunning = false;
   }
 }
 
+main();
 export { start };
