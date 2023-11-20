@@ -233,7 +233,7 @@ async function insertJsonFilesToDb() {
       let transcriptionData: Transcription | null = null;
       const normalizedTranscription: string = normalizeString(transcription).trim();
       try {
-        console.log("First we try to find it!");
+        console.log("Creating the transcription");
         transcriptionData = await prisma.transcription.create({
           data: {
             belongsToPodcastGuid,
@@ -431,7 +431,7 @@ async function callPythonTranscribeAPI(episode: Episode) {
     console.log("hasYoutubeSegments", hasYoutubeSegments);
     if (hasAudioSegments === true && hasYoutubeSegments === true) return;
     if (hasAudioSegments === false) {
-      const response = await axios.post("http://localhost:8000/transcribe", {
+      const response = await axios.post("http://localhost:5000/transcribe", {
         episodeLink: episode.episodeEnclosure,
         episodeTitle: episode.episodeTitle,
         episodeGuid: episode.episodeGuid,
@@ -441,7 +441,7 @@ async function callPythonTranscribeAPI(episode: Episode) {
         processingYoutube: false,
       });
     } else if (hasYoutubeSegments === false) {
-      const response = await axios.post("http://localhost:8000/transcribe", {
+      const response = await axios.post("http://localhost:5000/transcribe", {
         // This API endpoint has to be run using uvicorn app:transcribe in a different terminal on the transcription machine
         episodeLink: episode.youtubeVideoLink,
         episodeTitle: episode.episodeTitle,
@@ -473,4 +473,4 @@ function deleteFilesByExtensions(directoryPath: string, extensions: string[]): v
 }
 
 // Starting the transcriber here:
-insertJsonFilesToDb();
+transcribe();
