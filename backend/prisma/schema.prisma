@@ -69,10 +69,10 @@ model Podcast {
   newestEnclosureDuration Int
   priority                Int
   updateFrequency         Int
-  youtubeChannelId        String?
   createdAt               DateTime?       @default(now())
   updatedAt               DateTime?       @updatedAt
   indexed                 Boolean         @default(false)
+  youtubeChannelId        String?
   episode                 Episode[]
   segment                 Segment[]
   Transcription           Transcription[]
