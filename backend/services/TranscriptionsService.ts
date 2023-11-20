@@ -280,7 +280,7 @@ class TranscriptionsService {
           const segmentHitsArr = segmentPostHits.flat();
 
           const subHitsCondition = segmentHit.text === segmentHitsArr.filter((segmentHit) => !segmentHit.isYoutube)[0].text;
-          const subHitsArray = subHitsCondition
+          const subHitsArray = !subHitsCondition
             ? []
             : [
                 {
@@ -293,7 +293,7 @@ class TranscriptionsService {
               ];
 
           const youtubeSubHitsCondition = segmentHit.text === segmentHitsArr.filter((segmentHit) => segmentHit.isYoutube)[0].text;
-          const youtubeSubHitsArray = youtubeSubHitsCondition
+          const youtubeSubHitsArray = !youtubeSubHitsCondition
             ? []
             : [
                 {
